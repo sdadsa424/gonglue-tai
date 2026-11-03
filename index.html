@@ -337,6 +337,172 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
   table.tbl td:not(:first-child)::before{content:attr(data-label) "：";color:#77807A;font-size:12px;margin-right:4px}
   .foot{padding:40px 0 32px}
 }
+/* ===== 视觉改版：夜色底 + 纸面卡片 ===== */
+:root{
+  --shell:#0A1013;
+  --panel:#F1F3ED;
+  --card:#FBFCF7;
+  --cream:#EDEFE8;
+  --cream-dim:#A7B2AB;
+  --line-soft:#E0E5DB;
+}
+body{
+  background-color:var(--shell);
+  background-image:
+    radial-gradient(1100px 720px at 4% -10%,rgba(47,107,87,.36),transparent 62%),
+    radial-gradient(980px 640px at 98% 0%,rgba(42,93,136,.34),transparent 64%),
+    radial-gradient(1200px 800px at 50% 116%,rgba(162,59,75,.22),transparent 62%),
+    linear-gradient(180deg,#0A1013,#152126 48%,#0B1317);
+  background-attachment:fixed;
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.06;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+/* 顶栏 */
+.topbar{background:rgba(9,14,17,.86);border-bottom:1px solid rgba(236,238,234,.12)}
+.brand-name{color:var(--cream)}
+.brand-sub{color:var(--cream-dim)}
+.brand-mark{background:linear-gradient(180deg,#5A9C82,#2F6B57)}
+.nav a{color:var(--cream-dim)}
+.nav a:hover{color:var(--cream)}
+.nav a::after{background:var(--cream)}
+
+/* 首屏：海报墙 */
+.hero{position:relative;background:linear-gradient(180deg,rgba(10,16,19,.55),rgba(10,16,19,0))}
+.hero::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(236,238,234,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(236,238,234,.055) 1px,transparent 1px);
+  background-size:64px 64px;
+  -webkit-mask-image:radial-gradient(120% 85% at 50% 0,#000 25%,transparent 78%);
+  mask-image:radial-gradient(120% 85% at 50% 0,#000 25%,transparent 78%);
+}
+.hero-in{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:36px;padding:60px 24px 58px}
+.hero-kicker{color:#93A39A;margin-bottom:16px}
+.hero h1{font-size:clamp(46px,6.4vw,80px);line-height:.98;letter-spacing:.14em;margin-left:-3px;color:#F2F4ED}
+.hero-desc{margin-top:22px;color:#C0C9C2;max-width:40em}
+.hero-games{gap:16px}
+.poster{aspect-ratio:4/5;border:1px solid rgba(236,238,234,.16)}
+.poster-label{padding:44px 16px 15px}
+.hero-stats{margin-top:0;padding:22px 0 0;border-top:1px solid rgba(236,238,234,.16);color:#93A39A}
+.hero-stats b{color:#F2F4ED}
+
+/* 纸面板 */
+.sec{
+  position:relative;
+  width:auto;max-width:var(--wrap);
+  background:var(--panel);
+  border:1px solid rgba(236,238,234,.14);
+  border-radius:3px;
+  padding:42px 42px 48px;
+  margin:52px auto 0;
+  box-shadow:0 30px 70px -34px rgba(0,0,0,.65);
+}
+.sec-desc{color:var(--muted)}
+
+/* 攻略库：卡片化 */
+.entries{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;border-top:0;margin-top:4px}
+.entry{
+  padding:20px 20px 22px;border:1px solid var(--line-soft);background:var(--card);border-radius:2px;
+  transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease;
+}
+.entry:hover{border-color:#B7C0B6;box-shadow:0 18px 36px -24px rgba(18,23,26,.55);transform:translateY(-1px)}
+.entry-tab{flex:0 0 32px;height:56px}
+
+/* 开荒路线：机台条 */
+.route-sec{
+  max-width:var(--wrap);margin:52px auto 0;padding:56px 42px 60px;
+  border:1px solid rgba(236,238,234,.14);border-radius:3px;
+  background:
+    radial-gradient(620px 320px at 6% 0,rgba(47,107,87,.32),transparent 68%),
+    linear-gradient(180deg,#111B1F,#0B1216);
+  box-shadow:0 30px 70px -34px rgba(0,0,0,.7);
+}
+.route-sec .wrap{max-width:none;width:auto;margin:0;padding:0}
+.route{margin-top:48px}
+.step::after{background:#8FD0B1;box-shadow:0 0 0 4px rgba(143,208,177,.14)}
+
+/* 三款游戏：三张卡片 */
+.game-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.game-card{
+  display:flex;flex-direction:column;
+  background:var(--card);border:1px solid var(--line-soft);border-top:3px solid var(--ac);
+  border-radius:2px;overflow:hidden;
+}
+.game-card .game-thumb{aspect-ratio:16/10;border-radius:0;background:#1B2328}
+.game-card-body{padding:20px 22px 22px;display:flex;flex-direction:column;gap:12px;flex:1}
+.game-name{font-size:19px;line-height:1.45}
+.game-name span{display:block;margin:6px 0 0;font-size:11.5px}
+.game-intro{margin-top:0;font-size:13px;line-height:1.8}
+.game-facts{grid-template-columns:1fr;gap:4px;margin-top:0}
+.game-facts dt{flex:0 0 40px;font-size:12px}
+.game-facts dd{font-size:12.5px}
+.game-card .cs-line{margin-top:4px}
+.game-card .cs-pill{font-size:12.5px}
+.game-card-foot{
+  margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding-top:14px;border-top:1px solid var(--line-soft);
+}
+.game-count{font-size:12px}
+.game-enter{font-size:12.5px}
+
+/* 分站 / 文章 */
+.game-hero{background:linear-gradient(180deg,#0D1418,#131C20);border-bottom:1px solid rgba(236,238,234,.12)}
+.view-game .backline{padding:30px 0 0}
+.view-game .back{color:#B9C4BD}
+.view-game .back:hover{color:var(--cream)}
+.article{
+  max-width:840px;margin:34px auto 0;padding:44px 52px 52px;
+  background:var(--panel);border:1px solid rgba(236,238,234,.14);border-radius:3px;
+  box-shadow:0 30px 70px -34px rgba(0,0,0,.65);
+}
+
+/* 页脚 */
+.foot{
+  margin-top:52px;padding:56px 0 44px;background:none;
+  border-top:1px solid rgba(236,238,234,.08);
+  background-image:linear-gradient(180deg,rgba(6,10,12,0),rgba(4,8,10,.72));
+}
+
+@media (max-width:1080px){
+  .sec{padding:36px 30px 40px}
+  .route-sec{padding:48px 30px 52px}
+}
+@media (max-width:900px){
+  .game-cards{grid-template-columns:1fr}
+  .game-card{border-top-width:3px}
+}
+@media (max-width:860px){
+  .entries{grid-template-columns:1fr;gap:12px}
+  .sec{margin:36px 16px 0}
+  .route-sec{margin:36px 16px 0}
+  .article{margin:24px 16px 0}
+  .hero-in{padding:44px 20px 46px;gap:26px}
+  .hero-stats{padding:18px 0 0}
+}
+@media (max-width:560px){
+  .sec{padding:24px 18px 28px;margin:26px 10px 0}
+  .route-sec{padding:36px 18px 40px;margin:26px 10px 0}
+  .article{padding:26px 18px 32px;margin:20px 10px 0}
+  .entry{padding:18px 16px 20px}
+  .hero-in{padding:38px 18px 40px;gap:24px}
+  .hero h1{font-size:clamp(40px,11vw,56px)}
+  .hero-games{gap:8px}
+  .poster-label{padding:30px 9px 10px}
+  .filter-row .row-label{background:var(--panel)}
+  .filter-row{
+    flex-wrap:wrap;overflow:visible;padding-bottom:0;
+    -webkit-mask-image:none;mask-image:none;
+  }
+  .filter-row .row-label{position:static;padding-right:4px}
+  .game-card-body{padding:16px 16px 18px}
+  .game-card-foot{padding-top:12px}
+  .game-name{font-size:18px}
+}
+
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important;animation:none!important}
   html{scroll-behavior:auto}
@@ -371,11 +537,6 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
         <p class="hero-kicker">贰点零江湖 / 小小屠龙 / 桃园：将帅录</p>
         <h1>攻略台</h1>
         <p class="hero-desc">三款游戏的攻略，收在一处。开荒怎么走、职业怎么选、材料什么时候卖、攻沙站哪里——按游戏和分类查，直接照着做。</p>
-        <ul class="hero-stats">
-          <li><b id="statGames">3</b>款游戏</li>
-          <li><b id="statGuides">12</b>篇攻略</li>
-          <li><b id="statCats">6</b>个分类</li>
-        </ul>
       </div>
       <div class="hero-games">
         <a class="poster" href="#/g/ejl" style="--ac:#2F6B57">
@@ -397,6 +558,11 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
           <span class="poster-count">4 篇</span>
         </a>
       </div>
+      <ul class="hero-stats">
+        <li><b id="statGames">3</b>款游戏</li>
+        <li><b id="statGuides">12</b>篇攻略</li>
+        <li><b id="statCats">6</b>个分类</li>
+      </ul>
     </div>
   </section>
 
@@ -477,50 +643,52 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
         <p class="sec-desc">三套完全不同的节奏：武侠看重发育与门派，冰雪服看重转生与攻沙，三国回合看重阵容与站位。</p>
       </div>
     </div>
-    <div class="game-row" style="--ac:#2F6B57">
-      <div class="game-thumb"><img src="assets/ejl-hero.jpg" alt="贰点零江湖 游戏场景" width="1264" height="628" loading="lazy"></div>
-      <div>
-        <h3 class="game-name">贰点零江湖<span>复古武侠 · 三端互通</span></h3>
-        <p class="game-intro">复刻经典 2.0 版本的怀旧武侠：五大职业、正邪阵营、四层地图，安卓与 iOS、PC 三端数据互通。商城不卖战力，装备与材料靠自己打。</p>
-        <dl class="game-facts">
-          <div><dt>职业</dt><dd>刀客 / 剑客 / 医师 / 弓手 / 枪客</dd></div>
-          <div><dt>地图</dt><dd>新手村 · 野外 · 副本区 · 主城</dd></div>
-          <div><dt>经济</dt><dd>摆摊无手续费，非绑定可交易</dd></div>
-          <div><dt>付费</dt><dd>无首充，仅月卡类便利特权</dd></div>
-        </dl>
-        <p class="cs-line"><span>获取游戏</span><button class="cs-pill" type="button" data-copy="ggboy6123"><b>游戏客服 ggboy6123</b><span class="cs-act">复制</span></button></p>
-      </div>
-      <div class="game-side"><span class="game-count">收录 4 篇</span><a class="game-enter" href="#/g/ejl">进入分站</a></div>
-    </div>
-    <div class="game-row" style="--ac:#2A5D88">
-      <div class="game-thumb"><img src="assets/xxtl-siege.jpg" alt="小小屠龙 冰雪攻城场景" width="1080" height="573" loading="lazy"></div>
-      <div>
-        <h3 class="game-name">小小屠龙 · 冰雪传奇<span>冰雪复古 · 打宝攻沙</span></h3>
-        <p class="game-intro">冰雪复古传奇：从起源冰城起步，攒够转生材料进二大陆冰雪之城。小怪概率出光柱，BOSS 定时刷新，非绑定装备可以自由摆摊交易。</p>
-        <dl class="game-facts">
-          <div><dt>起点</dt><dd>起源冰城</dd></div>
-          <div><dt>进阶</dt><dd>二大陆 · 冰雪之城</dd></div>
-          <div><dt>职业</dt><dd>单职业版 / 幻变三职业版并行</dd></div>
-          <div><dt>交易</dt><dd>非绑定装备摆摊交易</dd></div>
-        </dl>
-        <p class="cs-line"><span>获取游戏</span><button class="cs-pill" type="button" data-copy="ggboy6123"><b>游戏客服 ggboy6123</b><span class="cs-act">复制</span></button></p>
-      </div>
-      <div class="game-side"><span class="game-count">收录 4 篇</span><a class="game-enter" href="#/g/xxtl">进入分站</a></div>
-    </div>
-    <div class="game-row" style="--ac:#A23B4B">
-      <div class="game-thumb"><img src="assets/ty-battle.jpg" alt="桃园：将帅录 战场演出" width="2278" height="1207" loading="lazy"></div>
-      <div>
-        <h3 class="game-name">桃园：将帅录<span>Q 版三国 · 回合策略</span></h3>
-        <p class="game-intro">Q 版 3D 幻想三国回合制：盾系、谋士、弓手、辅助、突骑、掠阵六类定位，胜负更多取决于阵容结构与站位，而不是单纯数值。三端互通。</p>
-        <dl class="game-facts">
-          <div><dt>定位</dt><dd>盾系 / 谋士 / 弓手 / 辅助 / 突骑 / 掠阵</dd></div>
-          <div><dt>玩法</dt><dd>回合制编队、推图、军团</dd></div>
-          <div><dt>节奏</dt><dd>慢节奏，不靠数值碾压</dd></div>
-          <div><dt>平台</dt><dd>安卓 / iOS / PC 三端互通</dd></div>
-        </dl>
-        <p class="cs-line"><span>获取游戏</span><button class="cs-pill" type="button" data-copy="ggboy6123"><b>游戏客服 ggboy6123</b><span class="cs-act">复制</span></button></p>
-      </div>
-      <div class="game-side"><span class="game-count">收录 4 篇</span><a class="game-enter" href="#/g/ty">进入分站</a></div>
+    <div class="game-cards">
+      <article class="game-card" style="--ac:#2F6B57">
+        <div class="game-thumb"><img src="assets/ejl-hero.jpg" alt="贰点零江湖 游戏场景" width="1264" height="628" loading="lazy"></div>
+        <div class="game-card-body">
+          <h3 class="game-name">贰点零江湖<span>复古武侠 · 三端互通</span></h3>
+          <p class="game-intro">复刻经典 2.0 版本的怀旧武侠：五大职业、正邪阵营、四层地图，安卓与 iOS、PC 三端数据互通。商城不卖战力，装备与材料靠自己打。</p>
+          <dl class="game-facts">
+            <div><dt>职业</dt><dd>刀客 / 剑客 / 医师 / 弓手 / 枪客</dd></div>
+            <div><dt>地图</dt><dd>新手村 · 野外 · 副本区 · 主城</dd></div>
+            <div><dt>经济</dt><dd>摆摊无手续费，非绑定可交易</dd></div>
+            <div><dt>付费</dt><dd>无首充，仅月卡类便利特权</dd></div>
+          </dl>
+          <p class="cs-line"><span>获取游戏</span><button class="cs-pill" type="button" data-copy="ggboy6123"><b>游戏客服 ggboy6123</b><span class="cs-act">复制</span></button></p>
+          <div class="game-card-foot"><span class="game-count">收录 4 篇</span><a class="game-enter" href="#/g/ejl">进入分站</a></div>
+        </div>
+      </article>
+      <article class="game-card" style="--ac:#2A5D88">
+        <div class="game-thumb"><img src="assets/xxtl-siege.jpg" alt="小小屠龙 冰雪攻城场景" width="1080" height="573" loading="lazy"></div>
+        <div class="game-card-body">
+          <h3 class="game-name">小小屠龙 · 冰雪传奇<span>冰雪复古 · 打宝攻沙</span></h3>
+          <p class="game-intro">冰雪复古传奇：从起源冰城起步，攒够转生材料进二大陆冰雪之城。小怪概率出光柱，BOSS 定时刷新，非绑定装备可以自由摆摊交易。</p>
+          <dl class="game-facts">
+            <div><dt>起点</dt><dd>起源冰城</dd></div>
+            <div><dt>进阶</dt><dd>二大陆 · 冰雪之城</dd></div>
+            <div><dt>职业</dt><dd>单职业版 / 幻变三职业版并行</dd></div>
+            <div><dt>交易</dt><dd>非绑定装备摆摊交易</dd></div>
+          </dl>
+          <p class="cs-line"><span>获取游戏</span><button class="cs-pill" type="button" data-copy="ggboy6123"><b>游戏客服 ggboy6123</b><span class="cs-act">复制</span></button></p>
+          <div class="game-card-foot"><span class="game-count">收录 4 篇</span><a class="game-enter" href="#/g/xxtl">进入分站</a></div>
+        </div>
+      </article>
+      <article class="game-card" style="--ac:#A23B4B">
+        <div class="game-thumb"><img src="assets/ty-battle.jpg" alt="桃园：将帅录 战场演出" width="2278" height="1207" loading="lazy"></div>
+        <div class="game-card-body">
+          <h3 class="game-name">桃园：将帅录<span>Q 版三国 · 回合策略</span></h3>
+          <p class="game-intro">Q 版 3D 幻想三国回合制：盾系、谋士、弓手、辅助、突骑、掠阵六类定位，胜负更多取决于阵容结构与站位，而不是单纯数值。三端互通。</p>
+          <dl class="game-facts">
+            <div><dt>定位</dt><dd>盾系 / 谋士 / 弓手 / 辅助 / 突骑 / 掠阵</dd></div>
+            <div><dt>玩法</dt><dd>回合制编队、推图、军团</dd></div>
+            <div><dt>节奏</dt><dd>慢节奏，不靠数值碾压</dd></div>
+            <div><dt>平台</dt><dd>安卓 / iOS / PC 三端互通</dd></div>
+          </dl>
+          <p class="cs-line"><span>获取游戏</span><button class="cs-pill" type="button" data-copy="ggboy6123"><b>游戏客服 ggboy6123</b><span class="cs-act">复制</span></button></p>
+          <div class="game-card-foot"><span class="game-count">收录 4 篇</span><a class="game-enter" href="#/g/ty">进入分站</a></div>
+        </div>
+      </article>
     </div>
   </section>
 
@@ -548,7 +716,7 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
     </div>
     <div class="wrap">
       <div class="backline"><a class="back" href="#/" data-goto="library"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 12H5"/><path d="M11 18l-6-6 6-6"/></svg>返回总站攻略库</a></div>
-      <section class="sec" style="padding-top:26px">
+      <section class="sec" style="margin-top:26px">
         <div class="sec-head"><div>
           <h2 class="sec-title">贰点零江湖 · 全部 4 篇</h2>
           <p class="sec-desc">按四层地图的节奏排的：先解决走出新手村，再解决职业、家底和组队收益。</p>
@@ -577,7 +745,7 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
     </div>
     <div class="wrap">
       <div class="backline"><a class="back" href="#/" data-goto="library"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 12H5"/><path d="M11 18l-6-6 6-6"/></svg>返回总站攻略库</a></div>
-      <section class="sec" style="padding-top:26px">
+      <section class="sec" style="margin-top:26px">
         <div class="sec-head"><div>
           <h2 class="sec-title">小小屠龙 · 全部 4 篇</h2>
           <p class="sec-desc">从第一周转生，到切职业、出货定价，再到攻沙站位，四篇覆盖一个散人的完整循环。</p>
@@ -606,7 +774,7 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
     </div>
     <div class="wrap">
       <div class="backline"><a class="back" href="#/" data-goto="library"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 12H5"/><path d="M11 18l-6-6 6-6"/></svg>返回总站攻略库</a></div>
-      <section class="sec" style="padding-top:26px">
+      <section class="sec" style="margin-top:26px">
         <div class="sec-head"><div>
           <h2 class="sec-title">桃园：将帅录 · 全部 4 篇</h2>
           <p class="sec-desc">开局资源、阵容站位、战宠培养和省钱玩法：不靠数值，靠把每一步做对。</p>
