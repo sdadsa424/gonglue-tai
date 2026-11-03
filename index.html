@@ -116,14 +116,21 @@ ul{margin:0;padding:0;list-style:none}
 .chip.zero .n{color:#A9B0A9}
 .chip.accent[aria-pressed="true"]{background:var(--ac);border-color:var(--ac)}
 .search{position:relative}
-.search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);transition:color .18s ease}
+/* 搜索框：改编自 Uiverse.io 输入框组件（作者 Bodyhc，MIT）——常驻下划线，聚焦时线加重并转为主色 */
 .search input{
-  width:100%;height:42px;padding:0 12px 0 36px;
-  border:1px solid var(--rule);border-radius:2px;background:var(--card);
+  width:100%;height:44px;padding:0 14px 0 38px;
+  border:0;border-bottom:2px solid #C6CEC5;border-radius:0;background:transparent;
   font-family:var(--sans);font-size:16px;color:var(--text);
+  transition:border-color .18s ease,background-color .18s ease,box-shadow .18s ease;
 }
 .search input::placeholder{color:#8E979E;font-size:14px}
-.search input:focus{border-color:var(--ink);outline:none}
+.search input:hover{border-bottom-color:#96A096;background:rgba(255,255,255,.5)}
+.search input:focus{
+  outline:none;border-bottom:2px solid #2F6B57;background:#FFFEF8;
+  box-shadow:0 14px 26px -24px rgba(20,32,28,.8);
+}
+.search:focus-within svg{color:#2F6B57}
 .lib-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0 2px;font-size:13px;color:var(--muted)}
 .lib-clear{font-size:13px;color:var(--brass);text-decoration:underline;text-underline-offset:3px}
 .entries{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:52px;border-top:1px solid var(--rule)}
@@ -179,21 +186,38 @@ ul{margin:0;padding:0;list-style:none}
 /* ---------- 客服入口 ---------- */
 .cs-line{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--muted)}
 .cs-line>span{flex:0 0 auto}
+/* 复制按钮：改编自 Uiverse.io 拟物按钮（作者 Afacanc38，MIT）——顶面高光 + 硬描边 + 底部键厚，按下沉 */
 .cs-pill{
-  display:inline-flex;align-items:center;gap:10px;min-height:38px;padding:6px 12px;
-  border:1px solid #C7CEC6;background:var(--card);border-radius:2px;
-  font-family:var(--sans);font-size:13px;color:var(--text);cursor:pointer;
+  display:inline-flex;align-items:center;gap:10px;min-height:40px;padding:7px 13px;
+  border:0;border-radius:3px;background:#F4F5EC;color:#1B2621;
+  font-family:var(--sans);font-size:13px;cursor:pointer;
+  box-shadow:0 1px 0 0 rgba(255,255,255,.95) inset,
+             0 -2px 0 0 rgba(20,32,28,.10) inset,
+             0 0 0 1px rgba(20,32,28,.42),
+             0 2px 0 0 rgba(20,32,28,.32),
+             0 5px 10px -6px rgba(20,32,28,.45);
+  transition:transform 80ms cubic-bezier(.4,.7,.3,1),box-shadow 80ms ease,background-color 80ms ease;
 }
-.cs-pill:hover{border-color:#96A096}
+.cs-pill:hover{background:#FFFEF8}
+.cs-pill:active{
+  transform:translateY(2px);background:#E9ECE2;
+  box-shadow:0 1px 0 0 rgba(255,255,255,.7) inset,
+             0 0 0 1px rgba(20,32,28,.5),
+             0 1px 3px rgba(20,32,28,.35) inset;
+}
+.cs-pill:focus-visible{outline:2px solid #2F6B57;outline-offset:3px}
 .cs-pill b{font-weight:600;letter-spacing:.01em}
-.cs-pill .cs-act{font-size:11px;color:#6E766F;border-left:1px solid #D5DAD2;padding-left:10px;line-height:1.3}
-.cs-pill.ok{border-color:#2F6B57}
+.cs-pill .cs-act{font-size:11px;color:#5F6963;border-left:1px solid rgba(20,32,28,.18);padding-left:10px;line-height:1.3}
+.cs-pill.ok{
+  background:#EAF3EC;
+  box-shadow:0 1px 0 0 rgba(255,255,255,.95) inset,
+             0 0 0 1px #2F6B57,
+             0 2px 0 0 rgba(47,107,87,.35),
+             0 5px 10px -6px rgba(20,32,28,.45);
+}
 .cs-pill.ok .cs-act{color:#2F6B57}
-.cs-pill.dark{background:transparent;border-color:rgba(236,238,234,.24);color:#EDEFEA}
-.cs-pill.dark:hover{border-color:rgba(236,238,234,.52)}
-.cs-pill.dark .cs-act{color:#A9B3AC;border-left-color:rgba(236,238,234,.2)}
-.cs-pill.dark.ok{border-color:#7FC0A3}
-.cs-pill.dark.ok .cs-act{color:#7FC0A3}
+.cs-pill.dark{background:#F4F5EC;color:#1B2621}
+.cs-pill.dark:hover{background:#FFFEF8}
 .game-hero .cs-line{color:#A9B3AC;margin-top:12px}
 .foot-cs{margin-top:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:#9AA49D}
 
@@ -206,6 +230,8 @@ ul{margin:0;padding:0;list-style:none}
 .foot-nav a{color:#C6CDC7}
 .foot-nav a:hover{color:#fff}
 .foot-bottom{margin-top:30px;padding-top:18px;border-top:1px solid rgba(236,238,234,.16);color:#7E8781;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.foot-bottom a{color:#9AA49D;text-decoration:underline;text-underline-offset:3px}
+.foot-bottom a:hover{color:#CFD8D0}
 
 /* ---------- 分站视图 ---------- */
 .view{padding-bottom:20px}
@@ -502,6 +528,22 @@ body::after{
   .game-card-foot{padding-top:12px}
   .game-name{font-size:18px}
 }
+
+/* ===== 复制反馈浮层：纸片样式，与站点纸面语言一致 ===== */
+.u-toast{
+  position:fixed;left:50%;bottom:26px;z-index:60;
+  display:inline-flex;align-items:center;gap:10px;max-width:min(92vw,440px);
+  padding:11px 16px;border-radius:3px;
+  background:#F6F7F0;color:#1E2B26;border:1px solid #D5DAD2;
+  box-shadow:0 22px 46px -26px rgba(0,0,0,.85);
+  font-family:var(--sans);font-size:13px;line-height:1.5;
+  opacity:0;transform:translate(-50%,14px);pointer-events:none;
+  transition:opacity .18s ease,transform .22s cubic-bezier(.2,.8,.3,1);
+}
+.u-toast.show{opacity:1;transform:translate(-50%,0)}
+.u-toast .u-dot{width:7px;height:7px;border-radius:50%;background:#2F6B57;flex:0 0 auto}
+.u-toast.err .u-dot{background:#A23B4B}
+@media (max-width:560px){.u-toast{bottom:18px;font-size:12.5px;padding:10px 14px}}
 
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important;animation:none!important}
@@ -809,6 +851,7 @@ body::after{
     <div class="foot-bottom">
       <span>本站为玩家整理向攻略站，非官方站点。游戏名称与画面版权归原厂商所有。</span>
       <span>具体数值、机制与活动以游戏内为准</span>
+      <span>界面组件改编自 <a href="https://uiverse.io" target="_blank" rel="noopener">Uiverse.io</a> 开源组件（MIT）：Afacanc38、Bodyhc</span>
     </div>
   </div>
 </footer>
@@ -1321,15 +1364,27 @@ function copyText(text) {
   }
   return Promise.resolve(legacyCopy(text));
 }
+let toastTimer = 0;
+function showToast(msg, isError) {
+  const el = document.getElementById('uToast');
+  if (!el) return;
+  el.querySelector('.u-text').textContent = msg;
+  el.classList.toggle('err', !!isError);
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () { el.classList.remove('show'); }, 2400);
+}
 document.addEventListener('click', function (e) {
   const btn = e.target.closest ? e.target.closest('[data-copy]') : null;
   if (!btn) return;
   const act = btn.querySelector('.cs-act');
   if (!act) return;
   const original = act.textContent;
-  copyText(btn.getAttribute('data-copy')).then(function (ok) {
+  const code = btn.getAttribute('data-copy');
+  copyText(code).then(function (ok) {
     act.textContent = ok ? '已复制' : '请手动复制';
     btn.classList.toggle('ok', !!ok);
+    showToast(ok ? '已复制：游戏客服 ' + code : '复制被浏览器拦下，请手动选中 ' + code, !ok);
     setTimeout(function () { act.textContent = original; btn.classList.remove('ok'); }, 1800);
   });
 });
@@ -1346,5 +1401,6 @@ window.addEventListener('hashchange', renderRoute);
 window.addEventListener('scroll', onScroll, { passive: true });
 window.addEventListener('resize', onScroll);
 </script>
+<div class="u-toast" id="uToast" role="status" aria-live="polite"><span class="u-dot" aria-hidden="true"></span><span class="u-text"></span></div>
 </body>
 </html>
