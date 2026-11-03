@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>攻略台 · 三款游戏攻略总站</title>
+<meta name="description" content="贰点零江湖、小小屠龙冰雪传奇、桃园：将帅录 的开荒路线、职业选择、打金交易与团战节奏，整理成能直接照着做的攻略。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2312171A'/%3E%3Crect x='5' y='5' width='5' height='22' fill='%232F6B57'/%3E%3Cg fill='%23ECEEEA'%3E%3Crect x='15' y='7' width='12' height='2'/%3E%3Crect x='15' y='14' width='12' height='2'/%3E%3Crect x='15' y='21' width='8' height='2'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+:root{
+  --ink:#12171A;
+  --ink-2:#1B2328;
+  --paper:#ECEEEA;
+  --card:#F6F8F3;
+  --text:#1A211D;
+  --muted:#5A625C;
+  --rule:#C9CFC8;
+  --rule-dark:rgba(236,238,234,.22);
+  --ejl:#2F6B57;
+  --xxtl:#2A5D88;
+  --ty:#A23B4B;
+  --brass:#8A6A2C;
+  --serif:"Songti SC","Noto Serif SC","Source Han Serif SC","SimSun",Georgia,serif;
+  --sans:"Microsoft YaHei","PingFang SC","Hiragino Sans GB","Source Han Sans SC","Segoe UI",sans-serif;
+  --wrap:1320px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--paper);color:var(--text);
+  font-family:var(--sans);font-size:16px;line-height:1.78;
+  -webkit-font-smoothing:antialiased;
+}
+img{display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;letter-spacing:.01em}
+p{margin:0}
+ul{margin:0;padding:0;list-style:none}
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+.wrap{width:100%;max-width:var(--wrap);margin:0 auto;padding:0 24px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- 顶栏 ---------- */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:rgba(236,238,234,.94);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--rule);
+}
+.topbar-in{display:flex;align-items:center;justify-content:space-between;gap:20px;height:64px}
+.brand{display:flex;align-items:baseline;gap:10px;min-width:0}
+.brand-mark{width:9px;height:9px;background:var(--ejl);align-self:center;border-radius:1px}
+.brand-name{font-family:var(--serif);font-size:21px;letter-spacing:.14em}
+.brand-sub{font-size:11.5px;color:var(--muted);letter-spacing:.06em;white-space:nowrap}
+.nav{display:flex;align-items:center;gap:26px}
+.nav a{font-size:14px;color:var(--muted);position:relative;padding:4px 0}
+.nav a:hover{color:var(--text)}
+.nav a::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1px;background:var(--text);transition:right .25s ease}
+.nav a:hover::after{right:0}
+
+/* ---------- 首屏 ---------- */
+.hero{background:var(--ink);color:#EDEFEA;overflow:hidden}
+.hero-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.62fr);gap:48px;align-items:center;padding:52px 24px 56px}
+.hero-kicker{font-size:12.5px;letter-spacing:.22em;color:#A9B3AC;margin-bottom:22px}
+.hero h1{font-size:clamp(52px,6.4vw,88px);line-height:1;letter-spacing:.1em;margin-left:-4px}
+.hero-desc{margin-top:26px;font-size:15px;line-height:1.95;color:#C3CAC4;max-width:30em}
+.hero-stats{display:flex;flex-wrap:wrap;align-items:center;margin-top:30px;font-size:13px;color:#9CA69F}
+.hero-stats li{display:flex;align-items:baseline;gap:6px}
+.hero-stats li+li::before{content:"";width:1px;height:11px;background:rgba(236,238,234,.28);margin:0 16px;align-self:center}
+.hero-stats b{font-family:var(--serif);font-size:19px;color:#EDEFEA;font-weight:400}
+.hero-games{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.poster{position:relative;aspect-ratio:3/4;overflow:hidden;background:#1F272C;border-radius:2px}
+.poster img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.6,.2,1)}
+.poster:hover img{transform:scale(1.035)}
+.poster-tab{
+  position:absolute;left:0;top:14px;z-index:2;
+  writing-mode:vertical-rl;text-orientation:upright;
+  background:var(--ac);color:#fff;font-size:11px;letter-spacing:.16em;
+  padding:9px 5px;line-height:1;
+}
+.poster-label{
+  position:absolute;left:0;right:0;bottom:0;z-index:2;
+  padding:34px 14px 13px;
+  background:linear-gradient(to top,rgba(9,12,14,.82),rgba(9,12,14,.42) 55%,transparent);
+  display:flex;flex-direction:column;gap:3px;
+}
+.poster-name{font-family:var(--serif);font-size:17px;color:#fff;line-height:1.35}
+.poster-tag{font-size:11.5px;color:rgba(255,255,255,.72)}
+.poster-count{position:absolute;right:10px;top:14px;font-size:11px;color:#fff;background:rgba(9,12,14,.52);padding:2px 7px;border-radius:1px;letter-spacing:.04em}
+
+/* ---------- 通用区块 ---------- */
+.sec{padding:88px 0 0}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;flex-wrap:wrap;margin-bottom:34px}
+.sec-title{font-size:clamp(28px,3vw,38px);line-height:1.2}
+.sec-desc{font-size:14.5px;color:var(--muted);max-width:34em;margin-top:10px}
+.sec-note{font-size:12.5px;color:var(--muted);letter-spacing:.04em}
+
+/* ---------- 攻略库 ---------- */
+.filters{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:32px;align-items:start;padding:22px 0 18px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.filter-group{display:flex;flex-direction:column;gap:10px;min-width:0}
+.filter-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.filter-row .row-label{font-size:12px;color:var(--muted);letter-spacing:.06em;width:42px;flex:0 0 auto}
+.chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 11px;border:1px solid var(--rule);border-radius:2px;
+  font-size:13px;color:#39413B;background:transparent;
+  transition:background .18s ease,border-color .18s ease,color .18s ease;
+  min-height:34px;
+}
+.chip:hover{border-color:#8E9790}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#ECEEEA}
+.chip .n{font-size:11px;color:var(--muted)}
+.chip[aria-pressed="true"] .n{color:rgba(236,238,234,.62)}
+.chip.zero{color:#9AA29B;border-color:#D7DBD5}
+.chip.zero .n{color:#A9B0A9}
+.chip.accent[aria-pressed="true"]{background:var(--ac);border-color:var(--ac)}
+.search{position:relative}
+.search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.search input{
+  width:100%;height:42px;padding:0 12px 0 36px;
+  border:1px solid var(--rule);border-radius:2px;background:var(--card);
+  font-family:var(--sans);font-size:16px;color:var(--text);
+}
+.search input::placeholder{color:#8E979E;font-size:14px}
+.search input:focus{border-color:var(--ink);outline:none}
+.lib-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0 2px;font-size:13px;color:var(--muted)}
+.lib-clear{font-size:13px;color:var(--brass);text-decoration:underline;text-underline-offset:3px}
+.entries{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:52px;border-top:1px solid var(--rule)}
+.entry{display:flex;gap:16px;padding:24px 0 26px;border-bottom:1px solid var(--rule);min-width:0;position:relative}
+.entry:hover .entry-title{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+.entry-tab{
+  flex:0 0 34px;height:60px;background:var(--ac);color:#fff;border-radius:2px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  font-size:12px;letter-spacing:.02em;line-height:1;
+}
+.entry-tab i{font-style:normal;font-size:10px;opacity:.78}
+.entry-body{min-width:0;display:flex;flex-direction:column;gap:7px}
+.entry-meta{display:flex;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--muted);gap:8px}
+.entry-meta .divider{width:1px;height:10px;background:var(--rule);display:inline-block;flex:0 0 auto}
+.entry-title{font-family:var(--serif);font-size:20px;line-height:1.5;color:var(--text)}
+.entry-dek{font-size:13.5px;line-height:1.8;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.entry-foot{font-size:12px;color:#7A827C;display:flex;gap:10px;align-items:center;margin-top:2px}
+.empty{padding:60px 0;color:var(--muted);font-size:15px;display:none}
+.empty.on{display:block}
+
+/* ---------- 开荒路线 ---------- */
+.route-sec{background:var(--ink);color:#E6EAE4;margin-top:88px;padding:76px 0 84px}
+.route-head{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;flex-wrap:wrap}
+.route-head .sec-title{color:#F2F4EF}
+.route-sub{font-size:13.5px;color:#A9B3AC;margin-top:12px}
+.route-link{font-size:13px;color:#D9DED6;border-bottom:1px solid rgba(217,222,214,.4);padding-bottom:2px}
+.route-link:hover{border-color:#D9DED6}
+.route{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:56px}
+.step{position:relative;padding:44px 30px 0 0;min-width:0}
+.step::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:var(--rule-dark)}
+.step::after{content:"";position:absolute;top:0;left:0;width:9px;height:9px;transform:translate(0,-50%);border-radius:50%;background:#7FC0A3}
+.step-n{font-size:11px;letter-spacing:.16em;color:#8E9992;margin-bottom:10px}
+.step-name{font-family:var(--serif);font-size:22px;color:#F2F4EF;line-height:1.4}
+.step-desc{font-size:13px;line-height:1.85;color:#AFB8B1;margin-top:8px}
+.step-stay{display:inline-block;margin-top:12px;font-size:11.5px;color:#8E9992;border:1px solid rgba(236,238,234,.2);padding:2px 8px;border-radius:2px}
+
+/* ---------- 三款游戏 ---------- */
+.game-row{display:grid;grid-template-columns:196px minmax(0,1fr) 148px;gap:28px;align-items:start;padding:26px 0 28px;border-top:1px solid var(--rule)}
+.game-row:last-of-type{border-bottom:1px solid var(--rule)}
+.game-thumb{aspect-ratio:16/9;overflow:hidden;border-radius:2px;background:#222}
+.game-thumb img{width:100%;height:100%;object-fit:cover}
+.game-name{font-family:var(--serif);font-size:22px;line-height:1.4}
+.game-name span{font-size:12px;color:var(--muted);font-family:var(--sans);margin-left:8px}
+.game-intro{font-size:13.5px;line-height:1.85;color:var(--muted);margin-top:8px;max-width:46em}
+.game-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 24px;margin-top:14px}
+.game-facts div{display:flex;gap:10px;font-size:12.5px;min-width:0}
+.game-facts dt{color:#8B938D;flex:0 0 42px}
+.game-facts dd{margin:0;color:#39413B;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.game-side{display:flex;flex-direction:column;align-items:flex-end;gap:10px;text-align:right}
+.game-count{font-size:12px;color:var(--muted)}
+.game-enter{font-size:13px;color:var(--ac);border-bottom:1px solid var(--ac);padding-bottom:1px}
+
+/* ---------- 客服入口 ---------- */
+.cs-line{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--muted)}
+.cs-line>span{flex:0 0 auto}
+.cs-pill{
+  display:inline-flex;align-items:center;gap:10px;min-height:38px;padding:6px 12px;
+  border:1px solid #C7CEC6;background:var(--card);border-radius:2px;
+  font-family:var(--sans);font-size:13px;color:var(--text);cursor:pointer;
+}
+.cs-pill:hover{border-color:#96A096}
+.cs-pill b{font-weight:600;letter-spacing:.01em}
+.cs-pill .cs-act{font-size:11px;color:#6E766F;border-left:1px solid #D5DAD2;padding-left:10px;line-height:1.3}
+.cs-pill.ok{border-color:#2F6B57}
+.cs-pill.ok .cs-act{color:#2F6B57}
+.cs-pill.dark{background:transparent;border-color:rgba(236,238,234,.24);color:#EDEFEA}
+.cs-pill.dark:hover{border-color:rgba(236,238,234,.52)}
+.cs-pill.dark .cs-act{color:#A9B3AC;border-left-color:rgba(236,238,234,.2)}
+.cs-pill.dark.ok{border-color:#7FC0A3}
+.cs-pill.dark.ok .cs-act{color:#7FC0A3}
+.game-hero .cs-line{color:#A9B3AC;margin-top:12px}
+.foot-cs{margin-top:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:#9AA49D}
+
+/* ---------- 页脚 ---------- */
+.foot{background:var(--ink);color:#A9B3AC;margin-top:96px;padding:52px 0 40px;font-size:12.5px;line-height:1.9}
+.foot-in{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:40px}
+.foot-name{font-family:var(--serif);font-size:20px;color:#EDEFEA;letter-spacing:.12em;margin-bottom:12px}
+.foot p{max-width:40em}
+.foot-nav{display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:flex-end}
+.foot-nav a{color:#C6CDC7}
+.foot-nav a:hover{color:#fff}
+.foot-bottom{margin-top:30px;padding-top:18px;border-top:1px solid rgba(236,238,234,.16);color:#7E8781;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* ---------- 分站视图 ---------- */
+.view{padding-bottom:20px}
+.game-page[hidden]{display:none}
+.game-hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:0;background:var(--ink);color:#EDEFEA;margin-top:0}
+.game-hero .art{aspect-ratio:16/9;overflow:hidden}
+.game-hero .art img{width:100%;height:100%;object-fit:cover}
+.game-hero .info{padding:44px 40px;display:flex;flex-direction:column;justify-content:center;gap:14px;border-left:1px solid rgba(236,238,234,.12)}
+.game-hero h1{font-size:clamp(28px,3vw,40px);line-height:1.25;color:#fff}
+.game-hero .tagline{font-size:12.5px;letter-spacing:.1em;color:#A9B3AC}
+.game-hero .intro{font-size:14px;line-height:1.9;color:#C3CAC4;max-width:32em}
+.game-hero .facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 24px;margin-top:6px}
+.game-hero .facts div{font-size:12.5px;color:#A9B3AC;display:flex;gap:8px;min-width:0}
+.game-hero .facts b{color:#EDEFEA;font-weight:400;flex:0 0 auto}
+.game-hero .facts span{color:#D5DAD3;min-width:0}
+.backline{padding:26px 0 0}
+.back{font-size:13px;color:var(--muted);display:inline-flex;align-items:center;gap:7px}
+.back:hover{color:var(--text)}
+.back svg{opacity:.7}
+
+/* ---------- 文章视图 ---------- */
+.article{max-width:806px;margin:0 auto;padding:34px 24px 20px}
+.a-accent{height:4px;width:56px;background:var(--ac);margin-bottom:24px}
+.a-meta{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:12.5px;color:var(--muted);margin-bottom:14px}
+.a-meta .divider{width:1px;height:10px;background:var(--rule)}
+.a-title{font-size:clamp(30px,4vw,44px);line-height:1.28;letter-spacing:.01em}
+.a-dek{font-size:15.5px;line-height:1.9;color:var(--muted);margin-top:16px}
+.a-foot{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:#7A827C;margin-top:20px;padding-bottom:24px;border-bottom:1px solid var(--rule)}
+.takeaways{margin-top:30px;background:#DFE4DB;border-top:2px solid var(--ac);padding:22px 26px 24px;border-radius:2px}
+.takeaways h2{font-family:var(--sans);font-size:13px;letter-spacing:.12em;color:#39413B;font-weight:700;margin-bottom:12px}
+.takeaways li{position:relative;padding-left:16px;font-size:14px;line-height:1.9;margin-top:6px}
+.takeaways li::before{content:"";position:absolute;left:0;top:11px;width:5px;height:5px;background:var(--ac)}
+.prose{margin-top:14px}
+.prose h2{font-size:23px;line-height:1.5;margin:46px 0 14px;padding-top:2px}
+.prose p{font-size:15.5px;line-height:1.95;margin:0 0 16px;color:#232A25}
+.prose ul{margin:4px 0 20px}
+.prose ul li{position:relative;padding-left:18px;font-size:15px;line-height:1.9;margin-bottom:7px;color:#232A25}
+.prose ul li::before{content:"";position:absolute;left:2px;top:12px;width:5px;height:5px;background:var(--ac)}
+.prose .note{border-left:2px solid var(--ac);padding:4px 0 4px 18px;color:#4E574F;font-size:14px;line-height:1.9;margin:22px 0 8px}
+.tbl-wrap{overflow-x:auto;margin:2px 0 22px}
+table.tbl{width:100%;min-width:520px;table-layout:fixed;border-collapse:collapse;font-size:13.5px}
+table.tbl th{text-align:left;font-weight:500;color:#6B736C;font-size:12.5px;padding:9px 10px;border-bottom:1px solid var(--ink);background:transparent}
+table.tbl td{padding:11px 10px;border-bottom:1px solid var(--rule);vertical-align:top;line-height:1.75;color:#232A25;word-break:break-word}
+table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
+.related{margin-top:56px;padding-top:26px;border-top:1px solid var(--rule)}
+.related h2{font-family:var(--sans);font-size:13px;letter-spacing:.1em;color:var(--muted);font-weight:700;margin-bottom:8px}
+.related a{display:flex;justify-content:space-between;gap:16px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--rule)}
+.related a:hover .rel-t{text-decoration:underline;text-underline-offset:4px}
+.rel-t{font-family:var(--serif);font-size:17px;line-height:1.5}
+.rel-g{font-size:12px;color:var(--muted);white-space:nowrap}
+.a-end{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:36px}
+.a-end .back{font-size:13.5px}
+.progress{position:fixed;top:0;left:0;height:2px;background:var(--ac);width:0;z-index:60;transition:width .12s linear}
+.progress[hidden]{display:none}
+
+/* ---------- 响应式 ---------- */
+@media (max-width:1080px){
+  .hero-in{grid-template-columns:minmax(0,1fr) minmax(0,1.45fr);gap:32px}
+  .filters{grid-template-columns:minmax(0,1fr);gap:18px}
+  .search{max-width:340px}
+  .entries{column-gap:36px}
+  .game-row{grid-template-columns:160px minmax(0,1fr);gap:20px}
+  .game-side{grid-column:1 / -1;flex-direction:row;align-items:center;justify-content:space-between;text-align:left}
+  .game-hero{grid-template-columns:1fr}
+  .game-hero .info{border-left:0;border-top:1px solid rgba(236,238,234,.12);padding:30px 24px}
+}
+@media (max-width:860px){
+  .hero-in{grid-template-columns:1fr;gap:30px;padding:40px 20px 44px}
+  .hero-desc{margin-top:20px}
+  .hero-stats{margin-top:24px}
+  .sec{padding-top:64px}
+  .route{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:40px}
+  .entries{grid-template-columns:1fr;column-gap:0}
+  .nav{gap:16px}
+  .nav a{font-size:13px}
+  .foot-in{grid-template-columns:1fr}
+  .foot-nav{justify-content:flex-start}
+}
+@media (max-width:560px){
+  .wrap{padding:0 18px}
+  .brand-sub{display:none}
+  .hero-in{padding:34px 18px 40px}
+  .hero-games{gap:8px}
+  .poster-tab{display:none}
+  .poster-label{padding:26px 9px 10px}
+  .poster-name{font-size:13px}
+  .poster-tag{font-size:10px;display:none}
+  .poster-count{display:none}
+  .sec-head{gap:12px}
+  .filters{padding:18px 0 14px}
+  .filter-row{
+    flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;
+    -webkit-mask-image:linear-gradient(to right,#000 88%,transparent);
+    mask-image:linear-gradient(to right,#000 88%,transparent);
+  }
+  .filter-row .row-label{flex:0 0 auto;position:sticky;left:0;background:var(--paper);padding-right:6px;z-index:2}
+  .chip{flex:0 0 auto;min-height:36px}
+  .lib-bar{font-size:12px}
+  .cs-pill{min-height:44px}
+  .cs-line{gap:8px}
+  .foot-cs{gap:8px}
+  .entry{gap:12px;padding:20px 0 22px}
+  .entry-tab{flex:0 0 30px;height:52px}
+  .entry-title{font-size:18px}
+  .entry-dek{font-size:14px;-webkit-line-clamp:3}
+  .route{grid-template-columns:1fr;row-gap:0;margin-top:38px}
+  .step{padding:34px 0 26px 22px}
+  .step::before{top:0;left:0;right:auto;width:1px;height:100%}
+  .step::after{top:38px;left:0;transform:translate(-50%,-50%)}
+  .step:first-child{padding-top:26px}
+  .step:first-child::after{top:30px}
+  .step-stay{margin-top:8px}
+  .game-row{grid-template-columns:1fr;gap:14px}
+  .game-facts{grid-template-columns:1fr}
+  .game-side{grid-column:auto}
+  .article{padding:26px 18px 10px}
+  .takeaways{padding:18px 18px 20px}
+  .prose h2{font-size:21px;margin-top:38px}
+  .related a{flex-direction:column;gap:4px;align-items:flex-start}
+  .game-hero .facts{grid-template-columns:1fr}
+  .game-hero .info{padding:26px 18px 30px}
+  .tbl-wrap{overflow:visible}
+  table.tbl, table.tbl tbody{display:block;min-width:0;table-layout:auto}
+  table.tbl colgroup{display:none}
+  table.tbl thead{display:none}
+  table.tbl tr{display:block;padding:12px 0 14px;border-bottom:1px solid var(--rule)}
+  table.tbl td{display:block;border:0;padding:1px 0;line-height:1.75}
+  table.tbl td:first-child{font-family:var(--serif);font-size:17px;padding:0 0 5px}
+  table.tbl td:not(:first-child)::before{content:attr(data-label) "：";color:#77807A;font-size:12px;margin-right:4px}
+  .foot{padding:40px 0 32px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress" hidden aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="#/" aria-label="攻略台首页">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-name">攻略台</span>
+      <span class="brand-sub">三款游戏 · 一处查完</span>
+    </a>
+    <nav class="nav" aria-label="主导航">
+      <a href="#/" data-goto="library">攻略库</a>
+      <a href="#/" data-goto="route">开荒路线</a>
+      <a href="#/" data-goto="games">三款游戏</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== 视图：首页 ===== -->
+<div class="view" id="view-home">
+
+  <section class="hero">
+    <div class="wrap hero-in">
+      <div class="hero-type">
+        <p class="hero-kicker">贰点零江湖 / 小小屠龙 / 桃园：将帅录</p>
+        <h1>攻略台</h1>
+        <p class="hero-desc">三款游戏的攻略，收在一处。开荒怎么走、职业怎么选、材料什么时候卖、攻沙站哪里——按游戏和分类查，直接照着做。</p>
+        <ul class="hero-stats">
+          <li><b id="statGames">3</b>款游戏</li>
+          <li><b id="statGuides">12</b>篇攻略</li>
+          <li><b id="statCats">6</b>个分类</li>
+        </ul>
+      </div>
+      <div class="hero-games">
+        <a class="poster" href="#/g/ejl" style="--ac:#2F6B57">
+          <img src="assets/hero-ejl.jpg" alt="贰点零江湖 游戏画面" width="750" height="1000">
+          <span class="poster-tab">一</span>
+          <span class="poster-label"><span class="poster-name">贰点零江湖</span><span class="poster-tag">复古武侠 · 三端互通</span></span>
+          <span class="poster-count">4 篇</span>
+        </a>
+        <a class="poster" href="#/g/xxtl" style="--ac:#2A5D88">
+          <img src="assets/hero-xxtl.jpg" alt="小小屠龙 冰雪传奇 攻沙画面" width="750" height="1000" loading="lazy">
+          <span class="poster-tab">二</span>
+          <span class="poster-label"><span class="poster-name">小小屠龙</span><span class="poster-tag">冰雪复古 · 打宝攻沙</span></span>
+          <span class="poster-count">4 篇</span>
+        </a>
+        <a class="poster" href="#/g/ty" style="--ac:#A23B4B">
+          <img src="assets/hero-ty.jpg" alt="桃园：将帅录 回合战斗画面" width="750" height="1000" loading="lazy">
+          <span class="poster-tab">三</span>
+          <span class="poster-label"><span class="poster-name">桃园：将帅录</span><span class="poster-tag">Q 版三国 · 回合策略</span></span>
+          <span class="poster-count">4 篇</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="library">
+    <div class="sec-head">
+      <div>
+        <h2 class="sec-title">攻略库</h2>
+        <p class="sec-desc">按游戏、按分类筛，或直接搜关键词。每条都写了适用阶段，先看结论再看细节。</p>
+      </div>
+      <p class="sec-note">整理：2026 年 11 月</p>
+    </div>
+
+    <div class="filters">
+      <div class="filter-group">
+        <div class="filter-row" id="filterGame"><span class="row-label">游戏</span></div>
+        <div class="filter-row" id="filterCat"><span class="row-label">分类</span></div>
+      </div>
+      <div class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+        <label class="sr" for="searchInput">搜索攻略</label>
+        <input id="searchInput" type="search" placeholder="搜标题、关键词，如 转生、摆摊" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="lib-bar">
+      <span id="libCount" aria-live="polite">正在加载</span>
+      <button class="lib-clear" id="clearFilter" type="button" hidden>清除筛选</button>
+    </div>
+
+    <div class="entries" id="entryList"></div>
+    <div class="empty" id="emptyState">
+      <p>没有匹配的攻略。换个关键词，或点“清除筛选”看全部。</p>
+    </div>
+  </section>
+
+  <section class="route-sec" id="route">
+    <div class="wrap">
+      <div class="route-head">
+        <div>
+          <h2 class="sec-title">开荒路线</h2>
+          <p class="route-sub">以《贰点零江湖》的四层地图为例：每一层只做它该做的事。</p>
+        </div>
+        <a class="route-link" href="#/a/ejl-start">看这篇完整攻略</a>
+      </div>
+      <div class="route">
+        <div class="step">
+          <p class="step-n">01</p>
+          <h3 class="step-name">新手村 · 泫勃派</h3>
+          <p class="step-desc">只做任务链。村内经验随等级递减，主线一断就往外走。</p>
+          <span class="step-stay">停留 1 天内</span>
+        </div>
+        <div class="step">
+          <p class="step-n">02</p>
+          <h3 class="step-name">野外地图</h3>
+          <p class="step-desc">按等级带推进，精英怪顺手清，高等级图组队去。</p>
+          <span class="step-stay">主要练级区</span>
+        </div>
+        <div class="step">
+          <p class="step-n">03</p>
+          <h3 class="step-name">副本区</h3>
+          <p class="step-desc">装备与材料的主产出。上线先清体力，再回野外。</p>
+          <span class="step-stay">每日固定</span>
+        </div>
+        <div class="step">
+          <p class="step-n">04</p>
+          <h3 class="step-name">主城</h3>
+          <p class="step-desc">拍卖行看价、摆摊出货、参加限时活动，不在这练级。</p>
+          <span class="step-stay">交易与活动</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="games">
+    <div class="sec-head">
+      <div>
+        <h2 class="sec-title">三款游戏</h2>
+        <p class="sec-desc">三套完全不同的节奏：武侠看重发育与门派，冰雪服看重转生与攻沙，三国回合看重阵容与站位。</p>
+      </div>
+    </div>
+    <div class="game-row" style="--ac:#2F6B57">
+      <div class="game-thumb"><img src="assets/ejl-hero.jpg" alt="贰点零江湖 游戏场景" width="1264" height="628" loading="lazy"></div>
+      <div>
+        <h3 class="game-name">贰点零江湖<span>复古武侠 · 三端互通</span></h3>
+        <p class="game-intro">复刻经典 2.0 版本的怀旧武侠：五大职业、正邪阵营、四层地图，安卓与 iOS、PC 三端数据互通。商城不卖战力，装备与材料靠自己打。</p>
+        <dl class="game-facts">
+          <div><dt>职业</dt><dd>刀客 / 剑客 / 医师 / 弓手 / 枪客</dd></div>
+          <div><dt>地图</dt><dd>新手村 · 野外 · 副本区 · 主城</dd></div>
+          <div><dt>经济</dt><dd>摆摊无手续费，非绑定可交易</dd></div>
+          <div><dt>付费</dt><dd>无首充，仅月卡类便利特权</dd></div>
+        </dl>
+        <p class="cs-line"><span>获取游戏</span><button class="cs-pill" type="button" data-copy="ggboy6123"><b>游戏客服 ggboy6123</b><span class="cs-act">复制</span></button></p>
+      </div>
+      <div class="game-side"><span class="game-count">收录 4 篇</span><a class="game-enter" href="#/g/ejl">进入分站</a></div>
+    </div>
+    <div class="game-row" style="--ac:#2A5D88">
+      <div class="game-thumb"><img src="assets/xxtl-siege.jpg" alt="小小屠龙 冰雪攻城场景" width="1080" height="573" loading="lazy"></div>
+      <div>
+        <h3 class="game-name">小小屠龙 · 冰雪传奇<span>冰雪复古 · 打宝攻沙</span></h3>
+        <p class="game-intro">冰雪复古传奇：从起源冰城起步，攒够转生材料进二大陆冰雪之城。小怪概率出光柱，BOSS 定时刷新，非绑定装备可以自由摆摊交易。</p>
+        <dl class="game-facts">
+          <div><dt>起点</dt><dd>起源冰城</dd></div>
+          <div><dt>进阶</dt><dd>二大陆 · 冰雪之城</dd></div>
+          <div><dt>职业</dt><dd>单职业版 / 幻变三职业版并行</dd></div>
+          <div><dt>交易</dt><dd>非绑定装备摆摊交易</dd></div>
+        </dl>
+        <p class="cs-line"><span>获取游戏</span><button class="cs-pill" type="button" data-copy="ggboy6123"><b>游戏客服 ggboy6123</b><span class="cs-act">复制</span></button></p>
+      </div>
+      <div class="game-side"><span class="game-count">收录 4 篇</span><a class="game-enter" href="#/g/xxtl">进入分站</a></div>
+    </div>
+    <div class="game-row" style="--ac:#A23B4B">
+      <div class="game-thumb"><img src="assets/ty-battle.jpg" alt="桃园：将帅录 战场演出" width="2278" height="1207" loading="lazy"></div>
+      <div>
+        <h3 class="game-name">桃园：将帅录<span>Q 版三国 · 回合策略</span></h3>
+        <p class="game-intro">Q 版 3D 幻想三国回合制：盾系、谋士、弓手、辅助、突骑、掠阵六类定位，胜负更多取决于阵容结构与站位，而不是单纯数值。三端互通。</p>
+        <dl class="game-facts">
+          <div><dt>定位</dt><dd>盾系 / 谋士 / 弓手 / 辅助 / 突骑 / 掠阵</dd></div>
+          <div><dt>玩法</dt><dd>回合制编队、推图、军团</dd></div>
+          <div><dt>节奏</dt><dd>慢节奏，不靠数值碾压</dd></div>
+          <div><dt>平台</dt><dd>安卓 / iOS / PC 三端互通</dd></div>
+        </dl>
+        <p class="cs-line"><span>获取游戏</span><button class="cs-pill" type="button" data-copy="ggboy6123"><b>游戏客服 ggboy6123</b><span class="cs-act">复制</span></button></p>
+      </div>
+      <div class="game-side"><span class="game-count">收录 4 篇</span><a class="game-enter" href="#/g/ty">进入分站</a></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ===== 视图：分站 ===== -->
+<div class="view" id="view-game" hidden>
+
+  <!-- ===== 分站：贰点零江湖 ===== -->
+  <section class="game-page" data-game="ejl" hidden>
+    <div class="game-hero">
+      <div class="art"><img src="assets/ejl-hero.jpg" alt="贰点零江湖 游戏画面" width="1264" height="628"></div>
+      <div class="info">
+        <p class="tagline">复古武侠 · 三端互通</p>
+        <h1>贰点零江湖</h1>
+        <p class="intro">复刻经典 2.0 版本的怀旧武侠：五大职业、正邪阵营、四层地图，安卓与 iOS、PC 三端数据互通。商城不卖战力，装备与材料靠自己打。</p>
+        <div class="facts">
+          <div><b>职业</b><span>刀客 / 剑客 / 医师 / 弓手 / 枪客</span></div>
+          <div><b>地图</b><span>新手村 · 野外 · 副本区 · 主城</span></div>
+          <div><b>经济</b><span>摆摊无手续费，非绑定可交易</span></div>
+          <div><b>付费</b><span>无首充，仅月卡类便利特权</span></div>
+        </div>
+        <p class="cs-line"><span>获取游戏 · 开服咨询</span><button class="cs-pill dark" type="button" data-copy="ggboy6123"><b>游戏客服 ggboy6123</b><span class="cs-act">复制</span></button></p>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="backline"><a class="back" href="#/" data-goto="library"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 12H5"/><path d="M11 18l-6-6 6-6"/></svg>返回总站攻略库</a></div>
+      <section class="sec" style="padding-top:26px">
+        <div class="sec-head"><div>
+          <h2 class="sec-title">贰点零江湖 · 全部 4 篇</h2>
+          <p class="sec-desc">按四层地图的节奏排的：先解决走出新手村，再解决职业、家底和组队收益。</p>
+        </div></div>
+        <div class="entries" data-entries="ejl"></div>
+      </section>
+    </div>
+  </section>
+
+  <!-- ===== 分站：小小屠龙 ===== -->
+  <section class="game-page" data-game="xxtl" hidden>
+    <div class="game-hero">
+      <div class="art"><img src="assets/xxtl-siege.jpg" alt="小小屠龙 冰雪攻城画面" width="1080" height="573"></div>
+      <div class="info">
+        <p class="tagline">冰雪复古 · 打宝攻沙</p>
+        <h1>小小屠龙 · 冰雪传奇</h1>
+        <p class="intro">冰雪复古传奇：从起源冰城起步，攒够转生材料进二大陆冰雪之城。小怪概率出光柱，BOSS 定时刷新，非绑定装备可以自由摆摊交易。</p>
+        <div class="facts">
+          <div><b>起点</b><span>起源冰城</span></div>
+          <div><b>进阶</b><span>二大陆 · 冰雪之城</span></div>
+          <div><b>职业</b><span>单职业版 / 幻变三职业版并行</span></div>
+          <div><b>交易</b><span>非绑定装备摆摊交易</span></div>
+        </div>
+        <p class="cs-line"><span>获取游戏 · 开服咨询</span><button class="cs-pill dark" type="button" data-copy="ggboy6123"><b>游戏客服 ggboy6123</b><span class="cs-act">复制</span></button></p>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="backline"><a class="back" href="#/" data-goto="library"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 12H5"/><path d="M11 18l-6-6 6-6"/></svg>返回总站攻略库</a></div>
+      <section class="sec" style="padding-top:26px">
+        <div class="sec-head"><div>
+          <h2 class="sec-title">小小屠龙 · 全部 4 篇</h2>
+          <p class="sec-desc">从第一周转生，到切职业、出货定价，再到攻沙站位，四篇覆盖一个散人的完整循环。</p>
+        </div></div>
+        <div class="entries" data-entries="xxtl"></div>
+      </section>
+    </div>
+  </section>
+
+  <!-- ===== 分站：桃园：将帅录 ===== -->
+  <section class="game-page" data-game="ty" hidden>
+    <div class="game-hero">
+      <div class="art"><img src="assets/ty-battle.jpg" alt="桃园：将帅录 回合战斗画面" width="2278" height="1207"></div>
+      <div class="info">
+        <p class="tagline">Q 版三国 · 回合策略</p>
+        <h1>桃园：将帅录</h1>
+        <p class="intro">Q 版 3D 幻想三国回合制：盾系、谋士、弓手、辅助、突骑、掠阵六类定位，胜负更多取决于阵容结构与站位，而不是单纯数值。三端互通。</p>
+        <div class="facts">
+          <div><b>定位</b><span>盾系 / 谋士 / 弓手 / 辅助 / 突骑 / 掠阵</span></div>
+          <div><b>玩法</b><span>回合制编队、推图、军团</span></div>
+          <div><b>节奏</b><span>慢节奏，不靠数值碾压</span></div>
+          <div><b>平台</b><span>安卓 / iOS / PC 三端互通</span></div>
+        </div>
+        <p class="cs-line"><span>获取游戏 · 开服咨询</span><button class="cs-pill dark" type="button" data-copy="ggboy6123"><b>游戏客服 ggboy6123</b><span class="cs-act">复制</span></button></p>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="backline"><a class="back" href="#/" data-goto="library"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 12H5"/><path d="M11 18l-6-6 6-6"/></svg>返回总站攻略库</a></div>
+      <section class="sec" style="padding-top:26px">
+        <div class="sec-head"><div>
+          <h2 class="sec-title">桃园：将帅录 · 全部 4 篇</h2>
+          <p class="sec-desc">开局资源、阵容站位、战宠培养和省钱玩法：不靠数值，靠把每一步做对。</p>
+        </div></div>
+        <div class="entries" data-entries="ty"></div>
+      </section>
+    </div>
+  </section>
+
+</div>
+
+<!-- ===== 视图：文章 ===== -->
+<div class="view" id="view-article" hidden></div>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-in">
+      <div>
+        <p class="foot-name">攻略台</p>
+        <p>一个玩家整理的攻略站，把三款游戏里真正会用到的判断写成条目：什么时候走、什么时候留、什么该卖、什么该留。站内文章按游戏与阶段索引，持续补充。</p>
+        <p class="foot-cs">获取游戏与开服信息：<button class="cs-pill dark" type="button" data-copy="ggboy6123"><b>游戏客服 ggboy6123</b><span class="cs-act">复制</span></button></p>
+      </div>
+      <nav class="foot-nav" aria-label="页脚导航">
+        <a href="#/" data-goto="library">攻略库</a>
+        <a href="#/" data-goto="route">开荒路线</a>
+        <a href="#/" data-goto="games">三款游戏</a>
+        <a href="#/g/ejl">贰点零江湖</a>
+        <a href="#/g/xxtl">小小屠龙</a>
+        <a href="#/g/ty">桃园：将帅录</a>
+      </nav>
+    </div>
+    <div class="foot-bottom">
+      <span>本站为玩家整理向攻略站，非官方站点。游戏名称与画面版权归原厂商所有。</span>
+      <span>具体数值、机制与活动以游戏内为准</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ===== 数据 ===== */
+const GAMES = {
+  ejl: { id: 'ejl', short: '江', name: '贰点零江湖', tag: '复古武侠 · 三端互通', accent: '#2F6B57' },
+  xxtl: { id: 'xxtl', short: '雪', name: '小小屠龙 · 冰雪传奇', tag: '冰雪复古 · 打宝攻沙', accent: '#2A5D88' },
+  ty: { id: 'ty', short: '桃', name: '桃园：将帅录', tag: 'Q 版三国 · 回合策略', accent: '#A23B4B' }
+};
+
+const CATS = {
+  start: '开荒起步',
+  cls: '职业与流派',
+  money: '打金交易',
+  boss: 'BOSS 与副本',
+  war: '团战攻沙',
+  lineup: '阵容搭配'
+};
+
+const GUIDES = [
+  {
+    id: 'ejl-start', game: 'ejl', cat: 'start', level: '入门',
+    title: '新手村别恋战：四层地图的推进顺序',
+    dek: '泫勃派只负责把你送出门口。真正决定前三天进度的，是野外、副本和主城三处的时间怎么分。',
+    take: ['主线清完立刻离开新手村，村内经验随等级递减', '经验效率：野外刷怪高于副本，副本高于主城挂机', '副本体力每天先清，装备和材料主要从这出', '主城只做三件事：对价、摆摊、参加活动'],
+    blocks: [
+      { t: 'h', v: '一张地图，四种用法' },
+      { t: 'table', w: [22, 44, 34], head: ['层级', '主要用途', '什么时候去'], rows: [
+        ['新手村（泫勃派）', '主线引导、基础任务、初始装备', '只在前 1 天'],
+        ['野外地图', '刷怪、日常、精英怪掉落', '主要练级区'],
+        ['副本区', '装备与材料产出、组队玩法', '每日固定，先清体力'],
+        ['主城', '拍卖行、摆摊、活动 NPC', '需要交易和活动时']
+      ] },
+      { t: 'p', v: '这四层的分工其实很清楚，麻烦在于很多人把新手村当成了刷怪场。村内的经验是递减的，等级越高给得越少，主线一断就应该往外走。' },
+      { t: 'h', v: '新手村：只做任务链' },
+      { t: 'p', v: '把 NPC 的任务一次接满，按顺序清完，别边做边刷怪。任务奖励在前期比刷小怪划算，但它的价值只在前几个小时，主线一结束就换地图，不用为了把地图跑熟多留半天。' },
+      { t: 'h', v: '野外：按等级带往上推' },
+      { t: 'p', v: '野外是经验和掉落的主要来源。按等级从低带往高带走，遇到明显打不动的区域就退回上一带，别硬顶。精英怪通常有独立掉落，路过顺手清；高等级图资源更好，但也会遇到更强的玩家和抢怪，组队去更稳。' },
+      { t: 'h', v: '副本与体力：上线先做' },
+      { t: 'p', v: '副本区需要等级解锁，是装备和材料的主要产出，多数区服的体力按天恢复。上线第一件事是把当天能打的副本清完，再去野外刷；顺序反了，体力就浪费在低收益的小怪上。' },
+      { t: 'h', v: '主城：交易，不练级' },
+      { t: 'note', v: '主城能做的事只有三件：看拍卖行价格、参加限时活动、摆摊出货。摆摊在多数区服不收手续费，挂之前先去拍卖行对一遍同类最低价，别按自己的心理价挂着等。' }
+    ]
+  },
+  {
+    id: 'ejl-class', game: 'ejl', cat: 'cls', level: '入门',
+    title: '五大职业怎么选：从操作强度倒推',
+    dek: '刀客、剑客、医师、弓手、枪客的分工是硬的。选之前先想清楚：你要的是扛住，还是打穿。',
+    take: ['想少动脑：刀客、医师', '想吃操作：剑客', '想安全输出：弓手', '近战爆发但要会进退：枪客'],
+    blocks: [
+      { t: 'h', v: '先问自己三个问题' },
+      { t: 'p', v: '喜欢站前排还是后排；愿不愿意练连招；主要单刷还是跟队。三个答案基本就把职业定下来了，比看一张强度榜有用。' },
+      { t: 'h', v: '五个职业的实际分工' },
+      { t: 'table', w: [16, 28, 36, 20], head: ['职业', '定位', '适合谁', '上手'], rows: [
+        ['刀客', '血厚防高，正面吃伤害', '新手、喜欢硬碰硬的人', '容易'],
+        ['剑客', '输出稳定，连招顺', '追高伤害、愿意练操作的人', '中等'],
+        ['医师', '治疗与辅助，队伍必需', '喜欢支援位、能接受单刷慢的人', '中等'],
+        ['弓手', '远程输出，靠距离和走位', '偏好风筝打法的人', '中等'],
+        ['枪客', '近战高爆发，容错低', '会看时机进退的老手', '偏难']
+      ] },
+      { t: 'ul', v: ['刀客：前排的默认选项，扛住线才有输出空间。', '剑客：连招顺、输出稳，是最多老玩家的首选。', '医师：团队里不可替代，但单人刷怪明显慢。', '弓手：靠距离打伤害，被近身就很危险。', '枪客：伤害高但脆，赢在进退节奏，输在站桩。'] },
+      { t: 'p', v: '强度不用太纠结。这游戏的装备和资源主要靠自己刷，职业差距会被投入的时间抹平一部分——选一个你愿意长期玩的，比选一个榜上第一的更容易走远。' },
+      { t: 'h', v: '技能点怎么分配' },
+      { t: 'p', v: '先点满一条主力输出循环，再补一个位移或保命技能；医师优先群体治疗。平均分配的结果是每个技能都差一点，实战里哪个都用不上。' },
+      { t: 'note', v: '职业名称在不同区服可能有细微差异。进游戏前先看一眼本区职业列表，再按上面的定位对号入座。' }
+    ]
+  },
+  {
+    id: 'ejl-zero', game: 'ejl', cat: 'money', level: '进阶',
+    title: '零氪的第一桶金：摆摊、材料与装备保值',
+    dek: '这游戏不卖战力，钱只能从怪身上出来。搞清楚什么该捡、什么该摆、什么必须自己留着。',
+    take: ['掉落先看是否非绑定，非绑定才值得占背包', '定价先看拍卖行同类最低价，再看成交速度', '强化材料与技能书别急着出', '月卡买的是便利，不是强度'],
+    blocks: [
+      { t: 'h', v: '掉落分级：先判断能不能卖' },
+      { t: 'p', v: '打到的装备、材料、秘籍分两类：非绑定可以摆摊或交易，绑定只能自用或回收。刷怪时先看这一点，能卖的才值得占背包格子，绑定的直接回收，别背着一包废品回城。' },
+      { t: 'h', v: '摆摊定价的三看' },
+      { t: 'ul', v: ['看同服同类在售的最低价，别高过它太多', '看这类货最近的成交速度，走得慢就降价', '看上游需求：副本、强化、转生，哪个环节在消耗它'] },
+      { t: 'p', v: '挂高价等人砍，在开服前几天还行；越往后越应该贴着市场价快出，囤货的风险比折价大。' },
+      { t: 'h', v: '三类别急着卖' },
+      { t: 'ul', v: ['自己职业的过渡装备：下一阶段还得穿', '强化与升阶材料：进阶时会回头找你', '技能书：卖了就得用更高的价买回来'] },
+      { t: 'h', v: '月卡买的是时间' },
+      { t: 'p', v: '这类怀旧服通常只卖便利特权——自动回收、挂机、每日复活次数这类，不直接加战力。零氪不买也能玩；要买的话，把它当成买「省下来的那只手」，别当成买强度。' },
+      { t: 'note', v: '价格随开服天数变化，这篇只讲判断方法。具体数字以你所在区服的拍卖行为准。' }
+    ]
+  },
+  {
+    id: 'ejl-boss', game: 'ejl', cat: 'boss', level: '进阶',
+    title: '恶魔广场与野外 BOSS：组队收益怎么分',
+    dek: '单人刷怪能升级，但装备和宝石基本在副本和 BOSS 身上。组队的关键不是人多，是分工和分配先说清楚。',
+    take: ['队伍结构：一个能扛的、一个能治的、其余输出', '副本掉落有加成，固定队比临时喊人稳', '野外 BOSS 有固定刷新节奏，蹲点比乱跑有效', '非安全区能自由 PK，别把最好的装备穿去刷怪'],
+    blocks: [
+      { t: 'h', v: '队伍怎么配' },
+      { t: 'p', v: '刀客顶在前面吃伤害，医师跟住血线，剑客、弓手、枪客在侧后方输出。五个人齐不齐不重要，缺了治疗就会一直躺。' },
+      { t: 'h', v: '副本的收益结构' },
+      { t: 'p', v: '恶魔广场这类副本的掉落高于野外，队伍固定的话收益更稳，也不用每次重新磨合。每天固定时间约队，比临时在公屏喊人省时间。' },
+      { t: 'h', v: 'BOSS 与蹲点' },
+      { t: 'p', v: '野外 BOSS 的刷新时间在多数区服是固定的，蹲的人多，抢到才有收益。提前几分钟到位，别等公告出来再往那跑。' },
+      { t: 'h', v: '分配的规矩' },
+      { t: 'ul', v: ['装备按职业需求优先', '材料与宝石均分或轮流拿', '稀有掉落提前说好归属'] },
+      { t: 'p', v: '分配规则开局讲一次，比打完再吵有用得多。' },
+      { t: 'note', v: '安全区外可以自由 PK。穿最好的一套去打野外 BOSS，等于把身家挂在别人刀口上；留一套够用的就行。' }
+    ]
+  },
+  {
+    id: 'xxtl-start', game: 'xxtl', cat: 'start', level: '入门',
+    title: '从起源冰城到冰雪之城：第一周的转生节奏',
+    dek: '单职业开局，真正的分水岭在二大陆。转生材料决定你什么时候能进去。',
+    take: ['前三天只做两件事：升级、攒转生材料', '转生材料先够自己的门槛，再考虑卖', '进二大陆之前备好药、回收规则和行会', '小怪也会出货，别只盯 BOSS'],
+    blocks: [
+      { t: 'h', v: '单职业的好处' },
+      { t: 'p', v: '不用纠结职业搭配，所有时间都能花在地图和 BOSS 上。开局跟主线走，装备能穿就穿，别在低阶装备上花强化材料——很快就要换。' },
+      { t: 'h', v: '前三天做什么' },
+      { t: 'ul', v: ['主线推到当前等级上限', '挂小怪等光柱出货', '记录本区 BOSS 的刷新时间'] },
+      { t: 'p', v: '冰雪服的小怪有概率出光柱，这是散人最稳定的资源来源，比抢 BOSS 稳得多。' },
+      { t: 'h', v: '转生材料' },
+      { t: 'p', v: '二大陆的门槛是转生，材料从怪和 BOSS 身上出。早期价格高，很多人会忍不住卖，但先算清楚自己下一转要多少，留够再卖，别为了眼前一笔把进图时间拖后一周。' },
+      { t: 'h', v: '进二大陆之前' },
+      { t: 'ul', v: ['备好药品和回城', '确认回收与掉落的规则', '找好行会或固定队'] },
+      { t: 'note', v: '神魔装备、神器这类高阶产出集中在二大陆，进去越早优势越大；但落点通常也是 PK 高发区，第一次进图别带全部家当。' }
+    ]
+  },
+  {
+    id: 'xxtl-class', game: 'xxtl', cat: 'cls', level: '进阶',
+    title: '一人三职怎么切：战士、法师、道士的场景分工',
+    dek: '觉醒之后可以自由换职业，装备词条全继承。切换不是换号，是换工具。',
+    take: ['刷材料用法师，扛 BOSS 和 PK 用战士，续航用道士', '词条要选三职业通用的', '切换有冷却、要脱战，团战里来不及换', '技能靠传承，先把一两个主力练满'],
+    blocks: [
+      { t: 'h', v: '三个场景三张脸' },
+      { t: 'table', w: [26, 22, 52], head: ['场景', '用哪个', '为什么'], rows: [
+        ['低级图刷材料', '法师', '范围技能清场最快，单位时间产出最高'],
+        ['单点 BOSS', '战士', '扛得住伤害，也能持续输出'],
+        ['长时间续航', '道士', '有治疗与持续伤害，单挑不吃亏'],
+        ['野外遭遇', '战士或道士', '看谁先手，先手方决定节奏']
+      ] },
+      { t: 'p', v: '法师清场效率最高，但血少防低，被近身就危险；战士正面强，清怪慢；道士能治能磨，适合打消耗。' },
+      { t: 'h', v: '切换的成本' },
+      { t: 'p', v: '一般要脱战，且有冷却和每日免费次数。团战中途想换职业基本来不及，进场前就该定好用哪个。把切换当成出门前选工具，而不是打到一半换武器。' },
+      { t: 'h', v: '词条怎么选' },
+      { t: 'p', v: '因为词条在三个职业之间通用，优先堆暴击率、技能伤害、技能吸血这类谁都能用的属性；别为了单一职业收冷门词条，换一次职业就废了。' },
+      { t: 'h', v: '技能传承' },
+      { t: 'p', v: '换职业后技能要重新练，但可以通过传承按比例转化。先把最常用的那一两个技能顶上去，别平均练——平均练的结果是哪个职业都差一口气。' },
+      { t: 'note', v: '觉醒等级、冷却时长、每日次数各区服可能不同，以游戏内面板为准。' }
+    ]
+  },
+  {
+    id: 'xxtl-farm', game: 'xxtl', cat: 'money', level: '进阶',
+    title: '非绑定出货：散人打宝的定价与节奏',
+    dek: '商城不卖毕业神器，高阶装备全靠爆。散人能做的，是把爆出来的东西卖在对的时间。',
+    take: ['攻沙前后是出货窗口，价格最好', '新服前两周物价最高，越往后越该快出', '挂机点优先看小怪密度和回城距离', '特戒、高阶装备别在公屏喊价'],
+    blocks: [
+      { t: 'h', v: '什么一定有人要' },
+      { t: 'ul', v: ['转生材料：开区第一周永远有人收', '强化与鉴定材料：所有阶段都在消耗', '特戒与高阶首饰：产出少，需求稳', '非绑定的过渡装备：新人接盘'] },
+      { t: 'p', v: '越接近门槛的东西越刚需。判断标准很简单：全服有多少人卡在这一步。' },
+      { t: 'h', v: '什么时候卖' },
+      { t: 'p', v: '攻沙前两三天，全服都在补装备和药，价格会抬一波；开区前两周是物价高点。囤到第三周，同类货源变多，只能降价出。' },
+      { t: 'h', v: '挂机点怎么选' },
+      { t: 'p', v: '优先小怪密、刷新快、离回城近的点。跑一趟要两分钟的地图，收益会被路程吃掉。人多的点抢不到怪，往旁边挪一格往往更快。' },
+      { t: 'h', v: '安全提醒' },
+      { t: 'note', v: '高阶装备和特戒在公屏喊价，容易招来跟点和 PK。走摆摊或熟人交易，别把坐标说出去。' }
+    ]
+  },
+  {
+    id: 'xxtl-siege', game: 'xxtl', cat: 'war', level: '硬核',
+    title: '攻沙前 30 分钟：集结、卡点与复活点',
+    dek: '沙城不是靠人多，是靠谁先站住门口。',
+    take: ['提前 30 分钟集合，先确认药品和装备', '门口和复活点是两个必争点', '法师站后排打范围，战士顶门口，道士保人', '死亡掉落的规则进场前先确认'],
+    blocks: [
+      { t: 'h', v: '开打前' },
+      { t: 'ul', v: ['集合点报数，确认在线人数', '统一药品和装备要求', '确认指挥频道，别在公屏讲战术'] },
+      { t: 'p', v: '攻沙最怕的是人到了、药没带、装备穿错。提前把这三件事做完，剩下的才是打。' },
+      { t: 'h', v: '三个位置' },
+      { t: 'p', v: '城门是第一个卡点，谁站住门口，谁就能把对面按在门外；复活点是第二个，堵住复活点等于让对方每次复活都从刀口上起来；传送落点是第三个，提前分一小队守。' },
+      { t: 'h', v: '分工' },
+      { t: 'ul', v: ['战士前排吃伤害、堵门口', '法师后排打范围，别往前压', '道士跟队治疗，顺手挂持续伤害', '散人走侧翼，专切对面后排'] },
+      { t: 'p', v: '指挥的口令越短越好：门口集合、退回复活点、全体进。长句子在混战里没人看得完。' },
+      { t: 'h', v: '死亡的成本' },
+      { t: 'note', v: '各服对 PK 死亡的掉落规则不一样，进场前先确认。规则严的话，穿一套能打但不心疼的装备。' }
+    ]
+  },
+  {
+    id: 'ty-start', game: 'ty', cat: 'start', level: '入门',
+    title: '前三天别乱花：开局的资源优先级',
+    dek: '回合制拼的是阵容完整度，不是单将数值。前三天的资源，决定你什么时候能凑出第一套能打的队。',
+    take: ['先把阵容的定位凑齐，再谈品质', '资源集中在 2–3 个核心，不平摊', '固定日常收益优先做完，再考虑额外投入', '日常用手机，硬仗用电脑'],
+    blocks: [
+      { t: 'h', v: '先凑定位，不追品质' },
+      { t: 'p', v: '一支能打的队需要前排能扛、后排能打、有人能补。缺哪个位置先补哪个，别为了一个高品质武将，把整条线拆了重来。' },
+      { t: 'h', v: '资源集中' },
+      { t: 'p', v: '前三天的资源只够养两三个核心。把等级、装备、技能集中给主输出和一个前排，其他位置用能用的就行。平摊的结果是每个人都差一口气，推图卡在同一关。' },
+      { t: 'h', v: '固定收益先做满' },
+      { t: 'ul', v: ['主线与日常', '免费挑战次数', '军团或联盟任务'] },
+      { t: 'p', v: '这些是不花资源的收益，先做完，再考虑要不要额外投入。' },
+      { t: 'h', v: '三端互通的用法' },
+      { t: 'p', v: '手机适合做日常、收菜、调编队；电脑端打需要操作和反复试站位的硬仗。数据同步，不用重复登录。' },
+      { t: 'note', v: '各区服的开服活动不一样，资源获取顺序以本区活动为准。' }
+    ]
+  },
+  {
+    id: 'ty-lineup', game: 'ty', cat: 'lineup', level: '进阶',
+    title: '盾系、谋士、弓手、辅助：站位与出手顺序',
+    dek: '位置有限，六个定位不可能全上。谁站前排、谁先手，比谁星级高更影响胜负。',
+    take: ['至少一个盾系站前排，否则后排活不过两回合', '辅助先手、谋士控场、输出收割', '突骑用来切后排，不要放正面', '定位重复不如定位互补'],
+    blocks: [
+      { t: 'h', v: '三种常见结构' },
+      { t: 'ul', v: ['双盾双输出一辅：稳，适合推图和持久战', '单盾三输出一辅：快，怕被控住一轮带走', '突骑加弓手速攻：切后排，容错率低'] },
+      { t: 'p', v: '没有最好的结构，只有适配当前关卡的。卡关时先换结构，再考虑升级。' },
+      { t: 'h', v: '站位' },
+      { t: 'table', w: [20, 18, 62], head: ['定位', '站位', '作用'], rows: [
+        ['盾系', '前排', '吃伤害、挡线，为后排争取回合'],
+        ['谋士', '中排', '控场与减益，打断对面的输出节奏'],
+        ['弓手', '后排', '持续输出，怕被切'],
+        ['辅助', '后排', '治疗与增益，决定队伍能撑几轮'],
+        ['突骑', '侧翼', '绕过前排切后排，不要放正面'],
+        ['掠阵', '看技能', '增益或压制，按具体武将技能安排']
+      ] },
+      { t: 'p', v: '突骑放在正面等于浪费，它全部的价值在于绕到对面后排。站位不是排排坐，是谁先接触到谁。' },
+      { t: 'h', v: '出手顺序' },
+      { t: 'p', v: '辅助的增益要盖在输出前面，谋士的控制要在对面输出行动前落下。调速或调站位，让这三个动作排对顺序，比多升一级有用。' },
+      { t: 'note', v: '各武将的技能与速度不同，具体顺序看战报回放，别直接照抄别人的阵容。' }
+    ]
+  },
+  {
+    id: 'ty-pet', game: 'ty', cat: 'lineup', level: '入门',
+    title: '战宠不是装饰：先练能上阵的那一只',
+    dek: '战宠等于多一个位置。资源有限时，一只练满胜过五只半成品。',
+    take: ['先定战宠的职责：补输出、补续航还是控场', '与主队互补，不要重复', '一只练到能上阵，再开第二只', '技能等级优先于稀有度和外观'],
+    blocks: [
+      { t: 'h', v: '三类作用' },
+      { t: 'ul', v: ['输出型：补主队缺的伤害', '续航型：治疗、减伤，拖长回合', '控场型：减速、限制，打乱对面节奏'] },
+      { t: 'p', v: '主队输出已经溢出的，补续航；主队扛不住的，补减伤。判断依据是战报：看是哪一回合崩的。' },
+      { t: 'h', v: '选择标准' },
+      { t: 'p', v: '看技能，不看稀有度。一个能稳定触发的小技能，比一个条件苛刻的大招有用。' },
+      { t: 'h', v: '培养顺序' },
+      { t: 'ul', v: ['等级先跟上主队', '主力技能升满', '属性按职责堆', '最后再考虑外观和图鉴'] },
+      { t: 'note', v: '战宠获取多靠活动与日常，别为了凑齐图鉴把资源摊薄。' }
+    ]
+  },
+  {
+    id: 'ty-budget', game: 'ty', cat: 'money', level: '入门',
+    title: '不卷数值怎么玩：慢节奏的资源账',
+    dek: '这游戏主打策略、不靠数值碾压，意味着耐心比充值更值钱。',
+    take: ['固定收益做满，比一次性投入更划算', '不为新将拆队，先把手上的练透', '卡关先改阵容和站位，再考虑提升', '三端切换，把碎片时间用起来'],
+    blocks: [
+      { t: 'h', v: '每天的固定收益' },
+      { t: 'ul', v: ['日常与主线', '免费挑战次数', '军团与联盟任务', '活动签到'] },
+      { t: 'p', v: '这些不花资源，只花时间。做满一个月，抵得上一次冲动消费。' },
+      { t: 'h', v: '三个不要' },
+      { t: 'ul', v: ['不要追新将拆队', '不要平摊资源', '不要为凑整硬抽'] },
+      { t: 'p', v: '新将出来时，先看它能不能补上你现在缺的定位。补不上就先放着，等资源够了再说。' },
+      { t: 'h', v: '卡关的处理顺序' },
+      { t: 'p', v: '先看战报，判断是站不住还是打不动：站不住就加盾或辅助，打不动就换输出或调速。改完再打一次，比直接升级省资源。' },
+      { t: 'note', v: '慢节奏游戏的进度差异主要来自日常完成度，不是充值额度。' }
+    ]
+  }
+];
+
+/* ===== 渲染 ===== */
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+const ORDER = ['ejl', 'xxtl', 'ty'];
+const IDX = {};
+ORDER.forEach(k => {
+  let n = 0;
+  GUIDES.filter(x => x.game === k).forEach(x => { n += 1; IDX[x.id] = String(n).padStart(2, '0'); });
+});
+
+function guideText(gi) {
+  let s = gi.title + gi.dek + gi.take.join('');
+  gi.blocks.forEach(b => {
+    if (b.t === 'table') s += b.head.join('') + b.rows.map(r => r.join('')).join('');
+    else if (Array.isArray(b.v)) s += b.v.join('');
+    else s += b.v;
+  });
+  return s;
+}
+const readMin = gi => Math.max(2, Math.round(guideText(gi).length / 300));
+const sectionsOf = gi => gi.blocks.filter(b => b.t === 'h').length;
+
+function blockHTML(b) {
+  if (b.t === 'h') return '<h2>' + esc(b.v) + '</h2>';
+  if (b.t === 'p') return '<p>' + esc(b.v) + '</p>';
+  if (b.t === 'note') return '<p class="note">' + esc(b.v) + '</p>';
+  if (b.t === 'ul') return '<ul>' + b.v.map(i => '<li>' + esc(i) + '</li>').join('') + '</ul>';
+  if (b.t === 'table') {
+    const cols = b.w.map(w => '<col style="width:' + w + '%">').join('');
+    return '<div class="tbl-wrap"><table class="tbl"><colgroup>' + cols + '</colgroup><thead><tr>'
+      + b.head.map(h => '<th>' + esc(h) + '</th>').join('')
+      + '</tr></thead><tbody>'
+      + b.rows.map(r => '<tr>' + r.map((c, i) => '<td data-label="' + esc(b.head[i]) + '">' + esc(c) + '</td>').join('') + '</tr>').join('')
+      + '</tbody></table></div>';
+  }
+  return '';
+}
+
+/* ---------- 首屏 ---------- */
+/* 首屏画面为静态 HTML，脚本不生成图片引用 */
+
+/* ---------- 攻略库 ---------- */
+const state = { game: 'all', cat: 'all', q: '' };
+const filterGame = document.getElementById('filterGame');
+const filterCat = document.getElementById('filterCat');
+const entryList = document.getElementById('entryList');
+const emptyState = document.getElementById('emptyState');
+const libCount = document.getElementById('libCount');
+const clearFilter = document.getElementById('clearFilter');
+const searchInput = document.getElementById('searchInput');
+
+function countBy(kind, val) {
+  const pool = GUIDES.filter(gi => kind === 'game'
+    ? (state.cat === 'all' || gi.cat === state.cat)
+    : (state.game === 'all' || gi.game === state.game));
+  if (val === 'all') return pool.length;
+  return pool.filter(gi => (kind === 'game' ? gi.game : gi.cat) === val).length;
+}
+function chipHTML(kind, val, label, accent) {
+  const on = state[kind] === val;
+  const n = countBy(kind, val);
+  return '<button class="chip' + (accent ? ' accent' : '') + (n === 0 ? ' zero' : '') + '" type="button" data-kind="' + kind + '" data-value="' + val + '" aria-pressed="' + on + '"'
+    + (accent ? ' style="--ac:' + accent + '"' : '') + '>'
+    + '<span>' + esc(label) + '</span><span class="n">' + n + '</span></button>';
+}
+function renderFilters() {
+  filterGame.innerHTML = '<span class="row-label">游戏</span>'
+    + chipHTML('game', 'all', '全部')
+    + ORDER.map(k => chipHTML('game', k, GAMES[k].name, GAMES[k].accent)).join('');
+  filterCat.innerHTML = '<span class="row-label">分类</span>'
+    + chipHTML('cat', 'all', '全部')
+    + Object.keys(CATS).map(c => chipHTML('cat', c, CATS[c])).join('');
+}
+
+function entryHTML(gi) {
+  const game = GAMES[gi.game];
+  return '<a class="entry" href="#/a/' + gi.id + '" style="--ac:' + game.accent + '">'
+    + '<span class="entry-tab">' + game.short + '<i>' + IDX[gi.id] + '</i></span>'
+    + '<span class="entry-body">'
+    + '<span class="entry-meta"><span>' + esc(game.name) + '</span><i class="divider"></i><span>' + esc(CATS[gi.cat]) + '</span><i class="divider"></i><span>' + esc(gi.level) + '</span></span>'
+    + '<span class="entry-title">' + esc(gi.title) + '</span>'
+    + '<span class="entry-dek">' + esc(gi.dek) + '</span>'
+    + '<span class="entry-foot">阅读约 ' + readMin(gi) + ' 分钟 · ' + sectionsOf(gi) + ' 节</span>'
+    + '</span></a>';
+}
+function matches(gi) {
+  if (state.game !== 'all' && gi.game !== state.game) return false;
+  if (state.cat !== 'all' && gi.cat !== state.cat) return false;
+  if (state.q) {
+    const hay = (gi.title + gi.dek + gi.take.join('') + guideText(gi)).toLowerCase();
+    if (!hay.includes(state.q.toLowerCase())) return false;
+  }
+  return true;
+}
+function renderEntries() {
+  const list = GUIDES.filter(matches);
+  entryList.innerHTML = list.map(entryHTML).join('');
+  emptyState.classList.toggle('on', list.length === 0);
+  libCount.textContent = '显示 ' + list.length + ' / ' + GUIDES.length + ' 篇';
+  clearFilter.hidden = !(state.game !== 'all' || state.cat !== 'all' || state.q);
+}
+
+/* ---------- 分站列表 ---------- */
+function renderGamePages() {
+  document.querySelectorAll('[data-entries]').forEach(box => {
+    const k = box.dataset.entries;
+    box.innerHTML = GUIDES.filter(x => x.game === k).map(entryHTML).join('');
+  });
+}
+
+/* ---------- 文章 ---------- */
+const viewArticle = document.getElementById('view-article');
+const progress = document.getElementById('progress');
+const backIcon = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 12H5"/><path d="M11 18l-6-6 6-6"/></svg>';
+
+function relatedOf(gi) {
+  const same = GUIDES.filter(x => x.game === gi.game && x.id !== gi.id).slice(0, 2);
+  const other = GUIDES.filter(x => x.game !== gi.game).slice(0, 1);
+  return same.concat(other);
+}
+function articleHTML(gi) {
+  const game = GAMES[gi.game];
+  const sections = gi.blocks.filter(b => b.t === 'h').length;
+  const rel = relatedOf(gi);
+  return '<article class="article" style="--ac:' + game.accent + '">'
+    + '<div class="backline"><a class="back" href="#/" data-goto="library">' + backIcon + '返回攻略库</a></div>'
+    + '<div class="a-accent"></div>'
+    + '<div class="a-meta"><span>' + esc(game.name) + '</span><i class="divider"></i><span>' + esc(CATS[gi.cat]) + '</span><i class="divider"></i><span>' + esc(gi.level) + '</span><i class="divider"></i><span>' + IDX[gi.id] + ' 号</span></div>'
+    + '<h1 class="a-title">' + esc(gi.title) + '</h1>'
+    + '<p class="a-dek">' + esc(gi.dek) + '</p>'
+    + '<div class="a-foot"><span>阅读约 ' + readMin(gi) + ' 分钟</span><span>' + sections + ' 节</span><span>站内整理</span></div>'
+    + '<section class="takeaways"><h2>先看结论</h2><ul>' + gi.take.map(t => '<li>' + esc(t) + '</li>').join('') + '</ul></section>'
+    + '<div class="prose">' + gi.blocks.map(blockHTML).join('') + '</div>'
+    + '<section class="related"><h2>接着看</h2>'
+    + rel.map(x => '<a href="#/a/' + x.id + '"><span class="rel-t">' + esc(x.title) + '</span><span class="rel-g">' + esc(GAMES[x.game].name) + '</span></a>').join('')
+    + '</section>'
+    + '<div class="a-end"><a class="back" href="#/" data-goto="library">' + backIcon + '返回攻略库</a>'
+    + '<a class="back" href="#/g/' + game.id + '">看 ' + esc(game.name) + ' 全部攻略</a></div>'
+    + '</article>';
+}
+
+/* ---------- 分站 ---------- */
+const viewGame = document.getElementById('view-game');
+
+/* ---------- 路由 ---------- */
+const views = { home: document.getElementById('view-home'), game: viewGame, article: viewArticle };
+let currentView = 'home';
+function setView(name) {
+  Object.keys(views).forEach(k => { views[k].hidden = k !== name; });
+  if (name === 'home' && currentView !== 'home') window.scrollTo(0, 0);
+  currentView = name;
+  progress.hidden = name !== 'article';
+  if (name === 'article') onScroll();
+}
+function renderRoute() {
+  const raw = location.hash.replace(/^#/, '');
+  const m = raw.match(/^\/(a|g)\/([A-Za-z0-9_-]+)/);
+  if (m && m[1] === 'a') {
+    const gi = GUIDES.find(x => x.id === m[2]);
+    if (gi) {
+      viewArticle.innerHTML = articleHTML(gi);
+      progress.style.background = GAMES[gi.game].accent;
+      setView('article');
+      document.title = gi.title + ' · 攻略台';
+      window.scrollTo(0, 0);
+      return;
+    }
+  }
+  if (m && m[1] === 'g' && GAMES[m[2]]) {
+    document.querySelectorAll('.game-page').forEach(p => { p.hidden = p.dataset.game !== m[2]; });
+    setView('game');
+    document.title = GAMES[m[2]].name + ' · 攻略台';
+    window.scrollTo(0, 0);
+    return;
+  }
+  setView('home');
+  document.title = '攻略台 · 三款游戏攻略总站';
+}
+
+/* ---------- 交互 ---------- */
+document.querySelector('.filters').addEventListener('click', e => {
+  const btn = e.target.closest('.chip');
+  if (!btn) return;
+  state[btn.dataset.kind] = btn.dataset.value;
+  renderFilters();
+  renderEntries();
+});
+searchInput.addEventListener('input', e => {
+  state.q = e.target.value.trim();
+  renderEntries();
+});
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    e.target.value = '';
+    state.q = '';
+    renderEntries();
+  }
+});
+clearFilter.addEventListener('click', () => {
+  state.game = 'all';
+  state.cat = 'all';
+  state.q = '';
+  searchInput.value = '';
+  renderFilters();
+  renderEntries();
+});
+
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[data-goto]');
+  if (!a) return;
+  const key = a.dataset.goto;
+  e.preventDefault();
+  const go = () => {
+    const el = document.getElementById(key);
+    if (!el) return;
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 76, behavior: 'smooth' });
+  };
+  if (location.hash && location.hash !== '#/' && location.hash !== '#') {
+    history.replaceState(null, '', '#/');
+    renderRoute();
+    setTimeout(go, 60);
+  } else {
+    go();
+  }
+});
+
+function onScroll() {
+  if (!progress || currentView !== 'article') return;
+  const h = document.body.scrollHeight - window.innerHeight;
+  const p = h > 0 ? Math.min(1, Math.max(0, window.scrollY / h)) : 0;
+  progress.style.width = (p * 100).toFixed(2) + '%';
+}
+
+/* ---------- 客服号复制 ---------- */
+function legacyCopy(text) {
+  try {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;top:-100px;left:-100px;opacity:0';
+    document.body.appendChild(ta);
+    ta.select();
+    ta.setSelectionRange(0, text.length);
+    const ok = document.execCommand('copy');
+    ta.remove();
+    return ok;
+  } catch (err) { return false; }
+}
+function copyText(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
+    return navigator.clipboard.writeText(text).then(function () { return true; }).catch(function () { return legacyCopy(text); });
+  }
+  return Promise.resolve(legacyCopy(text));
+}
+document.addEventListener('click', function (e) {
+  const btn = e.target.closest ? e.target.closest('[data-copy]') : null;
+  if (!btn) return;
+  const act = btn.querySelector('.cs-act');
+  if (!act) return;
+  const original = act.textContent;
+  copyText(btn.getAttribute('data-copy')).then(function (ok) {
+    act.textContent = ok ? '已复制' : '请手动复制';
+    btn.classList.toggle('ok', !!ok);
+    setTimeout(function () { act.textContent = original; btn.classList.remove('ok'); }, 1800);
+  });
+});
+
+/* ---------- 启动 ---------- */
+document.getElementById('statGames').textContent = ORDER.length;
+document.getElementById('statGuides').textContent = GUIDES.length;
+document.getElementById('statCats').textContent = Object.keys(CATS).length;
+renderFilters();
+renderEntries();
+renderGamePages();
+renderRoute();
+window.addEventListener('hashchange', renderRoute);
+window.addEventListener('scroll', onScroll, { passive: true });
+window.addEventListener('resize', onScroll);
+</script>
+</body>
+</html>
