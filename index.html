@@ -690,7 +690,7 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
   .reveal{opacity:1;transform:none;transition:none}
   *{transition:none!important;animation:none!important}
   html{scroll-behavior:auto}
-  .fx-stars,.fx-band,.fx-glow,.fx-aurora,.meteor{display:none!important}
+  .fx-stars,.fx-band,.fx-glow,.fx-aurora,.fx-fx,.meteor{display:none!important}
 }
 
 /* ---------- 背景特效层（JS 注入，reduce 时跳过） ---------- */
@@ -761,6 +761,46 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
 .fx-stars .meteor.v-blue::before{background:#CFE5FF;box-shadow:0 0 8px 2px rgba(76,154,255,.85)}
 .fx-stars .meteor.v-gold{background:linear-gradient(90deg,rgba(255,208,130,.95),rgba(255,208,130,.25) 55%,transparent)}
 .fx-stars .meteor.v-gold::before{background:#FFEBC2;box-shadow:0 0 8px 2px rgba(255,190,92,.85)}
+/* 流星落点闪光：随本体时长同步，轨迹末端炸开一圈白光 */
+.fx-stars .meteor::after{
+  content:'';position:absolute;right:-5px;top:-4px;width:8px;height:8px;border-radius:50%;
+  background:radial-gradient(circle,#fff 0%,rgba(255,255,255,.55) 40%,transparent 70%);
+  opacity:0;transform:scale(.4);
+  animation:meteorFlash var(--mdur,11s) ease-in infinite;animation-delay:inherit;
+}
+.fx-stars .meteor.big::after{width:12px;height:12px;right:-7px;top:-6px}
+@keyframes meteorFlash{
+  0%,10.6%{opacity:0;transform:scale(.4)}
+  12%{opacity:1;transform:scale(2.2)}
+  13.6%{opacity:.55;transform:scale(3.4)}
+  15%{opacity:0;transform:scale(4)}
+  100%{opacity:0;transform:scale(4)}
+}
+
+/* 点击爆裂 + 触屏拖尾特效层（JS 注入，reduce 时跳过） */
+.fx-fx{position:fixed;inset:0;z-index:99999;pointer-events:none;overflow:hidden}
+.fx-ring{
+  position:absolute;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;
+  border:1.5px solid rgba(255,107,179,.85);box-shadow:0 0 12px rgba(255,61,154,.45);
+  animation:fxRing .55s ease-out forwards;
+}
+.fx-ring.v2{border-color:rgba(167,139,250,.85);box-shadow:0 0 12px rgba(139,92,246,.45)}
+.fx-spark{
+  position:absolute;width:5px;height:5px;margin:-2.5px 0 0 -2.5px;border-radius:50%;
+  background:#FFB3D4;box-shadow:0 0 6px 1px rgba(255,107,179,.8);
+  animation:fxSpark .62s ease-out forwards;
+}
+.fx-spark.v2{background:#C4B5FD;box-shadow:0 0 6px 1px rgba(139,92,246,.8)}
+.fx-spark.v3{background:#fff;box-shadow:0 0 6px 1px rgba(255,255,255,.8)}
+.fx-trail{
+  position:absolute;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;
+  background:radial-gradient(circle,#FFD1E8 0%,rgba(255,61,154,.55) 55%,transparent 75%);
+  animation:fxTrail .7s ease-out forwards;
+}
+.fx-trail.v2{background:radial-gradient(circle,#E4DBFF 0%,rgba(139,92,246,.55) 55%,transparent 75%)}
+@keyframes fxRing{0%{transform:scale(.25);opacity:.95}100%{transform:scale(2.8);opacity:0}}
+@keyframes fxSpark{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(.25);opacity:0}}
+@keyframes fxTrail{0%{transform:scale(1);opacity:.9}100%{transform:scale(.15) translateY(-16px);opacity:0}}
 
 /* 首屏缓慢斜向光带 */
 .fx-band{
@@ -1997,16 +2037,35 @@ window.addEventListener('resize', onScroll);
   }
   var VARIANTS = ['', 'v-pink', 'v-violet', 'v-blue', 'v-gold'];
   var TRAILS = ['meteorFall', 'meteorFall2', 'meteorFall3'];
-  for (var j = 0; j < 12; j++) {
+  function makeMeteor(opt) {
     var m = document.createElement('b');
+    m.className = 'meteor' + (opt.big ? ' big' : '') + ' ' + opt.color;
+    m.style.cssText = 'top:' + opt.top + '%;right:-' + opt.off + 'px;width:' + opt.w
+      + 'px;--mdur:' + opt.dur + 's;animation-name:' + opt.trail
+      + ';animation-duration:' + opt.dur + 's;animation-delay:' + opt.delay + 's';
+    return m;
+  }
+  for (var j = 0; j < 12; j++) {
     var big = Math.random() < .3;
-    m.className = 'meteor' + (big ? ' big' : '') + ' ' + VARIANTS[Math.floor(Math.random() * VARIANTS.length)];
-    m.style.cssText = 'top:' + (Math.random() * 55).toFixed(1) + '%;right:-' + (60 + Math.random() * 280).toFixed(0)
-      + 'px;width:' + (big ? 140 + Math.random() * 160 : 70 + Math.random() * 120).toFixed(0)
-      + 'px;animation-name:' + TRAILS[Math.floor(Math.random() * TRAILS.length)]
-      + ';animation-duration:' + (6 + Math.random() * 9).toFixed(2)
-      + 's;animation-delay:-' + (Math.random() * 14).toFixed(2) + 's';
-    frag.appendChild(m);
+    var top = (Math.random() * 55).toFixed(1);
+    var off = (60 + Math.random() * 280).toFixed(0);
+    var w = (big ? 140 + Math.random() * 160 : 70 + Math.random() * 120).toFixed(0);
+    var trail = TRAILS[Math.floor(Math.random() * TRAILS.length)];
+    var dur = (6 + Math.random() * 9).toFixed(2);
+    var delay = '-' + (Math.random() * 14).toFixed(2);
+    var color = VARIANTS[Math.floor(Math.random() * VARIANTS.length)];
+    frag.appendChild(makeMeteor({ big: big, color: color, top: top, off: off, w: w, trail: trail, dur: dur, delay: delay }));
+    // 成对双流星：约 1/3 概率生成一颗跟随者，同轨迹同色，稍偏后错开
+    if (Math.random() < .34) {
+      frag.appendChild(makeMeteor({
+        big: false, color: color,
+        top: (parseFloat(top) + 3 + Math.random() * 5).toFixed(1),
+        off: (parseFloat(off) + 50 + Math.random() * 110).toFixed(0),
+        w: Math.max(60, Math.round(parseFloat(w) * .65)),
+        trail: trail, dur: dur,
+        delay: (parseFloat(delay) - .45).toFixed(2)
+      }));
+    }
   }
   stars.appendChild(frag);
   hero.appendChild(stars);
@@ -2043,7 +2102,50 @@ window.addEventListener('resize', onScroll);
   }
 })();
 
-/* ---------- 滚动进场与顶栏状态 ---------- */
+/* ---------- 交互特效：鼠标点击爆裂 + 触屏滑动拖尾 ---------- */
+(function () {
+  if (PREFERS_REDUCE) return;
+  var layer = document.createElement('div');
+  layer.className = 'fx-fx';
+  layer.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(layer);
+  var SPARK_COLORS = ['', 'v2', 'v3'];
+  function burst(x, y) {
+    if (layer.childElementCount > 60) return; // 性能保护
+    var ring = document.createElement('i');
+    ring.className = 'fx-ring' + (Math.random() < .5 ? ' v2' : '');
+    ring.style.left = x + 'px'; ring.style.top = y + 'px';
+    ring.addEventListener('animationend', function () { if (ring.parentNode) ring.parentNode.removeChild(ring); });
+    layer.appendChild(ring);
+    for (var i = 0; i < 7; i++) {
+      var sp = document.createElement('i');
+      sp.className = 'fx-spark ' + SPARK_COLORS[i % 3];
+      sp.style.left = x + 'px'; sp.style.top = y + 'px';
+      var ang = Math.random() * Math.PI * 2, dist = 26 + Math.random() * 34;
+      sp.style.setProperty('--dx', (Math.cos(ang) * dist).toFixed(1) + 'px');
+      sp.style.setProperty('--dy', (Math.sin(ang) * dist).toFixed(1) + 'px');
+      sp.addEventListener('animationend', function (ev) { if (ev.target.parentNode) ev.target.parentNode.removeChild(ev.target); });
+      layer.appendChild(sp);
+    }
+  }
+  function trail(x, y) {
+    if (layer.childElementCount > 60) return;
+    var t = document.createElement('i');
+    t.className = 'fx-trail' + (Math.random() < .45 ? ' v2' : '');
+    t.style.left = x + 'px'; t.style.top = y + 'px';
+    layer.appendChild(t);
+    setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 750);
+  }
+  document.addEventListener('click', function (e) { burst(e.clientX, e.clientY); }, { passive: true });
+  var last = 0;
+  document.addEventListener('touchmove', function (e) {
+    var now = Date.now();
+    if (now - last < 45) return; // 节流
+    last = now;
+    var t = e.touches[0];
+    if (t) trail(t.clientX, t.clientY);
+  }, { passive: true });
+})();
 (function () {
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var els = document.querySelectorAll('.sec, .route-sec, .game-card, .poster');
