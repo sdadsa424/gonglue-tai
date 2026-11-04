@@ -69,7 +69,7 @@ ul{margin:0;padding:0;list-style:none}
   transition:background .25s ease,box-shadow .25s ease;
 }
 .topbar.scrolled{background:rgba(7,8,15,.94);box-shadow:0 14px 34px -22px rgba(0,0,0,.95)}
-.topbar-in{display:flex;align-items:center;justify-content:space-between;gap:20px;height:62px}
+.topbar-in{display:flex;align-items:center;justify-content:space-between;gap:20px;height:62px;position:relative}
 .brand{display:flex;align-items:center;gap:10px;min-width:0}
 .brand-mark{
   width:10px;height:10px;border-radius:3px;background:var(--grad-2);
@@ -80,7 +80,8 @@ ul{margin:0;padding:0;list-style:none}
   background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
 }
 .brand-sub{font-size:11.5px;color:var(--dim);letter-spacing:.04em;white-space:nowrap}
-.nav{display:flex;align-items:center;gap:26px}
+/* 导航居中：脱离 flex 流，绝对定位于顶栏水平中心 */
+.nav{display:flex;align-items:center;gap:26px;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
 .nav a{font-size:13.5px;color:var(--muted);position:relative;padding:4px 0;transition:color .2s ease}
 .nav a:hover{color:#fff}
 .nav a::after{
