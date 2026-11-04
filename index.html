@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>攻略台 · 三款游戏攻略总站</title>
+<title>游戏攻略大全 · 三款游戏攻略总站</title>
 <meta name="description" content="贰点零江湖、小小屠龙冰雪传奇、桃园：将帅录 的开荒路线、职业选择、打金交易与团战节奏，整理成能直接照着做的攻略。">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230B0D16'/%3E%3Crect x='5' y='5' width='5' height='22' fill='%23FF3D9A'/%3E%3Cg fill='%23ECEEEA'%3E%3Crect x='15' y='7' width='12' height='2'/%3E%3Crect x='15' y='14' width='12' height='2'/%3E%3Crect x='15' y='21' width='8' height='2'/%3E%3C/g%3E%3C/svg%3E">
 <style>
@@ -528,9 +528,14 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
 }
 .hero-in{position:relative;z-index:2}
 
-/* 渐变流动：大标题与品牌字 */
+/* 渐变流动：大标题 */
 .hero h1 em{background-size:220% 100%;animation:gradFlow 9s linear infinite}
-.brand-name{background-size:220% 100%;animation:gradFlow 15s linear infinite}
+/* 品牌名：实色文字，覆盖掉此前的渐变流动动画 */
+.brand-name{
+  color:#fff;-webkit-text-fill-color:#fff;background:none;
+  animation:none;position:relative;z-index:3;
+  text-shadow:0 0 18px rgba(255,61,154,.28);
+}
 .hero-kicker{animation:softPulse 4.6s ease-in-out infinite}
 
 /* 搜索按钮流光 */
@@ -644,6 +649,7 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
   .wrap{padding:0 16px}
   .brand-sub{display:none}
   .topbar-in{height:56px}
+  .brand-name{font-size:17px;letter-spacing:0}
   /* 手机端隐藏右上角导航链接（攻略库/开荒路线/三款游戏），电脑端不受影响 */
   .nav{display:none}
   .hero-in{padding:40px 16px 36px}
@@ -875,9 +881,9 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
 
 <header class="topbar">
   <div class="wrap topbar-in">
-    <a class="brand" href="#/" aria-label="攻略台首页">
+    <a class="brand" href="#/" aria-label="游戏攻略大全首页">
       <span class="brand-mark" aria-hidden="true"></span>
-      <span class="brand-name">攻略台</span>
+      <span class="brand-name">游戏攻略大全</span>
       <span class="brand-sub">三款游戏 · 一处查完</span>
     </a>
     <nav class="nav" aria-label="主导航">
@@ -1267,7 +1273,7 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
   <div class="wrap">
     <div class="foot-in">
       <div>
-        <p class="foot-name">攻略台</p>
+        <p class="foot-name">游戏攻略大全</p>
         <p>一个玩家整理的攻略站，把三款游戏里真正会用到的判断写成条目：什么时候走、什么时候留、什么该卖、什么该留。站内文章按游戏与阶段索引，持续补充。</p>
         <p class="foot-cs">获取游戏与开服信息：<button class="cs-pill dark" type="button" data-copy="ggboy6123"><b>游戏客服 ggboy6123</b><span class="cs-act">复制</span></button></p>
       </div>
@@ -2001,7 +2007,7 @@ function renderRoute() {
       viewArticle.innerHTML = articleHTML(gi);
       progress.style.background = GAMES[gi.game].accent;
       setView('article');
-      document.title = gi.title + ' · 攻略台';
+      document.title = gi.title + ' · 游戏攻略大全';
       window.scrollTo(0, 0);
       return;
     }
@@ -2009,12 +2015,12 @@ function renderRoute() {
   if (m && m[1] === 'g' && GAMES[m[2]]) {
     document.querySelectorAll('.game-page').forEach(p => { p.hidden = p.dataset.game !== m[2]; });
     setView('game');
-    document.title = GAMES[m[2]].name + ' · 攻略台';
+    document.title = GAMES[m[2]].name + ' · 游戏攻略大全';
     window.scrollTo(0, 0);
     return;
   }
   setView('home');
-  document.title = '攻略台 · 三款游戏攻略总站';
+  document.title = '游戏攻略大全 · 三款游戏攻略总站';
 }
 
 /* ---------- 交互 ---------- */
@@ -2188,7 +2194,7 @@ try {
   if (qv && GAMES[qv]) {
     document.querySelectorAll('.game-page').forEach(function (p) { p.hidden = p.dataset.game !== qv; });
     setView('game');
-    document.title = GAMES[qv].name + ' · 攻略台';
+    document.title = GAMES[qv].name + ' · 游戏攻略大全';
   }
 } catch (e) {}
 window.addEventListener('hashchange', renderRoute);
