@@ -392,6 +392,8 @@ ul{margin:0;padding:0;list-style:none}
 }
 .foot-bottom a{color:#8A90A9;text-decoration:underline;text-underline-offset:3px}
 .foot-bottom a:hover{color:#C9CEE0}
+.foot-hits{display:inline-flex;align-items:center;gap:6px;color:#8A90A9}
+.foot-hits b{color:#FF6BB3;font-weight:700;font-variant-numeric:tabular-nums}
 
 /* ---------- 分站 ---------- */
 .view{padding-bottom:20px}
@@ -1061,6 +1063,10 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
       </nav>
     </div>
     <div class="foot-bottom">
+      <span class="foot-hits" id="busuanzi_container_site_pv" style="display:none">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12s3.5-7 9-7 9 7 9 7-3.5 7-9 7-9-7-9-7z"/><circle cx="12" cy="12" r="3"/></svg>
+        本站总访问量 <b id="busuanzi_value_site_pv">-</b> 次 · 访客 <b id="busuanzi_value_site_uv">-</b> 人
+      </span>
       <span>本站为玩家整理向攻略站，非官方站点。游戏名称与画面版权归原厂商所有。</span>
       <span>具体数值、机制与活动以游戏内为准</span>
       <span>界面组件改编自 <a href="https://uiverse.io" target="_blank" rel="noopener">Uiverse.io</a> 开源组件（MIT）：Afacanc38、Bodyhc</span>
@@ -2036,5 +2042,6 @@ window.addEventListener('resize', onScroll);
 })();
 </script>
 <div class="u-toast" id="uToast" role="status" aria-live="polite"><span class="u-dot" aria-hidden="true"></span><span class="u-text"></span></div>
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </body>
 </html>
