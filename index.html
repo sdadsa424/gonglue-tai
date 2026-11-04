@@ -1114,21 +1114,21 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
       </div>
     </div>
     <div class="soc-grid">
-      <a class="soc" href="#" data-todo="百家号主页" style="--sc:#2932E1" aria-label="百家号：游戏攻略总站">
+      <a class="soc" href="https://mr.baidu.com/r/25C1FJgNNni?f=cp&amp;rs=2692189991&amp;ruk=H6z49pjAT8KTklAQypo9FQ&amp;u=eb9100d4534fb6a0" target="_blank" rel="noopener noreferrer" style="--sc:#2932E1" aria-label="百家号：游戏攻略总站">
         <span class="soc-ico" aria-hidden="true">
           <svg viewBox="0 0 40 40"><rect width="40" height="40" rx="11" fill="#2932E1"/><text x="20" y="27" text-anchor="middle" font-size="19" font-weight="700" fill="#fff" font-family="inherit">百</text></svg>
         </span>
         <span class="soc-txt"><b>百家号</b><span>游戏攻略总站</span></span>
         <span class="soc-go" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7"/><path d="M9 7h8v8"/></svg></span>
       </a>
-      <a class="soc" href="#" data-todo="头条号主页" style="--sc:#F04142" aria-label="头条号：游戏攻略总站">
+      <a class="soc" href="https://profile.zjurl.cn/rogue/ugc/profile/?app=news_article&amp;category_new=profile&amp;module_name=Android_tt_url&amp;share_did=MS4wLjACAAAAAgiqG7Md2b8sIcCbuxlAgOpKkDRYZrVMEhxU_RtB45E&amp;share_token=a0586e5d-cf62-4e75-87be-a449d0de2085&amp;share_uid=MS4wLjABAAAAxEh3XQL6TZAE9fCwrO0dBvWRlHSKkj02KVmHf5zZVSA&amp;timestamp=1793789729&amp;tt_from=copy_link&amp;upstream_biz=Android_url&amp;user_id=410590036937484&amp;utm_campaign=client_share&amp;utm_medium=toutiao_android&amp;utm_source=copy_link" target="_blank" rel="noopener noreferrer" style="--sc:#F04142" aria-label="头条号：游戏攻略总站">
         <span class="soc-ico" aria-hidden="true">
           <svg viewBox="0 0 40 40"><rect width="40" height="40" rx="11" fill="#F04142"/><text x="20" y="27" text-anchor="middle" font-size="19" font-weight="700" fill="#fff" font-family="inherit">头</text></svg>
         </span>
         <span class="soc-txt"><b>头条号</b><span>游戏攻略总站</span></span>
         <span class="soc-go" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7"/><path d="M9 7h8v8"/></svg></span>
       </a>
-      <a class="soc" href="#" data-todo="知乎主页" style="--sc:#0084FF" aria-label="知乎：游戏攻略总站">
+      <a class="soc" href="https://www.zhihu.com/people/ttoi0xg" target="_blank" rel="noopener noreferrer" style="--sc:#0084FF" aria-label="知乎：游戏攻略总站">
         <span class="soc-ico" aria-hidden="true">
           <svg viewBox="0 0 40 40"><rect width="40" height="40" rx="11" fill="#0084FF"/><text x="20" y="27" text-anchor="middle" font-size="19" font-weight="700" fill="#fff" font-family="inherit">知</text></svg>
         </span>
@@ -2237,14 +2237,6 @@ document.addEventListener('click', function (e) {
     showToast(ok ? '已复制：游戏客服 ' + code : '复制被浏览器拦下，请手动选中 ' + code, !ok);
     setTimeout(function () { act.textContent = original; btn.classList.remove('ok'); }, 1800);
   });
-});
-
-/* 自媒体主页入口：链接未填时给出提示，不跳空白页 */
-document.addEventListener('click', function (e) {
-  const card = e.target.closest ? e.target.closest('.soc[data-todo]') : null;
-  if (!card) return;
-  e.preventDefault();
-  showToast(card.getAttribute('data-todo') + '链接还没填，把主页地址发过来就能直接跳转', true);
 });
 
 /* ---------- 启动 ---------- */
