@@ -529,7 +529,14 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
 .hero-in{position:relative;z-index:2}
 
 /* 渐变流动：大标题与品牌字 */
-.hero h1 em{background-size:220% 100%;animation:gradFlow 9s linear infinite}
+.hero h1 em{
+  background-size:220% 100%;
+  animation:gradFlow 9s linear infinite, heroTitleGlow 6.4s ease-in-out infinite;
+}
+@keyframes heroTitleGlow{
+  0%,100%{filter:drop-shadow(0 0 4px rgba(255,61,154,.35))}
+  50%{filter:drop-shadow(0 0 20px rgba(139,92,246,.65))}
+}
 /* 品牌名：保留渐变流动动画 + 呼吸光晕，新名字同样带特效 */
 .brand-name{
   background-size:220% 100%;
@@ -905,7 +912,7 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
     <div class="wrap hero-in">
       <div class="hero-type">
         <p class="hero-kicker">贰点零江湖 / 小小屠龙 / 桃园：将帅录</p>
-        <h1>游戏攻略<em>大全</em></h1>
+        <h1><em>游戏攻略大全</em></h1>
         <p class="hero-desc">三款游戏的攻略，收在一处。开荒怎么走、职业怎么选、材料什么时候卖、攻沙站哪里——按游戏和分类查，直接照着做。</p>
         <div class="hero-search">
           <div class="search">
