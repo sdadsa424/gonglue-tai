@@ -701,6 +701,18 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
   16%{transform:translate3d(-620px,390px,0) rotate(-32deg);opacity:0}
   100%{transform:translate3d(-620px,390px,0) rotate(-32deg);opacity:0}
 }
+@keyframes meteorFall2{
+  0%{transform:translate3d(0,0,0) rotate(-18deg);opacity:0}
+  4%{opacity:1}
+  14%{transform:translate3d(-760px,247px,0) rotate(-18deg);opacity:0}
+  100%{transform:translate3d(-760px,247px,0) rotate(-18deg);opacity:0}
+}
+@keyframes meteorFall3{
+  0%{transform:translate3d(0,0,0) rotate(-48deg);opacity:0}
+  4%{opacity:1}
+  18%{transform:translate3d(-430px,478px,0) rotate(-48deg);opacity:0}
+  100%{transform:translate3d(-430px,478px,0) rotate(-48deg);opacity:0}
+}
 @keyframes bandMove{0%,100%{transform:translateX(-30%) skewX(-14deg)}50%{transform:translateX(130%) skewX(-14deg)}}
 @keyframes auroraDrift{
   0%,100%{transform:translate3d(0,0,0) scale(1)}
@@ -735,8 +747,20 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
   background:linear-gradient(90deg,rgba(255,255,255,.85),transparent);
   animation:meteorFall 11s ease-in infinite;
 }
-.fx-stars .meteor.m2{top:36%;right:-200px;width:110px;animation-delay:5.5s;animation-duration:13s}
-.fx-stars .meteor.m3{top:6%;right:-140px;width:190px;animation-delay:9s;animation-duration:15s}
+.fx-stars .meteor::before{
+  content:'';position:absolute;right:0;top:-1px;width:3px;height:3px;border-radius:50%;
+  background:#fff;box-shadow:0 0 6px 1px rgba(255,255,255,.75);
+}
+.fx-stars .meteor.big{height:2px}
+.fx-stars .meteor.big::before{width:4px;height:4px;top:-1.5px;box-shadow:0 0 12px 3px rgba(255,255,255,.9)}
+.fx-stars .meteor.v-pink{background:linear-gradient(90deg,rgba(255,107,179,.95),rgba(255,107,179,.25) 55%,transparent)}
+.fx-stars .meteor.v-pink::before{background:#FFB3D4;box-shadow:0 0 8px 2px rgba(255,107,179,.8)}
+.fx-stars .meteor.v-violet{background:linear-gradient(90deg,rgba(167,139,250,.95),rgba(167,139,250,.25) 55%,transparent)}
+.fx-stars .meteor.v-violet::before{background:#DDD6FE;box-shadow:0 0 8px 2px rgba(139,92,246,.85)}
+.fx-stars .meteor.v-blue{background:linear-gradient(90deg,rgba(125,180,255,.95),rgba(125,180,255,.25) 55%,transparent)}
+.fx-stars .meteor.v-blue::before{background:#CFE5FF;box-shadow:0 0 8px 2px rgba(76,154,255,.85)}
+.fx-stars .meteor.v-gold{background:linear-gradient(90deg,rgba(255,208,130,.95),rgba(255,208,130,.25) 55%,transparent)}
+.fx-stars .meteor.v-gold::before{background:#FFEBC2;box-shadow:0 0 8px 2px rgba(255,190,92,.85)}
 
 /* 首屏缓慢斜向光带 */
 .fx-band{
@@ -1958,7 +1982,7 @@ window.addEventListener('resize', onScroll);
   aurora.innerHTML = '<i></i><i></i><i></i>';
   document.body.appendChild(aurora);
   if (!hero) return;
-  // 星空 + 三颗错峰流星
+  // 星空 + 十二颗多形态流星（白/粉/紫/蓝/金，三种轨迹角，大小速度随机）
   var stars = document.createElement('div');
   stars.className = 'fx-stars';
   stars.setAttribute('aria-hidden', 'true');
@@ -1971,11 +1995,19 @@ window.addEventListener('resize', onScroll);
       + 's;animation-delay:-' + (Math.random() * 8).toFixed(2) + 's';
     frag.appendChild(s);
   }
-  ['', ' m2', ' m3'].forEach(function (cls) {
+  var VARIANTS = ['', 'v-pink', 'v-violet', 'v-blue', 'v-gold'];
+  var TRAILS = ['meteorFall', 'meteorFall2', 'meteorFall3'];
+  for (var j = 0; j < 12; j++) {
     var m = document.createElement('b');
-    m.className = 'meteor' + cls;
+    var big = Math.random() < .3;
+    m.className = 'meteor' + (big ? ' big' : '') + ' ' + VARIANTS[Math.floor(Math.random() * VARIANTS.length)];
+    m.style.cssText = 'top:' + (Math.random() * 55).toFixed(1) + '%;right:-' + (60 + Math.random() * 280).toFixed(0)
+      + 'px;width:' + (big ? 140 + Math.random() * 160 : 70 + Math.random() * 120).toFixed(0)
+      + 'px;animation-name:' + TRAILS[Math.floor(Math.random() * TRAILS.length)]
+      + ';animation-duration:' + (6 + Math.random() * 9).toFixed(2)
+      + 's;animation-delay:-' + (Math.random() * 14).toFixed(2) + 's';
     frag.appendChild(m);
-  });
+  }
   stars.appendChild(frag);
   hero.appendChild(stars);
   // 缓慢斜向光带
