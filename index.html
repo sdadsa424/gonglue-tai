@@ -314,6 +314,23 @@ ul{margin:0;padding:0;list-style:none}
   .step:hover::after{box-shadow:0 0 0 7px rgba(255,61,154,.22);transform:translate(0,-50%) scale(1.25)}
 }
 
+/* 分站内嵌开荒路线：配色跟随游戏主色 */
+.route-sec.gm{margin-top:34px;
+  background:
+    radial-gradient(560px 300px at 8% 0,var(--rglow,rgba(255,61,154,.16)),transparent 66%),
+    radial-gradient(520px 300px at 92% 6%,var(--rglow2,rgba(139,92,246,.18)),transparent 68%),
+    linear-gradient(160deg,#14162B,#0D0F1C 70%);
+}
+.route-sec.gm .step::after{background:linear-gradient(135deg,var(--rac,#FF3D9A),var(--rac2,#8B5CF6));box-shadow:0 0 0 4px var(--rglow,rgba(255,61,154,.16))}
+.route-sec.gm .route-link{color:var(--rlink,#FF8FC4);border-color:rgba(255,255,255,.24)}
+.route-sec.gm .route-link:hover{color:#fff;border-color:#fff}
+.game-route[data-game="ejl"]{--rac:#2DD4A7;--rac2:#1E9E7E;--rglow:rgba(45,212,167,.18);--rglow2:rgba(76,154,255,.14);--rlink:#7BE8C6}
+.game-route[data-game="xxtl"]{--rac:#4C9AFF;--rac2:#2E6FD8;--rglow:rgba(76,154,255,.20);--rglow2:rgba(45,212,167,.12);--rlink:#9CC7FF}
+.game-route[data-game="ty"]{--rac:#FF6B8A;--rac2:#C94B6E;--rglow:rgba(255,107,138,.20);--rglow2:rgba(139,92,246,.15);--rlink:#FFA3B6}
+@media (min-width:561px){
+  .route-sec.gm .step:hover::after{box-shadow:0 0 0 7px var(--rglow,rgba(255,61,154,.22))}
+}
+
 /* ---------- 三款游戏 ---------- */
 .game-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 .game-card{
@@ -971,8 +988,6 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
     </div>
   </section>
 
-</div>
-
   <section class="sec wrap" id="library">
     <div class="sec-head">
       <div>
@@ -1038,6 +1053,8 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
     </div>
   </section>
 
+</div>
+
 <!-- ===== 视图：分站 ===== -->
 <div class="view" id="view-game" hidden>
 
@@ -1060,6 +1077,43 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
     </div>
     <div class="wrap">
       <div class="backline"><a class="back" href="#/" data-goto="library"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 12H5"/><path d="M11 18l-6-6 6-6"/></svg>返回总站攻略库</a></div>
+      <section class="route-sec gm game-route" data-game="ejl">
+        <div class="wrap">
+          <div class="route-head">
+            <div>
+              <h2 class="sec-title">开荒路线</h2>
+              <p class="route-sub">以《贰点零江湖》的四层地图为例：每一层只做它该做的事。</p>
+            </div>
+            <a class="route-link" href="#/a/ejl-start">看这篇完整攻略</a>
+          </div>
+          <div class="route">
+            <div class="step">
+              <p class="step-n">01</p>
+              <h3 class="step-name">新手村 · 泫勃派</h3>
+              <p class="step-desc">只做任务链。村内经验随等级递减，主线一断就往外走。</p>
+              <span class="step-stay">停留 1 天内</span>
+            </div>
+            <div class="step">
+              <p class="step-n">02</p>
+              <h3 class="step-name">野外地图</h3>
+              <p class="step-desc">按等级带推进，精英怪顺手清，高等级图组队去。</p>
+              <span class="step-stay">主要练级区</span>
+            </div>
+            <div class="step">
+              <p class="step-n">03</p>
+              <h3 class="step-name">副本区</h3>
+              <p class="step-desc">装备与材料的主产出。上线先清体力，再回野外。</p>
+              <span class="step-stay">每日固定</span>
+            </div>
+            <div class="step">
+              <p class="step-n">04</p>
+              <h3 class="step-name">主城</h3>
+              <p class="step-desc">拍卖行看价、摆摊出货、参加限时活动，不在这练级。</p>
+              <span class="step-stay">交易与活动</span>
+            </div>
+          </div>
+        </div>
+      </section>
       <section class="sec" style="margin-top:26px">
         <div class="sec-head"><div>
           <h2 class="sec-title">贰点零江湖 · 全部 <span data-count="ejl" data-count-fmt="{n}">4</span> 篇</h2>
@@ -1089,6 +1143,43 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
     </div>
     <div class="wrap">
       <div class="backline"><a class="back" href="#/" data-goto="library"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 12H5"/><path d="M11 18l-6-6 6-6"/></svg>返回总站攻略库</a></div>
+      <section class="route-sec gm game-route" data-game="xxtl">
+        <div class="wrap">
+          <div class="route-head">
+            <div>
+              <h2 class="sec-title">开荒路线</h2>
+              <p class="route-sub">以小小屠龙的冰雪大陆为例：转生够格再过图，光柱装备出在二大陆。</p>
+            </div>
+            <a class="route-link" href="#/a/xxtl-start">看这篇完整攻略</a>
+          </div>
+          <div class="route">
+            <div class="step">
+              <p class="step-n">01</p>
+              <h3 class="step-name">起源冰城</h3>
+              <p class="step-desc">出生第一站。主线跟着走，先攒基础装备和第一批转生材料。</p>
+              <span class="step-stay">开荒前 3 天</span>
+            </div>
+            <div class="step">
+              <p class="step-n">02</p>
+              <h3 class="step-name">转生进阶</h3>
+              <p class="step-desc">转生材料攒够就转，别囤。转生等级是进二大陆的硬门槛。</p>
+              <span class="step-stay">冲转生等级</span>
+            </div>
+            <div class="step">
+              <p class="step-n">03</p>
+              <h3 class="step-name">二大陆 · 冰雪之城</h3>
+              <p class="step-desc">高阶图与定时 BOSS 在这，小怪概率出光柱，组队打宝更稳。</p>
+              <span class="step-stay">主要打宝区</span>
+            </div>
+            <div class="step">
+              <p class="step-n">04</p>
+              <h3 class="step-name">摆摊与攻沙</h3>
+              <p class="step-desc">非绑定装备摆摊出货，晚上跟行会攻沙拿奖励。</p>
+              <span class="step-stay">交易与团战</span>
+            </div>
+          </div>
+        </div>
+      </section>
       <section class="sec" style="margin-top:26px">
         <div class="sec-head"><div>
           <h2 class="sec-title">小小屠龙 · 全部 <span data-count="xxtl" data-count-fmt="{n}">4</span> 篇</h2>
@@ -1118,6 +1209,43 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
     </div>
     <div class="wrap">
       <div class="backline"><a class="back" href="#/" data-goto="library"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 12H5"/><path d="M11 18l-6-6 6-6"/></svg>返回总站攻略库</a></div>
+      <section class="route-sec gm game-route" data-game="ty">
+        <div class="wrap">
+          <div class="route-head">
+            <div>
+              <h2 class="sec-title">开荒路线</h2>
+              <p class="route-sub">以桃园：将帅录的开局为例：先把资源花在对的地方，再谈阵容与站位。</p>
+            </div>
+            <a class="route-link" href="#/a/ty-start">看这篇完整攻略</a>
+          </div>
+          <div class="route">
+            <div class="step">
+              <p class="step-n">01</p>
+              <h3 class="step-name">开局资源</h3>
+              <p class="step-desc">开局福利先领全，元宝与招募券留给关键池子，不乱抽。</p>
+              <span class="step-stay">第 1 天</span>
+            </div>
+            <div class="step">
+              <p class="step-n">02</p>
+              <h3 class="step-name">主线推图</h3>
+              <p class="step-desc">编队盾系在前、输出在后。卡关先调站位，再补武将培养。</p>
+              <span class="step-stay">前期主线</span>
+            </div>
+            <div class="step">
+              <p class="step-n">03</p>
+              <h3 class="step-name">武将与战宠</h3>
+              <p class="step-desc">资源集中给主力五人，属性加点与战宠培育同步跟上。</p>
+              <span class="step-stay">中期养成</span>
+            </div>
+            <div class="step">
+              <p class="step-n">04</p>
+              <h3 class="step-name">军团战</h3>
+              <p class="step-desc">加活跃军团，军团战按站位表打，奖励反哺养成。</p>
+              <span class="step-stay">每周固定</span>
+            </div>
+          </div>
+        </div>
+      </section>
       <section class="sec" style="margin-top:26px">
         <div class="sec-head"><div>
           <h2 class="sec-title">桃园：将帅录 · 全部 <span data-count="ty" data-count-fmt="{n}">4</span> 篇</h2>
@@ -2052,6 +2180,15 @@ renderEntries();
 renderGamePages();
 fillCounts();
 renderRoute();
+/* ?view= 查询参数直连分站（截图/分享用，与 hash 路由等效） */
+try {
+  var qv = new URLSearchParams(location.search).get('view');
+  if (qv && GAMES[qv]) {
+    document.querySelectorAll('.game-page').forEach(function (p) { p.hidden = p.dataset.game !== qv; });
+    setView('game');
+    document.title = GAMES[qv].name + ' · 攻略台';
+  }
+} catch (e) {}
 window.addEventListener('hashchange', renderRoute);
 window.addEventListener('scroll', onScroll, { passive: true });
 window.addEventListener('resize', onScroll);
