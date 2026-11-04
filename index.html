@@ -5,550 +5,583 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>攻略台 · 三款游戏攻略总站</title>
 <meta name="description" content="贰点零江湖、小小屠龙冰雪传奇、桃园：将帅录 的开荒路线、职业选择、打金交易与团战节奏，整理成能直接照着做的攻略。">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2312171A'/%3E%3Crect x='5' y='5' width='5' height='22' fill='%232F6B57'/%3E%3Cg fill='%23ECEEEA'%3E%3Crect x='15' y='7' width='12' height='2'/%3E%3Crect x='15' y='14' width='12' height='2'/%3E%3Crect x='15' y='21' width='8' height='2'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230B0D16'/%3E%3Crect x='5' y='5' width='5' height='22' fill='%23FF3D9A'/%3E%3Cg fill='%23ECEEEA'%3E%3Crect x='15' y='7' width='12' height='2'/%3E%3Crect x='15' y='14' width='12' height='2'/%3E%3Crect x='15' y='21' width='8' height='2'/%3E%3C/g%3E%3C/svg%3E">
 <style>
+/* ============ 主题：暗色门户（参考 zxpf.cn 的视觉语言） ============ */
 :root{
-  --ink:#12171A;
-  --ink-2:#1B2328;
-  --paper:#ECEEEA;
-  --card:#F6F8F3;
-  --text:#1A211D;
-  --muted:#5A625C;
-  --rule:#C9CFC8;
-  --rule-dark:rgba(236,238,234,.22);
-  --ejl:#2F6B57;
-  --xxtl:#2A5D88;
-  --ty:#A23B4B;
-  --brass:#8A6A2C;
-  --serif:"Songti SC","Noto Serif SC","Source Han Serif SC","SimSun",Georgia,serif;
-  --sans:"Microsoft YaHei","PingFang SC","Hiragino Sans GB","Source Han Sans SC","Segoe UI",sans-serif;
-  --wrap:1320px;
+  --bg:#090A12;
+  --bg-2:#0D0F1C;
+  --card:#141728;
+  --card-2:#191D33;
+  --line:rgba(255,255,255,.07);
+  --line-2:rgba(255,255,255,.14);
+  --text:#ECEEF8;
+  --muted:#8B91A9;
+  --dim:#666C85;
+  --pink:#FF3D9A;
+  --purple:#8B5CF6;
+  --grad:linear-gradient(90deg,#FF3D9A 0%,#B44BF0 52%,#8B5CF6 100%);
+  --grad-2:linear-gradient(135deg,#FF3D9A,#8B5CF6);
+  --glow:0 12px 30px -12px rgba(255,61,154,.55);
+  --ejl:#2DD4A7;
+  --xxtl:#4C9AFF;
+  --ty:#FF6B8A;
+  --brass:#FFB020;
+  --sans:"PingFang SC","HarmonyOS Sans SC","Microsoft YaHei","Hiragino Sans GB","Segoe UI",system-ui,sans-serif;
+  --serif:var(--sans);
+  --wrap:1240px;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
-  margin:0;background:var(--paper);color:var(--text);
-  font-family:var(--sans);font-size:16px;line-height:1.78;
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:var(--sans);font-size:15px;line-height:1.75;
   -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(760px 420px at 12% -8%,rgba(255,61,154,.16),transparent 62%),
+    radial-gradient(820px 460px at 88% -4%,rgba(139,92,246,.18),transparent 64%),
+    radial-gradient(900px 520px at 50% 108%,rgba(76,154,255,.08),transparent 66%);
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)'/%3E%3C/svg%3E");
 }
 img{display:block}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
-h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;letter-spacing:.01em}
+h1,h2,h3{font-family:var(--sans);font-weight:700;margin:0;letter-spacing:0}
 p{margin:0}
 ul{margin:0;padding:0;list-style:none}
-:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
-.wrap{width:100%;max-width:var(--wrap);margin:0 auto;padding:0 24px}
+:focus-visible{outline:2px solid var(--pink);outline-offset:3px}
+.wrap{width:100%;max-width:var(--wrap);margin:0 auto;padding:0 20px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.view{position:relative;z-index:2}
 
 /* ---------- 顶栏 ---------- */
 .topbar{
   position:sticky;top:0;z-index:50;
-  background:rgba(236,238,234,.94);
-  backdrop-filter:blur(8px);
-  border-bottom:1px solid var(--rule);
+  background:rgba(9,10,18,.82);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+  transition:background .25s ease,box-shadow .25s ease;
 }
-.topbar-in{display:flex;align-items:center;justify-content:space-between;gap:20px;height:64px}
-.brand{display:flex;align-items:baseline;gap:10px;min-width:0}
-.brand-mark{width:9px;height:9px;background:var(--ejl);align-self:center;border-radius:1px}
-.brand-name{font-family:var(--serif);font-size:21px;letter-spacing:.14em}
-.brand-sub{font-size:11.5px;color:var(--muted);letter-spacing:.06em;white-space:nowrap}
+.topbar.scrolled{background:rgba(7,8,15,.94);box-shadow:0 14px 34px -22px rgba(0,0,0,.95)}
+.topbar-in{display:flex;align-items:center;justify-content:space-between;gap:20px;height:62px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand-mark{
+  width:10px;height:10px;border-radius:3px;background:var(--grad-2);
+  box-shadow:0 0 0 3px rgba(255,61,154,.14);align-self:center;
+}
+.brand-name{
+  font-size:19px;font-weight:800;letter-spacing:.02em;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.brand-sub{font-size:11.5px;color:var(--dim);letter-spacing:.04em;white-space:nowrap}
 .nav{display:flex;align-items:center;gap:26px}
-.nav a{font-size:14px;color:var(--muted);position:relative;padding:4px 0}
-.nav a:hover{color:var(--text)}
-.nav a::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1px;background:var(--text);transition:right .25s ease}
+.nav a{font-size:13.5px;color:var(--muted);position:relative;padding:4px 0;transition:color .2s ease}
+.nav a:hover{color:#fff}
+.nav a::after{
+  content:"";position:absolute;left:0;right:100%;bottom:-1px;height:2px;border-radius:2px;
+  background:var(--grad);transition:right .25s ease;
+}
 .nav a:hover::after{right:0}
 
-/* ---------- 首屏 ---------- */
-.hero{background:var(--ink);color:#EDEFEA;overflow:hidden}
-.hero-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.62fr);gap:48px;align-items:center;padding:52px 24px 56px}
-.hero-kicker{font-size:12.5px;letter-spacing:.22em;color:#A9B3AC;margin-bottom:22px}
-.hero h1{font-size:clamp(52px,6.4vw,88px);line-height:1;letter-spacing:.1em;margin-left:-4px}
-.hero-desc{margin-top:26px;font-size:15px;line-height:1.95;color:#C3CAC4;max-width:30em}
-.hero-stats{display:flex;flex-wrap:wrap;align-items:center;margin-top:30px;font-size:13px;color:#9CA69F}
-.hero-stats li{display:flex;align-items:baseline;gap:6px}
-.hero-stats li+li::before{content:"";width:1px;height:11px;background:rgba(236,238,234,.28);margin:0 16px;align-self:center}
-.hero-stats b{font-family:var(--serif);font-size:19px;color:#EDEFEA;font-weight:400}
-.hero-games{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.poster{position:relative;aspect-ratio:3/4;overflow:hidden;background:#1F272C;border-radius:2px}
-.poster img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.6,.2,1)}
-.poster:hover img{transform:scale(1.035)}
-.poster-tab{
-  position:absolute;left:0;top:14px;z-index:2;
-  writing-mode:vertical-rl;text-orientation:upright;
-  background:var(--ac);color:#fff;font-size:11px;letter-spacing:.16em;
-  padding:9px 5px;line-height:1;
+/* ---------- 首屏 Banner ---------- */
+.hero{
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(680px 380px at 16% 4%,rgba(255,61,154,.20),transparent 62%),
+    radial-gradient(720px 420px at 84% 0%,rgba(139,92,246,.22),transparent 64%),
+    linear-gradient(180deg,#12102A 0%,#0B0C18 72%,var(--bg) 100%);
+  border-bottom:1px solid var(--line);
 }
-.poster-label{
-  position:absolute;left:0;right:0;bottom:0;z-index:2;
-  padding:34px 14px 13px;
-  background:linear-gradient(to top,rgba(9,12,14,.82),rgba(9,12,14,.42) 55%,transparent);
-  display:flex;flex-direction:column;gap:3px;
-}
-.poster-name{font-family:var(--serif);font-size:17px;color:#fff;line-height:1.35}
-.poster-tag{font-size:11.5px;color:rgba(255,255,255,.72)}
-.poster-count{position:absolute;right:10px;top:14px;font-size:11px;color:#fff;background:rgba(9,12,14,.52);padding:2px 7px;border-radius:1px;letter-spacing:.04em}
-
-/* ---------- 通用区块 ---------- */
-.sec{padding:88px 0 0}
-.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;flex-wrap:wrap;margin-bottom:34px}
-.sec-title{font-size:clamp(28px,3vw,38px);line-height:1.2}
-.sec-desc{font-size:14.5px;color:var(--muted);max-width:34em;margin-top:10px}
-.sec-note{font-size:12.5px;color:var(--muted);letter-spacing:.04em}
-
-/* ---------- 攻略库 ---------- */
-.filters{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:32px;align-items:start;padding:22px 0 18px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
-.filter-group{display:flex;flex-direction:column;gap:10px;min-width:0}
-.filter-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.filter-row .row-label{font-size:12px;color:var(--muted);letter-spacing:.06em;width:42px;flex:0 0 auto}
-.chip{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:5px 11px;border:1px solid var(--rule);border-radius:2px;
-  font-size:13px;color:#39413B;background:transparent;
-  transition:background .18s ease,border-color .18s ease,color .18s ease;
-  min-height:34px;
-}
-.chip:hover{border-color:#8E9790}
-.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#ECEEEA}
-.chip .n{font-size:11px;color:var(--muted)}
-.chip[aria-pressed="true"] .n{color:rgba(236,238,234,.62)}
-.chip.zero{color:#9AA29B;border-color:#D7DBD5}
-.chip.zero .n{color:#A9B0A9}
-.chip.accent[aria-pressed="true"]{background:var(--ac);border-color:var(--ac)}
-.search{position:relative}
-.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);transition:color .18s ease}
-/* 搜索框：改编自 Uiverse.io 输入框组件（作者 Bodyhc，MIT）——常驻下划线，聚焦时线加重并转为主色 */
-.search input{
-  width:100%;height:44px;padding:0 14px 0 38px;
-  border:0;border-bottom:2px solid #C6CEC5;border-radius:0;background:transparent;
-  font-family:var(--sans);font-size:16px;color:var(--text);
-  transition:border-color .18s ease,background-color .18s ease,box-shadow .18s ease;
-}
-.search input::placeholder{color:#8E979E;font-size:14px}
-.search input:hover{border-bottom-color:#96A096;background:rgba(255,255,255,.5)}
-.search input:focus{
-  outline:none;border-bottom:2px solid #2F6B57;background:#FFFEF8;
-  box-shadow:0 14px 26px -24px rgba(20,32,28,.8);
-}
-.search:focus-within svg{color:#2F6B57}
-.lib-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0 2px;font-size:13px;color:var(--muted)}
-.lib-clear{font-size:13px;color:var(--brass);text-decoration:underline;text-underline-offset:3px}
-.entries{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:52px;border-top:1px solid var(--rule)}
-.entry{display:flex;gap:16px;padding:24px 0 26px;border-bottom:1px solid var(--rule);min-width:0;position:relative}
-.entry:hover .entry-title{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
-.entry-tab{
-  flex:0 0 34px;height:60px;background:var(--ac);color:#fff;border-radius:2px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
-  font-size:12px;letter-spacing:.02em;line-height:1;
-}
-.entry-tab i{font-style:normal;font-size:10px;opacity:.78}
-.entry-body{min-width:0;display:flex;flex-direction:column;gap:7px}
-.entry-meta{display:flex;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--muted);gap:8px}
-.entry-meta .divider{width:1px;height:10px;background:var(--rule);display:inline-block;flex:0 0 auto}
-.entry-title{font-family:var(--serif);font-size:20px;line-height:1.5;color:var(--text)}
-.entry-dek{font-size:13.5px;line-height:1.8;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.entry-foot{font-size:12px;color:#7A827C;display:flex;gap:10px;align-items:center;margin-top:2px}
-.empty{padding:60px 0;color:var(--muted);font-size:15px;display:none}
-.empty.on{display:block}
-
-/* ---------- 开荒路线 ---------- */
-.route-sec{background:var(--ink);color:#E6EAE4;margin-top:88px;padding:76px 0 84px}
-.route-head{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;flex-wrap:wrap}
-.route-head .sec-title{color:#F2F4EF}
-.route-sub{font-size:13.5px;color:#A9B3AC;margin-top:12px}
-.route-link{font-size:13px;color:#D9DED6;border-bottom:1px solid rgba(217,222,214,.4);padding-bottom:2px}
-.route-link:hover{border-color:#D9DED6}
-.route{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:56px}
-.step{position:relative;padding:44px 30px 0 0;min-width:0}
-.step::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:var(--rule-dark)}
-.step::after{content:"";position:absolute;top:0;left:0;width:9px;height:9px;transform:translate(0,-50%);border-radius:50%;background:#7FC0A3}
-.step-n{font-size:11px;letter-spacing:.16em;color:#8E9992;margin-bottom:10px}
-.step-name{font-family:var(--serif);font-size:22px;color:#F2F4EF;line-height:1.4}
-.step-desc{font-size:13px;line-height:1.85;color:#AFB8B1;margin-top:8px}
-.step-stay{display:inline-block;margin-top:12px;font-size:11.5px;color:#8E9992;border:1px solid rgba(236,238,234,.2);padding:2px 8px;border-radius:2px}
-
-/* ---------- 三款游戏 ---------- */
-.game-row{display:grid;grid-template-columns:196px minmax(0,1fr) 148px;gap:28px;align-items:start;padding:26px 0 28px;border-top:1px solid var(--rule)}
-.game-row:last-of-type{border-bottom:1px solid var(--rule)}
-.game-thumb{aspect-ratio:16/9;overflow:hidden;border-radius:2px;background:#222}
-.game-thumb img{width:100%;height:100%;object-fit:cover}
-.game-name{font-family:var(--serif);font-size:22px;line-height:1.4}
-.game-name span{font-size:12px;color:var(--muted);font-family:var(--sans);margin-left:8px}
-.game-intro{font-size:13.5px;line-height:1.85;color:var(--muted);margin-top:8px;max-width:46em}
-.game-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 24px;margin-top:14px}
-.game-facts div{display:flex;gap:10px;font-size:12.5px;min-width:0}
-.game-facts dt{color:#8B938D;flex:0 0 42px}
-.game-facts dd{margin:0;color:#39413B;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.game-side{display:flex;flex-direction:column;align-items:flex-end;gap:10px;text-align:right}
-.game-count{font-size:12px;color:var(--muted)}
-.game-enter{font-size:13px;color:var(--ac);border-bottom:1px solid var(--ac);padding-bottom:1px}
-
-/* ---------- 客服入口 ---------- */
-.cs-line{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--muted)}
-.cs-line>span{flex:0 0 auto}
-/* 复制按钮：改编自 Uiverse.io 拟物按钮（作者 Afacanc38，MIT）——顶面高光 + 硬描边 + 底部键厚，按下沉 */
-.cs-pill{
-  display:inline-flex;align-items:center;gap:10px;min-height:40px;padding:7px 13px;
-  border:0;border-radius:3px;background:#F4F5EC;color:#1B2621;
-  font-family:var(--sans);font-size:13px;cursor:pointer;
-  box-shadow:0 1px 0 0 rgba(255,255,255,.95) inset,
-             0 -2px 0 0 rgba(20,32,28,.10) inset,
-             0 0 0 1px rgba(20,32,28,.42),
-             0 2px 0 0 rgba(20,32,28,.32),
-             0 5px 10px -6px rgba(20,32,28,.45);
-  transition:transform 80ms cubic-bezier(.4,.7,.3,1),box-shadow 80ms ease,background-color 80ms ease;
-}
-.cs-pill:hover{background:#FFFEF8}
-.cs-pill:active{
-  transform:translateY(2px);background:#E9ECE2;
-  box-shadow:0 1px 0 0 rgba(255,255,255,.7) inset,
-             0 0 0 1px rgba(20,32,28,.5),
-             0 1px 3px rgba(20,32,28,.35) inset;
-}
-.cs-pill:focus-visible{outline:2px solid #2F6B57;outline-offset:3px}
-.cs-pill b{font-weight:600;letter-spacing:.01em}
-.cs-pill .cs-act{font-size:11px;color:#5F6963;border-left:1px solid rgba(20,32,28,.18);padding-left:10px;line-height:1.3}
-.cs-pill.ok{
-  background:#EAF3EC;
-  box-shadow:0 1px 0 0 rgba(255,255,255,.95) inset,
-             0 0 0 1px #2F6B57,
-             0 2px 0 0 rgba(47,107,87,.35),
-             0 5px 10px -6px rgba(20,32,28,.45);
-}
-.cs-pill.ok .cs-act{color:#2F6B57}
-.cs-pill.dark{background:#F4F5EC;color:#1B2621}
-.cs-pill.dark:hover{background:#FFFEF8}
-.game-hero .cs-line{color:#A9B3AC;margin-top:12px}
-.foot-cs{margin-top:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:#9AA49D}
-
-/* ---------- 页脚 ---------- */
-.foot{background:var(--ink);color:#A9B3AC;margin-top:96px;padding:52px 0 40px;font-size:12.5px;line-height:1.9}
-.foot-in{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:40px}
-.foot-name{font-family:var(--serif);font-size:20px;color:#EDEFEA;letter-spacing:.12em;margin-bottom:12px}
-.foot p{max-width:40em}
-.foot-nav{display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:flex-end}
-.foot-nav a{color:#C6CDC7}
-.foot-nav a:hover{color:#fff}
-.foot-bottom{margin-top:30px;padding-top:18px;border-top:1px solid rgba(236,238,234,.16);color:#7E8781;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.foot-bottom a{color:#9AA49D;text-decoration:underline;text-underline-offset:3px}
-.foot-bottom a:hover{color:#CFD8D0}
-
-/* ---------- 分站视图 ---------- */
-.view{padding-bottom:20px}
-.game-page[hidden]{display:none}
-.game-hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:0;background:var(--ink);color:#EDEFEA;margin-top:0}
-.game-hero .art{aspect-ratio:16/9;overflow:hidden}
-.game-hero .art img{width:100%;height:100%;object-fit:cover}
-.game-hero .info{padding:44px 40px;display:flex;flex-direction:column;justify-content:center;gap:14px;border-left:1px solid rgba(236,238,234,.12)}
-.game-hero h1{font-size:clamp(28px,3vw,40px);line-height:1.25;color:#fff}
-.game-hero .tagline{font-size:12.5px;letter-spacing:.1em;color:#A9B3AC}
-.game-hero .intro{font-size:14px;line-height:1.9;color:#C3CAC4;max-width:32em}
-.game-hero .facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 24px;margin-top:6px}
-.game-hero .facts div{font-size:12.5px;color:#A9B3AC;display:flex;gap:8px;min-width:0}
-.game-hero .facts b{color:#EDEFEA;font-weight:400;flex:0 0 auto}
-.game-hero .facts span{color:#D5DAD3;min-width:0}
-.backline{padding:26px 0 0}
-.back{font-size:13px;color:var(--muted);display:inline-flex;align-items:center;gap:7px}
-.back:hover{color:var(--text)}
-.back svg{opacity:.7}
-
-/* ---------- 文章视图 ---------- */
-.article{max-width:806px;margin:0 auto;padding:34px 24px 20px}
-.a-accent{height:4px;width:56px;background:var(--ac);margin-bottom:24px}
-.a-meta{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:12.5px;color:var(--muted);margin-bottom:14px}
-.a-meta .divider{width:1px;height:10px;background:var(--rule)}
-.a-title{font-size:clamp(30px,4vw,44px);line-height:1.28;letter-spacing:.01em}
-.a-dek{font-size:15.5px;line-height:1.9;color:var(--muted);margin-top:16px}
-.a-foot{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:#7A827C;margin-top:20px;padding-bottom:24px;border-bottom:1px solid var(--rule)}
-.takeaways{margin-top:30px;background:#DFE4DB;border-top:2px solid var(--ac);padding:22px 26px 24px;border-radius:2px}
-.takeaways h2{font-family:var(--sans);font-size:13px;letter-spacing:.12em;color:#39413B;font-weight:700;margin-bottom:12px}
-.takeaways li{position:relative;padding-left:16px;font-size:14px;line-height:1.9;margin-top:6px}
-.takeaways li::before{content:"";position:absolute;left:0;top:11px;width:5px;height:5px;background:var(--ac)}
-.prose{margin-top:14px}
-.prose h2{font-size:23px;line-height:1.5;margin:46px 0 14px;padding-top:2px}
-.prose p{font-size:15.5px;line-height:1.95;margin:0 0 16px;color:#232A25}
-.prose ul{margin:4px 0 20px}
-.prose ul li{position:relative;padding-left:18px;font-size:15px;line-height:1.9;margin-bottom:7px;color:#232A25}
-.prose ul li::before{content:"";position:absolute;left:2px;top:12px;width:5px;height:5px;background:var(--ac)}
-.prose .note{border-left:2px solid var(--ac);padding:4px 0 4px 18px;color:#4E574F;font-size:14px;line-height:1.9;margin:22px 0 8px}
-.tbl-wrap{overflow-x:auto;margin:2px 0 22px}
-table.tbl{width:100%;min-width:520px;table-layout:fixed;border-collapse:collapse;font-size:13.5px}
-table.tbl th{text-align:left;font-weight:500;color:#6B736C;font-size:12.5px;padding:9px 10px;border-bottom:1px solid var(--ink);background:transparent}
-table.tbl td{padding:11px 10px;border-bottom:1px solid var(--rule);vertical-align:top;line-height:1.75;color:#232A25;word-break:break-word}
-table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
-.related{margin-top:56px;padding-top:26px;border-top:1px solid var(--rule)}
-.related h2{font-family:var(--sans);font-size:13px;letter-spacing:.1em;color:var(--muted);font-weight:700;margin-bottom:8px}
-.related a{display:flex;justify-content:space-between;gap:16px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--rule)}
-.related a:hover .rel-t{text-decoration:underline;text-underline-offset:4px}
-.rel-t{font-family:var(--serif);font-size:17px;line-height:1.5}
-.rel-g{font-size:12px;color:var(--muted);white-space:nowrap}
-.a-end{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:36px}
-.a-end .back{font-size:13.5px}
-.progress{position:fixed;top:0;left:0;height:2px;background:var(--ac);width:0;z-index:60;transition:width .12s linear}
-.progress[hidden]{display:none}
-
-/* ---------- 响应式 ---------- */
-@media (max-width:1080px){
-  .hero-in{grid-template-columns:minmax(0,1fr) minmax(0,1.45fr);gap:32px}
-  .filters{grid-template-columns:minmax(0,1fr);gap:18px}
-  .search{max-width:340px}
-  .entries{column-gap:36px}
-  .game-row{grid-template-columns:160px minmax(0,1fr);gap:20px}
-  .game-side{grid-column:1 / -1;flex-direction:row;align-items:center;justify-content:space-between;text-align:left}
-  .game-hero{grid-template-columns:1fr}
-  .game-hero .info{border-left:0;border-top:1px solid rgba(236,238,234,.12);padding:30px 24px}
-}
-@media (max-width:860px){
-  .hero-in{grid-template-columns:1fr;gap:30px;padding:40px 20px 44px}
-  .hero-desc{margin-top:20px}
-  .hero-stats{margin-top:24px}
-  .sec{padding-top:64px}
-  .route{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:40px}
-  .entries{grid-template-columns:1fr;column-gap:0}
-  .nav{gap:16px}
-  .nav a{font-size:13px}
-  .foot-in{grid-template-columns:1fr}
-  .foot-nav{justify-content:flex-start}
-}
-@media (max-width:560px){
-  .wrap{padding:0 18px}
-  .brand-sub{display:none}
-  .hero-in{padding:34px 18px 40px}
-  .hero-games{gap:8px}
-  .poster-tab{display:none}
-  .poster-label{padding:26px 9px 10px}
-  .poster-name{font-size:13px}
-  .poster-tag{font-size:10px;display:none}
-  .poster-count{display:none}
-  .sec-head{gap:12px}
-  .filters{padding:18px 0 14px}
-  .filter-row{
-    flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;
-    -webkit-mask-image:linear-gradient(to right,#000 88%,transparent);
-    mask-image:linear-gradient(to right,#000 88%,transparent);
-  }
-  .filter-row .row-label{flex:0 0 auto;position:sticky;left:0;background:var(--paper);padding-right:6px;z-index:2}
-  .chip{flex:0 0 auto;min-height:36px}
-  .lib-bar{font-size:12px}
-  .cs-pill{min-height:44px}
-  .cs-line{gap:8px}
-  .foot-cs{gap:8px}
-  .entry{gap:12px;padding:20px 0 22px}
-  .entry-tab{flex:0 0 30px;height:52px}
-  .entry-title{font-size:18px}
-  .entry-dek{font-size:14px;-webkit-line-clamp:3}
-  .route{grid-template-columns:1fr;row-gap:0;margin-top:38px}
-  .step{padding:34px 0 26px 22px}
-  .step::before{top:0;left:0;right:auto;width:1px;height:100%}
-  .step::after{top:38px;left:0;transform:translate(-50%,-50%)}
-  .step:first-child{padding-top:26px}
-  .step:first-child::after{top:30px}
-  .step-stay{margin-top:8px}
-  .game-row{grid-template-columns:1fr;gap:14px}
-  .game-facts{grid-template-columns:1fr}
-  .game-side{grid-column:auto}
-  .article{padding:26px 18px 10px}
-  .takeaways{padding:18px 18px 20px}
-  .prose h2{font-size:21px;margin-top:38px}
-  .related a{flex-direction:column;gap:4px;align-items:flex-start}
-  .game-hero .facts{grid-template-columns:1fr}
-  .game-hero .info{padding:26px 18px 30px}
-  .tbl-wrap{overflow:visible}
-  table.tbl, table.tbl tbody{display:block;min-width:0;table-layout:auto}
-  table.tbl colgroup{display:none}
-  table.tbl thead{display:none}
-  table.tbl tr{display:block;padding:12px 0 14px;border-bottom:1px solid var(--rule)}
-  table.tbl td{display:block;border:0;padding:1px 0;line-height:1.75}
-  table.tbl td:first-child{font-family:var(--serif);font-size:17px;padding:0 0 5px}
-  table.tbl td:not(:first-child)::before{content:attr(data-label) "：";color:#77807A;font-size:12px;margin-right:4px}
-  .foot{padding:40px 0 32px}
-}
-/* ===== 视觉改版：夜色底 + 纸面卡片 ===== */
-:root{
-  --shell:#0A1013;
-  --panel:#F1F3ED;
-  --card:#FBFCF7;
-  --cream:#EDEFE8;
-  --cream-dim:#A7B2AB;
-  --line-soft:#E0E5DB;
-}
-body{
-  background-color:var(--shell);
-  background-image:
-    radial-gradient(1100px 720px at 4% -10%,rgba(47,107,87,.36),transparent 62%),
-    radial-gradient(980px 640px at 98% 0%,rgba(42,93,136,.34),transparent 64%),
-    radial-gradient(1200px 800px at 50% 116%,rgba(162,59,75,.22),transparent 62%),
-    linear-gradient(180deg,#0A1013,#152126 48%,#0B1317);
-  background-attachment:fixed;
-}
-body::after{
-  content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.06;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)'/%3E%3C/svg%3E");
-}
-
-/* 顶栏 */
-.topbar{background:rgba(9,14,17,.86);border-bottom:1px solid rgba(236,238,234,.12)}
-.brand-name{color:var(--cream)}
-.brand-sub{color:var(--cream-dim)}
-.brand-mark{background:linear-gradient(180deg,#5A9C82,#2F6B57)}
-.nav a{color:var(--cream-dim)}
-.nav a:hover{color:var(--cream)}
-.nav a::after{background:var(--cream)}
-
-/* 首屏：海报墙 */
-.hero{position:relative;background:linear-gradient(180deg,rgba(10,16,19,.55),rgba(10,16,19,0))}
 .hero::before{
   content:"";position:absolute;inset:0;pointer-events:none;
   background-image:
-    linear-gradient(rgba(236,238,234,.055) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(236,238,234,.055) 1px,transparent 1px);
-  background-size:64px 64px;
-  -webkit-mask-image:radial-gradient(120% 85% at 50% 0,#000 25%,transparent 78%);
-  mask-image:radial-gradient(120% 85% at 50% 0,#000 25%,transparent 78%);
+    linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+  background-size:56px 56px;
+  -webkit-mask-image:radial-gradient(110% 78% at 50% 0,#000 22%,transparent 76%);
+  mask-image:radial-gradient(110% 78% at 50% 0,#000 22%,transparent 76%);
 }
-.hero-in{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:36px;padding:60px 24px 58px}
-.hero-kicker{color:#93A39A;margin-bottom:16px}
-.hero h1{font-size:clamp(46px,6.4vw,80px);line-height:.98;letter-spacing:.14em;margin-left:-3px;color:#F2F4ED}
-.hero-desc{margin-top:22px;color:#C0C9C2;max-width:40em}
-.hero-games{gap:16px}
-.poster{aspect-ratio:4/5;border:1px solid rgba(236,238,234,.16)}
-.poster-label{padding:44px 16px 15px}
-.hero-stats{margin-top:0;padding:22px 0 0;border-top:1px solid rgba(236,238,234,.16);color:#93A39A}
-.hero-stats b{color:#F2F4ED}
-
-/* 纸面板 */
-.sec{
-  position:relative;
-  width:auto;max-width:var(--wrap);
-  background:var(--panel);
-  border:1px solid rgba(236,238,234,.14);
-  border-radius:3px;
-  padding:42px 42px 48px;
-  margin:52px auto 0;
-  box-shadow:0 30px 70px -34px rgba(0,0,0,.65);
+.hero-in{
+  position:relative;display:flex;flex-direction:column;align-items:center;
+  text-align:center;gap:0;padding:66px 20px 54px;
 }
-.sec-desc{color:var(--muted)}
+.hero-type{display:flex;flex-direction:column;align-items:center;width:100%;min-width:0}
+.hero-kicker{display:inline-flex;align-items:center;gap:8px;
+  font-size:11.5px;letter-spacing:.18em;color:#FF9ACB;
+  padding:5px 14px;border-radius:999px;
+  background:rgba(255,61,154,.10);border:1px solid rgba(255,61,154,.24);
+  margin-bottom:20px;
+}
+.hero h1{
+  font-size:clamp(38px,5.6vw,62px);line-height:1.1;letter-spacing:.02em;
+  font-weight:800;color:#fff;
+}
+.hero h1 em{
+  font-style:normal;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero-desc{margin-top:16px;font-size:14.5px;line-height:1.9;color:#A6ACC4;max-width:38em}
 
-/* 攻略库：卡片化 */
-.entries{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;border-top:0;margin-top:4px}
+/* Banner 搜索：胶囊输入 + 渐变按钮 */
+.hero-search{display:flex;gap:10px;width:100%;max-width:600px;margin:28px auto 0}
+.hero-search .search{position:relative;flex:1;min-width:0}
+.hero-search .search svg{position:absolute;left:17px;top:50%;transform:translateY(-50%);color:#7D84A0;transition:color .2s ease}
+.search input{
+  width:100%;height:52px;padding:0 18px 0 46px;
+  border:1px solid rgba(255,255,255,.12);border-radius:999px;
+  background:rgba(255,255,255,.05);
+  font-family:var(--sans);font-size:14.5px;color:var(--text);
+  transition:border-color .2s ease,background-color .2s ease,box-shadow .2s ease;
+  -webkit-appearance:none;appearance:none;
+}
+.search input::placeholder{color:#727993;font-size:14px}
+.search input:hover{border-color:rgba(255,255,255,.22);background:rgba(255,255,255,.07)}
+.search input:focus{
+  outline:none;border-color:rgba(255,61,154,.6);background:rgba(255,255,255,.08);
+  box-shadow:0 0 0 4px rgba(255,61,154,.12);
+}
+.search input::-webkit-search-cancel-button{-webkit-appearance:none}
+.search:focus-within svg{color:var(--pink)}
+.hero-search-btn{
+  flex:0 0 auto;height:52px;padding:0 26px;border-radius:999px;
+  background:var(--grad-2);color:#fff;font-size:14px;font-weight:600;
+  box-shadow:var(--glow);
+  transition:transform .18s ease,box-shadow .18s ease,filter .18s ease;
+  white-space:nowrap;
+}
+.hero-search-btn:hover{transform:translateY(-1px);filter:brightness(1.08);box-shadow:0 16px 34px -12px rgba(255,61,154,.7)}
+.hero-search-btn:active{transform:translateY(0) scale(.985)}
+
+/* 三张海报 */
+.hero-games{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;width:100%;margin-top:40px}
+.poster{
+  position:relative;aspect-ratio:4/5;overflow:hidden;border-radius:14px;
+  background:#171A2C;border:1px solid var(--line-2);
+  transition:transform .35s cubic-bezier(.2,.6,.2,1),box-shadow .35s ease,border-color .35s ease;
+}
+.poster::after{
+  content:"";position:absolute;left:0;right:100%;bottom:0;height:3px;z-index:3;
+  background:linear-gradient(90deg,var(--ac),rgba(255,255,255,.75));
+  transition:right .45s cubic-bezier(.2,.7,.3,1);
+}
+.poster img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.6,.2,1)}
+.poster:hover{transform:translateY(-5px);border-color:rgba(255,255,255,.28);box-shadow:0 30px 60px -30px rgba(0,0,0,.95)}
+.poster:hover img{transform:scale(1.06)}
+.poster:hover::after{right:0}
+.poster-tab{
+  position:absolute;left:10px;top:10px;z-index:2;
+  background:var(--ac);color:#06121A;font-size:11px;font-weight:700;letter-spacing:.06em;
+  padding:3px 9px;border-radius:999px;line-height:1.6;
+  box-shadow:0 4px 12px -6px rgba(0,0,0,.8);
+}
+.poster-label{
+  position:absolute;left:0;right:0;bottom:0;z-index:2;
+  padding:52px 16px 15px;
+  background:linear-gradient(to top,rgba(6,7,14,.92),rgba(6,7,14,.5) 52%,transparent);
+  display:flex;flex-direction:column;gap:3px;
+}
+.poster-name{font-size:17px;font-weight:700;color:#fff;line-height:1.35}
+.poster-tag{font-size:11.5px;color:rgba(255,255,255,.66)}
+.poster-count{
+  position:absolute;right:10px;top:10px;z-index:2;font-size:11px;color:#fff;
+  background:rgba(8,9,16,.62);backdrop-filter:blur(6px);
+  padding:3px 9px;border-radius:999px;letter-spacing:.02em;border:1px solid rgba(255,255,255,.12);
+}
+.hero-stats{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
+  margin-top:30px;font-size:12.5px;color:var(--muted);
+}
+.hero-stats li{display:flex;align-items:baseline;gap:6px}
+.hero-stats li+li::before{content:"";width:1px;height:11px;background:rgba(255,255,255,.16);margin:0 16px;align-self:center}
+.hero-stats b{font-size:16px;font-weight:800;color:#fff}
+
+/* ---------- 通用区块 ---------- */
+.sec{width:100%;max-width:var(--wrap);margin:0 auto;padding:64px 20px 0}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:22px}
+.sec-title{display:flex;align-items:center;gap:10px;font-size:clamp(20px,2.2vw,26px);line-height:1.3;font-weight:800;color:#fff}
+.sec-title::before{content:"";width:4px;height:20px;border-radius:2px;background:var(--grad);flex:0 0 auto}
+.sec-desc{font-size:13.5px;color:var(--muted);max-width:38em;margin-top:8px}
+.sec-note{
+  font-size:12px;color:var(--dim);letter-spacing:.02em;
+  border:1px solid var(--line);border-radius:999px;padding:4px 12px;
+}
+
+/* ---------- 攻略库 ---------- */
+.filters{padding:4px 0 16px;border-bottom:1px solid var(--line)}
+.filter-group{display:flex;flex-direction:column;gap:9px;min-width:0}
+.filter-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.filter-row .row-label{font-size:12px;color:var(--dim);letter-spacing:.06em;width:42px;flex:0 0 auto}
+
+/* 筛选胶囊 */
+.chip{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:6px 14px;border:1px solid rgba(255,255,255,.10);border-radius:999px;
+  font-size:13px;color:#B9BFD5;background:rgba(255,255,255,.035);
+  transition:background .2s ease,border-color .2s ease,color .2s ease,box-shadow .2s ease,transform .12s ease;
+  min-height:34px;
+}
+.chip:hover{border-color:rgba(255,255,255,.24);background:rgba(255,255,255,.08);color:#EDEFF8}
+.chip:active{transform:scale(.94)}
+.chip[aria-pressed="true"]{
+  background-image:var(--grad-2);border-color:transparent;color:#fff;
+  box-shadow:0 10px 24px -12px rgba(255,61,154,.8);
+}
+.chip .n{
+  font-size:11px;line-height:1;color:var(--muted);
+  background:rgba(255,255,255,.08);border-radius:999px;
+  min-width:20px;height:19px;padding:0 5px;
+  display:inline-flex;align-items:center;justify-content:center;
+  transition:background .2s ease,color .2s ease;
+}
+.chip[aria-pressed="true"] .n{background:rgba(0,0,0,.22);color:rgba(255,255,255,.92)}
+.chip.zero{color:#5A6079;border-color:rgba(255,255,255,.06);opacity:.6}
+.chip.zero .n{color:#5A6079;background:rgba(255,255,255,.04)}
+
+.lib-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0 16px;font-size:12.5px;color:var(--dim)}
+.lib-clear{font-size:12.5px;color:var(--pink);text-decoration:underline;text-underline-offset:3px}
+
+/* 攻略卡片 */
+.entries{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .entry{
-  padding:20px 20px 22px;border:1px solid var(--line-soft);background:var(--card);border-radius:2px;
-  transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease;
+  display:flex;gap:14px;padding:18px;min-width:0;position:relative;
+  background:linear-gradient(180deg,#151930,#121527);
+  border:1px solid var(--line);border-radius:12px;
+  transition:transform .2s ease,border-color .2s ease,box-shadow .25s ease;
 }
-.entry:hover{border-color:#B7C0B6;box-shadow:0 18px 36px -24px rgba(18,23,26,.55);transform:translateY(-1px)}
-.entry-tab{flex:0 0 32px;height:56px}
+.entry:hover{
+  transform:translateY(-3px);border-color:rgba(255,61,154,.34);
+  box-shadow:0 22px 44px -26px rgba(0,0,0,.95);
+}
+.entry:hover .entry-title{color:#fff}
+.entry-tab{
+  flex:0 0 42px;height:42px;border-radius:11px;background:var(--ac);color:#08121A;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;
+  font-size:13px;font-weight:800;letter-spacing:.02em;line-height:1.1;
+  background-image:linear-gradient(160deg,rgba(255,255,255,.28),rgba(0,0,0,.12));
+}
+.entry-tab i{font-style:normal;font-size:9.5px;font-weight:600;opacity:.66}
+.entry-body{min-width:0;display:flex;flex-direction:column;gap:6px}
+.entry-meta{display:flex;align-items:center;flex-wrap:wrap;font-size:11.5px;color:var(--dim);gap:8px}
+.entry-meta .divider{width:1px;height:9px;background:rgba(255,255,255,.14);display:inline-block;flex:0 0 auto}
+.entry-title{font-size:16.5px;font-weight:600;line-height:1.55;color:#E7EAF6;transition:color .2s ease}
+.entry-dek{font-size:13px;line-height:1.8;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.entry-foot{font-size:11.5px;color:#5F657E;display:flex;gap:10px;align-items:center;margin-top:2px}
+.empty{padding:60px 0;color:var(--muted);font-size:14px;display:none}
+.empty.on{display:block}
 
-/* 开荒路线：机台条 */
+/* ---------- 开荒路线 ---------- */
 .route-sec{
-  max-width:var(--wrap);margin:52px auto 0;padding:56px 42px 60px;
-  border:1px solid rgba(236,238,234,.14);border-radius:3px;
+  max-width:var(--wrap);margin:64px auto 0;padding:44px 40px 48px;
+  border:1px solid var(--line);border-radius:18px;
   background:
-    radial-gradient(620px 320px at 6% 0,rgba(47,107,87,.32),transparent 68%),
-    linear-gradient(180deg,#111B1F,#0B1216);
-  box-shadow:0 30px 70px -34px rgba(0,0,0,.7);
+    radial-gradient(560px 300px at 8% 0,rgba(255,61,154,.16),transparent 66%),
+    radial-gradient(520px 300px at 92% 6%,rgba(139,92,246,.18),transparent 68%),
+    linear-gradient(160deg,#14162B,#0D0F1C 70%);
+  box-shadow:0 30px 60px -40px rgba(0,0,0,.9);
 }
 .route-sec .wrap{max-width:none;width:auto;margin:0;padding:0}
-.route{margin-top:48px}
-.step::after{background:#8FD0B1;box-shadow:0 0 0 4px rgba(143,208,177,.14)}
+.route-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.route-head .sec-title{color:#fff}
+.route-sub{font-size:13px;color:#9AA1BA;margin-top:10px}
+.route-link{font-size:12.5px;color:#FF8FC4;border-bottom:1px solid rgba(255,143,196,.42);padding-bottom:2px}
+.route-link:hover{color:#FFB3D5;border-color:#FFB3D5}
+.route{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:44px}
+.step{position:relative;padding:40px 26px 0 0;min-width:0;transition:transform .25s cubic-bezier(.2,.6,.2,1)}
+.step::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.2),rgba(255,255,255,.04))}
+.step::after{
+  content:"";position:absolute;top:0;left:0;width:9px;height:9px;transform:translate(0,-50%);
+  border-radius:50%;background:var(--grad-2);box-shadow:0 0 0 4px rgba(255,61,154,.16);
+  transition:background .25s ease,box-shadow .25s ease,transform .25s ease;
+}
+.step-n{font-size:11px;letter-spacing:.16em;color:#797F9B;margin-bottom:8px}
+.step-name{font-size:17px;font-weight:700;color:#F2F4FF;line-height:1.4}
+.step-desc{font-size:12.5px;line-height:1.8;color:#9BA2BC;margin-top:8px}
+.step-stay{
+  display:inline-block;margin-top:12px;font-size:11.5px;color:#8A90A9;
+  border:1px solid rgba(255,255,255,.12);padding:2px 9px;border-radius:999px;
+}
+.step:hover .step-name{color:#fff}
+.step:hover .step-desc{color:#B7BDD2}
+.step:hover .step-stay{color:#C3C8DB;border-color:rgba(255,255,255,.24)}
+@media (min-width:561px){
+  .step:hover{transform:translateY(-3px)}
+  .step:hover::after{box-shadow:0 0 0 7px rgba(255,61,154,.22);transform:translate(0,-50%) scale(1.25)}
+}
 
-/* 三款游戏：三张卡片 */
+/* ---------- 三款游戏 ---------- */
 .game-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 .game-card{
-  display:flex;flex-direction:column;
-  background:var(--card);border:1px solid var(--line-soft);border-top:3px solid var(--ac);
-  border-radius:2px;overflow:hidden;
+  display:flex;flex-direction:column;overflow:hidden;
+  background:linear-gradient(180deg,#151930,#111424);
+  border:1px solid var(--line);border-radius:16px;
+  transition:transform .28s cubic-bezier(.2,.6,.2,1),box-shadow .32s ease,border-color .28s ease;
 }
-.game-card .game-thumb{aspect-ratio:16/10;border-radius:0;background:#1B2328}
-.game-card-body{padding:20px 22px 22px;display:flex;flex-direction:column;gap:12px;flex:1}
-.game-name{font-size:19px;line-height:1.45}
-.game-name span{display:block;margin:6px 0 0;font-size:11.5px}
-.game-intro{margin-top:0;font-size:13px;line-height:1.8}
-.game-facts{grid-template-columns:1fr;gap:4px;margin-top:0}
-.game-facts dt{flex:0 0 40px;font-size:12px}
-.game-facts dd{font-size:12.5px}
-.game-card .cs-line{margin-top:4px}
-.game-card .cs-pill{font-size:12.5px}
+.game-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.2);box-shadow:0 30px 60px -34px rgba(0,0,0,.95)}
+.game-card .game-thumb{aspect-ratio:16/10;background:#1B1F33;position:relative;overflow:hidden;border-radius:0}
+.game-card .game-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .65s cubic-bezier(.2,.6,.2,1)}
+.game-card:hover .game-thumb img{transform:scale(1.05)}
+.game-card .game-thumb::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,transparent 46%,rgba(8,9,16,.62));
+  opacity:.65;transition:opacity .4s ease;
+}
+.game-card:hover .game-thumb::after{opacity:.9}
+.game-card .game-thumb::before{
+  content:"";position:absolute;left:0;right:0;top:0;height:3px;z-index:2;background:var(--ac);
+}
+.game-card-body{padding:18px 20px 20px;display:flex;flex-direction:column;gap:10px;flex:1}
+.game-name{font-size:17.5px;font-weight:700;line-height:1.45;color:#fff}
+.game-name span{display:block;margin:5px 0 0;font-size:11.5px;font-weight:400;color:#8B91A9}
+.game-intro{font-size:12.5px;line-height:1.8;color:var(--muted)}
+.game-facts{display:grid;grid-template-columns:1fr;gap:4px}
+.game-facts div{display:flex;gap:10px;font-size:12px;min-width:0}
+.game-facts dt{flex:0 0 38px;color:#6E748E}
+.game-facts dd{margin:0;color:#C4C9DA;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.game-card .cs-line{margin-top:2px}
 .game-card-foot{
   margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;
-  padding-top:14px;border-top:1px solid var(--line-soft);
+  padding-top:12px;border-top:1px solid var(--line);
 }
-.game-count{font-size:12px}
-.game-enter{font-size:12.5px}
+.game-count{font-size:11.5px;color:var(--dim)}
+.game-enter{font-size:12.5px;color:#FF8FC4;display:inline-flex;align-items:center;gap:2px}
+.game-enter::after{content:"→";font-size:13px;line-height:1;opacity:.8;transition:transform .25s ease,opacity .25s ease}
+.game-card:hover .game-enter::after{transform:translateX(4px);opacity:1}
 
-/* 分站 / 文章 */
-.game-hero{background:linear-gradient(180deg,#0D1418,#131C20);border-bottom:1px solid rgba(236,238,234,.12)}
-.view-game .backline{padding:30px 0 0}
-.view-game .back{color:#B9C4BD}
-.view-game .back:hover{color:var(--cream)}
-.article{
-  max-width:840px;margin:34px auto 0;padding:44px 52px 52px;
-  background:var(--panel);border:1px solid rgba(236,238,234,.14);border-radius:3px;
-  box-shadow:0 30px 70px -34px rgba(0,0,0,.65);
+/* ---------- 客服按钮：渐变胶囊 ---------- */
+.cs-line{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--muted)}
+.cs-line>span{flex:0 0 auto}
+.cs-pill{
+  display:inline-flex;align-items:center;gap:10px;min-height:38px;padding:7px 14px;
+  border-radius:999px;background:var(--grad-2);color:#fff;
+  font-family:var(--sans);font-size:12.5px;cursor:pointer;
+  box-shadow:0 10px 24px -14px rgba(255,61,154,.9);
+  transition:transform .16s ease,box-shadow .18s ease,filter .18s ease;
 }
+.cs-pill:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 14px 28px -14px rgba(255,61,154,.95)}
+.cs-pill:active{transform:translateY(0) scale(.985);filter:brightness(.98)}
+.cs-pill:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.cs-pill b{font-weight:600;letter-spacing:.01em}
+.cs-pill .cs-act{font-size:11px;color:rgba(255,255,255,.82);border-left:1px solid rgba(255,255,255,.32);padding-left:10px;line-height:1.3}
+.cs-pill.ok{background:linear-gradient(135deg,#2DD4A7,#12B886);box-shadow:0 10px 24px -14px rgba(45,212,167,.9)}
+.cs-pill.ok .cs-act{color:rgba(255,255,255,.9)}
+.cs-pill.dark{background:var(--grad-2);color:#fff}
+.game-hero .cs-line{color:#9AA1BA;margin-top:10px}
+.foot-cs{margin-top:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:#7C829B}
 
-/* 页脚 */
+/* ---------- 页脚 ---------- */
 .foot{
-  margin-top:52px;padding:56px 0 44px;background:none;
-  border-top:1px solid rgba(236,238,234,.08);
-  background-image:linear-gradient(180deg,rgba(6,10,12,0),rgba(4,8,10,.72));
+  margin-top:64px;padding:44px 0 34px;font-size:12.5px;line-height:1.9;color:#7C829B;
+  border-top:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(9,10,18,0),rgba(5,6,12,.6));
 }
+.foot-in{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:34px}
+.foot-name{font-size:17px;font-weight:800;letter-spacing:.04em;color:#fff;margin-bottom:10px}
+.foot p{max-width:40em}
+.foot-nav{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:flex-end}
+.foot-nav a{color:#9AA0B8;transition:color .2s ease}
+.foot-nav a:hover{color:#fff}
+.foot-bottom{
+  margin-top:26px;padding-top:16px;border-top:1px solid var(--line);
+  color:#5F657E;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+}
+.foot-bottom a{color:#8A90A9;text-decoration:underline;text-underline-offset:3px}
+.foot-bottom a:hover{color:#C9CEE0}
 
-@media (max-width:1080px){
-  .sec{padding:36px 30px 40px}
-  .route-sec{padding:48px 30px 52px}
+/* ---------- 分站 ---------- */
+.view{padding-bottom:20px}
+.game-page[hidden]{display:none}
+.game-hero{
+  display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:0;
+  background:
+    radial-gradient(520px 320px at 12% 10%,rgba(255,61,154,.18),transparent 66%),
+    radial-gradient(520px 320px at 88% 20%,rgba(139,92,246,.2),transparent 68%),
+    #0D0F1C;
+  border-bottom:1px solid var(--line);
 }
-@media (max-width:900px){
-  .game-cards{grid-template-columns:1fr}
-  .game-card{border-top-width:3px}
-}
-@media (max-width:860px){
-  .entries{grid-template-columns:1fr;gap:12px}
-  .sec{margin:36px 16px 0}
-  .route-sec{margin:36px 16px 0}
-  .article{margin:24px 16px 0}
-  .hero-in{padding:44px 20px 46px;gap:26px}
-  .hero-stats{padding:18px 0 0}
-}
-@media (max-width:560px){
-  .sec{padding:24px 18px 28px;margin:26px 10px 0}
-  .route-sec{padding:36px 18px 40px;margin:26px 10px 0}
-  .article{padding:26px 18px 32px;margin:20px 10px 0}
-  .entry{padding:18px 16px 20px}
-  .hero-in{padding:38px 18px 40px;gap:24px}
-  .hero h1{font-size:clamp(40px,11vw,56px)}
-  .hero-games{gap:8px}
-  .poster-label{padding:30px 9px 10px}
-  .filter-row .row-label{background:var(--panel)}
-  .filter-row{
-    flex-wrap:wrap;overflow:visible;padding-bottom:0;
-    -webkit-mask-image:none;mask-image:none;
-  }
-  .filter-row .row-label{position:static;padding-right:4px}
-  .game-card-body{padding:16px 16px 18px}
-  .game-card-foot{padding-top:12px}
-  .game-name{font-size:18px}
-}
+.game-hero .art{aspect-ratio:16/9;overflow:hidden}
+.game-hero .art img{width:100%;height:100%;object-fit:cover}
+.game-hero .info{padding:40px 38px;display:flex;flex-direction:column;justify-content:center;gap:12px;border-left:1px solid var(--line)}
+.game-hero h1{font-size:clamp(26px,3vw,36px);line-height:1.25;color:#fff;font-weight:800}
+.game-hero .tagline{font-size:11.5px;letter-spacing:.14em;color:#FF9ACB}
+.game-hero .intro{font-size:13.5px;line-height:1.9;color:#AEB4CB;max-width:32em}
+.game-hero .facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 22px;margin-top:4px}
+.game-hero .facts div{font-size:12px;color:#8A90A9;display:flex;gap:8px;min-width:0}
+.game-hero .facts b{color:#ECEEF8;font-weight:600;flex:0 0 auto}
+.game-hero .facts span{color:#C4C9DA;min-width:0}
+.backline{padding:24px 0 0}
+.back{font-size:12.5px;color:var(--muted);display:inline-flex;align-items:center;gap:7px}
+.back:hover{color:#fff}
+.back svg{opacity:.7}
+.view-game .backline{padding:26px 0 0}
+.view-game .back{color:#9AA1BA}
+.view-game .back:hover{color:#fff}
 
-/* ===== 复制反馈浮层：纸片样式，与站点纸面语言一致 ===== */
+/* ---------- 文章 ---------- */
+.article{
+  max-width:840px;margin:32px auto 0;padding:40px 44px 46px;
+  background:linear-gradient(180deg,#14172B,#101324);
+  border:1px solid var(--line);border-radius:16px;
+  box-shadow:0 30px 60px -40px rgba(0,0,0,.9);
+}
+.a-accent{height:4px;width:52px;border-radius:2px;background:var(--grad);margin-bottom:22px}
+.a-meta{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:11.5px;color:var(--dim);margin-bottom:12px}
+.a-meta .divider{width:1px;height:9px;background:rgba(255,255,255,.14)}
+.a-title{font-size:clamp(26px,3.4vw,34px);line-height:1.32;letter-spacing:.01em;color:#fff;font-weight:800}
+.a-dek{font-size:14.5px;line-height:1.9;color:#A6ACC4;margin-top:14px}
+.a-foot{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:#5F657E;margin-top:18px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.takeaways{
+  margin-top:26px;padding:20px 22px 22px;border-radius:12px;
+  background:linear-gradient(120deg,rgba(255,61,154,.10),rgba(139,92,246,.10));
+  border:1px solid rgba(255,255,255,.08);border-left:3px solid var(--pink);
+}
+.takeaways h2{font-size:12px;letter-spacing:.12em;color:#FF9ACB;font-weight:700;margin-bottom:10px}
+.takeaways li{position:relative;padding-left:15px;font-size:13.5px;line-height:1.85;margin-top:5px;color:#CDD2E4}
+.takeaways li::before{content:"";position:absolute;left:0;top:10px;width:5px;height:5px;border-radius:50%;background:var(--grad-2)}
+.prose{margin-top:10px;color:#C2C7DA}
+.prose h2{font-size:20px;line-height:1.5;margin:34px 0 10px;color:#fff;font-weight:700}
+.prose p{font-size:14.5px;line-height:1.95;margin:0 0 14px}
+.prose ul{margin:2px 0 18px}
+.prose ul li{position:relative;padding-left:16px;font-size:14px;line-height:1.9;margin-bottom:6px}
+.prose ul li::before{content:"";position:absolute;left:2px;top:11px;width:5px;height:5px;border-radius:50%;background:var(--ac)}
+.prose .note{
+  border-left:3px solid var(--purple);padding:2px 0 2px 16px;
+  color:#9BA2BC;font-size:13px;line-height:1.9;margin:20px 0 8px;
+}
+.tbl-wrap{overflow-x:auto;margin:2px 0 20px}
+table.tbl{width:100%;min-width:520px;table-layout:fixed;border-collapse:collapse;font-size:13px}
+table.tbl th{
+  text-align:left;font-weight:600;color:#7D84A0;font-size:11.5px;letter-spacing:.04em;
+  padding:9px 10px;border-bottom:1px solid rgba(255,255,255,.16);background:transparent;
+}
+table.tbl td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.75;color:#C2C7DA;word-break:break-word}
+table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
+.related{margin-top:44px;padding-top:22px;border-top:1px solid var(--line)}
+.related h2{font-size:12px;letter-spacing:.1em;color:var(--dim);font-weight:700;margin-bottom:6px}
+.related a{display:flex;justify-content:space-between;gap:16px;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--line)}
+.related a:hover .rel-t{color:#FF9ACB}
+.rel-t{font-size:15px;font-weight:600;line-height:1.5;color:#E7EAF6;transition:color .2s ease}
+.rel-g{font-size:11.5px;color:var(--dim);white-space:nowrap}
+.a-end{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:30px}
+.a-end .back{font-size:12.5px}
+.progress{position:fixed;top:0;left:0;height:2px;background:var(--grad);width:0;z-index:60;transition:width .12s linear}
+.progress[hidden]{display:none}
+
+/* ---------- 复制反馈 ---------- */
 .u-toast{
   position:fixed;left:50%;bottom:26px;z-index:60;
   display:inline-flex;align-items:center;gap:10px;max-width:min(92vw,440px);
-  padding:11px 16px;border-radius:3px;
-  background:#F6F7F0;color:#1E2B26;border:1px solid #D5DAD2;
-  box-shadow:0 22px 46px -26px rgba(0,0,0,.85);
-  font-family:var(--sans);font-size:13px;line-height:1.5;
+  padding:11px 16px;border-radius:12px;
+  background:#1A1E33;color:#E8EBF6;border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 24px 50px -22px rgba(0,0,0,.95);
+  font-family:var(--sans);font-size:12.5px;line-height:1.5;
   opacity:0;transform:translate(-50%,14px);pointer-events:none;
   transition:opacity .18s ease,transform .22s cubic-bezier(.2,.8,.3,1);
 }
 .u-toast.show{opacity:1;transform:translate(-50%,0)}
-.u-toast .u-dot{width:7px;height:7px;border-radius:50%;background:#2F6B57;flex:0 0 auto}
-.u-toast.err .u-dot{background:#A23B4B}
-@media (max-width:560px){.u-toast{bottom:18px;font-size:12.5px;padding:10px 14px}}
+.u-toast .u-dot{width:7px;height:7px;border-radius:50%;background:var(--pink);flex:0 0 auto;box-shadow:0 0 0 3px rgba(255,61,154,.18)}
+.u-toast.err .u-dot{background:#FF6B8A;box-shadow:0 0 0 3px rgba(255,107,138,.18)}
 
+/* ---------- 滚动进场 ---------- */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.3,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- 响应式 ---------- */
+@media (max-width:1080px){
+  .game-row{grid-template-columns:160px minmax(0,1fr);gap:20px}
+  .game-hero{grid-template-columns:1fr}
+  .game-hero .info{border-left:0;border-top:1px solid var(--line);padding:30px 24px}
+}
+@media (max-width:900px){
+  .game-cards{grid-template-columns:1fr}
+}
+@media (max-width:860px){
+  .sec{padding-top:52px}
+  .route-sec{padding:36px 24px 40px;margin:52px 16px 0}
+  .route{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:34px}
+  .entries{grid-template-columns:1fr}
+  .nav{gap:16px}
+  .nav a{font-size:12.5px}
+  .foot-in{grid-template-columns:1fr}
+  .foot-nav{justify-content:flex-start}
+  .hero-in{padding:52px 18px 44px}
+  .hero-games{gap:10px;margin-top:30px}
+  .article{margin:24px 16px 0;padding:32px 26px 36px}
+}
+@media (max-width:560px){
+  .wrap{padding:0 16px}
+  .brand-sub{display:none}
+  .topbar-in{height:56px}
+  .hero-in{padding:40px 16px 36px}
+  .hero h1{font-size:clamp(30px,9vw,42px)}
+  .hero-desc{font-size:13.5px}
+  .hero-search{margin-top:22px;gap:8px}
+  .search input{height:48px;padding-left:42px;font-size:14px}
+  .hero-search-btn{height:48px;padding:0 18px;font-size:13px}
+  .hero-games{gap:8px;margin-top:24px}
+  .poster-tab{font-size:10px;padding:2px 7px;left:8px;top:8px}
+  .poster-label{padding:34px 10px 10px}
+  .poster-name{font-size:12.5px}
+  .poster-tag{display:none}
+  .poster-count{display:none}
+  .hero-stats{font-size:11.5px;margin-top:22px}
+  .hero-stats li+li::before{margin:0 10px}
+  .sec{padding-top:44px}
+  .sec-note{display:none}
+  .filters{padding:2px 0 12px}
+  .filter-row{
+    flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch;
+    -webkit-mask-image:linear-gradient(to right,#000 90%,transparent);
+    mask-image:linear-gradient(to right,#000 90%,transparent);
+  }
+  .filter-row .row-label{flex:0 0 auto;position:sticky;left:0;background:var(--bg);padding-right:6px;z-index:2}
+  .chip{flex:0 0 auto;min-height:34px}
+  .lib-bar{font-size:12px;padding:12px 0}
+  .entries{gap:10px}
+  .entry{padding:15px;gap:12px;border-radius:11px}
+  .entry-tab{flex:0 0 38px;height:38px;border-radius:9px;font-size:12px}
+  .entry-title{font-size:15.5px}
+  .entry-dek{font-size:12.5px;-webkit-line-clamp:3}
+  .route-sec{padding:28px 18px 30px;margin:44px 10px 0;border-radius:14px}
+  .route{grid-template-columns:1fr;row-gap:0;margin-top:32px}
+  .step{padding:30px 0 22px 20px}
+  .step::before{top:0;left:0;right:auto;width:1px;height:100%;background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.04))}
+  .step::after{top:34px;left:0;transform:translate(-50%,-50%)}
+  .step:first-child{padding-top:24px}
+  .step:first-child::after{top:28px}
+  .game-card-body{padding:16px 16px 18px}
+  .game-name{font-size:16.5px}
+  .cs-pill{min-height:42px}
+  .article{margin:18px 10px 0;padding:24px 18px 28px;border-radius:14px}
+  .a-title{font-size:23px}
+  .takeaways{padding:16px 16px 18px}
+  .prose h2{font-size:18px;margin-top:28px}
+  .prose p,.prose ul li{font-size:13.5px}
+  .related a{flex-direction:column;gap:3px;align-items:flex-start}
+  .game-hero .facts{grid-template-columns:1fr}
+  .game-hero .info{padding:24px 16px 26px}
+  .tbl-wrap{overflow:visible}
+  table.tbl, table.tbl tbody{display:block;min-width:0;table-layout:auto}
+  table.tbl colgroup{display:none}
+  table.tbl thead{display:none}
+  table.tbl tr{display:block;padding:12px 0 14px;border-bottom:1px solid var(--line)}
+  table.tbl td{display:block;border:0;padding:1px 0;line-height:1.75;font-size:12.5px}
+  table.tbl td:first-child{font-size:14.5px;font-weight:700;color:#fff;padding:0 0 5px}
+  table.tbl td:not(:first-child)::before{content:attr(data-label) "：";color:#7D84A0;font-size:11.5px;margin-right:4px}
+  .foot{padding:34px 0 28px;margin-top:44px}
+  .u-toast{bottom:18px;font-size:12px;padding:10px 14px}
+}
 @media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
   *{transition:none!important;animation:none!important}
   html{scroll-behavior:auto}
 }
+
 </style>
 </head>
 <body>
@@ -577,27 +610,35 @@ body::after{
     <div class="wrap hero-in">
       <div class="hero-type">
         <p class="hero-kicker">贰点零江湖 / 小小屠龙 / 桃园：将帅录</p>
-        <h1>攻略台</h1>
+        <h1>攻略<em>台</em></h1>
         <p class="hero-desc">三款游戏的攻略，收在一处。开荒怎么走、职业怎么选、材料什么时候卖、攻沙站哪里——按游戏和分类查，直接照着做。</p>
+        <div class="hero-search">
+          <div class="search">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+            <label class="sr" for="searchInput">搜索攻略</label>
+            <input id="searchInput" type="search" placeholder="搜标题、关键词，如 转生、摆摊" autocomplete="off">
+          </div>
+          <button class="hero-search-btn" type="button" id="heroSearchBtn">搜索攻略</button>
+        </div>
       </div>
       <div class="hero-games">
-        <a class="poster" href="#/g/ejl" style="--ac:#2F6B57">
+        <a class="poster" href="#/g/ejl" style="--ac:#2DD4A7">
           <img src="assets/hero-ejl.jpg" alt="贰点零江湖 游戏画面" width="750" height="1000">
           <span class="poster-tab">一</span>
           <span class="poster-label"><span class="poster-name">贰点零江湖</span><span class="poster-tag">复古武侠 · 三端互通</span></span>
-          <span class="poster-count">4 篇</span>
+          <span class="poster-count" data-count="ejl" data-count-fmt="{n} 篇">4 篇</span>
         </a>
-        <a class="poster" href="#/g/xxtl" style="--ac:#2A5D88">
+        <a class="poster" href="#/g/xxtl" style="--ac:#4C9AFF">
           <img src="assets/hero-xxtl.jpg" alt="小小屠龙 冰雪传奇 攻沙画面" width="750" height="1000" loading="lazy">
           <span class="poster-tab">二</span>
           <span class="poster-label"><span class="poster-name">小小屠龙</span><span class="poster-tag">冰雪复古 · 打宝攻沙</span></span>
-          <span class="poster-count">4 篇</span>
+          <span class="poster-count" data-count="xxtl" data-count-fmt="{n} 篇">4 篇</span>
         </a>
-        <a class="poster" href="#/g/ty" style="--ac:#A23B4B">
+        <a class="poster" href="#/g/ty" style="--ac:#FF6B8A">
           <img src="assets/hero-ty.jpg" alt="桃园：将帅录 主视觉" width="750" height="1000" loading="lazy">
           <span class="poster-tab">三</span>
           <span class="poster-label"><span class="poster-name">桃园：将帅录</span><span class="poster-tag">Q 版三国 · 回合策略</span></span>
-          <span class="poster-count">4 篇</span>
+          <span class="poster-count" data-count="ty" data-count-fmt="{n} 篇">4 篇</span>
         </a>
       </div>
       <ul class="hero-stats">
@@ -621,11 +662,6 @@ body::after{
       <div class="filter-group">
         <div class="filter-row" id="filterGame"><span class="row-label">游戏</span></div>
         <div class="filter-row" id="filterCat"><span class="row-label">分类</span></div>
-      </div>
-      <div class="search">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
-        <label class="sr" for="searchInput">搜索攻略</label>
-        <input id="searchInput" type="search" placeholder="搜标题、关键词，如 转生、摆摊" autocomplete="off">
       </div>
     </div>
 
@@ -686,7 +722,7 @@ body::after{
       </div>
     </div>
     <div class="game-cards">
-      <article class="game-card" style="--ac:#2F6B57">
+      <article class="game-card" style="--ac:#2DD4A7">
         <div class="game-thumb"><img src="assets/ejl-hero.jpg" alt="贰点零江湖 游戏场景" width="1264" height="628" loading="lazy"></div>
         <div class="game-card-body">
           <h3 class="game-name">贰点零江湖<span>复古武侠 · 三端互通</span></h3>
@@ -698,25 +734,25 @@ body::after{
             <div><dt>付费</dt><dd>无首充，仅月卡类便利特权</dd></div>
           </dl>
           <p class="cs-line"><span>获取游戏</span><button class="cs-pill" type="button" data-copy="ggboy6123"><b>游戏客服 ggboy6123</b><span class="cs-act">复制</span></button></p>
-          <div class="game-card-foot"><span class="game-count">收录 4 篇</span><a class="game-enter" href="#/g/ejl">进入分站</a></div>
+          <div class="game-card-foot"><span class="game-count" data-count="ejl" data-count-fmt="收录 {n} 篇">收录 4 篇</span><a class="game-enter" href="#/g/ejl">进入分站</a></div>
         </div>
       </article>
-      <article class="game-card" style="--ac:#2A5D88">
-        <div class="game-thumb"><img src="assets/xxtl-siege.jpg" alt="小小屠龙 冰雪攻城场景" width="1080" height="573" loading="lazy"></div>
+      <article class="game-card" style="--ac:#4C9AFF">
+        <div class="game-thumb"><img src="assets/xxtl-siege.jpg" alt="小小屠龙 冰雪攻城场景" width="1080" height="608" loading="lazy"></div>
         <div class="game-card-body">
           <h3 class="game-name">小小屠龙 · 冰雪传奇<span>冰雪复古 · 打宝攻沙</span></h3>
           <p class="game-intro">冰雪复古传奇：从起源冰城起步，攒够转生材料进二大陆冰雪之城。小怪概率出光柱，BOSS 定时刷新，非绑定装备可以自由摆摊交易。</p>
           <dl class="game-facts">
             <div><dt>起点</dt><dd>起源冰城</dd></div>
             <div><dt>进阶</dt><dd>二大陆 · 冰雪之城</dd></div>
-            <div><dt>职业</dt><dd>单职业版 / 幻变三职业版并行</dd></div>
+            <div><dt>职业</dt><dd>单职业</dd></div>
             <div><dt>交易</dt><dd>非绑定装备摆摊交易</dd></div>
           </dl>
           <p class="cs-line"><span>获取游戏</span><button class="cs-pill" type="button" data-copy="ggboy6123"><b>游戏客服 ggboy6123</b><span class="cs-act">复制</span></button></p>
-          <div class="game-card-foot"><span class="game-count">收录 4 篇</span><a class="game-enter" href="#/g/xxtl">进入分站</a></div>
+          <div class="game-card-foot"><span class="game-count" data-count="xxtl" data-count-fmt="收录 {n} 篇">收录 4 篇</span><a class="game-enter" href="#/g/xxtl">进入分站</a></div>
         </div>
       </article>
-      <article class="game-card" style="--ac:#A23B4B">
+      <article class="game-card" style="--ac:#FF6B8A">
         <div class="game-thumb"><img src="assets/ty-key.jpg" alt="桃园：将帅录 主视觉" width="1600" height="900" loading="lazy"></div>
         <div class="game-card-body">
           <h3 class="game-name">桃园：将帅录<span>Q 版三国 · 回合策略</span></h3>
@@ -728,7 +764,7 @@ body::after{
             <div><dt>平台</dt><dd>安卓 / iOS / PC 三端互通</dd></div>
           </dl>
           <p class="cs-line"><span>获取游戏</span><button class="cs-pill" type="button" data-copy="ggboy6123"><b>游戏客服 ggboy6123</b><span class="cs-act">复制</span></button></p>
-          <div class="game-card-foot"><span class="game-count">收录 4 篇</span><a class="game-enter" href="#/g/ty">进入分站</a></div>
+          <div class="game-card-foot"><span class="game-count" data-count="ty" data-count-fmt="收录 {n} 篇">收录 4 篇</span><a class="game-enter" href="#/g/ty">进入分站</a></div>
         </div>
       </article>
     </div>
@@ -760,8 +796,8 @@ body::after{
       <div class="backline"><a class="back" href="#/" data-goto="library"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 12H5"/><path d="M11 18l-6-6 6-6"/></svg>返回总站攻略库</a></div>
       <section class="sec" style="margin-top:26px">
         <div class="sec-head"><div>
-          <h2 class="sec-title">贰点零江湖 · 全部 4 篇</h2>
-          <p class="sec-desc">按四层地图的节奏排的：先解决走出新手村，再解决职业、家底和组队收益。</p>
+          <h2 class="sec-title">贰点零江湖 · 全部 <span data-count="ejl" data-count-fmt="{n}">4</span> 篇</h2>
+          <p class="sec-desc">按阶段排的：先走出新手村，再解决职业、挂机点位、强化投入、组队分收益，最后才轮到阵营战。</p>
         </div></div>
         <div class="entries" data-entries="ejl"></div>
       </section>
@@ -771,7 +807,7 @@ body::after{
   <!-- ===== 分站：小小屠龙 ===== -->
   <section class="game-page" data-game="xxtl" hidden>
     <div class="game-hero">
-      <div class="art"><img src="assets/xxtl-siege.jpg" alt="小小屠龙 冰雪攻城画面" width="1080" height="573"></div>
+      <div class="art"><img src="assets/xxtl-siege.jpg" alt="小小屠龙 冰雪攻城画面" width="1080" height="608"></div>
       <div class="info">
         <p class="tagline">冰雪复古 · 打宝攻沙</p>
         <h1>小小屠龙 · 冰雪传奇</h1>
@@ -779,7 +815,7 @@ body::after{
         <div class="facts">
           <div><b>起点</b><span>起源冰城</span></div>
           <div><b>进阶</b><span>二大陆 · 冰雪之城</span></div>
-          <div><b>职业</b><span>单职业版 / 幻变三职业版并行</span></div>
+          <div><b>职业</b><span>单职业</span></div>
           <div><b>交易</b><span>非绑定装备摆摊交易</span></div>
         </div>
         <p class="cs-line"><span>获取游戏 · 开服咨询</span><button class="cs-pill dark" type="button" data-copy="ggboy6123"><b>游戏客服 ggboy6123</b><span class="cs-act">复制</span></button></p>
@@ -789,8 +825,8 @@ body::after{
       <div class="backline"><a class="back" href="#/" data-goto="library"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 12H5"/><path d="M11 18l-6-6 6-6"/></svg>返回总站攻略库</a></div>
       <section class="sec" style="margin-top:26px">
         <div class="sec-head"><div>
-          <h2 class="sec-title">小小屠龙 · 全部 4 篇</h2>
-          <p class="sec-desc">从第一周转生，到切职业、出货定价，再到攻沙站位，四篇覆盖一个散人的完整循环。</p>
+          <h2 class="sec-title">小小屠龙 · 全部 <span data-count="xxtl" data-count-fmt="{n}">4</span> 篇</h2>
+          <p class="sec-desc">从第一周转生，到切职业、选挂机图、出货定价，再到选行会与攻沙站位——一个散人的完整循环。</p>
         </div></div>
         <div class="entries" data-entries="xxtl"></div>
       </section>
@@ -818,8 +854,8 @@ body::after{
       <div class="backline"><a class="back" href="#/" data-goto="library"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 12H5"/><path d="M11 18l-6-6 6-6"/></svg>返回总站攻略库</a></div>
       <section class="sec" style="margin-top:26px">
         <div class="sec-head"><div>
-          <h2 class="sec-title">桃园：将帅录 · 全部 4 篇</h2>
-          <p class="sec-desc">开局资源、阵容站位、战宠培养和省钱玩法：不靠数值，靠把每一步做对。</p>
+          <h2 class="sec-title">桃园：将帅录 · 全部 <span data-count="ty" data-count-fmt="{n}">4</span> 篇</h2>
+          <p class="sec-desc">开局资源、属性加点、武将培养、阵容站位、卡关排查、战宠培育与军团战：不靠数值，靠把每一步做对。</p>
         </div></div>
         <div class="entries" data-entries="ty"></div>
       </section>
@@ -859,9 +895,9 @@ body::after{
 <script>
 /* ===== 数据 ===== */
 const GAMES = {
-  ejl: { id: 'ejl', short: '江', name: '贰点零江湖', tag: '复古武侠 · 三端互通', accent: '#2F6B57' },
-  xxtl: { id: 'xxtl', short: '雪', name: '小小屠龙 · 冰雪传奇', tag: '冰雪复古 · 打宝攻沙', accent: '#2A5D88' },
-  ty: { id: 'ty', short: '桃', name: '桃园：将帅录', tag: 'Q 版三国 · 回合策略', accent: '#A23B4B' }
+  ejl: { id: 'ejl', short: '江', name: '贰点零江湖', tag: '复古武侠 · 三端互通', accent: '#2DD4A7' },
+  xxtl: { id: 'xxtl', short: '雪', name: '小小屠龙 · 冰雪传奇', tag: '冰雪复古 · 打宝攻沙', accent: '#4C9AFF' },
+  ty: { id: 'ty', short: '桃', name: '桃园：将帅录', tag: 'Q 版三国 · 回合策略', accent: '#FF6B8A' }
 };
 
 const CATS = {
@@ -1092,6 +1128,46 @@ const GUIDES = [
     ]
   },
   {
+    id: 'ty-pet-guide', game: 'ty', cat: 'lineup', level: '进阶',
+    title: '战宠从抓到毕业：五步把一只练到能上场',
+    dek: '选亚种、抓、洗、合、打书，每一步都有能省钱的做法。零氪也能养出一只能上场的毕业宠。',
+    take: ['野生宠不能参与任何合成，抓到直接放生', '洗宠三种道具用途完全不同，别用混', '打书顺序错了，最贵的核心技能会被顶掉', '资质决定上限，技能决定它能不能用'],
+    blocks: [
+      { t: 'h', v: '第一步：先分清亚种' },
+      { t: 'p', v: '宠物的资质上限由亚种决定，优先级从高到低是：魔兽、变异、宝宝、野生。这条线决定了它值不值得投入，抓之前先看一眼。' },
+      { t: 'table', w: [16, 28, 56], head: ['亚种', '定位', '怎么用'], rows: [
+        ['野生', '临时凑图鉴、做抓宠日常', '资质最低，且不能参与资质合成与技能合成'],
+        ['宝宝', '开荒过渡主力', '容易捕捉、材料消耗低，洗出基础技能就能上阵'],
+        ['变异', '中期主力', '资质上限优秀，性价比最高'],
+        ['魔兽', '毕业追求', '上限天花板，养成成本高，适合长期玩']
+      ] },
+      { t: 'p', v: '红线只有一条：野生宠物不能参与资质合成、技能合成。抓到野生直接放生，别在它身上花任何道具。' },
+      { t: 'h', v: '抓：符箓分三档，残血再抓' },
+      { t: 'p', v: '捕捉靠降魔符箓，铜、银、金三档，品质越高成功率越高。成功率还和怪物剩余血量、图鉴解锁情况、稀有度挂钩——打残之后再抓，效率明显更高。抓之前记得留出宠物栏空位，满了就抓不了。' },
+      { t: 'h', v: '洗：三种道具别用混' },
+      { t: 'table', w: [16, 44, 40], head: ['道具', '动什么', '什么时候用'], rows: [
+        ['蟠桃', '等级重置为 1 级，资质与技能全部重刷，品质不变', '想彻底重来一只'],
+        ['返生丹', '等级保留，资质技能随机刷新，有概率提升亚种品质', '主力宠赌变异、魔兽'],
+        ['还童丹', '只把等级和属性点归零，资质、技能、品质都不动', '单纯重置加点']
+      ] },
+      { t: 'p', v: '前期过渡宠不用洗，等 55、65 级这类高携带等级的目标宠再集中返生丹。洗出满意的成长和核心天赋后，先把技能锁住，别让专属天赋被下一次洗掉。' },
+      { t: 'h', v: '合：资质和技能是两条线' },
+      { t: 'p', v: '合成分资质合成和技能合成，都要求主副宠非野生，还有等级门槛和种族限制——近战、骑兵不能跨类型乱合。' },
+      { t: 'ul', v: ['资质合成：主宠 ≥40 级、副宠 ≥30 级，拉高各项资质，到上限就提不动了', '技能合成：主副宠都 ≥20 级，把副宠的优质技能移植给主宠，可放强化道具提高成功率'] },
+      { t: 'p', v: '合成消耗铜钱和道具，别拿垃圾副宠试手，提前挑好带优质技能的胚子。' },
+      { t: 'h', v: '打书：顺序错了亏到哭' },
+      { t: 'p', v: '固定流程是：先用廉价低级兽决垫书开格子，再打便宜的高级书打底，最贵的核心技能最后上，护符兜底。护符自带的技能不会被打书顶掉，平民优先攒双技能护符。' },
+      { t: 'table', w: [26, 74], head: ['用途', '技能搭配'], rows: [
+        ['物攻输出（挂机推图）', '连击 + 必杀 + 偷袭 + 吸血，进阶补强力、保命'],
+        ['法攻', '法连 + 法爆 + 法穿 + 灵性，备选灼烧、保命'],
+        ['血耐盾（BOSS、PK）', '固守、自愈、反震、保命，用来扛伤害']
+      ] },
+      { t: 'h', v: '加点：按职责分' },
+      { t: 'ul', v: ['武力（物攻、物爆）：攻宠 5 武力，或 4 武力 1 敏捷走先手', '智力（法攻、法爆）：法宠 5 智力，或 4 智力 1 敏捷', '耐力（物防、气血）：血耐盾 3 耐 2 体，或全耐', '敏捷（速度、闪避）：高速控制宠优先', '技巧（命中、暴击）：一般不做主属性，少量补点'] },
+      { t: 'note', v: '加错点可以用回元珠洗点，资质与技能不受影响。等级门槛、掉率与技能池以本服版本为准。' }
+    ]
+  },
+  {
     id: 'ty-budget', game: 'ty', cat: 'money', level: '入门',
     title: '不卷数值怎么玩：慢节奏的资源账',
     dek: '这游戏主打策略、不靠数值碾压，意味着耐心比充值更值钱。',
@@ -1106,6 +1182,247 @@ const GUIDES = [
       { t: 'h', v: '卡关的处理顺序' },
       { t: 'p', v: '先看战报，判断是站不住还是打不动：站不住就加盾或辅助，打不动就换输出或调速。改完再打一次，比直接升级省资源。' },
       { t: 'note', v: '慢节奏游戏的进度差异主要来自日常完成度，不是充值额度。' }
+    ]
+  },
+  {
+    id: 'ejl-level', game: 'ejl', cat: 'start', level: '入门',
+    title: '挂机点位怎么挑：密度、掉落与回城距离',
+    dek: '同样挂两小时，点位选错差一截。判断一个点好不好，只看三件事。',
+    take: ['怪密度优先于地图等级，怪少的高图不如怪多的低图', '精英点看刷新间隔，不看单只掉落有多好', '回城超过 40 秒的点，收益会被路程吃掉', '有人抢就挪一格，别站在原地等刷新'],
+    blocks: [
+      { t: 'h', v: '三个指标，按顺序看' },
+      { t: 'p', v: '点位没有绝对的好坏，只有适不适合你现在的阶段。先看怪密度，它决定单位时间能打多少只；再看精英刷新，它决定有没有额外掉落；最后看回城距离，它决定你补药和清包的频率。' },
+      { t: 'table', w: [24, 32, 44], head: ['指标', '怎么看', '影响'], rows: [
+        ['怪物密度', '站定 3 分钟，数击杀数与刷新间隔', '直接决定经验与掉落的基数'],
+        ['精英刷新', '看精英怪多久回一次、周围小怪多不多', '决定额外掉落的稳定性'],
+        ['回城距离', '从点位跑回主城要多久', '超过 40 秒，背包和药会把收益吃掉']
+      ] },
+      { t: 'h', v: '十分钟测点法' },
+      { t: 'p', v: '别凭感觉。找一个候选点，站定打十分钟，记三个数：击杀数、掉落件数、背包占了几格。换一个点再测十分钟，两组数字一比，选哪个不用纠结。这一步花二十分钟，能省掉后面几小时的无效挂机。' },
+      { t: 'h', v: '人多的时候去哪' },
+      { t: 'ul', v: ['往同图的边缘带挪，密度略低但没人抢', '换成同等级的相邻图，收益接近、竞争更少', '真正热门的点只在人少时段去，比如清晨'] },
+      { t: 'p', v: '抢怪最亏的不是少打几只，是你为了抢怪一直在移动，实际输出时间被切碎了。' },
+      { t: 'h', v: '什么时候该换点' },
+      { t: 'p', v: '出现这三种情况就换：打完一轮要等刷新的空窗变长、背包十分钟就满、附近开始有人长期蹲守。前两个说明这个点对你已经不够用，第三个说明它变成了 PK 场。' },
+      { t: 'note', v: '各服的刷怪密度和掉落配置不同，上面的时间是经验值，具体以你实测为准。' }
+    ]
+  },
+  {
+    id: 'ejl-gear', game: 'ejl', cat: 'money', level: '进阶',
+    title: '强化材料先给谁：武器、防具与洗练的顺序',
+    dek: '前期的强化石永远不够。与其每件都点两下，不如算清楚哪一件会跟你最久。',
+    take: ['武器永远第一优先，它决定清怪速度', '防具只补一件过线的，别全套平均', '洗练放到装备定型后再做，过渡装洗了就是扔钱', '会掉级的强化段，先垫再点，别硬顶'],
+    blocks: [
+      { t: 'h', v: '先看这件装备能穿多久' },
+      { t: 'p', v: '强化的成本不是花在装备上，是花在时间上。一件 20 级的武器你可能只穿两小时，一件 40 级的能穿三天。同样一颗强化石，放在后者身上回报高得多。判断标准只有一条：下一阶段的门槛是多少级，跨过去要多久。' },
+      { t: 'h', v: '部位的优先级' },
+      { t: 'table', w: [18, 20, 62], head: ['部位', '优先级', '为什么'], rows: [
+        ['武器', '最高', '直接决定清怪速度，是其他所有收益的乘数'],
+        ['衣服', '次高', '血量与防御，决定你能站哪张图'],
+        ['头盔、护腕', '中', '属性幅度小，材料富余时再补'],
+        ['鞋、腰带', '低', '除非卡移速或卡抗性，否则最后再说']
+      ] },
+      { t: 'p', v: '一套装备里，通常只有武器和衣服值得吃满材料。剩下的部位能穿就行，等材料溢出了再补——那时候你大概已经换过两轮装备。' },
+      { t: 'h', v: '强化的边际在哪' },
+      { t: 'p', v: '强化等级越高，单级消耗涨得越快，成功率却不一定跟着涨。多数区服会在某一段开始掉级或降档，那一段就是性价比的拐点。到这儿先停手，把材料留给下一件装备，比硬顶一级划算。' },
+      { t: 'h', v: '洗练与镶嵌什么时候做' },
+      { t: 'ul', v: ['洗练：等装备定型后再做，过渡装上洗等于扔钱', '镶嵌：优先补你缺的那一项，别追满孔', '宝石能拆下来复用，洗练词条不能——记住这个差别'] },
+      { t: 'h', v: '材料从哪来' },
+      { t: 'ul', v: ['副本每天清完，这是最稳的来源', '精英怪与野外 BOSS，看运气但总量大', '回收绑定装备，别让背包塞满废品'] },
+      { t: 'note', v: '强化成功率与掉级规则各区服不同，动手前先看一眼本服的强化面板说明。' }
+    ]
+  },
+  {
+    id: 'ejl-war', game: 'ejl', cat: 'war', level: '硬核',
+    title: '阵营战与攻城：破门、夺旗、守点三段节奏',
+    dek: '阵营战不是野外 PK 的放大版。谁顶门口、谁拆建筑、谁断补给，开打前就得定死。',
+    take: ['攻城分三段：破门、夺旗、守点，节奏不能乱', '刀客顶门口，弓手站城墙下，医师跟中军', '药和回城放快捷栏，死了别原地复活', '穿一套能打但不心疼的装备'],
+    blocks: [
+      { t: 'h', v: '开打前的十分钟' },
+      { t: 'ul', v: ['集合点报数，确认实际在线人数', '统一药品和装备要求，别到场上才发现没带', '确认指挥频道，战术不在公屏讲'] },
+      { t: 'p', v: '阵营战最常见的失败原因不是打不过，是人到了、药没带、装备穿错。这三件事在开打前就能解决。' },
+      { t: 'h', v: '三段节奏' },
+      { t: 'table', w: [16, 30, 54], head: ['阶段', '目标', '站位'], rows: [
+        ['破门', '拆掉城门与外围建筑', '刀客贴门，弓手在城墙外输出，医师守中军'],
+        ['夺旗', '抢到旗点并清掉守军', '突进组走侧门，主力从正门压'],
+        ['守点', '守住旗点到结算', '盾战堆在旗点，输出散开防范围']
+      ] },
+      { t: 'p', v: '三段之间不要来回切。破门没完就去抢旗，队形会被门口的守军切成两半，两边都打不动。' },
+      { t: 'h', v: '分工' },
+      { t: 'ul', v: ['刀客：门口第一排，任务是不让对面出城', '弓手：城墙下打范围，别往前压', '医师：跟住中军，优先保前排', '剑客与枪客：绕侧翼，专切对面后排和治疗'] },
+      { t: 'h', v: '死了之后' },
+      { t: 'p', v: '原地复活等于把装备再送一次。回城补药再跟队，虽然多花一分钟，但复活点距离决定你要不要每次都带满药。' },
+      { t: 'note', v: '各服对阵营战与 PK 死亡的掉落规则不同，进场前先确认，规则严的话换一套便宜的装备去打。' }
+    ]
+  },
+  {
+    id: 'xxtl-boss', game: 'xxtl', cat: 'boss', level: '进阶',
+    title: 'BOSS 蹲点：记三个时间，站两个位置',
+    dek: '冰雪服的 BOSS 是定时资源。记全表没意义，记住你抢得到的那三只就够。',
+    take: ['只蹲三只：离得近、打得动、掉落有用', '提前两分钟到位，别等公告再跑', '贴墙站，别堵门口——门口最先被清', '带一套能打但不心疼的装备'],
+    blocks: [
+      { t: 'h', v: '为什么只记三个' },
+      { t: 'p', v: '刷新表越全，越容易把时间浪费在路上。选三只就够：一只离你常驻点近的、一只你现在打得动的、一只掉落正好是你缺的。剩下的等你装备上来再说。' },
+      { t: 'h', v: '时间怎么记' },
+      { t: 'ul', v: ['记上一次被击杀的时间，加上刷新间隔，就是下一次', '写在行会公告或便签里，别靠脑子', '提前两分钟到位，剩下一分钟用来清周围的小怪'] },
+      { t: 'h', v: '站位' },
+      { t: 'p', v: '贴墙站，别堵门口。门口是所有人进出的必经之路，也是最先被清的位置；贴墙让你有退路，也不会挡自己人的路。BOSS 拉在墙角打，范围技能不会波及路过的散人，少一半麻烦。' },
+      { t: 'h', v: '被抢了怎么办' },
+      { t: 'p', v: '打不过就走，别在原地耗。冰雪服的产出不止 BOSS，小怪光柱是散人更稳的来源。把蹲 BOSS 的时间压到三成，剩下七成挂小怪，长期收益反而高。' },
+      { t: 'note', v: '刷新间隔与掉落配置以本服公告为准，本文只讲方法。' }
+    ]
+  },
+  {
+    id: 'xxtl-map', game: 'xxtl', cat: 'start', level: '进阶',
+    title: '二大陆选图：怪密度与回收距离的取舍',
+    dek: '进了冰雪之城，选图的逻辑就变了：不是哪张经验高，而是哪张能待满一小时不被清。',
+    take: ['先看离安全区多远，再看怪密度', 'PK 高发图只在人少时段去', '回收点近的图，实际收益高一截', '二大陆回城代价高，带满药再进'],
+    blocks: [
+      { t: 'h', v: '三条判断线' },
+      { t: 'table', w: [22, 34, 44], head: ['看什么', '好的样子', '差的样子'], rows: [
+        ['离安全区', '一两屏能跑回', '要穿过两张图，路上还有人'],
+        ['怪密度', '站定就有怪，几乎不用走', '要绕半圈才凑一堆'],
+        ['回收便利', '城里有回收 NPC 或快速回收', '只能背回起源冰城处理']
+      ] },
+      { t: 'h', v: '时段比地图重要' },
+      { t: 'p', v: '同一张图，晚上八点和凌晨两点是两个世界。热门图放在人少时段去，冷门图放在高峰时段挂，两边都能吃满。硬要在高峰挤热门图，实际有效输出时间会掉一半。' },
+      { t: 'h', v: '背包与回收' },
+      { t: 'ul', v: ['进图前清空背包，只留药和回城', '设定好自动回收的规则，别让白装占格', '贵重物品当场存仓，别背着一包货去打怪'] },
+      { t: 'h', v: '什么时候该换图' },
+      { t: 'p', v: '当你开始频繁被清、或者打一只怪要嗑两瓶药，就说明这张图对你不合适了。往下退一张，效率立刻回来——练级不是爬楼梯，没必要一步不落。' },
+      { t: 'note', v: '二大陆的地图结构与掉落各服差异较大，以你所在区服的实际地图为准。' }
+    ]
+  },
+  {
+    id: 'xxtl-guild', game: 'xxtl', cat: 'war', level: '进阶',
+    title: '选行会看三件事：在线人数、指挥、分配',
+    dek: '攻沙能不能打，一半在开打前就定了。行会选错，装备再好也只是别人的战功。',
+    take: ['看晚上八点的在线人数，不看总人数', '攻沙分配规则要当面问清，再决定交不交材料', '有固定指挥的行会，散人也打得动', '行会技能与仓库，是长期收益的大头'],
+    blocks: [
+      { t: 'h', v: '三个硬指标' },
+      { t: 'ul', v: ['在线人数：晚上八点数一次，低于二十人基本打不了攻沙', '指挥：有没有人固定带队，还是靠公屏喊', '分配：装备、材料、攻沙奖励怎么分，白纸黑字最好'] },
+      { t: 'p', v: '前两条决定能不能打，第三条决定你能拿多少。很多人只看第一条，进了大会才发现自己永远排在队尾。' },
+      { t: 'h', v: '分配规则要问清的四句话' },
+      { t: 'ul', v: ['BOSS 掉落是归队还是归会', '攻沙奖励按出勤还是按贡献', '上交材料有没有补回', '长期不上线会不会被清出会'] },
+      { t: 'h', v: '散人怎么自处' },
+      { t: 'p', v: '不想被安排的话，选一个中等规模、要求不严的行会：行会技能能吃满，攻沙跟着走，平时自己挂自己的。大会的资源多，但时间和纪律的成本也高。' },
+      { t: 'h', v: '什么时候该换' },
+      { t: 'p', v: '两种情况果断走：连续两周攻沙没人组织，或者分配明显偏向小圈子。行会技能可以重新点，被消耗掉的时间和材料回不来。' },
+      { t: 'note', v: '行会功能与攻沙规则以本服为准，本文只讲判断方法。' }
+    ]
+  },
+  {
+    id: 'ty-grow', game: 'ty', cat: 'cls', level: '进阶',
+    title: '武将培养的三条线：等级、星级、兵种',
+    dek: '三条线各有各的卡点。先升哪条，取决于你现在卡在哪一环。',
+    take: ['等级是门槛，星级是上限，兵种是克制', '顺序：先等级，再星级，兵种最后补', '升星材料只给主输出和一个前排', '兵种克制只在同定位之间有实际意义'],
+    blocks: [
+      { t: 'h', v: '三条线分别解决什么' },
+      { t: 'table', w: [18, 30, 52], head: ['线', '解决什么', '卡住时的表现'], rows: [
+        ['等级', '能不能上阵、技能能不能开', '推图提示等级不足，或被对面先手压死'],
+        ['星级', '属性上限与技能强度', '站得住但打不动，回合数拖长后崩'],
+        ['兵种', '被克制关系影响', '同阵容打同一关，换个对手就崩']
+      ] },
+      { t: 'h', v: '资源顺序' },
+      { t: 'p', v: '等级最先，因为它便宜且是硬门槛；星级次之，它吃材料但抬上限；兵种最后，因为转换成本高，且只影响特定对局。把顺序颠倒，最常见的后果是：星级堆上去了，等级不够上不了阵。' },
+      { t: 'h', v: '别把材料摊在七个将上' },
+      { t: 'p', v: '升星材料只给主输出和一个前排。其他位置用等级和装备顶着就行，等主力成型再往外扩。摊平的结果是每个将都差一档，遇到需要硬扛的关卡全线崩。' },
+      { t: 'h', v: '兵种什么时候转' },
+      { t: 'ul', v: ['只在卡关反复失败、且确认是被克制时才转', '优先转前排，它决定队伍能撑几轮', '转之前看清楚克制链，别转完发现还是一样'] },
+      { t: 'note', v: '各武将的兵种适性与技能不同，具体以游戏内面板为准。' }
+    ]
+  },
+  {
+    id: 'ty-attr', game: 'ty', cat: 'cls', level: '进阶',
+    title: '五大属性与 12 条转职分支加点',
+    dek: '每级 5 点潜能，加点不是玄学。先把定位想清楚，再决定这 5 点往哪放。',
+    take: ['没有万能加点，先定定位再分点', '12 条分支本质是五项属性的不同配比', '纯坦克别堆敏捷，PVP 人人都要敏捷', '换分支之后必须重置加点'],
+    blocks: [
+      { t: 'h', v: '五项属性各管什么' },
+      { t: 'p', v: '每升一级得 5 点潜能，全部效果都来自这五项。先搞清楚收益，再加点。' },
+      { t: 'table', w: [14, 40, 46], head: ['属性', '提升', '谁最需要'], rows: [
+        ['武力', '物理伤害、物理暴击', '带甲系列，兼顾输出与承伤'],
+        ['智力', '法术伤害、治疗量、法术技能命中', '百家，奶妈、法系输出、封印控制都靠它'],
+        ['技巧', '物攻、暴击率、命中值', '控弦，解决打 BOSS 闪避、暴击不足'],
+        ['敏捷', '出手速度、闪避', '几乎所有的 PVP 流派，先手封印与先手爆发'],
+        ['耐力', '气血上限、物理防御', '前排坦克，副本扛伤必备']
+      ] },
+      { t: 'h', v: '加点前先回答三个问题' },
+      { t: 'ul', v: ['这个分支在队里干什么：承伤、输出，还是控场', '主玩 PVE 还是 PVP：PVP 对速度的要求高一档', '队伍现在缺什么：缺坦补耐，缺速补敏'] },
+      { t: 'p', v: '这三个答案定了，加点基本就定了。反过来先抄一套点，再问自己为什么这么加，通常加不出效果。' },
+      { t: 'h', v: '带甲：虎卫、禁卫、骁骑' },
+      { t: 'table', w: [22, 22, 56], head: ['分支', '加点', '思路'], rows: [
+        ['虎卫', '3 武力 2 耐力', '攻防均衡，单刷容错高，新手首选'],
+        ['禁卫', '2 武力 3 耐力', '耐力拉满站得住，少量武力维持仇恨，组队 PVE 主 T'],
+        ['骁骑', '3 武力 2 敏捷', '靠敏捷抢先手打连击，身板比虎卫脆，偏高 PVP 单点突袭']
+      ] },
+      { t: 'h', v: '侠客：刺客、剑客、先登死士' },
+      { t: 'table', w: [22, 26, 52], head: ['分支', '加点', '思路'], rows: [
+        ['刺客', '3 敏捷 2 技巧', '敏捷抢一速，技巧堆暴击命中，开局秒对面输出'],
+        ['剑客', '2 敏捷 3 技巧', '保证基础速度，重点拉技巧，稳定命中与持续输出'],
+        ['先登死士', '3 敏捷 2 技巧', '模板同刺客；想提容错可改 2 敏 2 技 1 耐']
+      ] },
+      { t: 'h', v: '控弦：强弓、劲弩、白马义从' },
+      { t: 'table', w: [22, 26, 52], head: ['分支', '加点', '思路'], rows: [
+        ['强弓', '3 技巧 2 敏捷', '技巧拉群伤暴击，日常清图与挂机最快'],
+        ['劲弩', '3 技巧 2 敏捷', '加点同强弓，靠技能破甲打单体，挑战本专用'],
+        ['白马义从', '2 技巧 3 敏捷', '速度拉满，持续拉扯消耗，不追求一波爆发']
+      ] },
+      { t: 'h', v: '百家：学士、策士、道士' },
+      { t: 'table', w: [22, 26, 52], head: ['分支', '加点', '思路'], rows: [
+        ['学士', '3 智力 2 敏捷', '智力拉治疗量，敏捷保证提前抬血'],
+        ['策士', '3 智力 2 敏捷', '智力堆法伤，敏捷抢出手，先手打群法爆发'],
+        ['道士', '2 智力 3 敏捷', '速度第一，必须比对面输出更快封印；智力补命中']
+      ] },
+      { t: 'h', v: '四条通用规则' },
+      { t: 'ul', v: ['纯坦克别盲目堆敏捷，任务是承伤，速度够用就行', 'PVP 里敏捷收益普遍更高，输出与控制都要分配', '零氪优先选均衡向分支：虎卫、强弓、学士，养成压力小', '云职业切分支之后一定要重点潜能点，别一套点法硬玩所有流派'] },
+      { t: 'note', v: '加点只是基础框架，最终按装备、将星和玩法微调。各分支技能与数值以游戏内面板为准。' }
+    ]
+  },
+  {
+    id: 'ty-boss', game: 'ty', cat: 'boss', level: '进阶',
+    title: '推图卡关排查：站不住、打不动，还是节奏慢',
+    dek: '卡关别急着升级。先看战报，判断是哪一种失败，再对症下药。',
+    take: ['站不住：加盾或辅助，不是加输出', '打不动：换输出或调速，让爆发对上关键回合', '节奏慢：多半是治疗溢出、输出空转', '三回合内崩盘，基本是站位问题'],
+    blocks: [
+      { t: 'h', v: '先给失败分类' },
+      { t: 'table', w: [22, 34, 44], head: ['症状', '多半是', '怎么改'], rows: [
+        ['两三个回合内被清', '站位或前排不够硬', '加盾、换站位，让输出别站第一排'],
+        ['拖到最后回合打不完', '输出不足或爆发时机不对', '换输出、调速，把爆发压到关键回合'],
+        ['血量一直满但推进慢', '治疗溢出、输出空转', '撤一个辅助换输出，别怕掉血'],
+        ['被一个技能连锁打崩', '缺少控制或解控', '补谋士，打断对面的出手顺序']
+      ] },
+      { t: 'h', v: '战报看三处' },
+      { t: 'ul', v: ['第一回合谁先动：先手权在你还是在对面', '崩的那一回合：是盾倒了，还是被控住了', '最后三回合：输出在打谁，有没有打到盾上'] },
+      { t: 'p', v: '大多数人只看总伤害，其实关键信息在回合顺序里。同样一套阵容，先手顺序变一下，结果能差一整关。' },
+      { t: 'h', v: '三种常见误判' },
+      { t: 'ul', v: ['把等级不够当成阵容问题，练级能过就别改阵容', '把站位问题当成数值问题，加资源只能多撑一回合', '看到别人通关就照抄，忽略自己的武将池'] },
+      { t: 'h', v: '什么时候该老老实实练级' },
+      { t: 'p', v: '如果战报显示你的盾在第一回合就被打穿，那不是策略问题，是等级和装备的硬差距。这时候改阵容只是把崩溃往后推一回合，先把等级补齐更快。' },
+      { t: 'note', v: '具体关卡的机制与武将数值以游戏内为准，本文给的是排查顺序。' }
+    ]
+  },
+  {
+    id: 'ty-war', game: 'ty', cat: 'war', level: '进阶',
+    title: '军团战：掠阵位与先手权的取舍',
+    dek: '军团战不是拼总战力，是拼谁先把对面的核心打哑。',
+    take: ['先手权比伤害重要，调速优先于升星', '掠阵放侧翼，别放正面', '一队打穿不如三队拖住', '开打前确认集合时间与替补'],
+    blocks: [
+      { t: 'h', v: '先手权怎么来的' },
+      { t: 'p', v: '速度决定出手，出手决定谁先落下控制和增益。军团战里，先手方往往能在对面核心行动前把它打哑；后手方就算总战力更高，也可能一轮都放不出技能。' },
+      { t: 'h', v: '站位与目标' },
+      { t: 'table', w: [20, 30, 50], head: ['位置', '放谁', '任务'], rows: [
+        ['前排', '盾系', '吃第一轮伤害，把回合数拖出来'],
+        ['中排', '谋士、辅助', '控场与增益，抢在对面输出前落下'],
+        ['后排', '弓手', '稳定输出，优先打对面治疗'],
+        ['侧翼', '突骑、掠阵', '绕过前排切核心，别放正面']
+      ] },
+      { t: 'p', v: '掠阵的价值在压制与增益，放在正面等于浪费——它需要绕到侧翼才能作用到对面的关键位。' },
+      { t: 'h', v: '分队思路' },
+      { t: 'p', v: '军团战看的是总推进，不是单场胜负。与其把资源堆成一队打穿一路，不如分成三队：一队主力攻坚，两队拖住对面的主力。拖住的那两队不需要赢，只需要让对面赢不了太快。' },
+      { t: 'h', v: '开打前' },
+      { t: 'ul', v: ['确认集合时间，迟到的一方通常先丢一路', '安排替补，有人掉线要能立刻补位', '统一目标：先打哪一路，谁去拖谁'] },
+      { t: 'note', v: '军团战的规则、时间与匹配方式以本服为准，本文只讲站位与分工逻辑。' }
     ]
   }
 ];
@@ -1307,7 +1624,19 @@ searchInput.addEventListener('keydown', e => {
     state.q = '';
     renderEntries();
   }
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    jumpToLibrary();
+  }
 });
+/* Banner 搜索按钮：滚动到攻略库并聚焦输入 */
+function jumpToLibrary() {
+  const lib = document.getElementById('library');
+  if (lib) lib.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  setTimeout(() => searchInput.focus({ preventScroll: true }), 420);
+}
+const heroSearchBtn = document.getElementById('heroSearchBtn');
+if (heroSearchBtn) heroSearchBtn.addEventListener('click', jumpToLibrary);
 clearFilter.addEventListener('click', () => {
   state.game = 'all';
   state.cat = 'all';
@@ -1390,16 +1719,54 @@ document.addEventListener('click', function (e) {
 });
 
 /* ---------- 启动 ---------- */
+function fillCounts() {
+  document.querySelectorAll('[data-count]').forEach(function (el) {
+    var k = el.dataset.count;
+    var n = k === 'all' ? GUIDES.length : GUIDES.filter(function (g) { return g.game === k; }).length;
+    el.textContent = (el.dataset.countFmt || '{n}').replace('{n}', n);
+  });
+}
 document.getElementById('statGames').textContent = ORDER.length;
 document.getElementById('statGuides').textContent = GUIDES.length;
 document.getElementById('statCats').textContent = Object.keys(CATS).length;
 renderFilters();
 renderEntries();
 renderGamePages();
+fillCounts();
 renderRoute();
 window.addEventListener('hashchange', renderRoute);
 window.addEventListener('scroll', onScroll, { passive: true });
 window.addEventListener('resize', onScroll);
+
+/* ---------- 滚动进场与顶栏状态 ---------- */
+(function () {
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var els = document.querySelectorAll('.sec, .route-sec, .game-card, .poster');
+  if ('IntersectionObserver' in window && !reduce) {
+    els.forEach(function (el) {
+      el.classList.add('reveal');
+      var sibs = el.parentElement ? Array.prototype.filter.call(el.parentElement.children, function (x) { return x.classList.contains('reveal'); }) : [];
+      el.style.transitionDelay = Math.min(sibs.indexOf(el), 5) * 70 + 'ms';
+    });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
+    els.forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) {
+        el.classList.add('in');
+      } else {
+        io.observe(el);
+      }
+    });
+  }
+  var topbar = document.querySelector('.topbar');
+  function onTopbarScroll() { topbar.classList.toggle('scrolled', window.scrollY > 8); }
+  window.addEventListener('scroll', onTopbarScroll, { passive: true });
+  onTopbarScroll();
+})();
 </script>
 <div class="u-toast" id="uToast" role="status" aria-live="polite"><span class="u-dot" aria-hidden="true"></span><span class="u-text"></span></div>
 </body>
