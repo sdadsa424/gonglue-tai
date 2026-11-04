@@ -688,6 +688,74 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
   .reveal{opacity:1;transform:none;transition:none}
   *{transition:none!important;animation:none!important}
   html{scroll-behavior:auto}
+  .fx-stars,.fx-band,.fx-glow,.fx-aurora,.meteor{display:none!important}
+}
+
+/* ---------- 背景特效层（JS 注入，reduce 时跳过） ---------- */
+@keyframes twinkle{0%,100%{opacity:.1}50%{opacity:.9}}
+@keyframes meteorFall{
+  0%{transform:translate3d(0,0,0) rotate(-32deg);opacity:0}
+  4%{opacity:1}
+  16%{transform:translate3d(-620px,390px,0) rotate(-32deg);opacity:0}
+  100%{transform:translate3d(-620px,390px,0) rotate(-32deg);opacity:0}
+}
+@keyframes bandMove{0%,100%{transform:translateX(-30%) skewX(-14deg)}50%{transform:translateX(130%) skewX(-14deg)}}
+@keyframes auroraDrift{
+  0%,100%{transform:translate3d(0,0,0) scale(1)}
+  33%{transform:translate3d(4%,-3%,0) scale(1.12)}
+  66%{transform:translate3d(-3%,2%,0) scale(.94)}
+}
+
+/* 极光底光：全站 fixed，z:-1 在内容之下、页面底色之上 */
+.fx-aurora{position:fixed;inset:-12%;z-index:-1;pointer-events:none;overflow:hidden}
+.fx-aurora i{position:absolute;border-radius:50%;display:block}
+.fx-aurora i:nth-child(1){
+  width:56vw;height:40vh;left:-8vw;top:6vh;
+  background:radial-gradient(closest-side,rgba(255,61,154,.10),transparent);
+  animation:auroraDrift 34s ease-in-out infinite;
+}
+.fx-aurora i:nth-child(2){
+  width:50vw;height:42vh;right:-6vw;top:-6vh;
+  background:radial-gradient(closest-side,rgba(139,92,246,.12),transparent);
+  animation:auroraDrift 42s ease-in-out infinite reverse;
+}
+.fx-aurora i:nth-child(3){
+  width:64vw;height:44vh;left:16vw;bottom:-16vh;
+  background:radial-gradient(closest-side,rgba(76,154,255,.09),transparent);
+  animation:auroraDrift 50s ease-in-out -16s infinite;
+}
+
+/* 首屏星空 + 流星 */
+.fx-stars{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.fx-stars i{position:absolute;border-radius:50%;background:#fff;opacity:0;animation:twinkle 4s ease-in-out infinite}
+.fx-stars .meteor{
+  position:absolute;width:150px;height:1px;top:12%;right:-160px;opacity:0;
+  background:linear-gradient(90deg,rgba(255,255,255,.85),transparent);
+  animation:meteorFall 11s ease-in infinite;
+}
+.fx-stars .meteor.m2{top:36%;right:-200px;width:110px;animation-delay:5.5s;animation-duration:13s}
+.fx-stars .meteor.m3{top:6%;right:-140px;width:190px;animation-delay:9s;animation-duration:15s}
+
+/* 首屏缓慢斜向光带 */
+.fx-band{
+  position:absolute;top:-20%;bottom:-20%;width:230px;left:12%;z-index:1;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(139,92,246,.10) 45%,rgba(255,61,154,.08) 55%,transparent);
+  filter:blur(6px);
+  animation:bandMove 17s ease-in-out infinite;
+}
+
+/* 首屏鼠标视差光斑（容器 transform 由 JS 驱动，内部光斑自行漂移） */
+.fx-glow{position:absolute;inset:-8%;z-index:0;pointer-events:none;will-change:transform}
+.fx-glow i{position:absolute;border-radius:50%;display:block}
+.fx-glow i:nth-child(1){
+  width:420px;height:320px;left:6%;top:12%;
+  background:radial-gradient(closest-side,rgba(255,61,154,.15),transparent);
+  animation:auroraDrift 28s ease-in-out infinite;
+}
+.fx-glow i:nth-child(2){
+  width:480px;height:360px;right:4%;top:4%;
+  background:radial-gradient(closest-side,rgba(139,92,246,.17),transparent);
+  animation:auroraDrift 36s ease-in-out infinite reverse;
 }
 
 </style>
@@ -1872,6 +1940,70 @@ renderRoute();
 window.addEventListener('hashchange', renderRoute);
 window.addEventListener('scroll', onScroll, { passive: true });
 window.addEventListener('resize', onScroll);
+
+/* ---------- 背景特效层 ---------- */
+(function () {
+  if (PREFERS_REDUCE) return;
+  var hero = document.querySelector('.hero');
+  // 全站极光底光
+  var aurora = document.createElement('div');
+  aurora.className = 'fx-aurora';
+  aurora.setAttribute('aria-hidden', 'true');
+  aurora.innerHTML = '<i></i><i></i><i></i>';
+  document.body.appendChild(aurora);
+  if (!hero) return;
+  // 星空 + 三颗错峰流星
+  var stars = document.createElement('div');
+  stars.className = 'fx-stars';
+  stars.setAttribute('aria-hidden', 'true');
+  var frag = document.createDocumentFragment();
+  for (var i = 0; i < 72; i++) {
+    var s = document.createElement('i');
+    var sz = (Math.random() * 1.8 + .8).toFixed(1);
+    s.style.cssText = 'left:' + (Math.random() * 100).toFixed(2) + '%;top:' + (Math.random() * 88).toFixed(2)
+      + '%;width:' + sz + 'px;height:' + sz + 'px;animation-duration:' + (2.6 + Math.random() * 4.5).toFixed(2)
+      + 's;animation-delay:-' + (Math.random() * 8).toFixed(2) + 's';
+    frag.appendChild(s);
+  }
+  ['', ' m2', ' m3'].forEach(function (cls) {
+    var m = document.createElement('b');
+    m.className = 'meteor' + cls;
+    frag.appendChild(m);
+  });
+  stars.appendChild(frag);
+  hero.appendChild(stars);
+  // 缓慢斜向光带
+  var band = document.createElement('div');
+  band.className = 'fx-band';
+  band.setAttribute('aria-hidden', 'true');
+  hero.appendChild(band);
+  // 鼠标视差光斑（仅精确指针设备）
+  if (!(window.matchMedia && window.matchMedia('(hover: none)').matches)) {
+    var glow = document.createElement('div');
+    glow.className = 'fx-glow';
+    glow.setAttribute('aria-hidden', 'true');
+    glow.innerHTML = '<i></i><i></i>';
+    hero.appendChild(glow);
+    var tx = 0, ty = 0, cx = 0, cy = 0, raf = null;
+    function step() {
+      cx += (tx - cx) * .055;
+      cy += (ty - cy) * .055;
+      glow.style.transform = 'translate3d(' + cx.toFixed(2) + 'px,' + cy.toFixed(2) + 'px,0)';
+      if (Math.abs(tx - cx) > .1 || Math.abs(ty - cy) > .1) { raf = requestAnimationFrame(step); }
+      else { raf = null; }
+    }
+    hero.addEventListener('mousemove', function (e) {
+      var r = hero.getBoundingClientRect();
+      tx = (e.clientX - r.width / 2) * .045;
+      ty = (e.clientY - r.top) * .06 - 20;
+      if (!raf) raf = requestAnimationFrame(step);
+    });
+    hero.addEventListener('mouseleave', function () {
+      tx = 0; ty = 0;
+      if (!raf) raf = requestAnimationFrame(step);
+    });
+  }
+})();
 
 /* ---------- 滚动进场与顶栏状态 ---------- */
 (function () {
