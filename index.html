@@ -528,13 +528,17 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
 }
 .hero-in{position:relative;z-index:2}
 
-/* 渐变流动：大标题 */
+/* 渐变流动：大标题与品牌字 */
 .hero h1 em{background-size:220% 100%;animation:gradFlow 9s linear infinite}
-/* 品牌名：实色文字，覆盖掉此前的渐变流动动画 */
+/* 品牌名：保留渐变流动动画 + 呼吸光晕，新名字同样带特效 */
 .brand-name{
-  color:#fff;-webkit-text-fill-color:#fff;background:none;
-  animation:none;position:relative;z-index:3;
-  text-shadow:0 0 18px rgba(255,61,154,.28);
+  background-size:220% 100%;
+  animation:gradFlow 15s linear infinite, brandGlow 4.8s ease-in-out infinite;
+  position:relative;z-index:3;
+}
+@keyframes brandGlow{
+  0%,100%{filter:drop-shadow(0 0 3px rgba(255,61,154,.35))}
+  50%{filter:drop-shadow(0 0 13px rgba(139,92,246,.75))}
 }
 .hero-kicker{animation:softPulse 4.6s ease-in-out infinite}
 
