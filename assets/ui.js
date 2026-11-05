@@ -189,6 +189,74 @@
     hero.addEventListener('pointerleave', function () { hero.classList.remove('has-glow'); });
   }
 
+  /* ---------- 分享 ---------- */
+  function canonicalUrl() {
+    var l = document.querySelector('link[rel="canonical"]');
+    var u = (l && l.href) || window.location.href;
+    return u.split('#')[0];
+  }
+  function legacyCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;top:-100px;left:-100px;opacity:0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { ta.setSelectionRange(0, text.length); } catch (e) {}
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    ta.remove();
+    return ok;
+  }
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).then(function () { return true; }).catch(function () { return legacyCopy(text); });
+    }
+    return Promise.resolve(legacyCopy(text));
+  }
+  function qrPanelOf(btn) {
+    var id = btn.getAttribute('aria-controls');
+    var panel = id ? document.getElementById(id) : null;
+    if (panel) return panel;
+    var box = btn.closest('.share, .foot, .foot-in, .wrap');
+    return box ? box.querySelector('.share-qr') : null;
+  }
+  document.addEventListener('click', function (e) {
+    var copyBtn = e.target.closest('[data-share-copy]');
+    if (copyBtn) {
+      e.preventDefault();
+      copyText(canonicalUrl()).then(function (ok) {
+        toast(ok ? '链接已复制，粘贴给朋友就能打开' : '复制被浏览器拦下，请手动复制地址栏');
+      });
+      return;
+    }
+    var qrBtn = e.target.closest('[data-share-qr]');
+    if (qrBtn) {
+      e.preventDefault();
+      var panel = qrPanelOf(qrBtn);
+      if (!panel) return;
+      var show = panel.hidden;
+      panel.hidden = !show;
+      qrBtn.setAttribute('aria-expanded', String(show));
+      if (show && panel.scrollIntoView) panel.scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' });
+      return;
+    }
+    var nativeBtn = e.target.closest('[data-share-native]');
+    if (nativeBtn) {
+      e.preventDefault();
+      if (navigator.share) {
+        navigator.share({ title: document.title, url: canonicalUrl() }).catch(function () {});
+      }
+      return;
+    }
+  });
+
+  /* 支持系统分享的设备（手机）才显示这个按钮 */
+  if (navigator.share) {
+    var nbs = document.querySelectorAll('[data-share-native]');
+    for (var ni = 0; ni < nbs.length; ni++) nbs[ni].hidden = false;
+  }
+
   /* ---------- 目录 ---------- */
   var toc = document.querySelector('.toc');
   if (toc && article) {

@@ -84,6 +84,14 @@ hd.querySelector('[data-palette]').click();
 await wait(60);
 ok('点顶栏入口打开面板', hd.querySelector('.pal').classList.contains('open'));
 hd.querySelector('.pal').dispatchEvent(new w.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+
+/* 页脚分享 */
+ok('页脚有分享入口', !!hd.querySelector('.foot-share [data-share-copy]'));
+const footQr = hd.getElementById('footQr');
+hd.querySelector('.foot-share [data-share-qr]').click();
+await wait(60);
+ok('页脚二维码可展开', !!footQr && !footQr.hidden);
+ok('页脚二维码指向站点版', /qr-site\.svg$/.test(footQr.querySelector('img')?.getAttribute('src') || ''));
 await wait(40);
 hd.dispatchEvent(new w.KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }));
 await wait(60);
@@ -157,6 +165,30 @@ ad.dispatchEvent(new aw.KeyboardEvent('keydown', { key: '/', bubbles: true }));
 await wait(80);
 ok('文章页 / 呼出搜索', ad.querySelector('.pal').classList.contains('open'));
 ad.querySelector('.pal').dispatchEvent(new aw.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+
+/* 分享 */
+ok('文章页有分享区块', !!ad.querySelector('.share'));
+ok('分享含复制链接', !!ad.querySelector('[data-share-copy]'));
+const qrBtn = ad.querySelector('[data-share-qr]');
+const qrPanel = ad.querySelector('#shareQr');
+ok('二维码默认收起', !!qrPanel && qrPanel.hidden && qrBtn.getAttribute('aria-expanded') === 'false');
+qrBtn.click();
+await wait(60);
+ok('点「微信扫码」展开二维码', !qrPanel.hidden && qrBtn.getAttribute('aria-expanded') === 'true');
+ok('二维码图片指向本页 qr.svg', /qr\.svg$/.test(qrPanel.querySelector('img')?.getAttribute('src') || ''));
+qrBtn.click();
+ok('再点收起二维码', qrPanel.hidden);
+const weibo = ad.querySelector('.share a[href*="weibo"]');
+const qq = ad.querySelector('.share a[href*="shareqq"]');
+ok('微博链接带本页 URL', (weibo?.getAttribute('href') || '').includes('a%2Fejl-start%2F'));
+ok('QQ 链接带本页 URL', (qq?.getAttribute('href') || '').includes('a%2Fejl-start%2F'));
+ok('外链均带 noopener', [weibo, qq].every(a => /noopener/.test(a?.getAttribute('rel') || '')));
+
+/* 二维码文件完整性（生成在构建期，缺了会让分享区少一项） */
+const fsMod = await import('node:fs');
+const qrDirs = fsMod.readdirSync('a').filter(d => fsMod.existsSync(`a/${d}/qr.svg`));
+ok('23 篇文章都有分享二维码', qrDirs.length === 23, String(qrDirs.length));
+ok('站点二维码存在', fsMod.existsSync('assets/qr-site.svg'));
 
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
 console.log(`\n结果：${pass} 通过 / ${fail} 失败`);

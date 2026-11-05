@@ -90,6 +90,14 @@ function footer(activeGame) {
         <p class="foot-name">${SITE_NAME}</p>
         <p>一个玩家整理的攻略站，把三款游戏里真正会用到的判断写成条目：什么时候走、什么时候留、什么该卖、什么该留。站内文章按游戏与阶段索引，持续补充。</p>
         <p class="foot-cs">获取游戏与开服信息：<button class="cs-pill dark" type="button" data-copy="${CS}"><b>游戏客服 ${CS}</b><span class="cs-act">复制</span></button></p>
+        <div class="foot-share">
+          <button class="share-btn sm" type="button" data-share-copy>复制本站链接</button>
+          <button class="share-btn sm" type="button" data-share-qr aria-expanded="false" aria-controls="footQr">分享二维码</button>
+        </div>
+        <div class="share-qr foot-qr" id="footQr" hidden>
+          <img src="${UP}assets/qr-site.svg" alt="扫码打开 ${SITE_NAME}" width="148" height="148" loading="lazy">
+          <p>扫码打开本站，转发给朋友</p>
+        </div>
       </div>
       <nav class="foot-nav" aria-label="页脚导航">
         <a href="${UP}#library">攻略库</a>
@@ -223,6 +231,29 @@ ${PAGE_SCRIPT}
 }
 
 /* ---------- 攻略页 ---------- */
+/* 分享区块：复制链接 / 微信扫码 / 微博 / QQ / 系统分享 */
+function shareBlock(gi) {
+  const url = SITE + 'a/' + gi.id + '/';
+  const u = encodeURIComponent(url);
+  const t = encodeURIComponent(gi.title + ' · ' + SITE_NAME);
+  const hasQr = fs.existsSync(path.join('a', gi.id, 'qr.svg'));
+  return `  <section class="share" aria-label="分享这篇攻略">
+    <p class="share-t">这篇有用？转给一起玩的人</p>
+    <div class="share-row">
+      <button class="share-btn" type="button" data-share-copy>复制链接</button>
+      ${hasQr ? '<button class="share-btn" type="button" data-share-qr aria-expanded="false" aria-controls="shareQr">微信扫码</button>' : ''}
+      <a class="share-btn" href="https://service.weibo.com/share/share.php?url=${u}&title=${t}" target="_blank" rel="noopener nofollow">微博</a>
+      <a class="share-btn" href="https://connect.qq.com/widget/shareqq/index.html?url=${u}&title=${t}" target="_blank" rel="noopener nofollow">QQ</a>
+      <button class="share-btn" type="button" data-share-native hidden>系统分享</button>
+    </div>
+    ${hasQr ? `<div class="share-qr" id="shareQr" hidden>
+      <img src="qr.svg" alt="扫码在手机上打开《${esc(gi.title)}》" width="148" height="148" loading="lazy">
+      <p>微信扫一扫，手机上继续看</p>
+    </div>` : ''}
+  </section>
+`;
+}
+
 function articlePage(gi) {
   const game = GAMES[gi.game];
   const url = SITE + 'a/' + gi.id + '/';
@@ -310,6 +341,7 @@ function articlePage(gi) {
     <div><b>要开服信息或进本区？</b><span>客服号 ${CS}，复制后搜索添加。</span></div>
     <button class="cs-pill" type="button" data-copy="${CS}"><b>游戏客服 ${CS}</b><span class="cs-act">复制</span></button>
   </section>
+  ${shareBlock(gi)}
   <nav class="navpair" aria-label="翻页">${navPair}</nav>
   <section class="related"><h2>接着看</h2>
     ${related.map(x => `<a href="../${x.id}/"><span class="rel-t">${esc(x.title)}</span><span class="rel-g">${esc(GAMES[x.game].name)}</span></a>`).join('')}
