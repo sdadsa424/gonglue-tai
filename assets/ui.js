@@ -804,4 +804,143 @@
     }
   })();
 
+  /* ---------- 顶栏：当地时间 + 天气（IP 定位 → open-meteo，本地缓存 30 分钟） ----------
+     拿不到就只留时钟，不报错、不弹提示；不存储任何个人信息 */
+  (function clockWeather() {
+    var box = document.getElementById('wt');
+    if (!box) return;
+    var hEl = box.querySelector('[data-wt-h]');
+    var mEl = box.querySelector('[data-wt-m]');
+    var wxEl = box.querySelector('[data-wt-wx]');
+    var icoEl = box.querySelector('[data-wt-ico]');
+    var tEl = box.querySelector('[data-wt-temp]');
+    if (!hEl || !mEl) return;
+
+    /* 1. 时钟：跟随本机时区，跨分钟时分钟位翻一下 */
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+    var lastKey = '';
+    function tickClock() {
+      var d = new Date();
+      var key = d.getHours() + ':' + d.getMinutes();
+      if (key === lastKey) return;
+      var first = lastKey === '';
+      lastKey = key;
+      hEl.textContent = pad(d.getHours());
+      mEl.textContent = pad(d.getMinutes());
+      if (!first && !reduce) {
+        mEl.classList.remove('wt-tick');
+        void mEl.offsetWidth; /* 强制回流，重放动画 */
+        mEl.classList.add('wt-tick');
+      }
+    }
+    tickClock();
+    setInterval(tickClock, 1000);
+
+    /* 2. 天气图标（内联 SVG，动效在 style.css 里） */
+    var ICON = {
+      sun: '<svg class="wi wi-sun" viewBox="0 0 32 32"><g class="r" stroke="#FFC65C" stroke-width="2.1" stroke-linecap="round"><path d="M16 3.2v3.6M16 25.2v3.6M3.2 16h3.6M25.2 16h3.6M6.9 6.9l2.5 2.5M22.6 22.6l2.5 2.5M25.1 6.9l-2.5 2.5M9.4 22.6l-2.5 2.5"/></g><circle cx="16" cy="16" r="5.8" fill="#FFC65C"/></svg>',
+      moon: '<svg class="wi wi-moon" viewBox="0 0 32 32"><path d="M21.4 3.9a12.2 12.2 0 1 0 6.9 20.3A9.8 9.8 0 0 1 21.4 3.9z" fill="#CBD3F2"/><g class="wi-stars" fill="#FFF8D8"><circle cx="24.8" cy="6.6" r="1.15"/><circle cx="28.6" cy="11.8" r=".85"/></g></svg>',
+      partly: '<svg class="wi wi-partly" viewBox="0 0 32 32"><g class="r" stroke="#FFC65C" stroke-width="2" stroke-linecap="round"><path d="M12 3.4v3M3.6 12.4h3M6.4 6.8l2.1 2.1M16.6 6.8l-2.1 2.1M6.4 18l2.1-2.1"/></g><circle cx="12" cy="12.4" r="4.3" fill="#FFC65C"/><g class="wi-cloud"><path d="M12.4 25.6h13.2a3.9 3.9 0 0 0 .3-7.8 5.9 5.9 0 0 0-11.1-1.2 4.3 4.3 0 0 0-2.4 9z" fill="#DDE3F6"/></g></svg>',
+      cloudy: '<svg class="wi wi-cloudy" viewBox="0 0 32 32"><path d="M13 20.2h12.6a3.7 3.7 0 0 0 .3-7.4 5.7 5.7 0 0 0-10.7-1.2A4.1 4.1 0 0 0 13 20.2z" fill="#9FA9C9" opacity=".5"/><g class="wi-cloud"><path d="M6.6 27.2h14.8a4.2 4.2 0 0 0 .4-8.4 6.3 6.3 0 0 0-11.9-1.4 4.6 4.6 0 0 0-3.3 9.8z" fill="#DDE3F6"/></g></svg>',
+      fog: '<svg class="wi wi-fog" viewBox="0 0 32 32"><path d="M8 15.8h14a4 4 0 0 0 .2-7.9 6 6 0 0 0-11.3-1.2A4.4 4.4 0 0 0 8 15.8z" fill="#DDE3F6" opacity=".85"/><g stroke="#A9B2CE" stroke-width="2" stroke-linecap="round"><path class="f" d="M7 20.6h16"/><path class="f f2" d="M9 24.4h13"/><path class="f f3" d="M11 28.2h10"/></g></svg>',
+      rain: '<svg class="wi wi-rain" viewBox="0 0 32 32"><path d="M7 17.9h14.6a4.1 4.1 0 0 0 .3-8.2 6.2 6.2 0 0 0-11.7-1.3A4.5 4.5 0 0 0 7 17.9z" fill="#DDE3F6"/><g stroke="#7FB2FF" stroke-width="2" stroke-linecap="round"><path class="d" d="M11.2 21.4l-1 3.4"/><path class="d d2" d="M16.2 21.4l-1 3.4"/><path class="d d3" d="M21.2 21.4l-1 3.4"/></g></svg>',
+      snow: '<svg class="wi wi-snow" viewBox="0 0 32 32"><path d="M7 17.9h14.6a4.1 4.1 0 0 0 .3-8.2 6.2 6.2 0 0 0-11.7-1.3A4.5 4.5 0 0 0 7 17.9z" fill="#DDE3F6"/><g fill="#BFE3FF"><circle class="s" cx="11.2" cy="23" r="1.25"/><circle class="s s2" cx="16.2" cy="24.6" r="1.05"/><circle class="s s3" cx="21.2" cy="23" r="1.2"/></g></svg>',
+      storm: '<svg class="wi wi-storm" viewBox="0 0 32 32"><g class="wi-cloud"><path d="M7 17.4h14.6a4.1 4.1 0 0 0 .3-8.2 6.2 6.2 0 0 0-11.7-1.3A4.5 4.5 0 0 0 7 17.4z" fill="#C9D1EC"/></g><path class="wi-bolt" d="M16.8 18.6l-4.4 6.4h3.2l-1.6 4.8 5.4-6.8h-3.4z" fill="#FFC65C"/></svg>'
+    };
+    var TEXT = {
+      0: '晴', 1: '少云', 2: '多云', 3: '阴', 45: '有雾', 48: '雾凇',
+      51: '毛毛雨', 53: '小雨', 55: '中雨', 56: '冻雨', 57: '冻雨',
+      61: '小雨', 63: '中雨', 65: '大雨', 66: '冻雨', 67: '冻雨',
+      71: '小雪', 73: '中雪', 75: '大雪', 77: '米雪',
+      80: '阵雨', 81: '强阵雨', 82: '暴雨', 85: '阵雪', 86: '强阵雪',
+      95: '雷阵雨', 96: '雷阵雨伴冰雹', 99: '雷雨冰雹'
+    };
+    function kindOf(code, day) {
+      if (code === 0) return day ? 'sun' : 'moon';
+      if (code === 1 || code === 2) return day ? 'partly' : 'cloudy';
+      if (code === 3) return 'cloudy';
+      if (code === 45 || code === 48) return 'fog';
+      if (code >= 51 && code <= 67) return 'rain';
+      if (code >= 71 && code <= 77) return 'snow';
+      if (code >= 80 && code <= 82) return 'rain';
+      if (code === 85 || code === 86) return 'snow';
+      if (code >= 95) return 'storm';
+      return day ? 'partly' : 'cloudy';
+    }
+
+    /* 3. 取数：先定位再查天气，任一步失败就安静收起 */
+    var KEY = 'gl_wx_v1', TTL = 30 * 60 * 1000, busy = false;
+    function readCache() {
+      try {
+        var o = JSON.parse(localStorage.getItem(KEY) || 'null');
+        if (o && typeof o.temp === 'number' && Date.now() - o.t < TTL) return o;
+      } catch (e) {}
+      return null;
+    }
+    function writeCache(o) {
+      try { localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {}
+    }
+    function getJSON(url, ms) {
+      if (!window.fetch) return Promise.reject(new Error('no fetch'));
+      var opt = { cache: 'no-store' };
+      var C = window.AbortController, timer = 0;
+      if (C) { var ac = new C(); opt.signal = ac.signal; timer = setTimeout(function () { ac.abort(); }, ms || 7000); }
+      return fetch(url, opt).then(function (r) {
+        if (!r.ok) throw new Error('http ' + r.status);
+        return r.json();
+      }).then(function (j) { if (timer) clearTimeout(timer); return j; },
+              function (e) { if (timer) clearTimeout(timer); throw e; });
+    }
+    function locate() {
+      return getJSON('https://ipwho.is/?fields=success,latitude,longitude,city', 6000)
+        .then(function (j) {
+          if (!j || j.success === false || !j.latitude) throw new Error('geo');
+          return { lat: j.latitude, lon: j.longitude, city: j.city || '' };
+        })
+        .catch(function () {
+          return getJSON('https://ipapi.co/json/', 6000).then(function (j) {
+            if (!j || !j.latitude) throw new Error('geo2');
+            return { lat: j.latitude, lon: j.longitude, city: j.city || '' };
+          });
+        });
+    }
+    function render(o) {
+      var k = kindOf(o.code, o.day);
+      icoEl.innerHTML = ICON[k] || ICON.cloudy;
+      tEl.textContent = Math.round(o.temp) + '°';
+      wxEl.hidden = false;
+      var name = TEXT[o.code] || '天气';
+      wxEl.title = (o.city ? o.city + ' · ' : '') + name + ' ' + Math.round(o.temp) + '°';
+      box.setAttribute('aria-label', '当地时间 ' + lastKey + '，' + (o.city || '本地') + name + ' ' + Math.round(o.temp) + ' 度');
+    }
+    function load() {
+      if (busy) return;
+      busy = true;
+      locate().then(function (pos) {
+        return getJSON('https://api.open-meteo.com/v1/forecast?latitude=' + pos.lat.toFixed(3)
+          + '&longitude=' + pos.lon.toFixed(3)
+          + '&current=temperature_2m,weather_code,is_day&timezone=auto', 7000)
+          .then(function (j) {
+            var cur = j && j.current;
+            if (!cur || typeof cur.temperature_2m !== 'number') throw new Error('wx');
+            var o = { t: Date.now(), temp: cur.temperature_2m, code: cur.weather_code, day: cur.is_day ? 1 : 0, city: pos.city };
+            writeCache(o);
+            render(o);
+          });
+      }).catch(function () {
+        wxEl.hidden = true; /* 没网/被墙/定位失败：只留时钟 */
+      }).then(function () { busy = false; });
+    }
+
+    var cached = readCache();
+    if (cached) render(cached); else load();
+
+    /* 回到标签页时：补时钟、缓存过期就重取 */
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) return;
+      tickClock();
+      if (!readCache()) load();
+    });
+  })();
+
 })();

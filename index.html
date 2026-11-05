@@ -50,11 +50,20 @@
       <a href="#/" data-goto="route">开荒路线</a>
       <a href="#/" data-goto="games">游戏</a>
     </nav>
-    <button class="tb-search" type="button" data-palette aria-label="全站搜索（快捷键 Ctrl 或 Command 加 K）">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
-      <span>搜索</span>
-      <span class="tb-kbd">⌘K</span>
-    </button>
+    <div class="tb-right">
+    <div class="wt" id="wt" role="group" aria-label="当地时间与天气">
+      <span class="wt-clock"><b data-wt-h>--</b><i aria-hidden="true">:</i><b data-wt-m>--</b></span>
+      <span class="wt-wx" data-wt-wx hidden>
+        <span class="wt-ico" data-wt-ico aria-hidden="true"></span>
+        <b class="wt-temp" data-wt-temp>--°</b>
+      </span>
+    </div>
+      <button class="tb-search" type="button" data-palette aria-label="全站搜索（快捷键 Ctrl 或 Command 加 K）">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+        <span>搜索</span>
+        <span class="tb-kbd">⌘K</span>
+      </button>
+    </div>
   </div>
 </header>
 

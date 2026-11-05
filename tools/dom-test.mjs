@@ -25,6 +25,13 @@ function make(url, seed, opts) {
       try { Object.keys(seed || {}).forEach(k => window.localStorage.setItem(k, seed[k])); } catch (e) {}
       if (opts.width) Object.defineProperty(window, 'innerWidth', { value: opts.width, writable: true });
       if (opts.pointerFine) window.matchMedia = q => ({ matches: q.indexOf('pointer') >= 0, media: q, addListener() {}, removeListener() {}, addEventListener() {}, removeEventListener() {} });
+      if (opts.fetchStub) {
+        window.__fetchCalls = [];
+        window.fetch = url => {
+          window.__fetchCalls.push(String(url));
+          return opts.fetchStub(String(url));
+        };
+      }
       /* fxProbe：假 rect（越深越靠下）+ 立即回调的 IO，用来验证滚动入场类是否真的挂上 */
       if (opts.fxProbe) {
         window.Element.prototype.getBoundingClientRect = function () {
@@ -424,6 +431,72 @@ ok('小节标题拿到待入场类', !!fh2 && fh2.classList.contains('fx'));
 ok('滚入视口后翻正', !!fh2 && fh2.classList.contains('fx-in'));
 ok('标题之外的正文档照常入场', !!fpd.querySelector('.prose p.fx-in'));
 flipPage.window.close();
+
+/* 顶栏：当地时间 + 天气 */
+console.log('\n[顶栏时间与天气]');
+const GEO = { success: true, latitude: 31.86, longitude: 117.28, city: '合肥' };
+const WXOK = { current: { temperature_2m: 26.4, weather_code: 0, is_day: 1 } };
+function wxStub(geo, wx) {
+  return url => Promise.resolve({
+    ok: true,
+    json: () => Promise.resolve(url.indexOf('open-meteo') >= 0 ? wx : geo)
+  });
+}
+const wtPage = await make(BASE, {}, { fetchStub: wxStub(GEO, WXOK) });
+await wait(400);
+const wtd = wtPage.window.document;
+const wtBox = wtd.getElementById('wt');
+ok('顶栏有时间天气块', !!wtBox);
+ok('时间按两位补零', /^\d{2}$/.test(wtd.querySelector('[data-wt-h]').textContent) &&
+  /^\d{2}$/.test(wtd.querySelector('[data-wt-m]').textContent),
+  wtd.querySelector('[data-wt-h]').textContent + ':' + wtd.querySelector('[data-wt-m]').textContent);
+ok('时钟不早于页面加载时刻', Math.abs(Number(wtd.querySelector('[data-wt-h]').textContent) - new Date().getHours()) <= 1);
+const wtWx = wtd.querySelector('[data-wt-wx]');
+ok('拿到天气后展开', !!wtWx && !wtWx.hasAttribute('hidden'));
+ok('温度四舍五入到整数度', wtd.querySelector('[data-wt-temp]').textContent === '26°', wtd.querySelector('[data-wt-temp]').textContent);
+ok('晴天出太阳图标', !!wtd.querySelector('.wt-ico .wi-sun'));
+ok('悬停文案带城市与天气', /合肥/.test(wtWx.getAttribute('title') || '') && /晴/.test(wtWx.getAttribute('title') || ''), wtWx.getAttribute('title'));
+ok('请求先定位再查天气', wtPage.window.__fetchCalls.length === 2 &&
+  /ipwho\.is/.test(wtPage.window.__fetchCalls[0]) && /open-meteo/.test(wtPage.window.__fetchCalls[1]),
+  wtPage.window.__fetchCalls.join(' | '));
+wtPage.window.close();
+
+const nightPage = await make(BASE, {}, {
+  fetchStub: wxStub(GEO, { current: { temperature_2m: 3.2, weather_code: 0, is_day: 0 } })
+});
+await wait(400);
+ok('夜间晴天出月亮图标', !!nightPage.window.document.querySelector('.wt-ico .wi-moon'));
+nightPage.window.close();
+
+const rainPage = await make(BASE, {}, {
+  fetchStub: wxStub(GEO, { current: { temperature_2m: 18, weather_code: 63, is_day: 1 } })
+});
+await wait(400);
+ok('中雨出雨滴图标', !!rainPage.window.document.querySelector('.wt-ico .wi-rain'));
+rainPage.window.close();
+
+const cachedPage = await make(BASE, {
+  gl_wx_v1: JSON.stringify({ t: Date.now(), temp: 12.6, code: 71, day: 1, city: '合肥' })
+}, { fetchStub: wxStub(GEO, WXOK) });
+await wait(250);
+const cpd = cachedPage.window.document;
+ok('缓存命中直接出天气', cpd.querySelector('[data-wt-temp]').textContent === '13°');
+ok('缓存命中不重复请求', cachedPage.window.__fetchCalls.length === 0, String(cachedPage.window.__fetchCalls.length));
+ok('小雪出雪花图标', !!cpd.querySelector('.wt-ico .wi-snow'));
+cachedPage.window.close();
+
+const failPage = await make(BASE, {}, { fetchStub: () => Promise.reject(new Error('offline')) });
+await wait(400);
+const fpd2 = failPage.window.document;
+ok('取数失败只留时钟', !!fpd2.querySelector('[data-wt-wx]').hasAttribute('hidden') &&
+  /^\d{2}$/.test(fpd2.querySelector('[data-wt-h]').textContent));
+failPage.window.close();
+
+const artWt = fsm.readFileSync('a/xxtl-siege/index.html', 'utf8');
+ok('攻略页也带时间天气块', /data-wt-m/.test(artWt) && /class="wt"/.test(artWt));
+const cssWt = fsMod2.readFileSync('assets/style.css', 'utf8');
+ok('天气动效在减弱动效时关闭', /@media \(prefers-reduced-motion:no-preference\)\{[\s\S]*\.wi-rain \.d\{animation/.test(cssWt));
+
 
 
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));

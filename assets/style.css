@@ -1342,3 +1342,101 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
   .c3d-in{animation:c3dIn .6s cubic-bezier(.2,.7,.3,1) forwards}
   @keyframes c3dIn{from{opacity:0;transform:translateY(16px) rotateX(10deg)}to{opacity:1;transform:none}}
 }
+
+/* ---------- 顶栏：当地时间 + 天气 ---------- */
+.wt{
+  display:inline-flex;align-items:center;gap:8px;height:32px;min-width:72px;
+  padding:0 11px;border-radius:999px;
+  border:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.018));
+  font-variant-numeric:tabular-nums;position:relative;overflow:hidden;isolation:isolate;
+  justify-content:center;
+  transition:border-color .25s ease,box-shadow .3s ease,background .25s ease;
+}
+.wt:hover{border-color:rgba(255,61,154,.38);box-shadow:0 10px 26px -18px rgba(255,61,154,.85)}
+.wt-clock{display:inline-flex;align-items:center;gap:1px;font-size:12.5px;font-weight:700;letter-spacing:.045em;color:#E7EAF6}
+.wt-clock b{font-weight:700}
+.wt-clock i{font-style:normal;color:#FF6BB3;transform:translateY(-.5px)}
+.wt-wx{display:inline-flex;align-items:center;gap:5px;padding-left:8px;border-left:1px solid rgba(255,255,255,.1)}
+.wt-wx[hidden]{display:none}
+.wt-ico{width:17px;height:17px;display:inline-flex;flex:0 0 auto}
+.wt-ico svg{width:100%;height:100%;display:block}
+.wt-temp{font-size:12.5px;font-weight:600;color:#C9D0E6;letter-spacing:.01em}
+.wi-sun .r{transform-origin:16px 16px}
+.wi-sun circle{transform-origin:16px 16px}
+
+@media (max-width:760px){
+  .wt{height:30px;min-width:0;padding:0 9px;gap:7px}
+  .wt-clock{font-size:12px}
+  .wt-wx{padding-left:6px;gap:4px}
+  .wt-ico{width:15px;height:15px}
+  .wt-temp{font-size:11.5px}
+}
+@media (max-width:400px){
+  .wt-temp{display:none}
+}
+
+/* 顶栏天气动效（减弱动效时全部停用，保留静态图标） */
+@media (prefers-reduced-motion:no-preference){
+  /* 胶囊上一道很慢的掠光，15 秒一次，几乎察觉不到但让控件“活着” */
+  .wt::after{
+    content:"";position:absolute;inset:-60% -40%;z-index:-1;pointer-events:none;
+    background:linear-gradient(100deg,transparent 38%,rgba(255,255,255,.10) 50%,transparent 62%);
+    transform:translateX(-70%);animation:wtSheen 15s ease-in-out infinite;
+  }
+  /* 分钟变化时翻牌 */
+  .wt-tick{animation:wtFlipM .48s cubic-bezier(.2,.8,.3,1)}
+  .wt-wx{animation:wtPop .42s cubic-bezier(.2,.8,.3,1)}
+  .wt-clock i{animation:wtBlink 2s steps(1,end) infinite}
+
+  /* 太阳：光线慢转 + 本体呼吸 */
+  .wi-sun .r{animation:wiSpin 22s linear infinite}
+  .wi-sun circle{animation:wiSunPulse 3.8s ease-in-out infinite}
+  .wi-partly .r{animation:wiSpin 26s linear infinite}
+  /* 云：左右极缓慢漂移 */
+  .wi-cloud{animation:wiDrift 7s ease-in-out infinite}
+  .wi-partly .wi-cloud{animation-duration:6s}
+  .wi-storm .wi-cloud{animation-duration:4.6s}
+  /* 雨滴 / 雪花 / 雾线 / 闪电 / 星星 */
+  .wi-rain .d{animation:wiDrop 1.15s linear infinite}
+  .wi-rain .d2{animation-delay:.36s}
+  .wi-rain .d3{animation-delay:.72s}
+  .wi-snow .s{animation:wiSnow 2.8s linear infinite}
+  .wi-snow .s2{animation-delay:.9s}
+  .wi-snow .s3{animation-delay:1.8s}
+  .wi-fog .f{animation:wiFog 3.4s ease-in-out infinite}
+  .wi-fog .f2{animation-delay:.45s}
+  .wi-fog .f3{animation-delay:.9s}
+  .wi-bolt{animation:wiFlash 3.2s steps(1,end) infinite;transform-origin:16px 22px}
+  .wi-stars circle{animation:wiTwinkle 2.6s ease-in-out infinite}
+  .wi-stars circle:last-child{animation-delay:1.1s}
+
+  @keyframes wtSheen{0%,72%{transform:translateX(-70%)}88%,100%{transform:translateX(70%)}}
+  @keyframes wtFlipM{
+    0%{transform:rotateX(-92deg) translateY(-1px);opacity:.15}
+    60%{transform:rotateX(8deg);opacity:1}
+    100%{transform:none;opacity:1}
+  }
+  @keyframes wtPop{from{opacity:0;transform:translateX(-4px) scale(.94)}to{opacity:1;transform:none}}
+  @keyframes wtBlink{0%,49%{opacity:1}50%,100%{opacity:.28}}
+  @keyframes wiSpin{to{transform:rotate(360deg)}}
+  @keyframes wiSunPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+  @keyframes wiDrift{0%,100%{transform:translateX(-.9px)}50%{transform:translateX(.9px)}}
+  @keyframes wiDrop{
+    0%{transform:translateY(-2px);opacity:0}
+    25%{opacity:1}
+    75%{opacity:1}
+    100%{transform:translateY(7px);opacity:0}
+  }
+  @keyframes wiSnow{
+    0%{transform:translate(0,-2px);opacity:0}
+    30%{opacity:1}
+    100%{transform:translate(2.4px,7px);opacity:0}
+  }
+  @keyframes wiFog{0%,100%{transform:translateX(-1.6px);opacity:.55}50%{transform:translateX(1.6px);opacity:1}}
+  @keyframes wiFlash{0%,86%,92%,100%{opacity:.45}88%,94%{opacity:1}}
+  @keyframes wiTwinkle{0%,100%{opacity:.25}50%{opacity:1}}
+}
+
+/* 顶栏右侧：时间天气与搜索按钮抱成一组，避免 space-between 把它们拆开 */
+.tb-right{display:flex;align-items:center;gap:10px;flex:0 0 auto}
