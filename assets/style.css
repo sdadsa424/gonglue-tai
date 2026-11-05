@@ -1277,3 +1277,16 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
   .view-enter{animation:viewIn .4s cubic-bezier(.2,.7,.3,1)}
   @keyframes viewIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 }
+
+/* ---------- 首屏海报视差（滚动时海报图轻微滞后，幅度很小） ---------- */
+.hero-games{--py:0%}
+.poster img{
+  translate:0 var(--py,0%);
+  scale:1.04;
+  transition:scale .6s cubic-bezier(.2,.6,.2,1),translate .15s linear;
+}
+.poster:hover img{transform:none;translate:0 var(--py,0%);scale:1.1}
+@media (prefers-reduced-motion:reduce){
+  .poster img{translate:0 0;scale:1;transition:none}
+  .poster:hover img{translate:0 0;scale:1}
+}

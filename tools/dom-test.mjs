@@ -98,6 +98,13 @@ ok('页脚二维码指向站点版', /qr-site\.svg$/.test(footQr.querySelector('
 
 /* 视觉特效：图片骨架 + 分站切换过渡 */
 ok('非首屏图片挂了加载骨架', hd.querySelectorAll('picture.fx-holder').length > 0, String(hd.querySelectorAll('picture.fx-holder').length));
+
+/* 视觉特效：首屏海报视差 */
+const pyEl = hd.querySelector('.hero-games');
+const pyVal = pyEl ? pyEl.style.getPropertyValue('--py') : '';
+ok('首屏海报写入视差量', /^-?\d+(\.\d+)?%$/.test(pyVal) && Math.abs(parseFloat(pyVal)) <= 1.6, pyVal || '(空)');
+const cssText = (await import('node:fs')).readFileSync('assets/style.css', 'utf8');
+ok('视差样式作用在海报图上', /\.poster img\{[^}]*translate:0 var\(--py/.test(cssText));
 hd.location.hash = '#/g/ejl';
 await wait(260);
 ok('分站视图带入场过渡', !!hd.getElementById('view-game') && hd.getElementById('view-game').classList.contains('view-enter'));

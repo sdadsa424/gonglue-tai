@@ -693,6 +693,29 @@
       })(imgs[k]);
     }
 
+    /* 3.5 首屏海报视差：滚动时海报图轻微滞后（±1.6%，手机端同样生效） */
+    var hg = document.querySelector('.hero-games');
+    if (hg) {
+      var pyTick = false;
+      var pyUpdate = function () {
+        pyTick = false;
+        var r = hg.getBoundingClientRect();
+        var vh = window.innerHeight || 0;
+        /* 0 = 刚进视口，1 = 整块滚出视口上方 */
+        var p = (vh - r.top) / (vh + r.height);
+        p = p < 0 ? 0 : (p > 1 ? 1 : p);
+        hg.style.setProperty('--py', ((p - 0.5) * 3.2).toFixed(2) + '%');
+      };
+      var pyOnScroll = function () {
+        if (pyTick) return;
+        pyTick = true;
+        requestAnimationFrame(pyUpdate);
+      };
+      window.addEventListener('scroll', pyOnScroll, { passive: true });
+      window.addEventListener('resize', pyOnScroll);
+      pyUpdate();
+    }
+
     /* 4. 小节标题锚点：悬停出 #，点击复制本节直达链接 */
     var heads = [].slice.call(document.querySelectorAll('.prose h2[id]'));
     for (var j = 0; j < heads.length; j++) {
