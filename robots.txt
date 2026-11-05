@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://sdadsa424.github.io/gonglue-tai/sitemap.xml
+Sitemap: https://wgame-bc7.pages.dev/sitemap.xml

@@ -185,6 +185,10 @@ const qq = ad.querySelector('.share a[href*="shareqq"]');
 ok('微博链接带本页 URL', (weibo?.getAttribute('href') || '').includes('a%2Fejl-start%2F'));
 ok('QQ 链接带本页 URL', (qq?.getAttribute('href') || '').includes('a%2Fejl-start%2F'));
 ok('外链均带 noopener', [weibo, qq].every(a => /noopener/.test(a?.getAttribute('rel') || '')));
+/* 分享链接必须与 canonical 同域，换域名时漏改会在这里暴露 */
+const canon = ad.querySelector('link[rel="canonical"]')?.href || '';
+const wUrl = new URL(weibo.getAttribute('href')).searchParams.get('url') || '';
+ok('分享链接与 canonical 同域', !!canon && new URL(wUrl).origin === new URL(canon).origin, new URL(wUrl).origin + ' vs ' + new URL(canon).origin);
 
 /* 二维码文件完整性（生成在构建期，缺了会让分享区少一项） */
 const fsMod = await import('node:fs');

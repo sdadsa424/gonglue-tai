@@ -30,7 +30,8 @@ function loadQR() {
 
 const QR = loadQR();
 const { GUIDES } = require(path.join(ROOT, 'assets/data.js'));
-const SITE = 'https://sdadsa424.github.io/gonglue-tai/';
+/* 站点根地址：默认新域名，可用 SITE_URL 覆盖，换域名时只改这一处 */
+const SITE = (process.env.SITE_URL || 'https://wgame-bc7.pages.dev/').replace(/\/+$/, '') + '/';
 
 const OPTS = {
   type: 'svg',
