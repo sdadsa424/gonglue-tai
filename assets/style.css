@@ -995,3 +995,40 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 .entry.is-read:hover .entry-title{color:#fff}
 
 @media (max-width:560px){.fs-ctrl{margin-left:0}}
+
+/* ---------- 体验优化 二期：图片容器 / 阅读位置 / 浮层目录 ---------- */
+.poster picture,.game-card .game-thumb picture,.game-hero .art picture{display:block;width:100%;height:100%}
+
+.resume{
+  position:fixed;left:24px;bottom:24px;z-index:56;
+  display:inline-flex;align-items:center;gap:10px;
+  padding:10px 15px;border-radius:999px;
+  background:rgba(20,23,40,.95);border:1px solid rgba(255,61,154,.42);
+  color:#E7EAF6;font-size:12.5px;line-height:1.4;
+  box-shadow:0 18px 40px -22px rgba(0,0,0,.95);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  animation:riseIn .4s cubic-bezier(.2,.7,.3,1) backwards;
+  transition:border-color .2s ease,transform .2s ease;
+}
+.resume b{color:#FF9ACB;font-weight:600}
+.resume:hover{border-color:rgba(255,61,154,.75);transform:translateY(-1px)}
+@media (max-width:760px){.resume{left:16px;bottom:84px}}
+
+.toc-float{
+  position:fixed;top:96px;right:max(24px,calc((100vw - 1500px) / 2));width:214px;max-height:calc(100vh - 140px);overflow:auto;
+  display:none;z-index:45;padding:14px 16px 12px;border-radius:12px;
+  background:rgba(18,21,42,.94);border:1px solid var(--line);
+  box-shadow:0 24px 50px -34px rgba(0,0,0,.95);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  scrollbar-width:thin;
+}
+.toc-float .toc-h{margin-bottom:2px}
+.toc-float a{display:block;padding:7px 0;font-size:12.5px;line-height:1.5;color:#9AA0B8;border-bottom:1px solid rgba(255,255,255,.04);transition:color .18s ease}
+.toc-float a:last-child{border-bottom:0}
+.toc-float a:hover{color:#EDEFF8}
+.toc-float a.on{color:#FF9ACB}
+@media (min-width:1400px){
+  .toc-float{display:block}
+  .article>.toc{display:none}
+}
+.entry-prog{color:#7EE2C0}
