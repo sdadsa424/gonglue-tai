@@ -580,8 +580,8 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
   50%{filter:drop-shadow(0 0 19px var(--tglow))}
 }
 /* 品牌名：保留渐变流动动画 + 呼吸光晕，新名字同样带特效 */
-/* 顶栏品牌名：与首屏标题同款四层活色板，只是字小、常驻顶栏，所以光晕收敛、相位错开，
-   避免和标题同时变同一个颜色显得呆板 */
+/* 顶栏品牌名：与首屏标题同款活色板，四个动画周期与相位完全一致——
+   任何时刻两处的色相严格同步（用户明确要求同步）；仅光晕幅度按小字号收敛 */
 .brand-name{
   --tc1:#FF3D9A;--tc2:#B44BF0;--tc3:#8B5CF6;--tglow:rgba(255,61,154,.5);--tdeg:100deg;
   background-image:
@@ -592,10 +592,10 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
   background-repeat:no-repeat,repeat;
   position:relative;z-index:3;
   animation:
-    heroTone 26s ease-in-out -8s infinite,
-    heroAngle 20s ease-in-out -8s infinite,
-    heroSheen 9s linear -3s infinite,
-    brandGlow 5.6s ease-in-out infinite;
+    heroTone 26s ease-in-out infinite,
+    heroAngle 18s ease-in-out infinite,
+    heroSheen 7.2s linear infinite,
+    brandGlow 6.4s ease-in-out infinite;
 }
 @keyframes brandGlow{
   0%,100%{filter:drop-shadow(0 0 2px var(--tglow))}
