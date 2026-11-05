@@ -251,10 +251,37 @@
     }
   });
 
-  /* 支持系统分享的设备（手机）才显示这个按钮 */
+  /* ---------- 分享：按设备换形态 ---------- */
+  var nbs = document.querySelectorAll('[data-share-native]');
+  var coarse = false;
+  try {
+    coarse = !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+  } catch (e) {}
+  var touch = coarse || window.innerWidth <= 760;
+
   if (navigator.share) {
-    var nbs = document.querySelectorAll('[data-share-native]');
     for (var ni = 0; ni < nbs.length; ni++) nbs[ni].hidden = false;
+  }
+
+  if (touch) {
+    /* 自己扫不了自己的屏：手机上收起二维码，改用系统分享或微信内转发提示 */
+    var qbs = document.querySelectorAll('[data-share-qr]');
+    for (var qi = 0; qi < qbs.length; qi++) {
+      qbs[qi].hidden = true;
+      var pid = qbs[qi].getAttribute('aria-controls');
+      var pane = pid ? document.getElementById(pid) : null;
+      if (pane) pane.hidden = true;
+    }
+    if (!navigator.share) {
+      /* 微信内置浏览器不支持 Web Share，只能给一句能照做的提示 */
+      var rows = document.querySelectorAll('.share-row, .foot-share');
+      for (var ri = 0; ri < rows.length; ri++) {
+        var tip = document.createElement('p');
+        tip.className = 'share-tip';
+        tip.innerHTML = '微信里转发：点右上角 <b>···</b> → 「发送给朋友」或「分享到朋友圈」';
+        rows[ri].appendChild(tip);
+      }
+    }
   }
 
   /* ---------- 目录 ---------- */

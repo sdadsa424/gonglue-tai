@@ -10,7 +10,8 @@ const vc = new VirtualConsole();
 vc.on('jsdomError', e => errors.push('jsdomError: ' + e.message));
 vc.on('error', (...a) => errors.push('console.error: ' + a.join(' ')));
 
-function make(url, seed) {
+function make(url, seed, opts) {
+  opts = opts || {};
   return JSDOM.fromURL(url, {
     runScripts: 'dangerously',
     resources: 'usable',
@@ -22,6 +23,7 @@ function make(url, seed) {
       window.scrollTo = function () {};
       Object.defineProperty(window, 'scrollY', { value: 900, writable: true });
       try { Object.keys(seed || {}).forEach(k => window.localStorage.setItem(k, seed[k])); } catch (e) {}
+      if (opts.width) Object.defineProperty(window, 'innerWidth', { value: opts.width, writable: true });
     }
   });
 }
@@ -189,6 +191,17 @@ const fsMod = await import('node:fs');
 const qrDirs = fsMod.readdirSync('a').filter(d => fsMod.existsSync(`a/${d}/qr.svg`));
 ok('23 篇文章都有分享二维码', qrDirs.length === 23, String(qrDirs.length));
 ok('站点二维码存在', fsMod.existsSync('assets/qr-site.svg'));
+
+/* 手机端分享形态：二维码收起、无 Web Share 时给微信转发提示 */
+const mob = await make(BASE + 'a/ejl-start/', {}, { width: 375 });
+await wait(700);
+const md = mob.window.document;
+const mQrBtn = md.querySelector('.share [data-share-qr]');
+ok('手机端收起「微信扫码」', !!mQrBtn && mQrBtn.hidden === true);
+ok('手机端二维码面板保持收起', !!md.getElementById('shareQr') && md.getElementById('shareQr').hidden);
+ok('无系统分享时给微信转发提示', !!md.querySelector('.share-row .share-tip') && /发送给朋友/.test(md.querySelector('.share-row .share-tip').textContent));
+ok('手机端保留复制链接', !!md.querySelector('.share [data-share-copy]'));
+mob.window.close();
 
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
 console.log(`\n结果：${pass} 通过 / ${fail} 失败`);

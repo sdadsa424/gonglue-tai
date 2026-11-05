@@ -1230,3 +1230,8 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
   .share-qr{gap:14px}
   .share-qr img{width:104px;height:104px}
 }
+
+/* 分享：手机端适配 */
+.share-btn[hidden]{display:none}
+.share-tip{width:100%;margin:2px 0 0;font-size:11.5px;line-height:1.7;color:#7C829B}
+.share-tip b{color:#B9BFD5;font-weight:600}
