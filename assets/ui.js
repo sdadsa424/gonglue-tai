@@ -764,10 +764,13 @@
     }
 
     /* 2.6 3D 入场：触屏设备上卡片滚动进视口时翻正（桌面上由倾斜接管，不重复动）
-       首页海报 .poster 与攻略页相关推荐 .related a 也要参与，否则手机上没动画 */
+       名单只放"没有自带入场动画"的卡片：
+       - .entries .entry 自带 riseIn 错峰、.game-card 自带 reveal（特异性都高于 .c3d-in），
+         若叠加 .c3d（opacity:0），自带动画播完会回落到透明 → 列表"闪现后空白"
+       - .poster 有 reveal.in 兜底（特异性更高，能救回）；.related a 无自带动画 */
     function initCards3d() {
       if (!(window.matchMedia && window.matchMedia('(hover:none) and (prefers-reduced-motion: no-preference)').matches && 'IntersectionObserver' in window)) return;
-      var c3d = [].slice.call(document.querySelectorAll('.poster, .entry, .game-card, .related a'));
+      var c3d = [].slice.call(document.querySelectorAll('.poster, .related a'));
       if (c3d.length) {
         var io3 = new IntersectionObserver(function (entries) {
           for (var n = 0; n < entries.length; n++) {
