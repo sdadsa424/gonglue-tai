@@ -263,6 +263,16 @@ try { new vmMod.Script(homeSnip.replace(/^<script>/, '').replace(/<\/script>$/, 
 ok('24 个页面过渡脚本逐字一致', !!homeSnip && sameSnip);
 ok('过渡脚本文法有效', snipParses);
 
+/* 正文插图：首页内联视图与静态页两条渲染链都要出图 */
+const fsm = await import('node:fs');
+const siegeHTML = fsm.readFileSync('a/xxtl-siege/index.html', 'utf8');
+ok('静态页插图路径上溯两级', /src="\.\.\/\.\.\/assets\/xxtl-siege\.jpg"/.test(siegeHTML));
+ok('静态页插图有 webp 源', /srcset="\.\.\/\.\.\/assets\/xxtl-siege\.webp"/.test(siegeHTML));
+ok('静态页插图带图注', /<figcaption>[^<]+<\/figcaption>/.test(siegeHTML));
+const figureCount = (siegeHTML.match(/class="fig"/g) || []).length;
+ok('静态页共 1 张插图', figureCount === 1, String(figureCount));
+ok('静态页插图懒加载 + 带宽高', /<img src="\.\.\/\.\.\/assets\/xxtl-siege\.jpg"[^>]*width="1080" height="608" loading="lazy"/.test(siegeHTML));
+
 /* 精确指针设备才挂光标高光 */
 const desk = await make(BASE, {}, { pointerFine: true });
 await wait(700);

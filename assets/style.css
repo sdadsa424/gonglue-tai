@@ -1290,3 +1290,19 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
   .poster img{translate:0 0;scale:1;transition:none}
   .poster:hover img{translate:0 0;scale:1}
 }
+
+/* ---------- 正文插图（图 + 图注） ---------- */
+.prose .fig{margin:28px 0 26px}
+.prose .fig picture{display:block}
+.prose .fig img{
+  display:block;width:100%;height:auto;border-radius:12px;
+  border:1px solid var(--line-2);background:#141830;
+}
+.prose .fig figcaption{
+  margin-top:10px;font-size:12.5px;line-height:1.75;color:#7C829B;text-align:center;
+}
+@media (max-width:760px){
+  .prose .fig{margin:22px 0}
+  .prose .fig img{border-radius:10px}
+  .prose .fig figcaption{font-size:12px;text-align:left;padding:0 2px}
+}

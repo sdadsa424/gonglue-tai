@@ -33,6 +33,7 @@ ORDER.forEach(k => {
 function guideText(gi) {
   let s = gi.title + gi.dek + gi.take.join('');
   gi.blocks.forEach(b => {
+    if (b.t === 'img') return;
     if (b.t === 'table') s += b.head.join('') + b.rows.map(r => r.join('')).join('');
     else if (Array.isArray(b.v)) s += b.v.join('');
     else s += b.v;
@@ -42,11 +43,22 @@ function guideText(gi) {
 const readMin = gi => Math.max(2, Math.round(guideText(gi).length / 300));
 const sectionsOf = gi => gi.blocks.filter(b => b.t === 'h').length;
 
-function blockHTML(b) {
+function blockHTML(b, up) {
+  up = up || '';
   if (b.t === 'h') return '<h2>' + esc(b.v) + '</h2>';
   if (b.t === 'p') return '<p>' + esc(b.v) + '</p>';
   if (b.t === 'note') return '<p class="note">' + esc(b.v) + '</p>';
   if (b.t === 'ul') return '<ul>' + b.v.map(i => '<li>' + esc(i) + '</li>').join('') + '</ul>';
+  if (b.t === 'img') {
+    const base = up + 'assets/' + b.v;
+    const w = b.w || 1080, h = b.h || 608;
+    return '<figure class="fig"><picture>'
+      + '<source srcset="' + base + '.webp" type="image/webp">'
+      + '<img src="' + base + '.jpg" alt="' + esc(b.alt || '') + '" width="' + w + '" height="' + h + '" loading="lazy" decoding="async">'
+      + '</picture>'
+      + (b.cap ? '<figcaption>' + esc(b.cap) + '</figcaption>' : '')
+      + '</figure>';
+  }
   if (b.t === 'table') {
     const cols = b.w.map(w => '<col style="width:' + w + '%">').join('');
     return '<div class="tbl-wrap"><table class="tbl"><colgroup>' + cols + '</colgroup><thead><tr>'
@@ -310,7 +322,7 @@ function articlePage(gi) {
   let hi = 0;
   const bodyHTML = gi.blocks.map(b => {
     if (b.t === 'h') { hi += 1; return '<h2 id="s' + hi + '">' + esc(b.v) + '</h2>'; }
-    return blockHTML(b);
+    return blockHTML(b, UP);
   }).join('');
   const heads = gi.blocks.filter(b => b.t === 'h');
   const tocHTML = heads.length >= 3
