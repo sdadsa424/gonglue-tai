@@ -281,6 +281,16 @@ const firstEntry = dd.querySelector('#entryList .entry');
 firstEntry.dispatchEvent(new desk.window.MouseEvent('mousemove', { bubbles: true, clientX: 40, clientY: 40 }));
 await wait(60);
 ok('桌面端卡片按需挂上光标高光', firstEntry.classList.contains('glow-host'));
+const posterEl = dd.querySelector('.poster');
+posterEl.dispatchEvent(new desk.window.MouseEvent('pointermove', { bubbles: true, clientX: 120, clientY: 120 }));
+await wait(80);
+ok('桌面端卡片进入 3D 倾斜态', posterEl.classList.contains('tilt-on'));
+/* 3D 相关样式：倾斜变换、触屏入场、与 hover 变换的兼容 */
+const css3d = (await import('node:fs')).readFileSync('assets/style.css', 'utf8');
+ok('倾斜用 perspective + rotateX/rotateY', /\.poster,\.entry,\.game-card,\.related a\{[^}]*perspective\(900px\) rotateX\(var\(--rx[^}]*rotateY\(var\(--ry/.test(css3d));
+ok('hover 时保留倾斜不被位移覆盖', /\.poster:hover,\.entry:hover,\.game-card:hover,\.related a:hover\{[^}]*rotateX\(var\(--rx/.test(css3d));
+ok('触屏有 3D 入场关键帧', /@keyframes c3dIn\{from\{opacity:0;transform:translateY\(16px\) rotateX\(10deg\)\}/.test(css3d));
+ok('触屏入场尊重减少动态', /@media \(hover:none\) and \(prefers-reduced-motion:no-preference\)/.test(css3d));
 desk.window.close();
 
 

@@ -1306,3 +1306,30 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
   .prose .fig img{border-radius:10px}
   .prose .fig figcaption{font-size:12px;text-align:left;padding:0 2px}
 }
+
+/* ---------- 3D 倾斜卡片（仅精确指针设备，鼠标移动时卡片朝光标轻微翻转） ---------- */
+@media (hover:hover) and (pointer:fine){
+  .poster,.entry,.game-card,.related a{
+    transform-style:preserve-3d;
+    transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translate3d(0,var(--lift,0px),0);
+    transition:transform .5s cubic-bezier(.2,.7,.3,1),box-shadow .4s ease,border-color .3s ease;
+    will-change:transform;
+  }
+  .poster{--lift-h:-6px}
+  .entry{--lift-h:-3px}
+  .game-card{--lift-h:-4px}
+  .poster:hover,.entry:hover,.game-card:hover,.related a:hover{
+    --lift:var(--lift-h);
+    transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translate3d(0,var(--lift,0px),0);
+  }
+  /* 跟随光标时缩短过渡，离开后回到弹簧感；翻转时阴影加深，立体感更强 */
+  .tilt-on{transition-duration:.1s,.4s,.3s}
+  .poster.tilt-on,.game-card.tilt-on,.entry.tilt-on{box-shadow:0 34px 72px -36px rgba(0,0,0,.98)}
+}
+
+/* ---------- 3D 卡片入场（手机/触屏：滚动到就翻进来） ---------- */
+@media (hover:none) and (prefers-reduced-motion:no-preference){
+  .c3d{opacity:0;transform:translateY(16px) rotateX(10deg);transform-origin:50% 100%}
+  .c3d-in{animation:c3dIn .6s cubic-bezier(.2,.7,.3,1) forwards}
+  @keyframes c3dIn{from{opacity:0;transform:translateY(16px) rotateX(10deg)}to{opacity:1;transform:none}}
+}

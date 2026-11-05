@@ -675,6 +675,71 @@
       }, { passive: true });
     }
 
+    /* 2.5 3D 倾斜：鼠标在卡片上移动时朝光标方向轻微翻转（仅精确指针设备） */
+    if (window.matchMedia && window.matchMedia('(pointer:fine)').matches) {
+      var TILT_SEL = '.poster, .entry, .game-card, .related a';
+      var MAX_TILT = 7;          /* 单边最大角度 */
+      var tHost = null, tRaf = 0, tX = 0, tY = 0;
+      var tReset = function (el) {
+        if (!el) return;
+        el.classList.remove('tilt-on');
+        el.style.setProperty('--rx', '0deg');
+        el.style.setProperty('--ry', '0deg');
+      };
+      document.addEventListener('pointermove', function (e) {
+        var el = e.target && e.target.closest ? e.target.closest(TILT_SEL) : null;
+        if (el !== tHost) {
+          tReset(tHost);
+          tHost = el;
+          if (tHost) tHost.classList.add('tilt-on');
+        }
+        if (!tHost) return;
+        tX = e.clientX; tY = e.clientY;
+        if (tRaf) return;
+        tRaf = requestAnimationFrame(function () {
+          tRaf = 0;
+          if (!tHost) return;
+          var r = tHost.getBoundingClientRect();
+          if (!r.width || !r.height) return;
+          var px = (tX - r.left) / r.width - 0.5;
+          var py = (tY - r.top) / r.height - 0.5;
+          tHost.style.setProperty('--ry', (px * MAX_TILT * 2).toFixed(2) + 'deg');
+          tHost.style.setProperty('--rx', (-py * MAX_TILT * 2).toFixed(2) + 'deg');
+        });
+      }, { passive: true });
+      document.addEventListener('mouseleave', function () { tReset(tHost); tHost = null; });
+      window.addEventListener('blur', function () { tReset(tHost); tHost = null; });
+    }
+
+    /* 2.6 3D 入场：触屏设备上卡片滚动进视口时翻正（桌面上由倾斜接管，不重复动）
+       卡片由 inline 脚本在本文件之后渲染，所以延到 DOMContentLoaded 再挂 */
+    function initCards3d() {
+      if (!(window.matchMedia && window.matchMedia('(hover:none)').matches && 'IntersectionObserver' in window)) return;
+      var c3d = [].slice.call(document.querySelectorAll('.entry, .game-card'));
+      if (c3d.length) {
+        var io3 = new IntersectionObserver(function (entries) {
+          for (var n = 0; n < entries.length; n++) {
+            var en = entries[n];
+            if (!en.isIntersecting) continue;
+            var el3 = en.target;
+            el3.classList.add('c3d-in');
+            el3.addEventListener('animationend', function () {
+              this.classList.remove('c3d', 'c3d-in');
+              this.style.removeProperty('opacity');
+              this.style.removeProperty('transform');
+            }, { once: true });
+            io3.unobserve(el3);
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.01 });
+        for (var c = 0; c < c3d.length; c++) {
+          c3d[c].classList.add('c3d');
+          io3.observe(c3d[c]);
+        }
+      }
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initCards3d);
+    else initCards3d();
+
     /* 3. 图片淡入 + 加载骨架（首屏 LCP 图跳过，别拖慢首绘） */
     var imgs = [].slice.call(document.querySelectorAll('picture img'));
     for (var k = 0; k < imgs.length; k++) {
