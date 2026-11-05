@@ -647,6 +647,66 @@ ok('窄屏隐藏顶栏城市名', /@media \(max-width:760px\)\{[\s\S]*?\.wt-city
 
 
 
+/* ---------- 交互与无障碍 ---------- */
+console.log('\n[交互与无障碍]');
+const axPage = await make(BASE);
+await wait(700);
+const aDoc = axPage.window.document;
+ok('首页有 main 地标', !!aDoc.querySelector('main#main'));
+ok('首屏有跳到主内容链接', (() => {
+  const s = aDoc.querySelector('a.skip');
+  return !!s && s.getAttribute('href') === '#main' && /跳到主内容/.test(s.textContent);
+})());
+ok('首屏有读屏播报区', (() => {
+  const l = aDoc.getElementById('srLive');
+  return !!l && l.getAttribute('role') === 'status' && l.getAttribute('aria-live') === 'polite';
+})());
+ok('底栏当前项带 aria-current', !!aDoc.querySelector('.tabbar .tab.active[aria-current="page"]'));
+
+/* 路由切到分站：焦点应进入新视图标题，并播报 */
+axPage.window.location.hash = '#/g/ejl';
+await wait(400);
+const axH1 = aDoc.querySelector('#view-game .game-page:not([hidden]) h1');
+ok('分站视图已展开', !!axH1, axH1 ? axH1.textContent : '未找到可见分站');
+ok('切视图后焦点进入标题', !!axH1 && aDoc.activeElement === axH1,
+  aDoc.activeElement ? aDoc.activeElement.tagName + '.' + (aDoc.activeElement.className || '') : '无焦点');
+ok('切视图后读屏有播报', /贰点零江湖/.test(aDoc.getElementById('srLive').textContent),
+  aDoc.getElementById('srLive').textContent);
+ok('视图标题可编程聚焦', !!axH1 && axH1.getAttribute('tabindex') === '-1');
+ok('底栏 aria-current 跟着视图走', (() => {
+  const on = aDoc.querySelector('.tabbar .tab.active');
+  return !!on && on.getAttribute('aria-current') === 'page' && on.dataset.tab === 'games';
+})(), aDoc.querySelector('.tabbar .tab.active')?.dataset.tab);
+
+/* 搜索面板：组合框语义、选项播报、Tab 不逃逸 */
+aDoc.querySelector('[data-palette]').click();
+await wait(150);
+const axPal = aDoc.querySelector('.pal');
+const axInput = aDoc.querySelector('.pal-input');
+ok('搜索面板是模态对话框', !!axPal && axPal.getAttribute('role') === 'dialog' && axPal.getAttribute('aria-modal') === 'true');
+ok('搜索输入框是 combobox', !!axInput && axInput.getAttribute('role') === 'combobox' && axInput.getAttribute('aria-controls') === 'palList');
+ok('高亮项通过 aria-activedescendant 暴露', (() => {
+  const first = aDoc.querySelector('.pal-item');
+  return !!(first && first.id && axInput && axInput.getAttribute('aria-activedescendant') === first.id
+    && first.getAttribute('aria-selected') === 'true');
+})(), axInput ? axInput.getAttribute('aria-activedescendant') : '无 input');
+ok('面板内 Tab 不会跑到背景页', (() => {
+  const ev = new axPage.window.KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true });
+  axPal.dispatchEvent(ev);
+  return ev.defaultPrevented;
+})());
+axPage.window.close();
+
+/* 收起状态的浮层必须退出焦点顺序 */
+ok('搜索面板收起时退出焦点顺序', /\.pal\{[^}]*visibility:hidden/.test(css3d));
+ok('目录抽屉收起时退出焦点顺序', /\.toc-sheet\{[^}]*visibility:hidden/.test(css3d));
+
+/* 静态页脚手架同步 */
+const axStatic = (await import('node:fs')).readFileSync('a/ejl-start/index.html', 'utf8');
+ok('静态页有跳到主内容链接', /<body[^>]*>\s*<a class="skip" href="#main">跳到主内容<\/a>/.test(axStatic));
+ok('静态页 main 可聚焦', /<main class="view" id="main" tabindex="-1">/.test(axStatic));
+ok('倾斜在减少动态时关闭', /\(pointer:fine\)'\)\.matches\s*&&\s*!window\.matchMedia\('\(prefers-reduced-motion: reduce\)'\)\.matches/.test(uiJs));
+
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
 console.log(`\n结果：${pass} 通过 / ${fail} 失败`);
 process.exit(fail ? 1 : 0);

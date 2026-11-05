@@ -49,6 +49,16 @@ ul{margin:0;padding:0;list-style:none}
 :focus-visible{outline:2px solid var(--pink);outline-offset:3px}
 .wrap{width:100%;max-width:var(--wrap);margin:0 auto;padding:0 20px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* 键盘第一下 Tab 出现"跳到主内容"：视觉用户看不到，键盘/读屏用户少绕一圈导航 */
+.skip{
+  position:fixed;left:14px;top:14px;z-index:1000;
+  padding:10px 16px;border-radius:10px;
+  background:#FF3D9A;color:#0B0D16;font-size:13px;font-weight:700;text-decoration:none;
+  box-shadow:0 10px 26px -14px rgba(255,61,154,.8);
+  transform:translateY(-180%);transition:transform .18s ease;
+}
+.skip:focus{transform:none;outline:2px solid #fff;outline-offset:2px}
+#main:focus{outline:none}
 .view{position:relative;z-index:2}
 
 /* ---------- 顶栏 ---------- */
@@ -1062,10 +1072,13 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
   background:#12152A;border-top:1px solid var(--line-2);
   border-radius:18px 18px 0 0;
   padding:18px 20px calc(20px + env(safe-area-inset-bottom));
-  transform:translateY(103%);transition:transform .32s cubic-bezier(.2,.7,.3,1);
+  transform:translateY(103%);
+  /* 收起时不仅移出屏幕，也要退出焦点顺序，否则 Tab 会跳进看不见的目录 */
+  visibility:hidden;
+  transition:transform .32s cubic-bezier(.2,.7,.3,1),visibility 0s linear .32s;
   box-shadow:0 -20px 60px -30px rgba(0,0,0,.9);
 }
-.toc-sheet.open{transform:none}
+.toc-sheet.open{transform:none;visibility:visible;transition:transform .32s cubic-bezier(.2,.7,.3,1),visibility 0s}
 .toc-sheet .toc-h{font-size:11px;letter-spacing:.14em;color:var(--dim);margin-bottom:8px}
 .toc-sheet ol{list-style:none;margin:0;padding:0;counter-reset:stoc}
 .toc-sheet li{counter-increment:stoc;border-bottom:1px solid rgba(255,255,255,.05)}
@@ -1131,11 +1144,13 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
   position:fixed;left:50%;top:11vh;z-index:955;width:min(640px,92vw);
   max-height:70vh;display:flex;flex-direction:column;overflow:hidden;
   transform:translate(-50%,-8px) scale(.985);opacity:0;pointer-events:none;
+  /* 收起时退出焦点顺序：否则 Tab 会钻进看不见的搜索框 */
+  visibility:hidden;
   background:#12152A;border:1px solid rgba(255,255,255,.12);border-radius:16px;
   box-shadow:0 40px 90px -40px rgba(0,0,0,.95),0 0 0 1px rgba(255,255,255,.03) inset;
-  transition:opacity .2s ease,transform .22s cubic-bezier(.2,.7,.3,1);
+  transition:opacity .2s ease,transform .22s cubic-bezier(.2,.7,.3,1),visibility 0s linear .22s;
 }
-.pal.open{opacity:1;transform:translate(-50%,0) scale(1);pointer-events:auto}
+.pal.open{opacity:1;transform:translate(-50%,0) scale(1);pointer-events:auto;visibility:visible;transition:opacity .2s ease,transform .22s cubic-bezier(.2,.7,.3,1),visibility 0s}
 .pal-head{display:flex;align-items:center;gap:12px;padding:15px 18px;border-bottom:1px solid var(--line)}
 .pal-head svg{color:#7D84A0;flex:0 0 auto}
 .pal-input{

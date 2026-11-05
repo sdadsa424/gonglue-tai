@@ -36,6 +36,8 @@
 </head>
 <body>
 
+<a class="skip" href="#main">跳到主内容</a>
+
 <div class="progress" id="progress" hidden aria-hidden="true"></div>
 
 <header class="topbar">
@@ -94,6 +96,7 @@
 </header>
 
 <!-- ===== 视图：首页 ===== -->
+<main id="main" tabindex="-1">
 <div class="view" id="view-home">
 
   <section class="hero">
@@ -542,6 +545,9 @@
 
 <!-- ===== 视图：文章 ===== -->
 <div class="view" id="view-article" hidden></div>
+</main>
+
+<div class="sr" id="srLive" role="status" aria-live="polite"></div>
 
 <footer class="foot">
   <div class="wrap">
@@ -772,7 +778,29 @@ const viewGame = document.getElementById('view-game');
 
 /* ---------- 路由 ---------- */
 const views = { home: document.getElementById('view-home'), game: viewGame, article: viewArticle };
+const mainEl = document.getElementById('main');
+const srLive = document.getElementById('srLive');
 let currentView = 'home';
+let routeReady = false;   /* 首屏渲染前不搬焦点，避免一进来就被抢走 */
+/* 读屏播报：先清空再写，连续相同文案也能重新播 */
+function announce(text) {
+  if (!srLive) return;
+  srLive.textContent = '';
+  setTimeout(function () { srLive.textContent = text; }, 40);
+}
+/* 视图切换后把焦点交给新视图的标题，并让读屏播报一句；
+   不用 scrollIntoView，避免和路由自己的回顶/锚点逻辑打架 */
+function focusView(name) {
+  if (!routeReady) return;
+  const v = views[name];
+  if (!v) return;
+  const h = v.querySelector('.game-page:not([hidden]) h1') || v.querySelector('h1, h2');
+  const target = h || mainEl;
+  if (!target) return;
+  if (target !== mainEl && !target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+  try { target.focus({ preventScroll: true }); } catch (err) { try { target.focus(); } catch (e2) {} }
+  if (srLive) srLive.textContent = h ? h.textContent.trim() : '已返回首页';
+}
 function setView(name) {
   Object.keys(views).forEach(k => { views[k].hidden = k !== name; });
   if (name === 'home' && currentView !== 'home') window.scrollTo(0, 0);
@@ -785,6 +813,7 @@ function setView(name) {
     if (v) { v.classList.remove('view-enter'); void v.offsetWidth; v.classList.add('view-enter'); }
   }
   if (typeof setActiveTab === 'function') setActiveTab();
+  focusView(name);
 }
 function renderRoute() {
   const raw = location.hash.replace(/^#/, '');
@@ -817,6 +846,7 @@ document.querySelector('.filters').addEventListener('click', e => {
   state[btn.dataset.kind] = btn.dataset.value;
   renderFilters();
   renderEntries();
+  announce('筛选结果 ' + entryList.children.length + ' 篇');
 });
 searchInput.addEventListener('input', e => {
   state.q = e.target.value.trim();
@@ -962,7 +992,12 @@ function setActiveTab() {
     if (gms && y >= gms.offsetTop) key = 'games';
     else if (lib && y >= lib.offsetTop) key = 'guides';
   }
-  tabbar.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === key));
+  tabbar.querySelectorAll('.tab').forEach(t => {
+    const on = t.dataset.tab === key;
+    t.classList.toggle('active', on);
+    /* 让读屏知道"当前在哪一栏"，而不只是颜色变化 */
+    if (on) t.setAttribute('aria-current', 'page'); else t.removeAttribute('aria-current');
+  });
 }
 setActiveTab();
 
@@ -1045,6 +1080,8 @@ renderEntries();
 renderGamePages();
 fillCounts();
 renderRoute();
+/* 首屏落位完成，之后的视图切换才搬运焦点 */
+routeReady = true;
 /* ?view= 查询参数直连分站（截图/分享用，与 hash 路由等效） */
 try {
   var qv = new URLSearchParams(location.search).get('view');

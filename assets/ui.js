@@ -307,8 +307,17 @@
         if (!targets[i]) continue;
         if (targets[i].getBoundingClientRect().top <= 150) active = i;
       }
-      for (var j = 0; j < links.length; j++) links[j].classList.toggle('on', j === active);
-      for (var k = 0; k < inlineLinks.length; k++) inlineLinks[k].classList.toggle('on', k === active);
+      for (var j = 0; j < links.length; j++) {
+        var on = j === active;
+        links[j].classList.toggle('on', on);
+        /* 目录高亮同步给读屏：当前读到哪一节 */
+        if (on) links[j].setAttribute('aria-current', 'location'); else links[j].removeAttribute('aria-current');
+      }
+      for (var k = 0; k < inlineLinks.length; k++) {
+        var on2 = k === active;
+        inlineLinks[k].classList.toggle('on', on2);
+        if (on2) inlineLinks[k].setAttribute('aria-current', 'location'); else inlineLinks[k].removeAttribute('aria-current');
+      }
     }
     window.addEventListener('scroll', function () {
       if (spyTick) return;
@@ -337,22 +346,38 @@
       document.body.appendChild(sheet);
 
       var sheetLinks = [].slice.call(sheet.querySelectorAll('a'));
-      var setSheet = function (open) {
+      var lastTocFocus = null;
+      var setSheet = function (open, restoreFocus) {
         sheet.classList.toggle('open', open);
         mask.classList.toggle('open', open);
         mBtn.setAttribute('aria-expanded', String(open));
         if (open) {
+          lastTocFocus = document.activeElement;
           var activeIdx = -1;
           for (var i = 0; i < targets.length; i++) {
             if (targets[i] && targets[i].getBoundingClientRect().top <= 150) activeIdx = i;
           }
-          for (var j = 0; j < sheetLinks.length; j++) sheetLinks[j].classList.toggle('on', j === activeIdx);
+          for (var j = 0; j < sheetLinks.length; j++) {
+            var onS = j === activeIdx;
+            sheetLinks[j].classList.toggle('on', onS);
+            if (onS) sheetLinks[j].setAttribute('aria-current', 'location'); else sheetLinks[j].removeAttribute('aria-current');
+          }
+          /* 抽屉打开时把焦点送进去，键盘/读屏用户才不用自己找 */
+          setTimeout(function () { if (sheetLinks[0]) { try { sheetLinks[0].focus({ preventScroll: true }); } catch (e) { sheetLinks[0].focus(); } } }, 60);
+        } else if (restoreFocus) {
+          /* 点链接关闭时不抢焦点，让浏览器把焦点交给跳转目标 */
+          var back = (lastTocFocus && lastTocFocus.focus) ? lastTocFocus : mBtn;
+          try { back.focus({ preventScroll: true }); } catch (e2) { try { back.focus(); } catch (e3) {} }
         }
       };
-      mBtn.addEventListener('click', function () { setSheet(!sheet.classList.contains('open')); });
-      mask.addEventListener('click', function () { setSheet(false); });
+      mBtn.addEventListener('click', function () { setSheet(!sheet.classList.contains('open'), true); });
+      mask.addEventListener('click', function () { setSheet(false, true); });
       sheet.addEventListener('click', function (e) {
-        if (e.target.closest('a')) setSheet(false);
+        if (e.target.closest('a')) setSheet(false, false);
+      });
+      /* Esc 收起目录抽屉（手机端也常接外接键盘） */
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && sheet.classList.contains('open')) setSheet(false, true);
       });
     }
   }
@@ -401,7 +426,7 @@
       pal.setAttribute('aria-label', '全站搜索');
       pal.innerHTML = '<div class="pal-head">'
         + '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>'
-        + '<input class="pal-input" type="text" placeholder="搜 ' + GUIDES_.length + ' 篇攻略：标题、结论、正文都查" autocomplete="off" aria-label="搜索攻略">'
+        + '<input class="pal-input" type="text" placeholder="搜 ' + GUIDES_.length + ' 篇攻略：标题、结论、正文都查" autocomplete="off" aria-label="搜索攻略" role="combobox" aria-autocomplete="list" aria-expanded="true" aria-controls="palList">'
         + '<span class="pal-kbd">ESC</span></div>'
         + '<div class="pal-body"><p class="pal-hint" id="palHint"></p><ul class="pal-list" id="palList" role="listbox" aria-label="搜索结果"></ul></div>'
         + '<div class="pal-foot"><span><kbd>↑</kbd><kbd>↓</kbd> 选择</span><span><kbd>↵</kbd> 打开</span><span><kbd>⌘K</kbd> 随时呼出</span></div>';
@@ -471,6 +496,9 @@
           lis[i].setAttribute('aria-selected', String(i === active));
           if (i === active && lis[i].scrollIntoView) lis[i].scrollIntoView({ block: 'nearest' });
         }
+        /* 焦点留在输入框，用 aria-activedescendant 告诉读屏"当前选到第几条" */
+        if (lis.length && lis[active] && lis[active].id) input.setAttribute('aria-activedescendant', lis[active].id);
+        else input.removeAttribute('aria-activedescendant');
       }
       function render(q) {
         var rows = search(q);
@@ -485,7 +513,7 @@
         if (active < 0 || active >= items.length) active = 0;
         list.innerHTML = rows.map(function (row, i) {
           var gi = row.r.gi;
-          return '<li class="pal-item" role="option" data-i="' + i + '" data-id="' + gi.id + '" aria-selected="' + (i === active) + '">'
+          return '<li class="pal-item" id="pal-opt-' + i + '" role="option" data-i="' + i + '" data-id="' + gi.id + '" aria-selected="' + (i === active) + '">'
             + '<span class="pal-idx">' + (i + 1) + '</span>'
             + '<span class="pal-main">'
             + '<span class="pal-t">' + hlSafe(gi.title, tokens) + '</span>'
@@ -506,6 +534,7 @@
         palMask.classList.add('open');
         docEl.style.overflow = 'hidden';
         input.value = '';
+        input.setAttribute('aria-expanded', 'true');
         active = 0;
         render('');
         setTimeout(function () { input.focus(); }, 40);
@@ -514,6 +543,8 @@
         pal.classList.remove('open');
         palMask.classList.remove('open');
         docEl.style.overflow = '';
+        input.setAttribute('aria-expanded', 'false');
+        input.removeAttribute('aria-activedescendant');
         if (lastFocus && lastFocus.focus) lastFocus.focus();
       }
 
@@ -536,6 +567,9 @@
           if (items[active]) go(items[active].gi.id);
         } else if (e.key === 'Escape') {
           close();
+        } else if (e.key === 'Tab') {
+          /* 弹层是模态的：Tab 不该跑到背后被遮住的页面上，上下键负责选项 */
+          e.preventDefault();
         }
       });
       pal.addEventListener('mousemove', function (e) {
@@ -678,7 +712,8 @@
     /* 2.5 3D 倾斜：鼠标在卡片上移动时朝光标方向轻微翻转（仅精确指针设备）
        平滑做法：rAF 逐帧向目标角度插值（lerp），追踪期间用 .tilt-track 关掉
        transform 过渡，避免"每帧重启 transition"造成的抖动/追赶感 */
-    if (window.matchMedia && window.matchMedia('(pointer:fine)').matches) {
+    if (window.matchMedia && window.matchMedia('(pointer:fine)').matches
+        && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       var TILT_SEL = '.poster, .entry, .game-card, .related a';
       var MAX_TILT = 7;          /* 单边最大角度 */
       var LERP = 0.18;           /* 每帧向目标逼近的比例，越小越"跟手柔" */

@@ -284,9 +284,10 @@ function page({ title, desc, canonical, jsonld, body, ogImage, ogType = 'article
 <script type="application/ld+json">${jsonld}</script>
 </head>
 <body${bodyClass ? ' class="' + bodyClass + '"' : ''}${guideId ? ' data-guide-id="' + guideId + '"' : ''}>
+<a class="skip" href="#main">跳到主内容</a>
 <div class="progress" id="progress" aria-hidden="true"></div>
 ${topbar()}
-<main class="view">
+<main class="view" id="main" tabindex="-1">
 ${body}
 </main>
 ${footer()}
