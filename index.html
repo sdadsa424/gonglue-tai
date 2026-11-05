@@ -41,6 +41,11 @@
       <a href="#/" data-goto="route">开荒路线</a>
       <a href="#/" data-goto="games">游戏</a>
     </nav>
+    <button class="tb-search" type="button" data-palette aria-label="全站搜索（快捷键 Ctrl 或 Command 加 K）">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+      <span>搜索</span>
+      <span class="tb-kbd">⌘K</span>
+    </button>
   </div>
 </header>
 
@@ -204,7 +209,10 @@
     </div>
 
     <div class="lib-bar">
-      <span id="libCount" aria-live="polite">正在加载</span>
+      <div class="lib-bar-l">
+        <span id="libCount" aria-live="polite">正在加载</span>
+        <button class="lib-book" id="onlyBook" type="button" aria-pressed="false" hidden>★ 收藏 <b id="bookCount">0</b></button>
+      </div>
       <button class="lib-clear" id="clearFilter" type="button" hidden>清除筛选</button>
     </div>
 
@@ -565,7 +573,7 @@ function blockHTML(b) {
 /* 首屏画面为静态 HTML，脚本不生成图片引用 */
 
 /* ---------- 攻略库 ---------- */
-const state = { game: 'all', cat: 'all', q: '' };
+const state = { game: 'all', cat: 'all', q: '', book: false };
 const filterGame = document.getElementById('filterGame');
 const filterCat = document.getElementById('filterCat');
 const entryList = document.getElementById('entryList');
@@ -573,6 +581,8 @@ const emptyState = document.getElementById('emptyState');
 const libCount = document.getElementById('libCount');
 const clearFilter = document.getElementById('clearFilter');
 const searchInput = document.getElementById('searchInput');
+const onlyBook = document.getElementById('onlyBook');
+const bookCount = document.getElementById('bookCount');
 
 function countBy(kind, val) {
   const pool = GUIDES.filter(gi => kind === 'game'
@@ -607,17 +617,19 @@ function hl(text) {
 function entryHTML(gi) {
   const game = GAMES[gi.game];
   const isRead = !!(window.GL && GL.read.has(gi.id));
+  const isBook = !!(window.GL && GL.book && GL.book.has(gi.id));
   const pct = (window.GL && GL.pos) ? GL.pos.get(gi.id) : 0;
   return '<a class="entry' + (isRead ? ' is-read' : '') + '" href="a/' + gi.id + '/" style="--ac:' + game.accent + '">'
     + '<span class="entry-tab">' + game.short + '<i>' + IDX[gi.id] + '</i></span>'
     + '<span class="entry-body">'
-    + '<span class="entry-meta"><span>' + esc(game.name) + '</span><i class="divider"></i><span>' + esc(CATS[gi.cat]) + '</span><i class="divider"></i><span>' + esc(gi.level) + '</span>' + (isRead ? '<i class="divider"></i><span class="entry-read">已读</span>' : '') + '</span>'
+    + '<span class="entry-meta"><span>' + esc(game.name) + '</span><i class="divider"></i><span>' + esc(CATS[gi.cat]) + '</span><i class="divider"></i><span>' + esc(gi.level) + '</span>' + (isBook ? '<i class="divider"></i><span class="entry-star" title="已收藏">★</span>' : '') + (isRead ? '<i class="divider"></i><span class="entry-read">已读</span>' : '') + '</span>'
     + '<span class="entry-title">' + hl(gi.title) + '</span>'
     + '<span class="entry-dek">' + esc(gi.dek) + '</span>'
     + '<span class="entry-foot">阅读约 ' + readMin(gi) + ' 分钟 · ' + sectionsOf(gi) + ' 节' + (pct > 8 && pct < 100 ? '<span class="entry-prog">· 读到 ' + pct + '%</span>' : '') + '</span>'
     + '</span></a>';
 }
 function matches(gi) {
+  if (state.book && !(window.GL && GL.book && GL.book.has(gi.id))) return false;
   if (state.game !== 'all' && gi.game !== state.game) return false;
   if (state.cat !== 'all' && gi.cat !== state.cat) return false;
   if (state.q) {
@@ -626,13 +638,21 @@ function matches(gi) {
   }
   return true;
 }
+/* 收藏按钮的显隐与计数（没有收藏时整个入口收起，不占位） */
+function syncBookUI() {
+  const n = (window.GL && GL.book) ? GL.book.count() : 0;
+  bookCount.textContent = n;
+  onlyBook.hidden = n === 0 && !state.book;
+  onlyBook.setAttribute('aria-pressed', String(state.book));
+}
 function renderEntries() {
   const list = GUIDES.filter(matches);
   entryList.innerHTML = list.map(entryHTML).join('');
   staggerEntries(entryList);
   emptyState.classList.toggle('on', list.length === 0);
   libCount.textContent = '显示 ' + list.length + ' / ' + GUIDES.length + ' 篇';
-  clearFilter.hidden = !(state.game !== 'all' || state.cat !== 'all' || state.q);
+  clearFilter.hidden = !(state.game !== 'all' || state.cat !== 'all' || state.q || state.book);
+  syncBookUI();
 }
 
 /* 列表错峰进场：越靠前的条目延迟越小 */
@@ -812,9 +832,23 @@ clearFilter.addEventListener('click', () => {
   state.game = 'all';
   state.cat = 'all';
   state.q = '';
+  state.book = false;
   searchInput.value = '';
   renderFilters();
   renderEntries();
+});
+
+/* ---------- 收藏筛选 ---------- */
+onlyBook.addEventListener('click', () => {
+  state.book = !state.book;
+  renderEntries();
+  if (state.book && !entryList.children.length) {
+    document.getElementById('library').scrollIntoView({ behavior: PREFERS_REDUCE ? 'auto' : 'smooth', block: 'start' });
+  }
+});
+document.addEventListener('gl:bookchange', () => {
+  renderEntries();
+  renderGamePages();
 });
 
 document.addEventListener('click', e => {

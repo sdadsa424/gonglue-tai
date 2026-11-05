@@ -73,6 +73,11 @@ function topbar(activeGame) {
       <a href="${UP}#route">开荒路线</a>
       <a href="${UP}#games">游戏</a>
     </nav>
+    <button class="tb-search" type="button" data-palette aria-label="全站搜索（快捷键 Ctrl 或 Command 加 K）">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+      <span>搜索</span>
+      <span class="tb-kbd">⌘K</span>
+    </button>
   </div>
 </header>`;
 }
@@ -208,6 +213,7 @@ ${body}
 ${footer()}
 ${tabbar()}
 <div class="u-toast" id="uToast" role="status" aria-live="polite"><span class="u-dot" aria-hidden="true"></span><span class="u-text"></span></div>
+<script src="${UP}assets/data.js"></script>
 <script src="${UP}assets/ui.js"></script>
 ${PAGE_SCRIPT}
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
@@ -290,6 +296,7 @@ function articlePage(gi) {
   <p class="a-dek">${esc(gi.dek)}</p>
   <div class="a-foot">
     <span>阅读约 ${readMin(gi)} 分钟</span><span>${sectionsOf(gi)} 节</span><span>更新于 ${UPDATED}</span>
+    <button class="book-btn" type="button" data-book="${gi.id}" aria-pressed="false" title="收藏这篇攻略">收藏</button>
     <div class="fs-ctrl" role="group" aria-label="正文字号">
       <button type="button" data-fs="s" aria-pressed="false" title="小号字">A−</button>
       <button type="button" data-fs="m" aria-pressed="true" title="标准字号">A</button>

@@ -36,6 +36,11 @@
       <a href="../../#route">开荒路线</a>
       <a href="../../#games">游戏</a>
     </nav>
+    <button class="tb-search" type="button" data-palette aria-label="全站搜索（快捷键 Ctrl 或 Command 加 K）">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+      <span>搜索</span>
+      <span class="tb-kbd">⌘K</span>
+    </button>
   </div>
 </header>
 <main class="view">
@@ -50,6 +55,7 @@
   <p class="a-dek">沙城不是靠人多，是靠谁先站住门口。</p>
   <div class="a-foot">
     <span>阅读约 2 分钟</span><span>4 节</span><span>更新于 2026-11-05</span>
+    <button class="book-btn" type="button" data-book="xxtl-siege" aria-pressed="false" title="收藏这篇攻略">收藏</button>
     <div class="fs-ctrl" role="group" aria-label="正文字号">
       <button type="button" data-fs="s" aria-pressed="false" title="小号字">A−</button>
       <button type="button" data-fs="m" aria-pressed="true" title="标准字号">A</button>
@@ -117,6 +123,7 @@
   </a>
 </nav>
 <div class="u-toast" id="uToast" role="status" aria-live="polite"><span class="u-dot" aria-hidden="true"></span><span class="u-text"></span></div>
+<script src="../../assets/data.js"></script>
 <script src="../../assets/ui.js"></script>
 <script>
 (function(){
