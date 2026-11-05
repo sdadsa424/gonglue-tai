@@ -513,6 +513,14 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
 .reveal.in{opacity:1;transform:none}
 
 /* ---------- 动效增强 ---------- */
+/* 首屏标题的活色板：颜色/角度注册成可插值类型，渐变参数才能平滑过渡而不是硬跳。
+   不支持的浏览器会忽略 @property，靠 .hero h1 em 里写死的初始值退回静态渐变 */
+@property --tc1{syntax:'<color>';inherits:false;initial-value:#FF3D9A}
+@property --tc2{syntax:'<color>';inherits:false;initial-value:#B44BF0}
+@property --tc3{syntax:'<color>';inherits:false;initial-value:#8B5CF6}
+@property --tglow{syntax:'<color>';inherits:false;initial-value:rgba(255,61,154,.55)}
+@property --tdeg{syntax:'<angle>';inherits:false;initial-value:100deg}
+
 @keyframes floatBlob{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(2.2%,-1.8%,0) scale(1.07)}}
 @keyframes gradFlow{0%{background-position:0% 50%}100%{background-position:200% 50%}}
 @keyframes softPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,61,154,.22)}55%{box-shadow:0 0 0 12px rgba(255,61,154,0)}}
@@ -530,14 +538,45 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
 }
 .hero-in{position:relative;z-index:2}
 
-/* 渐变流动：大标题与品牌字 */
+/* 首屏大标题：四套配色轮转 + 渐变角度来回摆 + 斜向扫光 + 呼吸光晕（四层同时跑） */
 .hero h1 em{
-  background-size:220% 100%;
-  animation:gradFlow 9s linear infinite, heroTitleGlow 6.4s ease-in-out infinite;
+  /* 兜底初始值：万一浏览器不认 @property，这里保证仍有完整渐变而不是透明字 */
+  --tc1:#FF3D9A;--tc2:#B44BF0;--tc3:#8B5CF6;--tglow:rgba(255,61,154,.55);--tdeg:100deg;
+  background-image:
+    linear-gradient(104deg,transparent 41%,rgba(255,255,255,.9) 50%,transparent 59%),
+    linear-gradient(var(--tdeg),var(--tc1) 0%,var(--tc2) 46%,var(--tc3) 72%,var(--tc1) 100%);
+  background-size:38% 100%,240% 100%;
+  background-position:-70% 50%,0% 50%;
+  background-repeat:no-repeat,repeat;
+  animation:
+    heroTone 26s ease-in-out infinite,
+    heroAngle 18s ease-in-out infinite,
+    heroSheen 7.2s linear infinite,
+    heroTitleGlow 6.4s ease-in-out infinite;
+}
+/* 配色沿色相环顺序过渡：粉紫→紫蓝→蓝青→青绿→琥珀→橙粉→回粉紫。
+   相邻两站始终是邻近色，过渡段不会混出脏灰；光晕色跟着走 */
+@keyframes heroTone{
+  0%,100%{--tc1:#FF3D9A;--tc2:#B44BF0;--tc3:#8B5CF6;--tglow:rgba(255,61,154,.55)}
+  18%{--tc1:#B44BF0;--tc2:#8B5CF6;--tc3:#4C9AFF;--tglow:rgba(139,92,246,.6)}
+  36%{--tc1:#4C9AFF;--tc2:#38BDF8;--tc3:#2DD4A7;--tglow:rgba(76,154,255,.62)}
+  54%{--tc1:#2DD4A7;--tc2:#8FE3B0;--tc3:#C7F9E4;--tglow:rgba(143,227,176,.5)}
+  72%{--tc1:#FFB65C;--tc2:#FFD479;--tc3:#FF9D6C;--tglow:rgba(255,182,92,.55)}
+  87%{--tc1:#FF6B8A;--tc2:#FF3D9A;--tc3:#FFB65C;--tglow:rgba(255,107,138,.55)}
+}
+/* 渐变角度来回摆，色带跟着斜切翻转 */
+@keyframes heroAngle{
+  0%,100%{--tdeg:96deg}
+  50%{--tdeg:132deg}
+}
+/* 底色渐变持续流动；每轮留出 30% 的时间让一道高光从左斜扫到右 */
+@keyframes heroSheen{
+  0%,54%{background-position:-70% 50%,0% 50%}
+  84%,100%{background-position:175% 50%,200% 50%}
 }
 @keyframes heroTitleGlow{
-  0%,100%{filter:drop-shadow(0 0 4px rgba(255,61,154,.35))}
-  50%{filter:drop-shadow(0 0 20px rgba(139,92,246,.65))}
+  0%,100%{filter:drop-shadow(0 0 5px var(--tglow))}
+  50%{filter:drop-shadow(0 0 19px var(--tglow))}
 }
 /* 品牌名：保留渐变流动动画 + 呼吸光晕，新名字同样带特效 */
 .brand-name{

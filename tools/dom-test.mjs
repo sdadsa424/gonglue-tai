@@ -754,6 +754,25 @@ ok('文章页面包屑用真实 URL', gpFs('a/ejl-start/index.html', 'utf8').inc
 ok('sitemap 收录三个分站', ['ejl', 'xxtl', 'ty'].every(k => gpFs('sitemap.xml', 'utf8').includes('g/' + k + '/')));
 ok('旧 hash 链接仍可路由', /raw\.charAt\(0\) === '\/' && raw !== '\/'/.test(gpHome));
 
+/* ---------- 首屏标题活色板 ---------- */
+console.log('\n[首屏标题活色板]');
+const cssHero = (await import('node:fs')).readFileSync('assets/style.css', 'utf8');
+ok('色板变量注册为可插值颜色', (cssHero.match(/@property --tc[123]\{syntax:'<color>'/g) || []).length === 3 && /@property --tglow\{syntax:'<color>'/.test(cssHero));
+ok('渐变角度注册为可插值角度', /@property --tdeg\{syntax:'<angle>'/.test(cssHero));
+ok('标题挂载四层动画', /animation:\s*heroTone 26s ease-in-out infinite,\s*\n?\s*heroAngle 18s ease-in-out infinite,\s*\n?\s*heroSheen 7\.2s linear infinite,\s*\n?\s*heroTitleGlow 6\.4s ease-in-out infinite;/.test(cssHero));
+ok('色板沿色相环至少六站过渡', (cssHero.match(/heroTone\{[\s\S]*?\n\}/) || [''])[0].split('--tc1:').length - 1 >= 6);
+ok('关键帧首尾色板一致（无缝循环）', (() => {
+  const kf = (cssHero.match(/@keyframes heroTone\{[\s\S]*?\n\}/) || [''])[0];
+  const first = kf.slice(kf.indexOf('0%,100%'), kf.indexOf('18%'));
+  const last = kf.slice(kf.lastIndexOf('0%,100%'));
+  return first.includes('#FF3D9A') && last.includes('#FF3D9A');
+})());
+ok('有 @property 失效时的静态兜底值', /--tc1:#FF3D9A;--tc2:#B44BF0;--tc3:#8B5CF6/.test(cssHero));
+ok('扫光高光带独立成层', /linear-gradient\(104deg,transparent 41%,rgba\(255,255,255,\.9\) 50%,transparent 59%\)/.test(cssHero));
+ok('扫光只在窗口期掠过', /0%,54%\{background-position:-70% 50%,0% 50%\}/.test(cssHero) && /84%,100%\{background-position:175% 50%,200% 50%\}/.test(cssHero));
+ok('光晕颜色跟随色板', /drop-shadow\(0 0 19px var\(--tglow\)\)/.test(cssHero));
+ok('减少动态时全部停用', /\*\{transition:none!important;animation:none!important\}/.test(cssHero));
+
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
 console.log(`\n结果：${pass} 通过 / ${fail} 失败`);
 process.exit(fail ? 1 : 0);
