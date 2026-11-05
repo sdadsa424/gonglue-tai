@@ -1331,9 +1331,11 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
     --lift:var(--lift-h);
     transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translate3d(0,var(--lift,0px),0);
   }
-  /* 跟随光标时缩短过渡，离开后回到弹簧感；翻转时阴影加深，立体感更强 */
-  .tilt-on{transition-duration:.1s,.4s,.3s}
-  .poster.tilt-on,.game-card.tilt-on,.entry.tilt-on{box-shadow:0 34px 72px -36px rgba(0,0,0,.98)}
+  /* JS 逐帧插值跟随光标期间关掉 transform 过渡（.tilt-track 由 JS 挂/摘）：
+     否则每帧更新变量都重启一次 transition，缓动曲线反复从减速段开始 → 抖动/追赶感。
+     阴影与描边仍保留过渡；翻转时阴影加深，立体感更强 */
+  .tilt-track{transition:box-shadow .4s ease,border-color .3s ease}
+  .tilt-on{box-shadow:0 34px 72px -36px rgba(0,0,0,.98)}
 }
 
 /* ---------- 3D 卡片入场（手机/触屏：滚动到就翻进来） ---------- */

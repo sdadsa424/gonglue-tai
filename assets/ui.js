@@ -675,47 +675,99 @@
       }, { passive: true });
     }
 
-    /* 2.5 3D 倾斜：鼠标在卡片上移动时朝光标方向轻微翻转（仅精确指针设备） */
+    /* 2.5 3D 倾斜：鼠标在卡片上移动时朝光标方向轻微翻转（仅精确指针设备）
+       平滑做法：rAF 逐帧向目标角度插值（lerp），追踪期间用 .tilt-track 关掉
+       transform 过渡，避免"每帧重启 transition"造成的抖动/追赶感 */
     if (window.matchMedia && window.matchMedia('(pointer:fine)').matches) {
       var TILT_SEL = '.poster, .entry, .game-card, .related a';
       var MAX_TILT = 7;          /* 单边最大角度 */
-      var tHost = null, tRaf = 0, tX = 0, tY = 0;
-      var tReset = function (el) {
-        if (!el) return;
-        el.classList.remove('tilt-on');
-        el.style.setProperty('--rx', '0deg');
-        el.style.setProperty('--ry', '0deg');
+      var LERP = 0.18;           /* 每帧向目标逼近的比例，越小越"跟手柔" */
+      var EPS = 0.03;            /* 归位判定阈值（度/像素） */
+      var live = [];             /* 正在动画的卡片状态 {el,x,y,l,tx,ty,tl,hover} */
+      var tRaf = 0;
+
+      var findLive = function (el) {
+        for (var i = 0; i < live.length; i++) if (live[i].el === el) return live[i];
+        return null;
+      };
+      var step = function () {
+        tRaf = 0;
+        var pending = false;
+        for (var i = live.length - 1; i >= 0; i--) {
+          var it = live[i];
+          it.x += (it.tx - it.x) * LERP;
+          it.y += (it.ty - it.y) * LERP;
+          it.l += (it.tl - it.l) * LERP;
+          var done = Math.abs(it.tx - it.x) < EPS && Math.abs(it.ty - it.y) < EPS && Math.abs(it.tl - it.l) < EPS;
+          if (done) { it.x = it.tx; it.y = it.ty; it.l = it.tl; }
+          it.el.style.setProperty('--rx', it.x.toFixed(2) + 'deg');
+          it.el.style.setProperty('--ry', it.y.toFixed(2) + 'deg');
+          it.el.style.setProperty('--lift', it.l.toFixed(2) + 'px');
+          if (done && !it.hover) {
+            /* 完全归位：清掉内联变量与类，交还 CSS 的 hover 过渡 */
+            it.el.classList.remove('tilt-on', 'tilt-track');
+            it.el.style.removeProperty('--rx');
+            it.el.style.removeProperty('--ry');
+            it.el.style.removeProperty('--lift');
+            live.splice(i, 1);
+          } else if (!done) {
+            pending = true;
+          }
+        }
+        if (pending) tRaf = requestAnimationFrame(step);
+      };
+      var kick = function () { if (!tRaf) tRaf = requestAnimationFrame(step); };
+
+      var activate = function (el, e) {
+        var it = findLive(el);
+        if (!it) {
+          /* 首次进入：读取该卡在 CSS 里定义的悬浮高度（--lift-h），从 0 平滑升到目标 */
+          var lh = 0;
+          try { lh = parseFloat(window.getComputedStyle(el).getPropertyValue('--lift-h')) || 0; } catch (_) {}
+          it = { el: el, x: 0, y: 0, l: 0, tx: 0, ty: 0, tl: lh, hover: true };
+          el.classList.add('tilt-on', 'tilt-track');
+          live.push(it);
+        } else {
+          it.hover = true;
+        }
+        var r = el.getBoundingClientRect();
+        if (!r.width || !r.height) return;
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        it.tx = -py * MAX_TILT * 2;
+        it.ty = px * MAX_TILT * 2;
+        kick();
+      };
+      var deactivate = function (el) {
+        var it = findLive(el);
+        if (!it) {
+          el.classList.remove('tilt-on', 'tilt-track');
+          return;
+        }
+        it.hover = false;
+        it.tx = 0; it.ty = 0; it.tl = 0;
+        kick();
       };
       document.addEventListener('pointermove', function (e) {
         var el = e.target && e.target.closest ? e.target.closest(TILT_SEL) : null;
-        if (el !== tHost) {
-          tReset(tHost);
-          tHost = el;
-          if (tHost) tHost.classList.add('tilt-on');
+        if (el) activate(el, e);
+        for (var i = live.length - 1; i >= 0; i--) {
+          if (live[i].el !== el && live[i].hover) deactivate(live[i].el);
         }
-        if (!tHost) return;
-        tX = e.clientX; tY = e.clientY;
-        if (tRaf) return;
-        tRaf = requestAnimationFrame(function () {
-          tRaf = 0;
-          if (!tHost) return;
-          var r = tHost.getBoundingClientRect();
-          if (!r.width || !r.height) return;
-          var px = (tX - r.left) / r.width - 0.5;
-          var py = (tY - r.top) / r.height - 0.5;
-          tHost.style.setProperty('--ry', (px * MAX_TILT * 2).toFixed(2) + 'deg');
-          tHost.style.setProperty('--rx', (-py * MAX_TILT * 2).toFixed(2) + 'deg');
-        });
       }, { passive: true });
-      document.addEventListener('mouseleave', function () { tReset(tHost); tHost = null; });
-      window.addEventListener('blur', function () { tReset(tHost); tHost = null; });
+      document.addEventListener('mouseleave', function () {
+        for (var i = live.length - 1; i >= 0; i--) deactivate(live[i].el);
+      });
+      window.addEventListener('blur', function () {
+        for (var i = live.length - 1; i >= 0; i--) deactivate(live[i].el);
+      });
     }
 
     /* 2.6 3D 入场：触屏设备上卡片滚动进视口时翻正（桌面上由倾斜接管，不重复动）
-       卡片由 inline 脚本在本文件之后渲染，所以延到 DOMContentLoaded 再挂 */
+       首页海报 .poster 与攻略页相关推荐 .related a 也要参与，否则手机上没动画 */
     function initCards3d() {
-      if (!(window.matchMedia && window.matchMedia('(hover:none)').matches && 'IntersectionObserver' in window)) return;
-      var c3d = [].slice.call(document.querySelectorAll('.entry, .game-card'));
+      if (!(window.matchMedia && window.matchMedia('(hover:none) and (prefers-reduced-motion: no-preference)').matches && 'IntersectionObserver' in window)) return;
+      var c3d = [].slice.call(document.querySelectorAll('.poster, .entry, .game-card, .related a'));
       if (c3d.length) {
         var io3 = new IntersectionObserver(function (entries) {
           for (var n = 0; n < entries.length; n++) {

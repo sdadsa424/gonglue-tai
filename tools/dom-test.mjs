@@ -430,6 +430,12 @@ ok('倾斜用 perspective + rotateX/rotateY', /\.poster,\.entry,\.game-card,\.re
 ok('hover 时保留倾斜不被位移覆盖', /\.poster:hover,\.entry:hover,\.game-card:hover,\.related a:hover\{[^}]*rotateX\(var\(--rx/.test(css3d));
 ok('触屏有 3D 入场关键帧', /@keyframes c3dIn\{from\{opacity:0;transform:translateY\(16px\) rotateX\(10deg\)\}/.test(css3d));
 ok('触屏入场尊重减少动态', /@media \(hover:none\) and \(prefers-reduced-motion:no-preference\)/.test(css3d));
+/* 倾斜平滑：跟随期间关 transform 过渡，逐帧插值交给 JS */
+ok('倾斜跟随期间关闭 transform 过渡', /\.tilt-track\{transition:box-shadow [^}]*\}/.test(css3d));
+/* 触屏入场必须覆盖海报卡与相关推荐，否则手机端首页没动画 */
+const uiJs = (await import('node:fs')).readFileSync('assets/ui.js', 'utf8');
+ok('触屏入场覆盖海报卡', /querySelectorAll\('\.poster, \.entry, \.game-card, \.related a'\)/.test(uiJs));
+ok('触屏入场与 CSS 同样尊重减少动态', /matchMedia\('\(hover:none\) and \(prefers-reduced-motion: no-preference\)'\)/.test(uiJs));
 desk.window.close();
 
 /* 小节标题 3D 翻转入场 */
