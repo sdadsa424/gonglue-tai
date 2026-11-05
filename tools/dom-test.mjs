@@ -735,6 +735,25 @@ ok('404 页资源路径指向站点根', [...nfDoc.querySelectorAll('link[rel="s
   .every(u => u.startsWith('/assets/')));
 nfPage.window.close();
 
+console.log('\n[分站静态页]');
+const gpFs = (await import('node:fs')).readFileSync;
+const gpCounts = { ejl: 7, xxtl: 7, ty: 9 };
+for (const k of Object.keys(gpCounts)) {
+  const gpHtml = gpFs('g/' + k + '/index.html', 'utf8');
+  ok('分站页 ' + k + ' 有正确 canonical', gpHtml.includes('rel="canonical" href="https://wgame-bc7.pages.dev/g/' + k + '/"'));
+  ok('分站页 ' + k + ' 列出全部 ' + gpCounts[k] + ' 篇', (gpHtml.match(/class="entry"/g) || []).length === gpCounts[k]);
+  ok('分站页 ' + k + ' 无 hash 路由残留', !gpHtml.includes('href="#/g/') && !gpHtml.includes('href="#/a/'));
+  ok('分站页 ' + k + ' 资源路径正确', gpHtml.includes('href="../../assets/style.css"') && !gpHtml.includes('src="assets/'));
+  ok('分站页 ' + k + ' 不再隐藏', !gpHtml.includes('data-game="' + k + '" hidden'));
+  ok('分站页 ' + k + ' 计数为真实篇数', new RegExp('data-count="' + k + '">' + gpCounts[k] + '</span>').test(gpHtml));
+}
+const gpHome = gpFs('index.html', 'utf8');
+ok('首页海报指向真实分站地址', gpHome.includes('class="poster" href="g/ejl/"') && !gpHome.includes('class="poster" href="#/g/'));
+ok('文章页分站链接为真实地址', gpFs('a/ejl-start/index.html', 'utf8').includes('href="../../g/ejl/"'));
+ok('文章页面包屑用真实 URL', gpFs('a/ejl-start/index.html', 'utf8').includes('"item":"https://wgame-bc7.pages.dev/g/ejl/"'));
+ok('sitemap 收录三个分站', ['ejl', 'xxtl', 'ty'].every(k => gpFs('sitemap.xml', 'utf8').includes('g/' + k + '/')));
+ok('旧 hash 链接仍可路由', /raw\.charAt\(0\) === '\/' && raw !== '\/'/.test(gpHome));
+
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
 console.log(`\n结果：${pass} 通过 / ${fail} 失败`);
 process.exit(fail ? 1 : 0);

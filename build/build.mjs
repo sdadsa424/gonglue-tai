@@ -157,9 +157,9 @@ function footer(activeGame) {
         <a href="${UP}#library">攻略库</a>
         <a href="${UP}#route">开荒路线</a>
         <a href="${UP}#games">游戏</a>
-        <a href="${UP}#/g/ejl">贰点零江湖</a>
-        <a href="${UP}#/g/xxtl">小小屠龙</a>
-        <a href="${UP}#/g/ty">桃园：将帅录</a>
+        <a href="${UP}g/ejl/">贰点零江湖</a>
+        <a href="${UP}g/xxtl/">小小屠龙</a>
+        <a href="${UP}g/ty/">桃园：将帅录</a>
       </nav>
     </div>
     <div class="foot-bottom">
@@ -373,7 +373,7 @@ function articlePage(gi) {
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: SITE_NAME, item: SITE },
-          { '@type': 'ListItem', position: 2, name: game.name, item: SITE + '#/g/' + gi.game },
+          { '@type': 'ListItem', position: 2, name: game.name, item: SITE + 'g/' + gi.game + '/' },
           { '@type': 'ListItem', position: 3, name: gi.title, item: url }
         ]
       }
@@ -430,7 +430,7 @@ function articlePage(gi) {
   </section>
   <div class="a-end">
     <a class="back" href="${UP}#library">← 返回攻略库</a>
-    <a class="back" href="${UP}#/g/${game.id}">看 ${esc(game.name)} 全部攻略</a>
+    <a class="back" href="${UP}g/${game.id}/">看 ${esc(game.name)} 全部攻略</a>
   </div>
 </article>
 </div>`;
@@ -482,6 +482,102 @@ ${ORDER.map(k => GUIDES.filter(x => x.game === k).map(gi => `          <li><a hr
         </ul>
       </div>
     </noscript>`;
+}
+
+/* ---------- 分站静态页 ----------
+   分站内容原本只在首页 #/g/<key> 里，靠前端渲染 —— 搜索引擎看不到，也没法单独分享。
+   这里把首页那段真实标记原样抽出来（单一数据来源，不重复维护），落成 /g/<key>/ 静态页。 */
+const GAME_IMG = { ejl: 'assets/ejl-hero.jpg', xxtl: 'assets/xxtl-siege.jpg', ty: 'assets/ty-key.jpg' };
+
+function gameBlock(key) {
+  const html = fs.readFileSync('index.html', 'utf8');
+  const start = html.indexOf('<section class="game-page" data-game="' + key + '"');
+  if (start < 0) throw new Error('找不到分站区块：' + key);
+  const re = /<section\b|<\/section>/g;
+  re.lastIndex = start;
+  let depth = 0, m;
+  while ((m = re.exec(html))) {
+    if (m[0] === '</section>') {
+      depth -= 1;
+      if (depth === 0) return html.slice(start, re.lastIndex);
+    } else depth += 1;
+  }
+  throw new Error('分站区块未闭合：' + key);
+}
+
+/* 与首页 entryHTML 保持同样的卡片结构（去掉依赖本地存储的已读/收藏标记） */
+function gameEntry(gi) {
+  const game = GAMES[gi.game];
+  return `<a class="entry" href="../../a/${gi.id}/" style="--ac:${game.accent}">`
+    + `<span class="entry-tab">${esc(game.short)}<i>${IDX[gi.id]}</i></span>`
+    + `<span class="entry-body">`
+    + `<span class="entry-meta"><span>${esc(game.name)}</span><i class="divider"></i><span>${esc(CATS[gi.cat])}</span><i class="divider"></i><span>${esc(gi.level)}</span></span>`
+    + `<span class="entry-title">${esc(gi.title)}</span>`
+    + `<span class="entry-dek">${esc(gi.dek)}</span>`
+    + `<span class="entry-foot">阅读约 ${readMin(gi)} 分钟 · ${sectionsOf(gi)} 节</span>`
+    + `</span></a>`;
+}
+
+function gamePage(key) {
+  const game = GAMES[key];
+  const list = GUIDES.filter(g => g.game === key);
+  const home = SITE;
+  const canonical = SITE + 'g/' + key + '/';
+
+  let body = gameBlock(key);
+  /* 静态页没有前端脚本填内容，这里直接铺好 */
+  body = body.replace(' data-game="' + key + '" hidden>', ' data-game="' + key + '">');
+  body = body.replace(new RegExp('<span data-count="' + key + '" data-count-fmt="\\{n\\}">\\d+</span>', 'g'), '<span data-count="' + key + '">' + list.length + '</span>');
+  body = body.replace('<div class="entries" data-entries="' + key + '"></div>', '<div class="entries">' + list.map(gameEntry).join('') + '</div>');
+  /* 站内 hash 路由换成真实地址 */
+  body = body.replace(/href="#\/a\/([a-z-]+)"/g, 'href="../../a/$1/"');
+  body = body.replace(/href="#\/g\/([a-z]+)"/g, 'href="../$1/"');
+  body = body.replace(/href="#\/" data-goto="library"/g, 'href="../../#library"');
+  body = body.replace(/href="#\/"/g, 'href="../../"');
+  /* 图片原本相对站点根，搬到 /g/<key>/ 后要回两级 */
+  body = body.replace(/"assets\//g, '"../../assets/').replace(/, assets\//g, ', ../../assets/');
+
+  const jsonld = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        name: game.name + ' 攻略',
+        description: game.name + '（' + game.tag + '）的攻略合集，共 ' + list.length + ' 篇。',
+        url: canonical,
+        inLanguage: 'zh-CN',
+        isPartOf: { '@type': 'WebSite', name: SITE_NAME, url: home }
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: '首页', item: home },
+          { '@type': 'ListItem', position: 2, name: game.name, item: canonical }
+        ]
+      },
+      {
+        '@type': 'ItemList',
+        name: game.name + ' 攻略目录',
+        numberOfItems: list.length,
+        itemListElement: list.map((gi, i) => ({ '@type': 'ListItem', position: i + 1, name: gi.title, url: SITE + 'a/' + gi.id + '/' }))
+      }
+    ]
+  });
+
+  /* /g/<key>/ 与攻略页同样深两层，资产回根目录用 ../../ */
+  UP = '../../';
+  const html = page({
+    title: game.name + ' 攻略 · ' + game.tag + ' · ' + SITE_NAME,
+    desc: game.name + '（' + game.tag + '）的 ' + list.length + ' 篇攻略：开荒路线、职业选择、打金交易、团战攻沙，都写成可以直接照着做的步骤。',
+    canonical,
+    jsonld,
+    ogImage: SITE + GAME_IMG[key],
+    ogType: 'website',
+    bodyClass: 'view-game',
+    body
+  });
+  UP = '../../';
+  return { key, path: 'g/' + key + '/index.html', html };
 }
 
 /* ---------- 404：失效链接落在这里，直接把全部攻略摊开，别让人走进死胡同 ---------- */
@@ -543,6 +639,7 @@ inject('index.html', 'BUILD:NOSCRIPT', homeNoScript());
 
 const files = [];
 GUIDES.forEach(gi => files.push(articlePage(gi)));
+ORDER.forEach(k => files.push(gamePage(k)));
 
 files.forEach(f => {
   fs.mkdirSync(path.dirname(f.path), { recursive: true });
@@ -552,6 +649,7 @@ files.forEach(f => {
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>${SITE}</loc><lastmod>${UPDATED}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+${ORDER.map(k => `  <url><loc>${SITE}g/${k}/</loc><lastmod>${UPDATED}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>`).join('\n')}
 ${GUIDES.map(gi => `  <url><loc>${SITE}a/${gi.id}/</loc><lastmod>${UPDATED}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`).join('\n')}
 </urlset>
 `;
@@ -561,4 +659,4 @@ fs.writeFileSync('404.html', notFoundPage(), 'utf8');
 
 fs.writeFileSync('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${SITE}sitemap.xml\n`, 'utf8');
 
-console.log('生成攻略页：' + files.length + ' 篇 · 404.html / sitemap.xml / robots.txt 已更新');
+console.log('生成攻略页：' + GUIDES.length + ' 篇 · 分站页：' + ORDER.length + ' 个 · 404.html / sitemap.xml / robots.txt 已更新');
