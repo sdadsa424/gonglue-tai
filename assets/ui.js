@@ -97,6 +97,7 @@
     float.innerHTML = '<p class="toc-h">本文目录</p>' + (ol ? ol.outerHTML : '');
     document.body.appendChild(float);
 
+    var inlineLinks = [].slice.call(toc.querySelectorAll('a'));
     var links = [].slice.call(float.querySelectorAll('a'));
     var targets = links.map(function (a) {
       return document.getElementById((a.getAttribute('href') || '').replace('#', ''));
@@ -110,6 +111,7 @@
         if (targets[i].getBoundingClientRect().top <= 150) active = i;
       }
       for (var j = 0; j < links.length; j++) links[j].classList.toggle('on', j === active);
+      for (var k = 0; k < inlineLinks.length; k++) inlineLinks[k].classList.toggle('on', k === active);
     }
     window.addEventListener('scroll', function () {
       if (spyTick) return;
@@ -117,6 +119,45 @@
       requestAnimationFrame(spy);
     }, { passive: true });
     spy();
+
+    /* ---------- 手机端目录抽屉（≤760px 显示呼出按钮） ---------- */
+    if (inlineLinks.length) {
+      var mBtn = document.createElement('button');
+      mBtn.type = 'button';
+      mBtn.className = 'toc-m-btn';
+      mBtn.setAttribute('aria-label', '打开本文目录');
+      mBtn.setAttribute('aria-expanded', 'false');
+      mBtn.innerHTML = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h7"/></svg>';
+      document.body.appendChild(mBtn);
+
+      var mask = document.createElement('div');
+      mask.className = 'toc-mask';
+      var sheet = document.createElement('nav');
+      sheet.className = 'toc-sheet';
+      sheet.setAttribute('aria-label', '本文目录');
+      sheet.innerHTML = '<p class="toc-h">本文目录</p>' + (ol ? ol.outerHTML : '');
+      document.body.appendChild(mask);
+      document.body.appendChild(sheet);
+
+      var sheetLinks = [].slice.call(sheet.querySelectorAll('a'));
+      function setSheet(open) {
+        sheet.classList.toggle('open', open);
+        mask.classList.toggle('open', open);
+        mBtn.setAttribute('aria-expanded', String(open));
+        if (open) {
+          var activeIdx = -1;
+          for (var i = 0; i < targets.length; i++) {
+            if (targets[i] && targets[i].getBoundingClientRect().top <= 150) activeIdx = i;
+          }
+          for (var j = 0; j < sheetLinks.length; j++) sheetLinks[j].classList.toggle('on', j === activeIdx);
+        }
+      }
+      mBtn.addEventListener('click', function () { setSheet(!sheet.classList.contains('open')); });
+      mask.addEventListener('click', function () { setSheet(false); });
+      sheet.addEventListener('click', function (e) {
+        if (e.target.closest('a')) setSheet(false);
+      });
+    }
   }
 
   /* ---------- 已读 + 阅读位置 ---------- */

@@ -43,6 +43,8 @@ ok('列表渲染 23 篇', hd.querySelectorAll('#entryList .entry').length === 23
 ok('卡片指向真 URL', (hd.querySelector('#entryList .entry')?.getAttribute('href') || '').startsWith('a/'));
 ok('注入了回到顶部按钮', !!hd.querySelector('.to-top'));
 ok('图片走 picture + WebP', hd.querySelectorAll('picture source[type="image/webp"]').length >= 6, String(hd.querySelectorAll('picture source[type="image/webp"]').length));
+ok('图片带宽度级 srcset', hd.querySelectorAll('picture source[srcset*="480w"], picture source[srcset*="960w"]').length >= 6,
+  String(hd.querySelectorAll('picture source[srcset*="480w"], picture source[srcset*="960w"]').length));
 
 const input = hd.getElementById('searchInput');
 input.value = '转生';
@@ -78,6 +80,19 @@ ok('目录锚点指向正文标题', !!ad.querySelector(firstTocHref), firstTocH
 ok('浮层目录已生成', ad.querySelectorAll('.toc-float a').length === ad.querySelectorAll('.toc li').length,
   ad.querySelectorAll('.toc-float a').length + '/' + ad.querySelectorAll('.toc li').length);
 ok('浮层目录高亮当前节', !!ad.querySelector('.toc-float a.on'));
+ok('内联目录同步高亮', !!ad.querySelector('.toc a.on'));
+ok('手机目录按钮已注入', !!ad.querySelector('.toc-m-btn'));
+const sheet = ad.querySelector('.toc-sheet');
+const mask = ad.querySelector('.toc-mask');
+ok('目录抽屉条数匹配', sheet && sheet.querySelectorAll('a').length === ad.querySelectorAll('.toc li').length,
+  sheet ? sheet.querySelectorAll('a').length + '/' + ad.querySelectorAll('.toc li').length : '无抽屉');
+ad.querySelector('.toc-m-btn').click();
+ok('点击呼出抽屉', sheet.classList.contains('open') && mask.classList.contains('open'));
+mask.click();
+ok('点遮罩收起抽屉', !sheet.classList.contains('open') && !mask.classList.contains('open'));
+ad.querySelector('.toc-m-btn').click();
+sheet.querySelector('a').click();
+ok('点目录项跳转并收起', !sheet.classList.contains('open'));
 ok('字号控件存在', ad.querySelectorAll('.fs-ctrl button').length === 3);
 ad.querySelector('.fs-ctrl [data-fs="l"]').click();
 ok('切换字号写入属性', ad.querySelector('.article').getAttribute('data-fs') === 'l');

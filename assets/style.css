@@ -1032,3 +1032,49 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
   .article>.toc{display:none}
 }
 .entry-prog{color:#7EE2C0}
+
+/* ---------- 移动端专项 ---------- */
+@media (max-width:760px){
+  .search input{font-size:16px}
+  .search input::placeholder{font-size:16px}
+  .fs-ctrl button{min-width:38px;height:32px;font-size:12.5px}
+  .fs-ctrl{gap:4px;padding:3px}
+  .q-chip{padding:7px 14px}
+}
+
+/* 手机端目录抽屉 */
+.toc-m-btn{
+  position:fixed;right:64px;bottom:84px;z-index:55;
+  width:40px;height:40px;border-radius:50%;display:none;place-items:center;
+  background:rgba(20,23,40,.92);border:1px solid var(--line-2);color:#C9CEE0;
+  box-shadow:0 16px 34px -18px rgba(0,0,0,.95);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+}
+.toc-m-btn:active{border-color:rgba(255,61,154,.5);color:#fff}
+.toc-mask{
+  position:fixed;inset:0;z-index:905;background:rgba(4,5,10,.55);
+  opacity:0;pointer-events:none;transition:opacity .25s ease;
+}
+.toc-mask.open{opacity:1;pointer-events:auto}
+.toc-sheet{
+  position:fixed;left:0;right:0;bottom:0;z-index:910;
+  max-height:62vh;overflow:auto;overscroll-behavior:contain;
+  background:#12152A;border-top:1px solid var(--line-2);
+  border-radius:18px 18px 0 0;
+  padding:18px 20px calc(20px + env(safe-area-inset-bottom));
+  transform:translateY(103%);transition:transform .32s cubic-bezier(.2,.7,.3,1);
+  box-shadow:0 -20px 60px -30px rgba(0,0,0,.9);
+}
+.toc-sheet.open{transform:none}
+.toc-sheet .toc-h{font-size:11px;letter-spacing:.14em;color:var(--dim);margin-bottom:8px}
+.toc-sheet ol{list-style:none;margin:0;padding:0;counter-reset:stoc}
+.toc-sheet li{counter-increment:stoc;border-bottom:1px solid rgba(255,255,255,.05)}
+.toc-sheet li:last-child{border-bottom:0}
+.toc-sheet a{display:flex;align-items:baseline;gap:12px;padding:12px 0;font-size:14.5px;line-height:1.55;color:#C2C7DA}
+.toc-sheet a::before{content:counter(stoc,decimal-leading-zero);flex:0 0 20px;font-size:11px;color:#6C7390;font-variant-numeric:tabular-nums}
+.toc-sheet a.on{color:#FF9ACB}
+.toc-sheet a:active{color:#fff}
+@media (max-width:760px){.toc-m-btn{display:grid}}
+@media (min-width:761px){.toc-sheet,.toc-mask{display:none!important}}
+
+.toc a.on{color:#FF9ACB}
