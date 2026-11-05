@@ -702,6 +702,11 @@ function renderRoute() {
   }
   setView('home');
   document.title = '游戏攻略大全 · 游戏攻略总站';
+  /* 从静态攻略页跳回来时带的是 #library / #games / #route 这类板块锚点，落到对应位置 */
+  const anchor = document.getElementById(raw.replace(/^\//, ''));
+  if (anchor && !m) {
+    requestAnimationFrame(function () { anchor.scrollIntoView({ behavior: PREFERS_REDUCE ? 'auto' : 'smooth' }); });
+  }
 }
 
 /* ---------- 交互 ---------- */
