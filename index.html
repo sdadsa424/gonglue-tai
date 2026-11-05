@@ -60,6 +60,7 @@
           </div>
           <button class="hero-search-btn" type="button" id="heroSearchBtn">搜索攻略</button>
         </div>
+        <div class="q-hist" id="qHist" hidden></div>
       </div>
       <div class="hero-games">
         <a class="poster" href="#/g/ejl" style="--ac:#2DD4A7">
@@ -519,6 +520,7 @@
 </footer>
 
 <script src="assets/data.js"></script>
+<script src="assets/ui.js"></script>
 <script>
 /* ===== 渲染 ===== */
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -594,13 +596,21 @@ function renderFilters() {
     + Object.keys(CATS).map(c => chipHTML('cat', c, CATS[c])).join('');
 }
 
+/* 搜索结果里把命中的关键词标出来（先转义再匹配，避免把 HTML 当代码） */
+function hl(text) {
+  const safe = esc(text);
+  if (!state.q) return safe;
+  const q = esc(state.q).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  try { return safe.replace(new RegExp('(' + q + ')', 'ig'), '<mark class="hl">$1</mark>'); } catch (e) { return safe; }
+}
 function entryHTML(gi) {
   const game = GAMES[gi.game];
-  return '<a class="entry" href="a/' + gi.id + '/" style="--ac:' + game.accent + '">'
+  const isRead = !!(window.GL && GL.read.has(gi.id));
+  return '<a class="entry' + (isRead ? ' is-read' : '') + '" href="a/' + gi.id + '/" style="--ac:' + game.accent + '">'
     + '<span class="entry-tab">' + game.short + '<i>' + IDX[gi.id] + '</i></span>'
     + '<span class="entry-body">'
-    + '<span class="entry-meta"><span>' + esc(game.name) + '</span><i class="divider"></i><span>' + esc(CATS[gi.cat]) + '</span><i class="divider"></i><span>' + esc(gi.level) + '</span></span>'
-    + '<span class="entry-title">' + esc(gi.title) + '</span>'
+    + '<span class="entry-meta"><span>' + esc(game.name) + '</span><i class="divider"></i><span>' + esc(CATS[gi.cat]) + '</span><i class="divider"></i><span>' + esc(gi.level) + '</span>' + (isRead ? '<i class="divider"></i><span class="entry-read">已读</span>' : '') + '</span>'
+    + '<span class="entry-title">' + hl(gi.title) + '</span>'
     + '<span class="entry-dek">' + esc(gi.dek) + '</span>'
     + '<span class="entry-foot">阅读约 ' + readMin(gi) + ' 分钟 · ' + sectionsOf(gi) + ' 节</span>'
     + '</span></a>';
@@ -734,12 +744,68 @@ searchInput.addEventListener('keydown', e => {
 });
 /* Banner 搜索按钮：滚动到攻略库并聚焦输入 */
 function jumpToLibrary() {
+  if (state.q) saveHist(state.q);
   const lib = document.getElementById('library');
   if (lib) lib.scrollIntoView({ behavior: 'smooth', block: 'start' });
   setTimeout(() => searchInput.focus({ preventScroll: true }), 420);
 }
 const heroSearchBtn = document.getElementById('heroSearchBtn');
 if (heroSearchBtn) heroSearchBtn.addEventListener('click', jumpToLibrary);
+
+/* ---------- 搜索历史（本地存最近 5 条） ---------- */
+const QKEY = 'gl_q_v1';
+const qHist = document.getElementById('qHist');
+function getHist() {
+  try {
+    const a = JSON.parse(localStorage.getItem(QKEY) || '[]');
+    return Array.isArray(a) ? a : [];
+  } catch (e) { return []; }
+}
+function saveHist(q) {
+  q = String(q || '').trim();
+  if (!q) return;
+  const a = getHist().filter(x => x !== q);
+  a.unshift(q);
+  try { localStorage.setItem(QKEY, JSON.stringify(a.slice(0, 5))); } catch (e) {}
+  renderHist();
+}
+function renderHist() {
+  if (!qHist) return;
+  const list = getHist();
+  if (!list.length) { qHist.hidden = true; qHist.innerHTML = ''; return; }
+  qHist.hidden = false;
+  qHist.innerHTML = '<span class="q-lab">最近搜索</span>'
+    + list.map(q => '<button class="q-chip" type="button" data-q="' + esc(q) + '">' + esc(q) + '</button>').join('')
+    + '<button class="q-clear" type="button" data-qclear="1">清除</button>';
+}
+if (qHist) {
+  qHist.addEventListener('click', e => {
+    if (e.target.closest('[data-qclear]')) {
+      try { localStorage.removeItem(QKEY); } catch (err) {}
+      renderHist();
+      return;
+    }
+    const chip = e.target.closest('[data-q]');
+    if (!chip) return;
+    state.q = chip.dataset.q;
+    searchInput.value = chip.dataset.q;
+    renderEntries();
+    jumpToLibrary();
+  });
+  renderHist();
+}
+
+/* 按 / 或 Ctrl(⌘)+K 直接开始搜 */
+document.addEventListener('keydown', e => {
+  const tag = (e.target.tagName || '').toLowerCase();
+  const typing = tag === 'input' || tag === 'textarea' || tag === 'select' || e.target.isContentEditable;
+  const isSlash = e.key === '/' && !typing;
+  const isK = (e.metaKey || e.ctrlKey) && String(e.key).toLowerCase() === 'k';
+  if (!isSlash && !isK) return;
+  e.preventDefault();
+  searchInput.focus();
+  searchInput.select();
+});
 clearFilter.addEventListener('click', () => {
   state.game = 'all';
   state.cat = 'all';

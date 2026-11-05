@@ -174,7 +174,7 @@ const PAGE_SCRIPT = `<script>
 })();
 </script>`;
 
-function page({ title, desc, canonical, jsonld, body, ogImage, ogType = 'article', bodyClass = '' }) {
+function page({ title, desc, canonical, jsonld, body, ogImage, ogType = 'article', bodyClass = '', guideId = '' }) {
   return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -199,7 +199,7 @@ function page({ title, desc, canonical, jsonld, body, ogImage, ogType = 'article
 <link rel="stylesheet" href="${UP}assets/style.css">
 <script type="application/ld+json">${jsonld}</script>
 </head>
-<body${bodyClass ? ' class="' + bodyClass + '"' : ''}>
+<body${bodyClass ? ' class="' + bodyClass + '"' : ''}${guideId ? ' data-guide-id="' + guideId + '"' : ''}>
 <div class="progress" id="progress" aria-hidden="true"></div>
 ${topbar()}
 <main class="view">
@@ -208,6 +208,7 @@ ${body}
 ${footer()}
 ${tabbar()}
 <div class="u-toast" id="uToast" role="status" aria-live="polite"><span class="u-dot" aria-hidden="true"></span><span class="u-text"></span></div>
+<script src="${UP}assets/ui.js"></script>
 ${PAGE_SCRIPT}
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </body>
@@ -265,6 +266,19 @@ function articlePage(gi) {
     next ? `<a href="../${next.id}/"><span class="np-k">下一篇</span><span class="np-t">${esc(next.title)}</span></a>` : '<span></span>'
   ].join('');
 
+  /* 正文小节加锚点，供目录跳转 */
+  let hi = 0;
+  const bodyHTML = gi.blocks.map(b => {
+    if (b.t === 'h') { hi += 1; return '<h2 id="s' + hi + '">' + esc(b.v) + '</h2>'; }
+    return blockHTML(b);
+  }).join('');
+  const heads = gi.blocks.filter(b => b.t === 'h');
+  const tocHTML = heads.length >= 3
+    ? '<nav class="toc" aria-label="本文目录"><p class="toc-h">本文目录</p><ol>'
+      + heads.map((b, i) => '<li><a href="#s' + (i + 1) + '">' + esc(b.v) + '</a></li>').join('')
+      + '</ol></nav>'
+    : '';
+
   const body = `<div class="wrap">
 <article class="article" style="--ac:${game.accent}">
   <nav class="crumb" aria-label="面包屑">
@@ -274,9 +288,17 @@ function articlePage(gi) {
   <div class="a-meta"><span>${esc(game.name)}</span><i class="divider"></i><span>${esc(CATS[gi.cat])}</span><i class="divider"></i><span>${esc(gi.level)}</span><i class="divider"></i><span>${IDX[gi.id]} 号</span></div>
   <h1 class="a-title">${esc(gi.title)}</h1>
   <p class="a-dek">${esc(gi.dek)}</p>
-  <div class="a-foot"><span>阅读约 ${readMin(gi)} 分钟</span><span>${sectionsOf(gi)} 节</span><span>更新于 ${UPDATED}</span></div>
+  <div class="a-foot">
+    <span>阅读约 ${readMin(gi)} 分钟</span><span>${sectionsOf(gi)} 节</span><span>更新于 ${UPDATED}</span>
+    <div class="fs-ctrl" role="group" aria-label="正文字号">
+      <button type="button" data-fs="s" aria-pressed="false" title="小号字">A−</button>
+      <button type="button" data-fs="m" aria-pressed="true" title="标准字号">A</button>
+      <button type="button" data-fs="l" aria-pressed="false" title="大号字">A+</button>
+    </div>
+  </div>
   <section class="takeaways"><h2>先看结论</h2><ul>${gi.take.map(t => '<li>' + esc(t) + '</li>').join('')}</ul></section>
-  <div class="prose">${gi.blocks.map(blockHTML).join('')}</div>
+  ${tocHTML}
+  <div class="prose">${bodyHTML}</div>
   <section class="cta-line">
     <div><b>要开服信息或进本区？</b><span>客服号 ${CS}，复制后搜索添加。</span></div>
     <button class="cs-pill" type="button" data-copy="${CS}"><b>游戏客服 ${CS}</b><span class="cs-act">复制</span></button>
@@ -292,7 +314,7 @@ function articlePage(gi) {
 </article>
 </div>`;
 
-  return { path: path.join('a', gi.id, 'index.html'), html: page({ title, desc, canonical: url, jsonld, body, ogImage: img }) };
+  return { path: path.join('a', gi.id, 'index.html'), html: page({ title, desc, canonical: url, jsonld, body, ogImage: img, guideId: gi.id }) };
 }
 
 /* ---------- 首页注入：社交卡片 / 结构化数据 / 无脚本目录 ---------- */
