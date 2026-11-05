@@ -207,6 +207,38 @@ ok('无系统分享时给微信转发提示', !!md.querySelector('.share-row .sh
 ok('手机端保留复制链接', !!md.querySelector('.share [data-share-copy]'));
 mob.window.close();
 
+/* 旧域名过渡：脚本逻辑用 vm 直跑，验证路径映射且不误伤正式域名 */
+const vmMod = await import('node:vm');
+const fsMod2 = await import('node:fs');
+const mSnip = fsMod2.readFileSync('index.html', 'utf8').match(/<script>\/\* 旧域名过渡[\s\S]*?<\/script>/);
+ok('首页含旧域名过渡脚本', !!mSnip);
+const snip = (mSnip ? mSnip[0] : '').replace(/^<script>/, '').replace(/<\/script>$/, '');
+function runSnip(hostname, pathname, search, hash) {
+  let out = null;
+  vmMod.runInNewContext(snip, { location: { hostname, pathname, search, hash, replace: u => { out = u; } } });
+  return out;
+}
+const r1 = runSnip('sdadsa424.github.io', '/gonglue-tai/a/ejl-start/', '', '');
+const r2 = runSnip('sdadsa424.github.io', '/gonglue-tai/', '', '');
+const r3 = runSnip('sdadsa424.github.io', '/gonglue-tai/', '?q=x', '#/a/ejl-start');
+const r4 = runSnip('wgame-bc7.pages.dev', '/a/ejl-start/', '', '');
+const r5 = runSnip('127.0.0.1', '/a/ejl-start/', '', '');
+ok('旧域名文章页映射到同一路径', r1 === 'https://wgame-bc7.pages.dev/a/ejl-start/', r1);
+ok('旧域名根映射到新根', r2 === 'https://wgame-bc7.pages.dev/', r2);
+ok('跳转保留查询串与 hash', r3 === 'https://wgame-bc7.pages.dev/?q=x#/a/ejl-start', r3);
+ok('正式域名不触发跳转', r4 === null, String(r4));
+ok('本地预览不触发跳转', r5 === null, String(r5));
+const snipPages = fsMod2.readdirSync('a').filter(d => fsMod2.readFileSync(`a/${d}/index.html`, 'utf8').includes('旧域名过渡'));
+ok('23 篇攻略页都带过渡脚本', snipPages.length === 23, String(snipPages.length));
+/* 模板字符串里反斜杠被吃掉过一次，这里锁死「24 个页面脚本逐字一致且可解析」 */
+const pickSnip = f => (fsMod2.readFileSync(f, 'utf8').match(/<script>\/\* 旧域名过渡[\s\S]*?<\/script>/) || [''])[0];
+const homeSnip = pickSnip('index.html');
+const sameSnip = fsMod2.readdirSync('a').every(d => pickSnip(`a/${d}/index.html`) === homeSnip);
+let snipParses = true;
+try { new vmMod.Script(homeSnip.replace(/^<script>/, '').replace(/<\/script>$/, '')); } catch (e) { snipParses = false; }
+ok('24 个页面过渡脚本逐字一致', !!homeSnip && sameSnip);
+ok('过渡脚本文法有效', snipParses);
+
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
 console.log(`\n结果：${pass} 通过 / ${fail} 失败`);
 process.exit(fail ? 1 : 0);

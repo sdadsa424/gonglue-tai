@@ -194,6 +194,8 @@ function page({ title, desc, canonical, jsonld, body, ogImage, ogType = 'article
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>/* 旧域名过渡：仅在 GitHub Pages 的副本上生效，正式域名不受影响 */
+(function(){var h=location.hostname;if(!/(^|\\.)github\\.io$/.test(h))return;var p=location.pathname.replace(/^\\/gonglue-tai(?=\\/|$)/,'')||'/';location.replace('https://wgame-bc7.pages.dev'+p+location.search+location.hash);})();</script>
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <link rel="canonical" href="${canonical}">
