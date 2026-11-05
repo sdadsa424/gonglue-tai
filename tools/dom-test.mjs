@@ -32,6 +32,20 @@ function make(url, seed, opts) {
           return opts.fetchStub(String(url));
         };
       }
+      /* geolocation 桩：opts.geo = { lat, lon } 走成功，{ error: 1 } 走拒绝 */
+      if (opts.geo) {
+        Object.defineProperty(window.navigator, 'geolocation', {
+          configurable: true,
+          value: {
+            getCurrentPosition(onOk, onErr) {
+              setTimeout(() => {
+                if (opts.geo.error) onErr({ code: opts.geo.error, message: 'stub' });
+                else onOk({ coords: { latitude: opts.geo.lat, longitude: opts.geo.lon, accuracy: 30 } });
+              }, 0);
+            }
+          }
+        });
+      }
       /* fxProbe：假 rect（越深越靠下）+ 立即回调的 IO，用来验证滚动入场类是否真的挂上 */
       if (opts.fxProbe) {
         window.Element.prototype.getBoundingClientRect = function () {
@@ -496,6 +510,132 @@ const artWt = fsm.readFileSync('a/xxtl-siege/index.html', 'utf8');
 ok('攻略页也带时间天气块', /data-wt-m/.test(artWt) && /class="wt"/.test(artWt));
 const cssWt = fsMod2.readFileSync('assets/style.css', 'utf8');
 ok('天气动效在减弱动效时关闭', /@media \(prefers-reduced-motion:no-preference\)\{[\s\S]*\.wi-rain \.d\{animation/.test(cssWt));
+
+/* 定位：面板、手动选城市、精确定位 */
+console.log('\n[定位]');
+const locPage = await make(BASE, {}, { fetchStub: wxStub(GEO, WXOK) });
+await wait(400);
+const ld = locPage.window.document, lw = locPage.window;
+const wtPop = ld.getElementById('wt-pop');
+ok('定位面板默认收起', !!wtPop && wtPop.hasAttribute('hidden'));
+ok('胶囊可点且折叠态正确', ld.getElementById('wt').getAttribute('role') === 'button' &&
+  ld.getElementById('wt').getAttribute('aria-expanded') === 'false');
+ld.getElementById('wt').click();
+await wait(60);
+ok('点胶囊展开面板', !wtPop.hasAttribute('hidden') &&
+  ld.getElementById('wt').getAttribute('aria-expanded') === 'true');
+ok('面板显示当前城市与来源', ld.querySelector('[data-wt-cur]').textContent === '合肥' &&
+  /IP/.test(ld.querySelector('[data-wt-src]').textContent),
+  ld.querySelector('[data-wt-cur]').textContent + ' / ' + ld.querySelector('[data-wt-src]').textContent);
+ok('顶栏胶囊也显示城市名', ld.querySelector('[data-wt-city]').textContent === '合肥');
+ok('快捷城市按钮齐全', ld.querySelectorAll('[data-wt-chips] button').length === 10,
+  String(ld.querySelectorAll('[data-wt-chips] button').length));
+
+lw.__fetchCalls.length = 0;
+ld.querySelector('[data-lat="30.2741"]').click();
+await wait(400);
+const locRec = JSON.parse(lw.localStorage.getItem('gl_loc_v1') || 'null');
+ok('选城市写入本地定位', !!locRec && locRec.city === '杭州' && locRec.src === 'manual', JSON.stringify(locRec));
+ok('改用该城市坐标查天气，不再走 IP', lw.__fetchCalls.length === 1 &&
+  /latitude=30\.274/.test(lw.__fetchCalls[0]), lw.__fetchCalls.join(' | '));
+ok('来源标注为手动选择', /手动/.test(ld.querySelector('[data-wt-src]').textContent),
+  ld.querySelector('[data-wt-src]').textContent);
+
+lw.document.dispatchEvent(new lw.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+await wait(60);
+ok('Esc 收起面板', wtPop.hasAttribute('hidden') &&
+  ld.getElementById('wt').getAttribute('aria-expanded') === 'false');
+locPage.window.close();
+
+const fixedPage = await make(BASE, {
+  gl_loc_v1: JSON.stringify({ lat: 30.2741, lon: 120.1551, city: '杭州', src: 'manual' })
+}, { fetchStub: wxStub(GEO, WXOK) });
+await wait(400);
+ok('已固定城市时首屏直接用该坐标', fixedPage.window.__fetchCalls.length === 1 &&
+  /latitude=30\.274/.test(fixedPage.window.__fetchCalls[0]), fixedPage.window.__fetchCalls.join(' | '));
+ok('已固定城市时跳过 IP 定位', !/ipwho|ipapi/.test(fixedPage.window.__fetchCalls.join(' ')));
+fixedPage.window.close();
+
+const stalePage = await make(BASE, {
+  gl_loc_v1: JSON.stringify({ lat: 30.2741, lon: 120.1551, city: '杭州', src: 'manual' }),
+  gl_wx_v1: JSON.stringify({ t: Date.now(), temp: 25, code: 0, day: 1, city: '北京', lat: 39.9, lon: 116.4, src: 'manual' })
+}, { fetchStub: wxStub(GEO, WXOK) });
+await wait(400);
+ok('旧城市的缓存不顶替新位置', stalePage.window.__fetchCalls.length === 1 &&
+  /latitude=30\.274/.test(stalePage.window.__fetchCalls[0]), stalePage.window.__fetchCalls.join(' | '));
+stalePage.window.close();
+
+const gpsPage = await make(BASE, {}, { fetchStub: wxStub(GEO, WXOK), geo: { lat: 29.86, lon: 121.55 } });
+await wait(400);
+const gd = gpsPage.window.document;
+gd.getElementById('wt').click();
+await wait(50);
+gpsPage.window.__fetchCalls.length = 0;
+gd.querySelector('[data-wt-gps]').click();
+await wait(450);
+const gpsRec = JSON.parse(gpsPage.window.localStorage.getItem('gl_loc_v1') || 'null');
+ok('精确定位写入本地', !!gpsRec && gpsRec.src === 'gps' && Math.abs(gpsRec.lat - 29.86) < 0.01, JSON.stringify(gpsRec));
+ok('精确定位后按新坐标取天气', /latitude=29\.860/.test(gpsPage.window.__fetchCalls.join(' ')),
+  gpsPage.window.__fetchCalls.join(' | '));
+ok('顶栏改显示我的位置', gd.querySelector('[data-wt-city]').textContent === '我的位置',
+  gd.querySelector('[data-wt-city]').textContent);
+gpsPage.window.close();
+
+const denyPage = await make(BASE, {}, { fetchStub: wxStub(GEO, WXOK), geo: { error: 1 } });
+await wait(400);
+const denyDoc = denyPage.window.document;
+denyDoc.getElementById('wt').click();
+await wait(50);
+denyDoc.querySelector('[data-wt-gps]').click();
+await wait(200);
+const denyTip = denyDoc.querySelector('[data-wt-tip]');
+ok('定位被拒给出兜底提示', !denyTip.hasAttribute('hidden') && /权限/.test(denyTip.textContent), denyTip.textContent);
+ok('定位被拒不写入本地', denyPage.window.localStorage.getItem('gl_loc_v1') === null);
+denyPage.window.close();
+
+const autoPage = await make(BASE, {
+  gl_loc_v1: JSON.stringify({ lat: 30.2741, lon: 120.1551, city: '杭州', src: 'manual' })
+}, { fetchStub: wxStub(GEO, WXOK) });
+await wait(400);
+const autoDoc = autoPage.window.document;
+autoDoc.getElementById('wt').click();
+await wait(50);
+autoPage.window.__fetchCalls.length = 0;
+autoDoc.querySelector('[data-wt-auto]').click();
+await wait(400);
+ok('按 IP 自动清除固定位置', autoPage.window.localStorage.getItem('gl_loc_v1') === null);
+ok('清除后重新走 IP 定位', /ipwho\.is/.test(autoPage.window.__fetchCalls.join(' ')),
+  autoPage.window.__fetchCalls.join(' | '));
+autoPage.window.close();
+
+function wxStubMulti() {
+  return url => Promise.resolve({
+    ok: true,
+    json: () => Promise.resolve(
+      /geocoding-api/.test(url)
+        ? { results: [{ name: '杭州', admin1: '浙江', country: '中国', latitude: 30.29, longitude: 120.16 }] }
+        : /open-meteo/.test(url) ? WXOK : GEO)
+  });
+}
+const searchPage = await make(BASE, {}, { fetchStub: wxStubMulti() });
+await wait(400);
+const sd = searchPage.window.document;
+sd.getElementById('wt').click();
+await wait(50);
+const qBox = sd.querySelector('[data-wt-q]');
+qBox.value = '杭州';
+qBox.dispatchEvent(new searchPage.window.Event('input', { bubbles: true }));
+await wait(700);
+const hit = sd.querySelector('[data-wt-res] button[data-i]');
+ok('城市搜索出结果', !!hit && /杭州/.test(hit.textContent), hit ? hit.textContent : '无结果');
+if (hit) hit.click();
+await wait(400);
+const schRec = JSON.parse(searchPage.window.localStorage.getItem('gl_loc_v1') || 'null');
+ok('点搜索结果切换城市', !!schRec && schRec.city === '杭州' && schRec.src === 'manual', JSON.stringify(schRec));
+searchPage.window.close();
+
+ok('面板收起样式不被 display:flex 顶掉', /\.wt-pop\[hidden\]\{display:none\}/.test(cssWt));
+ok('窄屏隐藏顶栏城市名', /@media \(max-width:760px\)\{[\s\S]*?\.wt-city\{display:none\}/.test(cssWt));
 
 
 

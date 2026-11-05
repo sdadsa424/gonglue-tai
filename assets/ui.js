@@ -814,7 +814,19 @@
     var wxEl = box.querySelector('[data-wt-wx]');
     var icoEl = box.querySelector('[data-wt-ico]');
     var tEl = box.querySelector('[data-wt-temp]');
+    var cityEl = box.querySelector('[data-wt-city]');
     if (!hEl || !mEl) return;
+
+    /* 定位面板（与胶囊同在顶栏右簇里） */
+    var pop = document.getElementById('wt-pop');
+    var curEl = pop && pop.querySelector('[data-wt-cur]');
+    var srcEl = pop && pop.querySelector('[data-wt-src]');
+    var tipEl = pop && pop.querySelector('[data-wt-tip]');
+    var closeBtn = pop && pop.querySelector('[data-wt-close]');
+    var gpsBtn = pop && pop.querySelector('[data-wt-gps]');
+    var autoBtn = pop && pop.querySelector('[data-wt-auto]');
+    var qEl = pop && pop.querySelector('[data-wt-q]');
+    var resEl = pop && pop.querySelector('[data-wt-res]');
 
     /* 1. 时钟：跟随本机时区，跨分钟时分钟位翻一下 */
     function pad(n) { return n < 10 ? '0' + n : '' + n; }
@@ -868,17 +880,32 @@
       return day ? 'partly' : 'cloudy';
     }
 
-    /* 3. 取数：先定位再查天气，任一步失败就安静收起 */
-    var KEY = 'gl_wx_v1', TTL = 30 * 60 * 1000, busy = false;
-    function readCache() {
-      try {
-        var o = JSON.parse(localStorage.getItem(KEY) || 'null');
-        if (o && typeof o.temp === 'number' && Date.now() - o.t < TTL) return o;
-      } catch (e) {}
+    /* 3. 定位与取数：默认按 IP 估算，用户可改用浏览器精确定位或手动选城市 */
+    var KEY = 'gl_wx_v1', TTL = 30 * 60 * 1000, LOC_KEY = 'gl_loc_v1';
+    var busy = false, again = false, lastPos = null, ipCity = '';
+
+    function readJSON(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } }
+    function writeJSON(k, o) { try { localStorage.setItem(k, JSON.stringify(o)); } catch (e) {} }
+    function dropKey(k) { try { localStorage.removeItem(k); } catch (e) {} }
+
+    /* 用户固定下来的位置（手动选城市 / 精确定位）；没有则返回 null，表示按 IP */
+    function savedLoc() {
+      var o = readJSON(LOC_KEY);
+      if (o && typeof o.lat === 'number' && typeof o.lon === 'number') return o;
       return null;
     }
-    function writeCache(o) {
-      try { localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {}
+    function readCache() {
+      var o = readJSON(KEY);
+      if (!o || typeof o.temp !== 'number' || Date.now() - o.t >= TTL) return null;
+      var s = savedLoc(), src = o.src || 'ip';                 /* 老缓存没 src，一律当 IP 结果 */
+      if (s) {
+        if (src === 'ip') return null;                         /* 已固定位置，IP 的缓存作废 */
+        if (typeof o.lat !== 'number' || typeof o.lon !== 'number') return null;
+        if (Math.abs(o.lat - s.lat) > 0.01 || Math.abs(o.lon - s.lon) > 0.01) return null;
+      } else if (src !== 'ip') {
+        return null;                                           /* 已取消固定，固定位置的缓存作废 */
+      }
+      return o;
     }
     function getJSON(url, ms) {
       if (!window.fetch) return Promise.reject(new Error('no fetch'));
@@ -891,18 +918,33 @@
       }).then(function (j) { if (timer) clearTimeout(timer); return j; },
               function (e) { if (timer) clearTimeout(timer); throw e; });
     }
-    function locate() {
+    function locateByIP() {
       return getJSON('https://ipwho.is/?fields=success,latitude,longitude,city', 6000)
         .then(function (j) {
           if (!j || j.success === false || !j.latitude) throw new Error('geo');
-          return { lat: j.latitude, lon: j.longitude, city: j.city || '' };
+          ipCity = j.city || '';
+          return { lat: j.latitude, lon: j.longitude, city: ipCity, src: 'ip' };
         })
         .catch(function () {
           return getJSON('https://ipapi.co/json/', 6000).then(function (j) {
             if (!j || !j.latitude) throw new Error('geo2');
-            return { lat: j.latitude, lon: j.longitude, city: j.city || '' };
+            ipCity = j.city || '';
+            return { lat: j.latitude, lon: j.longitude, city: ipCity, src: 'ip' };
           });
         });
+    }
+    function currentPos() {
+      var s = savedLoc();
+      return s ? Promise.resolve(s) : locateByIP();
+    }
+
+    /* 4. 渲染 */
+    var SRC_TEXT = { ip: '按网络 IP 估算，可能不准', gps: '浏览器精确定位', manual: '手动选择的城市' };
+    function syncPop() {
+      if (!curEl) return;
+      var o = lastPos;
+      curEl.textContent = (o && o.city) ? o.city : '位置未知';
+      if (srcEl) srcEl.textContent = (o && SRC_TEXT[o.src]) || SRC_TEXT.ip;
     }
     function render(o) {
       var k = kindOf(o.code, o.day);
@@ -910,27 +952,172 @@
       tEl.textContent = Math.round(o.temp) + '°';
       wxEl.hidden = false;
       var name = TEXT[o.code] || '天气';
-      wxEl.title = (o.city ? o.city + ' · ' : '') + name + ' ' + Math.round(o.temp) + '°';
-      box.setAttribute('aria-label', '当地时间 ' + lastKey + '，' + (o.city || '本地') + name + ' ' + Math.round(o.temp) + ' 度');
+      var deg = Math.round(o.temp) + '°';
+      if (cityEl) {
+        if (o.city) { cityEl.textContent = o.city; cityEl.hidden = false; }
+        else { cityEl.hidden = true; }
+      }
+      wxEl.title = (o.city ? o.city + ' · ' : '') + name + ' ' + deg + ' · 点击设置定位';
+      box.setAttribute('aria-label', '当地时间 ' + lastKey + '，' + (o.city || '本地') + name + ' ' + deg + '，点击设置定位');
+      lastPos = o;
+      syncPop();
     }
     function load() {
-      if (busy) return;
+      if (busy) { again = true; return; }
       busy = true;
-      locate().then(function (pos) {
+      currentPos().then(function (pos) {
         return getJSON('https://api.open-meteo.com/v1/forecast?latitude=' + pos.lat.toFixed(3)
           + '&longitude=' + pos.lon.toFixed(3)
           + '&current=temperature_2m,weather_code,is_day&timezone=auto', 7000)
           .then(function (j) {
             var cur = j && j.current;
             if (!cur || typeof cur.temperature_2m !== 'number') throw new Error('wx');
-            var o = { t: Date.now(), temp: cur.temperature_2m, code: cur.weather_code, day: cur.is_day ? 1 : 0, city: pos.city };
-            writeCache(o);
+            var o = {
+              t: Date.now(), temp: cur.temperature_2m, code: cur.weather_code,
+              day: cur.is_day ? 1 : 0, city: pos.city, lat: pos.lat, lon: pos.lon, src: pos.src
+            };
+            writeJSON(KEY, o);
             render(o);
           });
       }).catch(function () {
-        wxEl.hidden = true; /* 没网/被墙/定位失败：只留时钟 */
-      }).then(function () { busy = false; });
+        if (!lastPos) wxEl.hidden = true;                      /* 完全拿不到：只留时钟 */
+      }).then(function () {
+        busy = false;
+        if (again) { again = false; load(); }
+      });
     }
+
+    /* 5. 定位面板：精确定位 / 手动选城市 / 回到 IP */
+    var tipTimer = 0;
+    function setTip(msg) {
+      if (!tipEl) return;
+      tipEl.textContent = msg || '';
+      tipEl.hidden = !msg;
+      clearTimeout(tipTimer);
+      if (msg) tipTimer = setTimeout(function () { tipEl.hidden = true; }, 6000);
+    }
+    function openPop() {
+      if (!pop) return;
+      pop.hidden = false;
+      if (!reduce) { pop.classList.remove('in'); void pop.offsetWidth; pop.classList.add('in'); }
+      box.setAttribute('aria-expanded', 'true');
+      syncPop();
+      document.addEventListener('click', onDocClick, true);
+      document.addEventListener('keydown', onDocKey, true);
+    }
+    function closePop() {
+      if (!pop) return;
+      pop.hidden = true;
+      box.setAttribute('aria-expanded', 'false');
+      document.removeEventListener('click', onDocClick, true);
+      document.removeEventListener('keydown', onDocKey, true);
+    }
+    function onDocClick(e) {
+      if ((pop && pop.contains(e.target)) || box.contains(e.target)) return;
+      closePop();
+    }
+    function onDocKey(e) { if (e.key === 'Escape') { closePop(); try { box.focus(); } catch (err) {} } }
+
+    box.addEventListener('click', function () { if (!pop) return; if (pop.hidden) openPop(); else closePop(); });
+    box.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      e.preventDefault();
+      if (!pop) return;
+      if (pop.hidden) openPop(); else closePop();
+    });
+    if (closeBtn) closeBtn.addEventListener('click', closePop);
+
+    if (gpsBtn) gpsBtn.addEventListener('click', function () {
+      if (!navigator.geolocation) { setTip('这个浏览器不支持精确定位，试试下面的城市搜索'); return; }
+      gpsBtn.disabled = true;
+      setTip('正在获取你的位置，浏览器可能会弹权限提示…');
+      navigator.geolocation.getCurrentPosition(function (p) {
+        gpsBtn.disabled = false;
+        writeJSON(LOC_KEY, {
+          lat: p.coords.latitude, lon: p.coords.longitude,
+          city: '我的位置', src: 'gps'
+        });
+        setTip('已切换为精确定位，正在更新天气…');
+        load();
+      }, function (err) {
+        gpsBtn.disabled = false;
+        var c = err && err.code;
+        setTip(c === 1 ? '定位权限被拒绝，可在地址栏左侧的图标里重新允许'
+             : c === 3 ? '定位超时，换个网络或手动选城市试试'
+             : '定位失败，可以按 IP 或手动选城市');
+      }, { timeout: 10000, maximumAge: 600000, enableHighAccuracy: false });
+    });
+
+    if (autoBtn) autoBtn.addEventListener('click', function () {
+      dropKey(LOC_KEY); dropKey(KEY);
+      lastPos = null;
+      setTip('已恢复按 IP 自动定位');
+      load();
+    });
+
+    var found = [], qTimer = 0;
+    function resMsg(txt) {
+      if (!resEl) return;
+      resEl.hidden = false;
+      resEl.textContent = '';
+      var li = document.createElement('li');
+      li.className = 'wt-empty';
+      li.textContent = txt;
+      resEl.appendChild(li);
+    }
+    function searchCity(q) {
+      resMsg('搜索中…');
+      getJSON('https://geocoding-api.open-meteo.com/v1/search?name=' + encodeURIComponent(q)
+        + '&count=6&language=zh&format=json', 6000)
+        .then(function (j) {
+          found = (j && j.results) || [];
+          if (!found.length) { resMsg('没找到这个城市，换个写法试试（也可以打拼音）'); return; }
+          resEl.textContent = '';
+          found.forEach(function (c, i) {
+            var li = document.createElement('li');
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.setAttribute('data-i', String(i));
+            var nm = document.createElement('b');
+            nm.textContent = c.name;
+            var sub = document.createElement('i');
+            sub.textContent = [c.admin1, c.country].filter(Boolean).join(' · ');
+            b.appendChild(nm); b.appendChild(sub);
+            li.appendChild(b);
+            resEl.appendChild(li);
+          });
+        })
+        .catch(function () { resMsg('搜索失败，检查网络后再试'); });
+    }
+    if (qEl) qEl.addEventListener('input', function () {
+      clearTimeout(qTimer);
+      var q = qEl.value.trim();
+      if (!q) { if (resEl) { resEl.hidden = true; resEl.textContent = ''; } return; }
+      qTimer = setTimeout(function () { searchCity(q); }, 380);
+    });
+    if (resEl) resEl.addEventListener('click', function (e) {
+      var b = e.target && e.target.closest ? e.target.closest('button[data-i]') : null;
+      if (!b) return;
+      var c = found[+b.getAttribute('data-i')];
+      if (!c) return;
+      writeJSON(LOC_KEY, { lat: c.latitude, lon: c.longitude, city: c.name, src: 'manual' });
+      if (qEl) qEl.value = '';
+      resEl.hidden = true;
+      setTip('已切换到 ' + c.name + '，正在更新天气…');
+      load();
+    });
+    if (pop) pop.addEventListener('click', function (e) {
+      var b = e.target && e.target.closest ? e.target.closest('[data-lat]') : null;
+      if (!b) return;
+      var nm = b.getAttribute('data-n');
+      writeJSON(LOC_KEY, {
+        lat: parseFloat(b.getAttribute('data-lat')),
+        lon: parseFloat(b.getAttribute('data-lon')),
+        city: nm, src: 'manual'
+      });
+      setTip('已切换到 ' + nm + '，正在更新天气…');
+      load();
+    });
 
     var cached = readCache();
     if (cached) render(cached); else load();

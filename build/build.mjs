@@ -87,12 +87,38 @@ function topbar(activeGame) {
       <a href="${UP}#games">游戏</a>
     </nav>
     <div class="tb-right">
-    <div class="wt" id="wt" role="group" aria-label="当地时间与天气">
+    <div class="wt" id="wt" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-label="当地时间与天气，点击设置定位">
       <span class="wt-clock"><b data-wt-h>--</b><i aria-hidden="true">:</i><b data-wt-m>--</b></span>
       <span class="wt-wx" data-wt-wx hidden>
         <span class="wt-ico" data-wt-ico aria-hidden="true"></span>
         <b class="wt-temp" data-wt-temp>--°</b>
+        <i class="wt-city" data-wt-city hidden></i>
       </span>
+    </div>
+    <div class="wt-pop" id="wt-pop" role="dialog" aria-label="定位设置" hidden>
+      <div class="wt-pop-top">
+        <span class="wt-pop-cur"><b data-wt-cur>定位中</b><i data-wt-src>按 IP 估算</i></span>
+        <button class="wt-x" type="button" data-wt-close aria-label="关闭定位设置"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+      <div class="wt-pop-btns">
+        <button class="wt-b" type="button" data-wt-gps><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>使用我的位置</button>
+        <button class="wt-b" type="button" data-wt-auto>按 IP 自动</button>
+      </div>
+      <div class="wt-pop-q"><input type="search" data-wt-q placeholder="输入城市名，或拼音" autocomplete="off" spellcheck="false" aria-label="搜索城市"></div>
+      <div class="wt-chips" data-wt-chips>
+        <button type="button" data-lat="39.9042" data-lon="116.4074" data-n="北京">北京</button>
+        <button type="button" data-lat="31.2304" data-lon="121.4737" data-n="上海">上海</button>
+        <button type="button" data-lat="23.1291" data-lon="113.2644" data-n="广州">广州</button>
+        <button type="button" data-lat="22.5431" data-lon="114.0579" data-n="深圳">深圳</button>
+        <button type="button" data-lat="30.2741" data-lon="120.1551" data-n="杭州">杭州</button>
+        <button type="button" data-lat="30.5728" data-lon="104.0668" data-n="成都">成都</button>
+        <button type="button" data-lat="30.5928" data-lon="114.3055" data-n="武汉">武汉</button>
+        <button type="button" data-lat="29.563" data-lon="106.5516" data-n="重庆">重庆</button>
+        <button type="button" data-lat="34.3416" data-lon="108.9398" data-n="西安">西安</button>
+        <button type="button" data-lat="32.0603" data-lon="118.7969" data-n="南京">南京</button>      </div>
+      <ul class="wt-res" data-wt-res hidden></ul>
+      <p class="wt-pop-tip" data-wt-tip aria-live="polite" hidden></p>
+      <p class="wt-pop-note">定位只用来显示天气，不记录、不上传</p>
     </div>
       <button class="tb-search" type="button" data-palette aria-label="全站搜索（快捷键 Ctrl 或 Command 加 K）">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
