@@ -273,6 +273,43 @@ ok('正式域名不触发跳转', r4 === null, String(r4));
 ok('本地预览不触发跳转', r5 === null, String(r5));
 const snipPages = fsMod2.readdirSync('a').filter(d => fsMod2.readFileSync(`a/${d}/index.html`, 'utf8').includes('旧域名过渡'));
 ok('23 篇攻略页都带过渡脚本', snipPages.length === 23, String(snipPages.length));
+
+/* 首屏落点：刷新/新进入回顶部，前进后退与锚点不干预（逻辑用 vm 直跑） */
+const mTop = fsMod2.readFileSync('a/ejl-start/index.html', 'utf8').match(/<script>\/\* ---------- 首屏落点[\s\S]*?<\/script>/);
+ok('攻略页含首屏落点脚本', !!mTop);
+const topSnip = (mTop ? mTop[0] : '').replace(/^<script>/, '').replace(/<\/script>$/, '');
+function runTop(o) {
+  o = o || {};
+  let scrolled = null, raf = 0;
+  const w = {
+    scrollY: o.scrollY === undefined ? 900 : o.scrollY,
+    scrollTo: (x, y) => { if (x === 0 && y === 0) scrolled = 0; },
+    addEventListener: () => {}
+  };
+  vmMod.runInNewContext(topSnip, {
+    window: w,
+    location: { hash: o.hash || '' },
+    performance: { getEntriesByType: () => [{ type: o.type || 'navigate' }] },
+    document: { getElementById: id => ((o.ids || []).indexOf(id) >= 0 ? {} : null) },
+    requestAnimationFrame: () => { raf++; }
+  });
+  return { scrolled, raf };
+}
+const tNav = runTop({ type: 'navigate' });
+const tReload = runTop({ type: 'reload' });
+const tBack = runTop({ type: 'back_forward' });
+const tAnchor = runTop({ hash: '#sec-2', ids: ['sec-2'] });
+const tAlreadyTop = runTop({ scrollY: 0 });
+ok('新进入从顶部开始', tNav.scrolled === 0);
+ok('刷新也从顶部开始', tReload.scrolled === 0);
+ok('前进后退不抢浏览器的恢复位置', tBack.scrolled === null, String(tBack.scrolled));
+ok('带小节锚点时尊重锚点', tAnchor.scrolled === null, String(tAnchor.scrolled));
+ok('已在顶部时不重复滚动', tAlreadyTop.scrolled === null, String(tAlreadyTop.scrolled));
+const homeHTML = fsMod2.readFileSync('index.html', 'utf8');
+ok('首页也接管滚动恢复', /history\.scrollRestoration='manual'/.test(homeHTML) && /navType === 'back_forward'/.test(homeHTML));
+const restorePages = fsMod2.readdirSync('a').filter(d => /scrollRestoration/.test(fsMod2.readFileSync(`a/${d}/index.html`, 'utf8')));
+ok('23 篇攻略页都接管滚动恢复', restorePages.length === 23, String(restorePages.length));
+
 /* 模板字符串里反斜杠被吃掉过一次，这里锁死「24 个页面脚本逐字一致且可解析」 */
 const pickSnip = f => (fsMod2.readFileSync(f, 'utf8').match(/<script>\/\* 旧域名过渡[\s\S]*?<\/script>/) || [''])[0];
 const homeSnip = pickSnip('index.html');

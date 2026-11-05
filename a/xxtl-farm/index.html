@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>/* 落点控制：刷新/新进入不恢复上次的滚动位置（前进后退仍交给浏览器） */
+(function(){try{var n=performance.getEntriesByType('navigation')[0];var t=n&&n.type;if(t!=='back_forward'&&'scrollRestoration' in history)history.scrollRestoration='manual';}catch(e){}})();</script>
 <script>/* 旧域名过渡：仅在 GitHub Pages 的副本上生效，正式域名不受影响 */
 (function(){var h=location.hostname;if(!/(^|\.)github\.io$/.test(h))return;var p=location.pathname.replace(/^\/gonglue-tai(?=\/|$)/,'')||'/';location.replace('https://wgame-bc7.pages.dev'+p+location.search+location.hash);})();</script>
 <title>非绑定出货：散人打宝的定价与节奏 · 小小屠龙 · 冰雪传奇攻略 · 游戏攻略大全</title>
@@ -195,6 +197,25 @@
       setTimeout(function(){ act.textContent = original; }, 1800);
     });
   });
+})();
+</script>
+<script>/* ---------- 首屏落点：刷新或重新进入一律从顶部开始 ----------
+   浏览器默认会恢复上次的滚动位置，长文章一进来就停在半路会让人以为页面错乱；
+   带小节锚点（点过标题旁的 # 复制链接）时尊重锚点，不做干预 */
+(function(){
+  var navType = '';
+  try { navType = (performance.getEntriesByType('navigation')[0] || {}).type || ''; } catch (e) {}
+  if (navType === 'back_forward') return;
+  var id = location.hash.slice(1);
+  if (id && document.getElementById(id)) return;
+  var touched = false;
+  ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function(ev){
+    window.addEventListener(ev, function(){ touched = true; }, { passive: true, once: true });
+  });
+  function toTop(){ if (!touched && window.scrollY) window.scrollTo(0, 0); }
+  toTop();
+  if (window.requestAnimationFrame) requestAnimationFrame(toTop);
+  window.addEventListener('load', toTop, { once: true });
 })();
 </script>
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
