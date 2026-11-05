@@ -3,8 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script>/* 落点控制：刷新/新进入不恢复上次的滚动位置（前进后退仍交给浏览器） */
-(function(){try{var n=performance.getEntriesByType('navigation')[0];var t=n&&n.type;if(t!=='back_forward'&&'scrollRestoration' in history)history.scrollRestoration='manual';}catch(e){}})();</script>
+<script>/* 落点控制：刷新/新进入不恢复上次位置；刷新时残留的板块锚点（#route 等）一并清掉
+   注：只在刷新时清，从攻略页点「开荒路线」跳过来的那次仍按锚点落位 */
+(function(){try{
+  var n=performance.getEntriesByType('navigation')[0];var t=n&&n.type;
+  if(t!=='back_forward'&&'scrollRestoration' in history)history.scrollRestoration='manual';
+  if(t==='reload'&&location.hash&&location.hash.charAt(1)!=='/')history.replaceState(null,'','#/');
+}catch(e){}})();</script>
 <script>/* 旧域名过渡：仅在 GitHub Pages 的副本上生效，正式域名不受影响 */
 (function(){var h=location.hostname;if(!/(^|\.)github\.io$/.test(h))return;var p=location.pathname.replace(/^\/gonglue-tai(?=\/|$)/,'')||'/';location.replace('https://wgame-bc7.pages.dev'+p+location.search+location.hash);})();</script>
 <title>游戏攻略大全 · 游戏攻略总站</title>
@@ -1022,8 +1027,14 @@ try {
   try { navType = (performance.getEntriesByType('navigation')[0] || {}).type || ''; } catch (e) {}
   if (navType === 'back_forward') return; /* 前进/后退：保留浏览器恢复的位置 */
   var raw = location.hash.replace(/^#/, '');
-  /* 带板块锚点（#library / #games / #route）或小节锚点时，交给 renderRoute 处理 */
-  if (raw && raw !== '/' && document.getElementById(raw.replace(/^\//, ''))) return;
+  if (raw.charAt(0) === '/' && raw !== '/') return; /* #/g/xxx 这类路由交给 renderRoute */
+  var el = raw && raw !== '/' ? document.getElementById(raw) : null;
+  if (el) {
+    /* 攻略页导航带过来的 #route / #library：按锚点落位，随后把地址栏收回 #/
+       否则地址栏一直挂着 #route，下次输网址自动补全成它、刷新也还落在这里 */
+    history.replaceState(null, '', '#/');
+    return;
+  }
   var touched = false;
   ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function (ev) {
     window.addEventListener(ev, function () { touched = true; }, { passive: true, once: true });

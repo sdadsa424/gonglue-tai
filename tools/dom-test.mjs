@@ -307,6 +307,68 @@ ok('带小节锚点时尊重锚点', tAnchor.scrolled === null, String(tAnchor.s
 ok('已在顶部时不重复滚动', tAlreadyTop.scrolled === null, String(tAlreadyTop.scrolled));
 const homeHTML = fsMod2.readFileSync('index.html', 'utf8');
 ok('首页也接管滚动恢复', /history\.scrollRestoration='manual'/.test(homeHTML) && /navType === 'back_forward'/.test(homeHTML));
+
+/* 头部落点脚本：刷新时清掉残留的板块锚点（攻略页点「开荒路线」会留下 #route） */
+const mHead = homeHTML.match(/<script>\/\* 落点控制[\s\S]*?<\/script>/);
+ok('首页含落点控制脚本', !!mHead);
+const headSnip = (mHead ? mHead[0] : '').replace(/^<script>/, '').replace(/<\/script>$/, '');
+function runHead(o) {
+  let replaced = null, manual = null;
+  vmMod.runInNewContext(headSnip, {
+    performance: { getEntriesByType: () => [{ type: o.type }] },
+    location: { hash: o.hash || '' },
+    history: {
+      get scrollRestoration() { return manual; },
+      set scrollRestoration(v) { manual = v; },
+      replaceState: (a, b, url) => { replaced = url; }
+    }
+  });
+  return { replaced, manual };
+}
+const hReloadRoute = runHead({ type: 'reload', hash: '#route' });
+const hNavRoute = runHead({ type: 'navigate', hash: '#route' });
+const hReloadSlash = runHead({ type: 'reload', hash: '#/' });
+const hNavPlain = runHead({ type: 'navigate', hash: '' });
+const hBack = runHead({ type: 'back_forward', hash: '#route' });
+ok('刷新时清掉残留的 #route', hReloadRoute.replaced === '#/', String(hReloadRoute.replaced));
+ok('点导航跳过来那次不清（按锚点落位）', hNavRoute.replaced === null, String(hNavRoute.replaced));
+ok('已有 #/ 时不动地址栏', hReloadSlash.replaced === null, String(hReloadSlash.replaced));
+ok('新进入关闭浏览器滚动恢复', hNavPlain.manual === 'manual', String(hNavPlain.manual));
+ok('前进后退不碰滚动恢复与地址栏', hBack.manual === null && hBack.replaced === null,
+  hBack.manual + '/' + hBack.replaced);
+
+/* 首页落点：板块锚点落位后把地址栏收回 #/，否则 #route 会一直粘在网址上 */
+const mHomeTop = homeHTML.match(/\(function landTop\(\)[\s\S]*?\n\}\)\(\);/);
+ok('首页含落点函数', !!mHomeTop);
+const homeTopSnip = mHomeTop ? mHomeTop[0] : '';
+function runHomeTop(o) {
+  o = o || {};
+  let scrolled = null, replaced = null;
+  const w = {
+    scrollY: o.scrollY === undefined ? 900 : o.scrollY,
+    scrollTo: (x, y) => { if (x === 0 && y === 0) scrolled = 0; },
+    addEventListener: () => {},
+    requestAnimationFrame: () => {}
+  };
+  vmMod.runInNewContext(homeTopSnip, {
+    window: w,
+    location: { hash: o.hash || '' },
+    history: { replaceState: (a, b, url) => { replaced = url; } },
+    performance: { getEntriesByType: () => [{ type: o.type || 'navigate' }] },
+    document: { getElementById: id => ((o.ids || []).indexOf(id) >= 0 ? {} : null) },
+    requestAnimationFrame: () => {}
+  });
+  return { scrolled, replaced };
+}
+const hRouteAnchor = runHomeTop({ hash: '#route', ids: ['route'] });
+const hPlain = runHomeTop({ hash: '' });
+const hSlash = runHomeTop({ hash: '#/' });
+ok('#route 落位后收回成 #/', hRouteAnchor.replaced === '#/' && hRouteAnchor.scrolled === null,
+  hRouteAnchor.replaced + '/' + hRouteAnchor.scrolled);
+ok('没有锚点时回顶部', hPlain.scrolled === 0, String(hPlain.scrolled));
+ok('#/ 同样回顶部', hSlash.scrolled === 0, String(hSlash.scrolled));
+
+
 const restorePages = fsMod2.readdirSync('a').filter(d => /scrollRestoration/.test(fsMod2.readFileSync(`a/${d}/index.html`, 'utf8')));
 ok('23 篇攻略页都接管滚动恢复', restorePages.length === 23, String(restorePages.length));
 
