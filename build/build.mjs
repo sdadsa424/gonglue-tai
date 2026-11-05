@@ -17,6 +17,29 @@ const UPDATED = '2026-11-05';
 const ORDER = ['ejl', 'xxtl', 'ty'];
 const CS = 'ggboy6123';
 
+/* 搜索结果标题里用的游戏短名：只用于 title，页面显示仍用完整游戏名 */
+const SEO_NAME = { ejl: '贰点零江湖', xxtl: '小小屠龙', ty: '桃园将帅录' };
+
+/* 标题最多约 30 个汉字才会完整显示，超了就把游戏名换成短名、再去掉「攻略」两个字 */
+function seoTitle(head, gameKey) {
+  const short = SEO_NAME[gameKey] || head;
+  const full = head + ' · ' + short + '攻略';
+  if (full.length <= 30) return full;
+  const lite = head + ' · ' + short;
+  return lite.length <= 30 ? lite : full;
+}
+
+/* 描述目标是 60~110 字：以导语打底，逐条追加核心要点，到长度就停，保证句子完整 */
+function seoDesc(gi) {
+  let d = gi.dek;
+  for (const t of gi.take || []) {
+    const next = d + (/[。！？]$/.test(d) ? '' : '；') + t + '。';
+    if (next.length > 110) break;
+    d = next;
+  }
+  return d;
+}
+
 const HERO = { ejl: 'assets/hero-ejl.jpg', xxtl: 'assets/hero-xxtl.jpg', ty: 'assets/hero-ty.jpg' };
 const FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230B0D16'/%3E%3Crect x='5' y='5' width='5' height='22' fill='%23FF3D9A'/%3E%3Cg fill='%23ECEEEA'%3E%3Crect x='15' y='7' width='12' height='2'/%3E%3Crect x='15' y='14' width='12' height='2'/%3E%3Crect x='15' y='21' width='8' height='2'/%3E%3C/g%3E%3C/svg%3E";
 
@@ -349,8 +372,8 @@ function articlePage(gi) {
   const prev = flatIdx > 0 ? all[flatIdx - 1] : null;
   const next = flatIdx < all.length - 1 ? all[flatIdx + 1] : null;
 
-  const title = gi.title + ' · ' + game.name + '攻略 · ' + SITE_NAME;
-  const desc = gi.dek.length > 118 ? gi.dek.slice(0, 116) + '…' : gi.dek;
+  const title = seoTitle(gi.title, gi.game);
+  const desc = seoDesc(gi);
 
   const jsonld = escJson({
     '@context': 'https://schema.org',
@@ -358,7 +381,7 @@ function articlePage(gi) {
       {
         '@type': 'Article',
         headline: gi.title,
-        description: gi.dek,
+        description: desc,
         inLanguage: 'zh-CN',
         image: [img],
         mainEntityOfPage: { '@type': 'WebPage', '@id': url },
@@ -525,6 +548,8 @@ function gamePage(key) {
   const canonical = SITE + 'g/' + key + '/';
 
   let body = gameBlock(key);
+  /* 首页里三个分站视图的标题是 h2（首页只留一个 h1），单独落地页则要把它升回页面唯一的 h1 */
+  body = body.replace(/<h2 class="game-h">([\s\S]*?)<\/h2>/, '<h1 class="game-h">$1</h1>');
   /* 静态页没有前端脚本填内容，这里直接铺好 */
   body = body.replace(' data-game="' + key + '" hidden>', ' data-game="' + key + '">');
   body = body.replace(new RegExp('<span data-count="' + key + '" data-count-fmt="\\{n\\}">\\d+</span>', 'g'), '<span data-count="' + key + '">' + list.length + '</span>');
@@ -567,7 +592,7 @@ function gamePage(key) {
   /* /g/<key>/ 与攻略页同样深两层，资产回根目录用 ../../ */
   UP = '../../';
   const html = page({
-    title: game.name + ' 攻略 · ' + game.tag + ' · ' + SITE_NAME,
+    title: game.name + '攻略 · ' + game.tag,
     desc: game.name + '（' + game.tag + '）的 ' + list.length + ' 篇攻略：开荒路线、职业选择、打金交易、团战攻沙，都写成可以直接照着做的步骤。',
     canonical,
     jsonld,

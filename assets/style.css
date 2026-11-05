@@ -428,7 +428,8 @@ ul{margin:0;padding:0;list-style:none}
 .game-hero .art{aspect-ratio:16/9;overflow:hidden}
 .game-hero .art img{width:100%;height:100%;object-fit:cover}
 .game-hero .info{padding:40px 38px;display:flex;flex-direction:column;justify-content:center;gap:12px;border-left:1px solid var(--line)}
-.game-hero h1{font-size:clamp(26px,3vw,36px);line-height:1.25;color:#fff;font-weight:800}
+/* 首页分站视图用 h2、独立分站页用 h1，两者视觉必须一致：显式统一外距，别依赖浏览器默认（h2 默认更大） */
+.game-hero h1,.game-hero .game-h{font-size:clamp(26px,3vw,36px);line-height:1.25;color:#fff;font-weight:800;margin:.67em 0}
 .game-hero .tagline{font-size:11.5px;letter-spacing:.14em;color:#FF9ACB}
 .game-hero .intro{font-size:13.5px;line-height:1.9;color:#AEB4CB;max-width:32em}
 .game-hero .facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 22px;margin-top:4px}

@@ -663,10 +663,10 @@ ok('首屏有读屏播报区', (() => {
 })());
 ok('底栏当前项带 aria-current', !!aDoc.querySelector('.tabbar .tab.active[aria-current="page"]'));
 
-/* 路由切到分站：焦点应进入新视图标题，并播报 */
+/* 路由切到分站：焦点应进入新视图标题（分站视图标题是 h2.game-h，首页仅一个 h1），并播报 */
 axPage.window.location.hash = '#/g/ejl';
 await wait(400);
-const axH1 = aDoc.querySelector('#view-game .game-page:not([hidden]) h1');
+const axH1 = aDoc.querySelector('#view-game .game-page:not([hidden]) .game-h');
 ok('分站视图已展开', !!axH1, axH1 ? axH1.textContent : '未找到可见分站');
 ok('切视图后焦点进入标题', !!axH1 && aDoc.activeElement === axH1,
   aDoc.activeElement ? aDoc.activeElement.tagName + '.' + (aDoc.activeElement.className || '') : '无焦点');
@@ -778,6 +778,35 @@ ok('顶栏与标题色相严格同步（无相位偏移）', !/-\d+s/.test((cssB
 ok('顶栏品牌名有静态兜底色板', /--tc1:#FF3D9A;--tc2:#B44BF0;--tc3:#8B5CF6/.test(cssBrand));
 ok('顶栏光晕比标题收敛', /drop-shadow\(0 0 9px var\(--tglow\)\)/.test(cssBrand));
 ok('减少动态时全部停用', /\*\{transition:none!important;animation:none!important\}/.test(cssHero));
+
+/* ---------- SEO 标题/描述/H1 守护 ---------- */
+console.log('\n[SEO 标题描述]');
+const seoFs = (await import('node:fs')).default;
+const seoPages = ['index.html'];
+for (const d of seoFs.readdirSync('a')) if (seoFs.existsSync('a/' + d + '/index.html')) seoPages.push('a/' + d + '/index.html');
+for (const d of seoFs.readdirSync('g')) if (seoFs.existsSync('g/' + d + '/index.html')) seoPages.push('g/' + d + '/index.html');
+const seoMeta = seoPages.map(f => {
+  const h = seoFs.readFileSync(f, 'utf8');
+  return {
+    f,
+    title: (h.match(/<title>([\s\S]*?)<\/title>/) || [])[1] || '',
+    desc: (h.match(/<meta name="description" content="([^"]*)"/) || [])[1] || '',
+    h1: [...h.matchAll(/<h1[\s>]/g)].length,
+  };
+});
+ok('全部 ' + seoPages.length + ' 页标题不超 30 字', seoMeta.every(r => r.title.length <= 30) && seoMeta.length === 27);
+ok('全部页面描述在 60~120 字', seoMeta.every(r => r.desc.length >= 60 && r.desc.length <= 120));
+ok('全部页面标题与描述无重复', new Set(seoMeta.map(r => r.title)).size === seoMeta.length && new Set(seoMeta.map(r => r.desc)).size === seoMeta.length);
+/* 首页 DOM 里只允许 1 个 h1（静态源码里那第二个 h1 是 JS 模板字符串，用真实解析验证） */
+const seoHomeWin = await JSDOM.fromFile('index.html', { runScripts: 'outside-only' });
+const seoHomeH1 = seoHomeWin.window.document.querySelectorAll('h1:not(script)').length;
+ok('首页正文只有 1 个 H1', seoHomeH1 === 1);
+seoHomeWin.window.close();
+ok('每个分站页恰好 1 个 H1（构建时从 h2 提升）', ['ejl', 'xxtl', 'ty'].every(k => {
+  const h = seoFs.readFileSync('g/' + k + '/index.html', 'utf8');
+  return (h.match(/<h1[\s>]/g) || []).length === 1 && /<h1 class="game-h">/.test(h);
+}));
+ok('分站页标题保留游戏短名规则', seoMeta.filter(r => r.f.startsWith('g/')).every(r => !r.title.includes('游戏攻略大全')));
 
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
 console.log(`\n结果：${pass} 通过 / ${fail} 失败`);
