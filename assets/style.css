@@ -1235,3 +1235,45 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 .share-btn[hidden]{display:none}
 .share-tip{width:100%;margin:2px 0 0;font-size:11.5px;line-height:1.7;color:#7C829B}
 .share-tip b{color:#B9BFD5;font-weight:600}
+
+/* ---------- 视觉特效层（段落入场 / 光标高光 / 图片淡入 / 标题锚点 / 视图切换） ---------- */
+@media (prefers-reduced-motion: no-preference){
+  /* 1. 正文块滚动入场：只有 JS 打过 .fx 才隐藏，无脚本不受影响 */
+  .fx{opacity:0;transform:translateY(12px);
+      transition:opacity .5s cubic-bezier(.2,.7,.3,1),transform .5s cubic-bezier(.2,.7,.3,1)}
+  .fx.fx-in{opacity:1;transform:none}
+  /* 关掉整块入场，避免和逐块入场叠成两层位移 */
+  .fx-parent .prose,.fx-parent .takeaways{animation:none}
+
+  /* 2. 卡片光标跟随高光 */
+  .glow-host{position:relative;overflow:hidden;isolation:isolate}
+  .glow-host::after{
+    content:"";position:absolute;inset:0;z-index:1;pointer-events:none;border-radius:inherit;
+    background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),
+      rgba(255,61,154,.16),rgba(139,92,246,.09) 42%,transparent 68%);
+    opacity:0;transition:opacity .3s ease;
+  }
+  .glow-host:hover::after{opacity:1}
+
+  /* 3. 图片淡入 + 加载骨架 */
+  .fx-img{opacity:0}
+  .fx-img.fx-loaded{opacity:1;transition:opacity .5s ease}
+  picture.fx-holder{
+    background:linear-gradient(100deg,#141830 28%,#1b2040 46%,#141830 64%);
+    background-size:220% 100%;animation:fxShimmer 1.5s linear infinite;
+  }
+  picture.fx-holder.fx-ready{animation:none;background:transparent}
+  @keyframes fxShimmer{from{background-position:120% 0}to{background-position:-120% 0}}
+
+  /* 4. 小节标题锚点（悬停出现 #，点击可复制直达链接） */
+  .prose h2 .h-anchor{
+    margin-left:8px;font-size:15px;font-weight:400;color:#6C7390;
+    text-decoration:none;opacity:0;transition:opacity .18s ease,color .18s ease;
+  }
+  .prose h2:hover .h-anchor,.h-anchor:focus-visible{opacity:1}
+  .h-anchor:hover{color:#FF9ACB}
+
+  /* 5. 分站视图切换 */
+  .view-enter{animation:viewIn .4s cubic-bezier(.2,.7,.3,1)}
+  @keyframes viewIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+}

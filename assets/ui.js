@@ -583,7 +583,8 @@
 
   /* ---------- 已读 + 阅读位置 ---------- */
   var gid = document.body.getAttribute('data-guide-id');
-  if (!gid) return;
+  /* 首页没有 guide id：跳过已读记录，但不能 return，否则会中断后面所有初始化 */
+  if (gid) {
 
   read.add(gid);
 
@@ -620,4 +621,99 @@
     setTimeout(function () { saveTick = false; savePos(); }, 600);
   }, { passive: true });
   window.addEventListener('pagehide', savePos);
+  }
+
+  /* ---------- 视觉特效：段落入场 / 光标高光 / 图片淡入 / 标题锚点 ---------- */
+  (function fx() {
+    if (reduce) return;
+
+    /* 1. 正文逐块入场：首屏内不动（避免闪一下），只处理下方内容 */
+    var blocks = [].slice.call(document.querySelectorAll('.prose > *, .takeaways, .related, .share, .navpair'));
+    if (blocks.length) {
+      var art = document.querySelector('.article');
+      if (art) art.classList.add('fx-parent');
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          var i = 0;
+          for (var n = 0; n < entries.length; n++) {
+            var en = entries[n];
+            if (!en.isIntersecting) continue;
+            en.target.style.transitionDelay = Math.min(i++ * 45, 180) + 'ms';
+            en.target.classList.add('fx-in');
+            io.unobserve(en.target);
+          }
+        }, { rootMargin: '0px 0px -6% 0px', threshold: 0.01 });
+        var fold = window.innerHeight * 0.85;
+        for (var b = 0; b < blocks.length; b++) {
+          var el = blocks[b];
+          var top = el.getBoundingClientRect ? el.getBoundingClientRect().top : 0;
+          if (top < fold) continue; /* 已在首屏：直接可见，不做位移动画 */
+          el.classList.add('fx');
+          io.observe(el);
+        }
+      }
+    }
+
+    /* 2. 卡片光标跟随高光（仅精确指针设备；卡片多为 JS 后渲染，按需挂类） */
+    if (window.matchMedia && window.matchMedia('(pointer:fine)').matches) {
+      var GLOW_SEL = '.entry, .game-card, .poster, .related a';
+      var raf = 0, target = null, px = 0, py = 0;
+      document.addEventListener('mousemove', function (e) {
+        var host = e.target && e.target.closest ? e.target.closest(GLOW_SEL) : null;
+        if (!host) return;
+        if (!host.classList.contains('glow-host')) host.classList.add('glow-host');
+        target = host; px = e.clientX; py = e.clientY;
+        if (raf) return;
+        raf = requestAnimationFrame(function () {
+          raf = 0;
+          if (!target) return;
+          var r = target.getBoundingClientRect();
+          if (!r.width || !r.height) return;
+          target.style.setProperty('--mx', ((px - r.left) / r.width * 100).toFixed(1) + '%');
+          target.style.setProperty('--my', ((py - r.top) / r.height * 100).toFixed(1) + '%');
+        });
+      }, { passive: true });
+    }
+
+    /* 3. 图片淡入 + 加载骨架（首屏 LCP 图跳过，别拖慢首绘） */
+    var imgs = [].slice.call(document.querySelectorAll('picture img'));
+    for (var k = 0; k < imgs.length; k++) {
+      (function (img) {
+        if (img.getAttribute('fetchpriority') === 'high') return;
+        var pic = img.closest ? img.closest('picture') : null;
+        if (pic) pic.classList.add('fx-holder');
+        function done() {
+          if (pic) pic.classList.add('fx-ready');
+          img.classList.add('fx-loaded');
+        }
+        if (img.complete && img.naturalWidth) { done(); return; }
+        img.classList.add('fx-img');
+        img.addEventListener('load', done, { once: true });
+        img.addEventListener('error', done, { once: true });
+      })(imgs[k]);
+    }
+
+    /* 4. 小节标题锚点：悬停出 #，点击复制本节直达链接 */
+    var heads = [].slice.call(document.querySelectorAll('.prose h2[id]'));
+    for (var j = 0; j < heads.length; j++) {
+      (function (hd) {
+        var a = document.createElement('a');
+        a.className = 'h-anchor';
+        a.href = '#' + hd.id;
+        a.textContent = '#';
+        a.setAttribute('aria-label', '复制本节链接');
+        a.addEventListener('click', function (e) {
+          e.preventDefault();
+          var url = location.origin + location.pathname + '#' + hd.id;
+          copyText(url).then(function (ok) {
+            toast(ok ? '本节链接已复制' : '复制失败，请手动复制地址栏');
+          });
+          if (history.replaceState) history.replaceState(null, '', '#' + hd.id);
+          if (hd.scrollIntoView) hd.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+        hd.appendChild(a);
+      })(heads[j]);
+    }
+  })();
+
 })();

@@ -24,6 +24,7 @@ function make(url, seed, opts) {
       Object.defineProperty(window, 'scrollY', { value: 900, writable: true });
       try { Object.keys(seed || {}).forEach(k => window.localStorage.setItem(k, seed[k])); } catch (e) {}
       if (opts.width) Object.defineProperty(window, 'innerWidth', { value: opts.width, writable: true });
+      if (opts.pointerFine) window.matchMedia = q => ({ matches: q.indexOf('pointer') >= 0, media: q, addListener() {}, removeListener() {}, addEventListener() {}, removeEventListener() {} });
     }
   });
 }
@@ -94,6 +95,12 @@ hd.querySelector('.foot-share [data-share-qr]').click();
 await wait(60);
 ok('页脚二维码可展开', !!footQr && !footQr.hidden);
 ok('页脚二维码指向站点版', /qr-site\.svg$/.test(footQr.querySelector('img')?.getAttribute('src') || ''));
+
+/* 视觉特效：图片骨架 + 分站切换过渡 */
+ok('非首屏图片挂了加载骨架', hd.querySelectorAll('picture.fx-holder').length > 0, String(hd.querySelectorAll('picture.fx-holder').length));
+hd.location.hash = '#/g/ejl';
+await wait(260);
+ok('分站视图带入场过渡', !!hd.getElementById('view-game') && hd.getElementById('view-game').classList.contains('view-enter'));
 await wait(40);
 hd.dispatchEvent(new w.KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }));
 await wait(60);
@@ -127,6 +134,16 @@ ok('目录锚点指向正文标题', !!ad.querySelector(firstTocHref), firstTocH
 ok('浮层目录已生成', ad.querySelectorAll('.toc-float a').length === ad.querySelectorAll('.toc li').length,
   ad.querySelectorAll('.toc-float a').length + '/' + ad.querySelectorAll('.toc li').length);
 ok('浮层目录高亮当前节', !!ad.querySelector('.toc-float a.on'));
+
+/* 视觉特效层 */
+const h2s = [...ad.querySelectorAll('.prose h2[id]')];
+const hAnchors = [...ad.querySelectorAll('.prose h2 .h-anchor')];
+ok('启用了逐块入场（关闭整块动画）', !!ad.querySelector('.article.fx-parent'));
+ok('每个小节标题都有锚点', h2s.length > 0 && hAnchors.length === h2s.length, hAnchors.length + '/' + h2s.length);
+ok('锚点 href 对齐小节 id', hAnchors.every(a => a.getAttribute('href') === '#' + a.parentElement.id));
+hAnchors[0].click();
+await wait(60);
+ok('点锚点后地址栏带上本节 id', ad.location.hash === '#' + h2s[0].id, ad.location.hash);
 ok('内联目录同步高亮', !!ad.querySelector('.toc a.on'));
 ok('手机目录按钮已注入', !!ad.querySelector('.toc-m-btn'));
 const sheet = ad.querySelector('.toc-sheet');
@@ -238,6 +255,17 @@ let snipParses = true;
 try { new vmMod.Script(homeSnip.replace(/^<script>/, '').replace(/<\/script>$/, '')); } catch (e) { snipParses = false; }
 ok('24 个页面过渡脚本逐字一致', !!homeSnip && sameSnip);
 ok('过渡脚本文法有效', snipParses);
+
+/* 精确指针设备才挂光标高光 */
+const desk = await make(BASE, {}, { pointerFine: true });
+await wait(700);
+const dd = desk.window.document;
+const firstEntry = dd.querySelector('#entryList .entry');
+firstEntry.dispatchEvent(new desk.window.MouseEvent('mousemove', { bubbles: true, clientX: 40, clientY: 40 }));
+await wait(60);
+ok('桌面端卡片按需挂上光标高光', firstEntry.classList.contains('glow-host'));
+desk.window.close();
+
 
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
 console.log(`\n结果：${pass} 通过 / ${fail} 失败`);

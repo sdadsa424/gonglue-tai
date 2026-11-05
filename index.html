@@ -725,6 +725,11 @@ function setView(name) {
   currentView = name;
   progress.hidden = name !== 'article';
   if (name === 'article') onScroll();
+  /* 视图切换的入场过渡（重播需先移除类并强制回流） */
+  if (!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+    const v = views[name];
+    if (v) { v.classList.remove('view-enter'); void v.offsetWidth; v.classList.add('view-enter'); }
+  }
   if (typeof setActiveTab === 'function') setActiveTab();
 }
 function renderRoute() {
