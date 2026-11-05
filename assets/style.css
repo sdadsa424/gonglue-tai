@@ -546,7 +546,7 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
     linear-gradient(104deg,transparent 41%,rgba(255,255,255,.9) 50%,transparent 59%),
     linear-gradient(var(--tdeg),var(--tc1) 0%,var(--tc2) 46%,var(--tc3) 72%,var(--tc1) 100%);
   background-size:38% 100%,240% 100%;
-  background-position:-70% 50%,0% 50%;
+  background-position:-120% 50%,0% 50%;
   background-repeat:no-repeat,repeat;
   animation:
     heroTone 26s ease-in-out infinite,
@@ -569,9 +569,10 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
   0%,100%{--tdeg:96deg}
   50%{--tdeg:132deg}
 }
-/* 底色渐变持续流动；每轮留出 30% 的时间让一道高光从左斜扫到右 */
+/* 底色渐变持续流动；每轮留出 30% 的时间让一道高光从左斜扫到右。
+   起点 -120% / 终点 175% 是算过的：让高光带在静止期完全落在字形外，不会在左边缘留一条常亮边 */
 @keyframes heroSheen{
-  0%,54%{background-position:-70% 50%,0% 50%}
+  0%,54%{background-position:-120% 50%,0% 50%}
   84%,100%{background-position:175% 50%,200% 50%}
 }
 @keyframes heroTitleGlow{
@@ -579,14 +580,26 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
   50%{filter:drop-shadow(0 0 19px var(--tglow))}
 }
 /* 品牌名：保留渐变流动动画 + 呼吸光晕，新名字同样带特效 */
+/* 顶栏品牌名：与首屏标题同款四层活色板，只是字小、常驻顶栏，所以光晕收敛、相位错开，
+   避免和标题同时变同一个颜色显得呆板 */
 .brand-name{
-  background-size:220% 100%;
-  animation:gradFlow 15s linear infinite, brandGlow 4.8s ease-in-out infinite;
+  --tc1:#FF3D9A;--tc2:#B44BF0;--tc3:#8B5CF6;--tglow:rgba(255,61,154,.5);--tdeg:100deg;
+  background-image:
+    linear-gradient(104deg,transparent 41%,rgba(255,255,255,.9) 50%,transparent 59%),
+    linear-gradient(var(--tdeg),var(--tc1) 0%,var(--tc2) 46%,var(--tc3) 72%,var(--tc1) 100%);
+  background-size:38% 100%,240% 100%;
+  background-position:-120% 50%,0% 50%;
+  background-repeat:no-repeat,repeat;
   position:relative;z-index:3;
+  animation:
+    heroTone 26s ease-in-out -8s infinite,
+    heroAngle 20s ease-in-out -8s infinite,
+    heroSheen 9s linear -3s infinite,
+    brandGlow 5.6s ease-in-out infinite;
 }
 @keyframes brandGlow{
-  0%,100%{filter:drop-shadow(0 0 3px rgba(255,61,154,.35))}
-  50%{filter:drop-shadow(0 0 13px rgba(139,92,246,.75))}
+  0%,100%{filter:drop-shadow(0 0 2px var(--tglow))}
+  50%{filter:drop-shadow(0 0 9px var(--tglow))}
 }
 .hero-kicker{animation:softPulse 4.6s ease-in-out infinite}
 

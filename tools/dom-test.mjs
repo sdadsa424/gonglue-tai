@@ -769,8 +769,13 @@ ok('关键帧首尾色板一致（无缝循环）', (() => {
 })());
 ok('有 @property 失效时的静态兜底值', /--tc1:#FF3D9A;--tc2:#B44BF0;--tc3:#8B5CF6/.test(cssHero));
 ok('扫光高光带独立成层', /linear-gradient\(104deg,transparent 41%,rgba\(255,255,255,\.9\) 50%,transparent 59%\)/.test(cssHero));
-ok('扫光只在窗口期掠过', /0%,54%\{background-position:-70% 50%,0% 50%\}/.test(cssHero) && /84%,100%\{background-position:175% 50%,200% 50%\}/.test(cssHero));
+ok('扫光只在窗口期掠过', /0%,54%\{background-position:-120% 50%,0% 50%\}/.test(cssHero) && /84%,100%\{background-position:175% 50%,200% 50%\}/.test(cssHero));
 ok('光晕颜色跟随色板', /drop-shadow\(0 0 19px var\(--tglow\)\)/.test(cssHero));
+/* 顶栏品牌名同款特效：复用同关键帧、相位错开、光晕更收敛 */
+const cssBrand = cssHero.slice(cssHero.indexOf('.brand-name{', cssHero.indexOf('顶栏品牌名')));
+ok('顶栏品牌名挂同款四层动画', /heroTone 26s ease-in-out -8s infinite/.test(cssBrand) && /heroAngle 20s ease-in-out -8s infinite/.test(cssBrand) && /heroSheen 9s linear -3s infinite/.test(cssBrand) && /brandGlow 5\.6s ease-in-out infinite/.test(cssBrand));
+ok('顶栏品牌名有静态兜底色板', /--tc1:#FF3D9A;--tc2:#B44BF0;--tc3:#8B5CF6/.test(cssBrand));
+ok('顶栏光晕比标题收敛', /drop-shadow\(0 0 9px var\(--tglow\)\)/.test(cssBrand));
 ok('减少动态时全部停用', /\*\{transition:none!important;animation:none!important\}/.test(cssHero));
 
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
