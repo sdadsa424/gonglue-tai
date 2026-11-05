@@ -1,0 +1,27 @@
+# Cloudflare Pages 响应头（GitHub Pages 会忽略本文件）
+# HTML 保持每次校验（部署后立刻生效），图片类静态资源放长缓存
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(self), camera=(), microphone=(), payment=()
+
+/assets/*.webp
+  Cache-Control: public, max-age=604800
+
+/assets/*.jpg
+  Cache-Control: public, max-age=604800
+
+/assets/*.png
+  Cache-Control: public, max-age=604800
+
+/assets/*.svg
+  Cache-Control: public, max-age=604800
+
+# 样式与脚本保持重新校验：ETag 命中返回 304，避免部署后用户长时间看到旧版本
+/assets/*.css
+  Cache-Control: public, max-age=0, must-revalidate
+
+/assets/*.js
+  Cache-Control: public, max-age=0, must-revalidate

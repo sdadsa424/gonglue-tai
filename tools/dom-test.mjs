@@ -707,6 +707,34 @@ ok('静态页有跳到主内容链接', /<body[^>]*>\s*<a class="skip" href="#ma
 ok('静态页 main 可聚焦', /<main class="view" id="main" tabindex="-1">/.test(axStatic));
 ok('倾斜在减少动态时关闭', /\(pointer:fine\)'\)\.matches\s*&&\s*!window\.matchMedia\('\(prefers-reduced-motion: reduce\)'\)\.matches/.test(uiJs));
 
+console.log('\n[加载速度与 404]');
+const nfHomeDoc = (await import('node:fs')).readFileSync('index.html', 'utf8');
+/* preconnect：天气链路两跳 + 第三方统计 */
+ok('首页预连接天气接口', /<link rel="preconnect" href="https:\/\/ipwho\.is" crossorigin>/.test(nfHomeDoc) && /<link rel="preconnect" href="https:\/\/api\.open-meteo\.com" crossorigin>/.test(nfHomeDoc));
+ok('文章页预连接天气接口', /preconnect" href="https:\/\/api\.open-meteo\.com/.test(axStatic));
+ok('统计域名有 dns-prefetch', /<link rel="dns-prefetch" href="https:\/\/busuanzi\.ibruce\.info">/.test(axStatic));
+/* 图片异步解码 */
+const nfImgs = (nfHomeDoc.match(/<img\b[^>]*>/g) || []).filter(t => !/decoding=/.test(t));
+ok('首页除 LCP 图外全部异步解码', nfImgs.length === 1 && /fetchpriority="high"/.test(nfImgs[0]), '剩余 ' + nfImgs.length + ' 张');
+/* 缓存与安全头 */
+const nfHeaders = (await import('node:fs')).readFileSync('_headers', 'utf8');
+ok('_headers 声明安全响应头', /X-Content-Type-Options:\s*nosniff/.test(nfHeaders) && /Referrer-Policy:/.test(nfHeaders));
+ok('_headers 允许本站 GPS', /geolocation=\(self\)/.test(nfHeaders));
+ok('_headers 图片长缓存', /\/assets\/\*\.webp[^]*?max-age=604800/.test(nfHeaders));
+ok('_headers 脚本样式保持重新校验', /\/assets\/\*\.js[^]*?max-age=0,\s*must-revalidate/.test(nfHeaders));
+
+/* 404 页：真实加载一遍，确认脚手架与脚本不报错 */
+const nfPage = await make(BASE + '404.html');
+const nfDoc = nfPage.window.document;
+ok('404 页有主标题与说明', !!nfDoc.querySelector('.nf h1') && /页面不存在/.test(nfDoc.title));
+ok('404 页不可被收录', nfDoc.querySelector('meta[name="robots"]')?.content === 'noindex, follow');
+ok('404 页列出全部攻略链接', nfDoc.querySelectorAll('.nf-g li a').length === 23, String(nfDoc.querySelectorAll('.nf-g li a').length));
+ok('404 页资源路径指向站点根', [...nfDoc.querySelectorAll('link[rel="stylesheet"],script[src]')]
+  .map(el => el.getAttribute('href') || el.getAttribute('src'))
+  .filter(u => !/^https?:/.test(u))
+  .every(u => u.startsWith('/assets/')));
+nfPage.window.close();
+
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
 console.log(`\n结果：${pass} 通过 / ${fail} 失败`);
 process.exit(fail ? 1 : 0);

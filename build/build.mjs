@@ -70,8 +70,14 @@ function blockHTML(b, up) {
   return '';
 }
 
-/* 攻略页里的相对层级固定为 a/<id>/ → 回到站点根用 ../../ */
-const UP = '../../';
+/* 攻略页里的相对层级固定为 a/<id>/ → 回到站点根用 ../../；
+   生成根目录页面（404）时临时改成 '/'，生成完再改回来 */
+let UP = '../../';
+
+/* 顶栏天气会连两个外部接口、页脚有第三方统计：提前建连，省掉两轮 TLS 握手 */
+const PRECONNECT = `<link rel="preconnect" href="https://ipwho.is" crossorigin>
+<link rel="preconnect" href="https://api.open-meteo.com" crossorigin>
+<link rel="dns-prefetch" href="https://busuanzi.ibruce.info">`;
 
 function topbar(activeGame) {
   return `<header class="topbar">
@@ -254,7 +260,7 @@ const PAGE_SCRIPT = `<script>
 })();
 </script>`;
 
-function page({ title, desc, canonical, jsonld, body, ogImage, ogType = 'article', bodyClass = '', guideId = '' }) {
+function page({ title, desc, canonical, jsonld, body, ogImage, ogType = 'article', bodyClass = '', guideId = '', headExtra = '' }) {
   return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -279,9 +285,13 @@ function page({ title, desc, canonical, jsonld, body, ogImage, ogType = 'article
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(desc)}">
 <meta name="twitter:image" content="${ogImage}">
+${ogType === 'article' ? `<meta property="article:published_time" content="${UPDATED}T08:00:00+08:00">
+<meta property="article:modified_time" content="${UPDATED}T08:00:00+08:00">` : ''}
+${PRECONNECT}
 <link rel="icon" href="${FAVICON}">
 <link rel="stylesheet" href="${UP}assets/style.css">
 <script type="application/ld+json">${jsonld}</script>
+${headExtra}
 </head>
 <body${bodyClass ? ' class="' + bodyClass + '"' : ''}${guideId ? ' data-guide-id="' + guideId + '"' : ''}>
 <a class="skip" href="#main">跳到主内容</a>
@@ -459,6 +469,7 @@ function homeHead() {
 <meta name="twitter:title" content="${esc(HOME_TITLE)}">
 <meta name="twitter:description" content="${esc(HOME_DESC)}">
 <meta name="twitter:image" content="${SITE}${HERO.ty}">
+${PRECONNECT}
 <script type="application/ld+json">${jsonld}</script>`;
 }
 
@@ -471,6 +482,52 @@ ${ORDER.map(k => GUIDES.filter(x => x.game === k).map(gi => `          <li><a hr
         </ul>
       </div>
     </noscript>`;
+}
+
+/* ---------- 404：失效链接落在这里，直接把全部攻略摊开，别让人走进死胡同 ---------- */
+function notFoundPage() {
+  const groups = ORDER.map(k => {
+    const items = GUIDES.filter(g => g.game === k);
+    return `      <div class="nf-g">
+        <p class="nf-g-name">${esc(GAMES[k].name)}</p>
+        <ul>${items.map(gi => `<li><a href="/a/${gi.id}/">${esc(gi.title)}</a></li>`).join('')}</ul>
+      </div>`;
+  }).join('\n');
+
+  UP = '/';
+  const html = page({
+    title: `页面不存在 · ${SITE_NAME}`,
+    desc: `这个地址没有对应内容。站内 ${GUIDES.length} 篇攻略按游戏列在这里，也可以直接搜标题。`,
+    canonical: SITE + '404.html',
+    jsonld: JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: '页面不存在',
+      isPartOf: { '@type': 'WebSite', name: SITE_NAME, url: SITE }
+    }),
+    ogImage: SITE + HERO.ty,
+    ogType: 'website',
+    bodyClass: 'page-404',
+    headExtra: '<meta name="robots" content="noindex, follow">',
+    body: `<div class="wrap">
+  <section class="nf">
+    <p class="nf-code">404 · 页面不存在</p>
+    <h1>这个页面走丢了</h1>
+    <p>链接可能已经失效，或者地址打错了一个字符。下面是站内全部 ${GUIDES.length} 篇攻略，按游戏分开列着；也可以用右上角的搜索（⌘K / Ctrl+K）直接搜标题。</p>
+    <div class="nf-acts">
+      <a class="nf-btn primary" href="/">回首页</a>
+      <a class="nf-btn" href="/#library">看攻略库</a>
+      <a class="nf-btn" href="/#games">按游戏挑</a>
+    </div>
+    <div class="nf-list">
+      <h2>全部攻略</h2>
+${groups}
+    </div>
+  </section>
+</div>`
+  });
+  UP = '../../';
+  return html;
 }
 
 function inject(file, marker, content) {
@@ -500,6 +557,8 @@ ${GUIDES.map(gi => `  <url><loc>${SITE}a/${gi.id}/</loc><lastmod>${UPDATED}</las
 `;
 fs.writeFileSync('sitemap.xml', sitemap, 'utf8');
 
+fs.writeFileSync('404.html', notFoundPage(), 'utf8');
+
 fs.writeFileSync('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${SITE}sitemap.xml\n`, 'utf8');
 
-console.log('生成攻略页：' + files.length + ' 篇 · sitemap.xml / robots.txt 已更新');
+console.log('生成攻略页：' + files.length + ' 篇 · 404.html / sitemap.xml / robots.txt 已更新');
