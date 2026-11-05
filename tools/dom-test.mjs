@@ -25,6 +25,25 @@ function make(url, seed, opts) {
       try { Object.keys(seed || {}).forEach(k => window.localStorage.setItem(k, seed[k])); } catch (e) {}
       if (opts.width) Object.defineProperty(window, 'innerWidth', { value: opts.width, writable: true });
       if (opts.pointerFine) window.matchMedia = q => ({ matches: q.indexOf('pointer') >= 0, media: q, addListener() {}, removeListener() {}, addEventListener() {}, removeEventListener() {} });
+      /* fxProbe：假 rect（越深越靠下）+ 立即回调的 IO，用来验证滚动入场类是否真的挂上 */
+      if (opts.fxProbe) {
+        window.Element.prototype.getBoundingClientRect = function () {
+          let top = 0, n = this;
+          while (n && n.nodeType === 1) { top += 420; n = n.parentElement; }
+          return { top, left: 0, right: 300, bottom: top + 100, width: 300, height: 100, x: 0, y: top, toJSON() {} };
+        };
+        window.IntersectionObserver = class {
+          constructor(cb) { this.cb = cb; this.els = []; }
+          observe(el) {
+            this.els.push(el);
+            setTimeout(() => {
+              if (this.els.indexOf(el) >= 0) this.cb([{ isIntersecting: true, target: el }], this);
+            }, 0);
+          }
+          unobserve(el) { const i = this.els.indexOf(el); if (i >= 0) this.els.splice(i, 1); }
+          disconnect() { this.els = []; }
+        };
+      }
     }
   });
 }
@@ -292,6 +311,20 @@ ok('hover 时保留倾斜不被位移覆盖', /\.poster:hover,\.entry:hover,\.ga
 ok('触屏有 3D 入场关键帧', /@keyframes c3dIn\{from\{opacity:0;transform:translateY\(16px\) rotateX\(10deg\)\}/.test(css3d));
 ok('触屏入场尊重减少动态', /@media \(hover:none\) and \(prefers-reduced-motion:no-preference\)/.test(css3d));
 desk.window.close();
+
+/* 小节标题 3D 翻转入场 */
+console.log('\n[小节标题 3D 翻转]');
+ok('标题绕底边后仰 26° 进入', /\.prose h2\.fx\{[^}]*transform-origin:50% 100%[^}]*perspective\(760px\) rotateX\(26deg\)/.test(css3d));
+ok('翻正后回到平铺', /\.prose h2\.fx\.fx-in\{transform:none\}/.test(css3d));
+ok('翻转规则压在通用入场之后（覆盖 translateY）', css3d.indexOf('.prose h2.fx{') > css3d.indexOf('.fx{opacity:0;transform:translateY(12px)'));
+const flipPage = await make(BASE + 'a/xxtl-siege/', {}, { fxProbe: true });
+await wait(500);
+const fpd = flipPage.window.document;
+const fh2 = fpd.querySelector('.prose h2');
+ok('小节标题拿到待入场类', !!fh2 && fh2.classList.contains('fx'));
+ok('滚入视口后翻正', !!fh2 && fh2.classList.contains('fx-in'));
+ok('标题之外的正文档照常入场', !!fpd.querySelector('.prose p.fx-in'));
+flipPage.window.close();
 
 
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));

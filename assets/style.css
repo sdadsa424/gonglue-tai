@@ -1245,6 +1245,15 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
   /* 关掉整块入场，避免和逐块入场叠成两层位移 */
   .fx-parent .prose,.fx-parent .takeaways{animation:none}
 
+  /* 1.5 小节标题 3D 翻转：绕底边从轻微后仰翻正，比正文块多一拍照的戏
+     只有 JS 打了 .fx 才生效；字母仍保持可读角度，不做大幅旋转 */
+  .prose h2.fx{
+    transform-origin:50% 100%;
+    transform:perspective(760px) rotateX(26deg) translateY(8px);
+    transition:opacity .42s ease,transform .66s cubic-bezier(.2,.85,.3,1);
+  }
+  .prose h2.fx.fx-in{transform:none}
+
   /* 2. 卡片光标跟随高光 */
   .glow-host{position:relative;overflow:hidden;isolation:isolate}
   .glow-host::after{
