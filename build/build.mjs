@@ -5,6 +5,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
@@ -13,10 +14,36 @@ const { GAMES, CATS, GUIDES } = require('../assets/data.js');
 /* 站点根地址：默认新域名，可用 SITE_URL 覆盖，换域名时只改这一处 */
 const SITE = (process.env.SITE_URL || 'https://wgame-bc7.pages.dev/').replace(/\/+$/, '') + '/';
 const SITE_NAME = '游戏攻略大全';
-const UPDATED = '2026-11-05';
-/* 文章日期：单篇可用 data 里的 d 字段覆盖（新增文章标当天），未标注则回落到全站 UPDATED */
-const gdate = gi => gi.d || UPDATED;
-const GDATE = guideId => (GUIDES.find(g => g.id === guideId) || {}).d || UPDATED;
+/* ---------- 文章日期自动管理 ----------
+ * build/dates.json 记录每篇的内容指纹 + 日期：
+ *   新文章或内容变化 → 自动标构建当天；内容没变 → 保持原日期
+ * data.js 里显式写 d 字段可手动指定（优先级最高）
+ */
+const DATES_FILE = path.join(import.meta.dirname, 'dates.json');
+const TODAY = new Date().toLocaleDateString('sv-SE'); // 本地时区 YYYY-MM-DD
+const SEED_DATE = '2026-11-05'; // 档案首次建立前就已存在的老文章，日期回落到此
+
+function buildDates() {
+  const prev = fs.existsSync(DATES_FILE) ? JSON.parse(fs.readFileSync(DATES_FILE, 'utf8')) : {};
+  const next = {};
+  for (const gi of GUIDES) {
+    const h = crypto.createHash('sha1').update(JSON.stringify({ ...gi, d: undefined })).digest('hex').slice(0, 12);
+    const p = prev[gi.id];
+    if (gi.d) next[gi.id] = { h, d: gi.d };                    // 手动指定优先
+    else if (!p) next[gi.id] = { h, d: p ? p.d : (prev.__seeded ? TODAY : SEED_DATE) };
+    else if (p.h !== h) next[gi.id] = { h, d: TODAY };         // 内容变了 → 今天
+    else next[gi.id] = p;                                      // 没变 → 保持
+  }
+  next.__seeded = true;
+  fs.writeFileSync(DATES_FILE, JSON.stringify(next, null, 2) + '\n');
+  const { __seeded: _, ...dates } = next;
+  return dates;
+}
+const DATES = buildDates();
+const gdate = gi => (DATES[gi.id] || {}).d || SEED_DATE;
+const GDATE = guideId => (DATES[guideId] || {}).d || SEED_DATE;
+/* 全站级 lastmod：取所有文章日期的最大值 */
+const SITE_LASTMOD = GUIDES.map(gdate).sort().pop();
 const ORDER = ['ejl', 'xxtl', 'ty'];
 const CS = 'ggboy6123';
 
@@ -760,9 +787,9 @@ fs.writeFileSync('board/index.html', boardPage(), 'utf8');
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>${SITE}</loc><lastmod>${UPDATED}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
-${ORDER.map(k => `  <url><loc>${SITE}g/${k}/</loc><lastmod>${UPDATED}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>`).join('\n')}
-  <url><loc>${SITE}board/</loc><lastmod>${UPDATED}</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>${SITE}</loc><lastmod>${SITE_LASTMOD}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+${ORDER.map(k => `  <url><loc>${SITE}g/${k}/</loc><lastmod>${SITE_LASTMOD}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>`).join('\n')}
+  <url><loc>${SITE}board/</loc><lastmod>${SITE_LASTMOD}</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
 ${GUIDES.map(gi => `  <url><loc>${SITE}a/${gi.id}/</loc><lastmod>${gdate(gi)}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`).join('\n')}
 </urlset>
 `;
