@@ -798,7 +798,7 @@ function articleHTML(gi) {
     + '<div class="backline"><a class="back" href="#/" data-goto="library">' + backIcon + '返回攻略库</a></div>'
     + '<div class="a-accent"></div>'
     + '<div class="a-meta"><span>' + esc(game.name) + '</span><i class="divider"></i><span>' + esc(CATS[gi.cat]) + '</span><i class="divider"></i><span>' + esc(gi.level) + '</span><i class="divider"></i><span>' + IDX[gi.id] + ' 号</span></div>'
-    + '<h1 class="a-title">' + esc(gi.title) + '</h1>'
+    + '<h2 class="a-title">' + esc(gi.title) + '</h2>'
     + '<p class="a-dek">' + esc(gi.dek) + '</p>'
     + '<div class="a-foot"><span>阅读约 ' + readMin(gi) + ' 分钟</span><span>' + sections + ' 节</span><span>站内整理</span></div>'
     + '<section class="takeaways"><h2>先看结论</h2><ul>' + gi.take.map(t => '<li>' + esc(t) + '</li>').join('') + '</ul></section>'

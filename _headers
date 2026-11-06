@@ -6,6 +6,13 @@
   X-Frame-Options: SAMEORIGIN
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(self), camera=(), microphone=(), payment=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+/favicon.ico
+  Cache-Control: public, max-age=604800
+
+# 显式的 CSP 暂不启用：站内大量内联脚本与 busuanzi/天气接口需要逐个放行，
+# 上线前需在预览环境逐页验证，避免白屏。需要时先加 Report-Only 观察。
 
 /assets/*.webp
   Cache-Control: public, max-age=604800
