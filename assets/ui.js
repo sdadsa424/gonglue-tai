@@ -1288,11 +1288,30 @@
       var top = document.querySelector('.topbar');
       if (!top) return;
       var heroAnchor = document.querySelector('.hero-in .hero-type');
+
+      /* 预占位：首屏插入胶囊会把下方海报整体下推（CLS）。对「从没关过公告」的访客
+         先在原位放一个不可见占位，数据回来再换成真胶囊，位置不跳；
+         已读或接口失败时立即移除，不留空洞 */
+      var hold = null;
+      function dropHold() {
+        if (hold && hold.parentNode) hold.parentNode.removeChild(hold);
+        hold = null;
+      }
+      if (heroAnchor && !Object.keys(lsGet('gl_notice_v2', {}) || {}).length) {
+        hold = document.createElement('div');
+        hold.className = 'notice notice-hero notice-hold';
+        hold.setAttribute('aria-hidden', 'true');
+        var hi = document.createElement('div');
+        hi.className = 'wrap notice-in';
+        hold.appendChild(hi);
+        heroAnchor.insertAdjacentElement('afterend', hold);
+      }
+
       getJSON(API + '/notice').then(function (res) {
-        if (!res.ok || !res.data || !res.data.items || !res.data.items.length) return;
+        if (!res.ok || !res.data || !res.data.items || !res.data.items.length) { dropHold(); return; }
         var it = res.data.items[0];
         var seen = lsGet('gl_notice_v2', {}) || {};
-        if (seen[it.id]) return;
+        if (seen[it.id]) { dropHold(); return; }
 
         var box = document.createElement('div');
         box.className = 'notice' + (heroAnchor ? ' notice-hero' : '');
@@ -1313,13 +1332,17 @@
           box.hidden = true;
           var s = lsGet('gl_notice_v2', {}) || {};
           s[it.id] = 1;
-          lsSet('gl_notice_v1', s);
+          lsSet('gl_notice_v2', s);
         });
         inner.appendChild(tag); inner.appendChild(txt); inner.appendChild(close);
         box.appendChild(inner);
-        if (heroAnchor) heroAnchor.insertAdjacentElement('afterend', box);
-        else top.parentNode.insertBefore(box, top.nextSibling);
-      }).catch(function () {});
+        if (heroAnchor) {
+          heroAnchor.insertAdjacentElement('afterend', box);
+          dropHold();
+        } else {
+          top.parentNode.insertBefore(box, top.nextSibling);
+        }
+      }).catch(function () { dropHold(); });
     })();
 
     /* 2. 点赞：一人一票（本机记录），数字来自服务端 */

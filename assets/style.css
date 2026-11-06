@@ -1686,6 +1686,10 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
    周期与标题一致，色相基本同步；外层是 1.4px 渐变描边（padding 撑出），内层深色胶囊 */
 /* 胶囊款清掉横条款的底色与底边框 */
 .notice.notice-hero{border-bottom:0;background:none}
+/* 预占位：只对首次访客预留高度，接口回来/已读时移除，避免海报整体下跳 */
+.notice-hold{opacity:0;pointer-events:none;animation:none}
+.notice-hold .notice-in{min-height:44px}
+.notice-hold .notice-in::after{animation:none}
 .notice-hero{
   --tc1:#FF3D9A;--tc2:#B44BF0;--tc3:#8B5CF6;--tglow:rgba(255,61,154,.55);--tdeg:104deg;
   position:relative;margin:24px auto 6px;max-width:680px;
@@ -1736,6 +1740,7 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 @media (max-width:760px){
   .notice-hero{max-width:100%;border-radius:18px}
   .notice-hero .notice-in{border-radius:17px;padding:10px 13px;font-size:12.5px;gap:9px}
+  .notice-hold .notice-in{min-height:61px} /* 手机端公告常折两行，按两行预留 */
 }
 @media (prefers-reduced-motion:reduce){
   .notice-hero,.notice-hero .notice-in::after,.notice-tag::before{animation:none}

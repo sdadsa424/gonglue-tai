@@ -5,6 +5,13 @@
 const { JSDOM, VirtualConsole } = await import(process.env.JSDOM_PATH || 'jsdom');
 
 const BASE = process.env.BASE || 'http://127.0.0.1:8766/';
+
+/* 篇数不再写死：直接读数据源，加文章后测试自动跟上 */
+const { createRequire } = await import('node:module');
+const DATA = createRequire(import.meta.url)('../assets/data.js');
+const GUIDE_N = DATA.GUIDES.length;
+const GP_COUNTS = { ejl: 0, xxtl: 0, ty: 0 };
+for (const g of DATA.GUIDES) if (GP_COUNTS[g.game] !== undefined) GP_COUNTS[g.game] += 1;
 const errors = [];
 const vc = new VirtualConsole();
 vc.on('jsdomError', e => errors.push('jsdomError: ' + e.message));
@@ -87,7 +94,7 @@ await wait(700);
 const hd = home.window.document;
 const w = home.window;
 
-ok('列表渲染 23 篇', hd.querySelectorAll('#entryList .entry').length === 23, String(hd.querySelectorAll('#entryList .entry').length));
+ok('列表渲染 ' + GUIDE_N + ' 篇', hd.querySelectorAll('#entryList .entry').length === GUIDE_N, String(hd.querySelectorAll('#entryList .entry').length));
 ok('卡片指向真 URL', (hd.querySelector('#entryList .entry')?.getAttribute('href') || '').startsWith('a/'));
 ok('注入了回到顶部按钮', !!hd.querySelector('.to-top'));
 ok('图片走 picture + WebP', hd.querySelectorAll('picture source[type="image/webp"]').length >= 6, String(hd.querySelectorAll('picture source[type="image/webp"]').length));
@@ -123,7 +130,7 @@ ok('只看收藏只剩 2 篇', hd.querySelectorAll('#entryList .entry').length =
 ok('收藏筛选按钮为按下态', onlyBook.getAttribute('aria-pressed') === 'true');
 hd.getElementById('clearFilter').click();
 await wait(80);
-ok('清除筛选恢复 23 篇', hd.querySelectorAll('#entryList .entry').length === 23);
+ok('清除筛选恢复 ' + GUIDE_N + ' 篇', hd.querySelectorAll('#entryList .entry').length === GUIDE_N);
 
 /* 搜索面板（首页由 ⌘K 呼出） */
 ok('搜索面板已注入', !!hd.querySelector('.pal') && !!hd.querySelector('.pal-input'));
@@ -261,7 +268,7 @@ ok('分享链接与 canonical 同域', !!canon && new URL(wUrl).origin === new U
 /* 二维码文件完整性（生成在构建期，缺了会让分享区少一项） */
 const fsMod = await import('node:fs');
 const qrDirs = fsMod.readdirSync('a').filter(d => fsMod.existsSync(`a/${d}/qr.svg`));
-ok('23 篇文章都有分享二维码', qrDirs.length === 23, String(qrDirs.length));
+ok(GUIDE_N + ' 篇文章都有分享二维码', qrDirs.length === GUIDE_N, String(qrDirs.length));
 ok('站点二维码存在', fsMod.existsSync('assets/qr-site.svg'));
 
 /* 手机端分享形态：二维码收起、无 Web Share 时给微信转发提示 */
@@ -297,7 +304,7 @@ ok('跳转保留查询串与 hash', r3 === 'https://wgame-bc7.pages.dev/?q=x#/a/
 ok('正式域名不触发跳转', r4 === null, String(r4));
 ok('本地预览不触发跳转', r5 === null, String(r5));
 const snipPages = fsMod2.readdirSync('a').filter(d => fsMod2.readFileSync(`a/${d}/index.html`, 'utf8').includes('旧域名过渡'));
-ok('23 篇攻略页都带过渡脚本', snipPages.length === 23, String(snipPages.length));
+ok(GUIDE_N + ' 篇攻略页都带过渡脚本', snipPages.length === GUIDE_N, String(snipPages.length));
 
 /* 首屏落点：刷新/新进入回顶部，前进后退与锚点不干预（逻辑用 vm 直跑） */
 const mTop = fsMod2.readFileSync('a/ejl-start/index.html', 'utf8').match(/<script>\/\* ---------- 首屏落点[\s\S]*?<\/script>/);
@@ -395,7 +402,7 @@ ok('#/ 同样回顶部', hSlash.scrolled === 0, String(hSlash.scrolled));
 
 
 const restorePages = fsMod2.readdirSync('a').filter(d => /scrollRestoration/.test(fsMod2.readFileSync(`a/${d}/index.html`, 'utf8')));
-ok('23 篇攻略页都接管滚动恢复', restorePages.length === 23, String(restorePages.length));
+ok(GUIDE_N + ' 篇攻略页都接管滚动恢复', restorePages.length === GUIDE_N, String(restorePages.length));
 
 /* 模板字符串里反斜杠被吃掉过一次，这里锁死「24 个页面脚本逐字一致且可解析」 */
 const pickSnip = f => (fsMod2.readFileSync(f, 'utf8').match(/<script>\/\* 旧域名过渡[\s\S]*?<\/script>/) || [''])[0];
@@ -732,7 +739,7 @@ const nfPage = await make(BASE + '404.html');
 const nfDoc = nfPage.window.document;
 ok('404 页有主标题与说明', !!nfDoc.querySelector('.nf h1') && /页面不存在/.test(nfDoc.title));
 ok('404 页不可被收录', nfDoc.querySelector('meta[name="robots"]')?.content === 'noindex, follow');
-ok('404 页列出全部攻略链接', nfDoc.querySelectorAll('.nf-g li a').length === 23, String(nfDoc.querySelectorAll('.nf-g li a').length));
+ok('404 页列出全部攻略链接', nfDoc.querySelectorAll('.nf-g li a').length === GUIDE_N, String(nfDoc.querySelectorAll('.nf-g li a').length));
 ok('404 页资源路径指向站点根', [...nfDoc.querySelectorAll('link[rel="stylesheet"],script[src]')]
   .map(el => el.getAttribute('href') || el.getAttribute('src'))
   .filter(u => !/^https?:/.test(u))
@@ -741,7 +748,7 @@ nfPage.window.close();
 
 console.log('\n[分站静态页]');
 const gpFs = (await import('node:fs')).readFileSync;
-const gpCounts = { ejl: 7, xxtl: 7, ty: 9 };
+const gpCounts = GP_COUNTS;
 for (const k of Object.keys(gpCounts)) {
   const gpHtml = gpFs('g/' + k + '/index.html', 'utf8');
   ok('分站页 ' + k + ' 有正确 canonical', gpHtml.includes('rel="canonical" href="https://wgame-bc7.pages.dev/g/' + k + '/"'));
@@ -798,7 +805,7 @@ const seoMeta = seoPages.map(f => {
     h1: [...h.matchAll(/<h1[\s>]/g)].length,
   };
 });
-ok('全部 ' + seoPages.length + ' 页标题不超 30 字', seoMeta.every(r => r.title.length <= 30) && seoMeta.length === 27);
+ok('全部 ' + seoPages.length + ' 页标题不超 30 字', seoMeta.every(r => r.title.length <= 30));
 ok('全部页面描述在 60~120 字', seoMeta.every(r => r.desc.length >= 60 && r.desc.length <= 120));
 ok('全部页面标题与描述无重复', new Set(seoMeta.map(r => r.title)).size === seoMeta.length && new Set(seoMeta.map(r => r.desc)).size === seoMeta.length);
 /* 首页 DOM 里只允许 1 个 h1（静态源码里那第二个 h1 是 JS 模板字符串，用真实解析验证） */
