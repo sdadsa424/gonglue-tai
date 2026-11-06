@@ -387,8 +387,10 @@
   var GAMES_ = (typeof GAMES !== 'undefined') ? GAMES : null;
   var CATS_ = (typeof CATS !== 'undefined') ? CATS : null;
 
-  if (GUIDES_ && GAMES_ && CATS_) {
-    (function () {
+  var palBooted = false;
+  function bootPalette(autoOpen) {
+    if (palBooted) return;
+    palBooted = true;
       function esc(s) {
         return String(s).replace(/[&<>"']/g, function (c) {
           return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
@@ -612,7 +614,31 @@
       document.addEventListener('gl:bookchange', function () {
         if (pal.classList.contains('open') && !input.value.trim()) render('');
       });
-    })();
+
+    if (autoOpen) open();
+  }
+
+  if (GUIDES_ && GAMES_ && CATS_) {
+    bootPalette(false);
+  } else {
+    /* 文章页 / 分站页：data.js（48K）不随首屏加载，点搜索或按 Ctrl/⌘+K 时再拉 */
+    var loadPalette = function () {
+      if (palBooted) { if (window.GLPalette) window.GLPalette.open(); return; }
+      if (document.getElementById('gl-data-script')) return;
+      var sc = document.createElement('script');
+      sc.id = 'gl-data-script';
+      sc.src = (document.body.getAttribute('data-guide-id') ? '../..' : '.') + '/assets/data.js';
+      sc.onload = function () { bootPalette(true); };
+      document.head.appendChild(sc);
+    };
+    document.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('[data-palette]')) { e.preventDefault(); loadPalette(); }
+    });
+    document.addEventListener('keydown', function (e) {
+      var tag = (e.target && e.target.tagName) || '';
+      if ((e.key === 'k' || e.key === 'K') && (e.metaKey || e.ctrlKey)) { e.preventDefault(); loadPalette(); return; }
+      if (e.key === '/' && !/^(INPUT|TEXTAREA|SELECT)$/.test(tag) && !document.getElementById('searchInput')) { e.preventDefault(); loadPalette(); }
+    });
   }
 
   /* ---------- 已读 + 阅读位置 ---------- */
@@ -1218,6 +1244,285 @@
       tickClock();
       if (!readCache()) load();
     });
+  })();
+
+  /* ---------- 站内互动：公告 / 点赞 / 留言板 ----------
+     后端是 Cloudflare Pages Functions（functions/api/[[path]].js）+ D1。
+     接口不可用时（未绑定数据库 / GitHub Pages 副本）全部静默降级，不留报错。 */
+  (function social() {
+    if (typeof fetch !== 'function') return;   /* 老环境没有 fetch 就整体跳过，不影响攻略阅读 */
+    /* 相对站点根的深度：/ → 0，/board/ → 1，/a/x/ → 2 */
+    var seg = location.pathname.replace(/[^\/]*$/, '').split('/').filter(Boolean).length;
+    var API = new Array(seg + 1).join('../') + 'api';
+
+    function getJSON(url, opt) {
+      return fetch(url, opt).then(function (r) {
+        return r.json().catch(function () { return null; }).then(function (d) {
+          return { ok: r.ok, status: r.status, data: d };
+        });
+      });
+    }
+
+    function when(iso) {
+      var t = new Date(iso).getTime();
+      if (!t) return '';
+      var gap = Date.now() - t;
+      if (gap < 60000) return '刚刚';
+      if (gap < 3600000) return Math.floor(gap / 60000) + ' 分钟前';
+      if (gap < 86400000) return Math.floor(gap / 3600000) + ' 小时前';
+      if (gap < 2592000000) return Math.floor(gap / 86400000) + ' 天前';
+      var dt = new Date(t);
+      return (dt.getMonth() + 1) + '月' + dt.getDate() + '日';
+    }
+
+    function lsGet(k, fb) {
+      try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : fb; } catch (e) { return fb; }
+    }
+    function lsSet(k, v) {
+      try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {}
+    }
+
+    /* 1. 公告条：插在顶栏下方，关掉后按公告 id 记住，不重复弹 */
+    (function notice() {
+      var top = document.querySelector('.topbar');
+      if (!top) return;
+      getJSON(API + '/notice').then(function (res) {
+        if (!res.ok || !res.data || !res.data.items || !res.data.items.length) return;
+        var it = res.data.items[0];
+        var seen = lsGet('gl_notice_v1', {}) || {};
+        if (seen[it.id]) return;
+
+        var box = document.createElement('div');
+        box.className = 'notice';
+        var inner = document.createElement('div');
+        inner.className = 'wrap notice-in';
+        var tag = document.createElement('span');
+        tag.className = 'notice-tag';
+        tag.textContent = '公告';
+        var txt = document.createElement('p');
+        txt.className = 'notice-txt';
+        txt.textContent = it.body;
+        var close = document.createElement('button');
+        close.className = 'notice-x';
+        close.type = 'button';
+        close.setAttribute('aria-label', '关闭公告');
+        close.textContent = '×';
+        close.addEventListener('click', function () {
+          box.hidden = true;
+          var s = lsGet('gl_notice_v1', {}) || {};
+          s[it.id] = 1;
+          lsSet('gl_notice_v1', s);
+        });
+        inner.appendChild(tag); inner.appendChild(txt); inner.appendChild(close);
+        box.appendChild(inner);
+        top.parentNode.insertBefore(box, top.nextSibling);
+      }).catch(function () {});
+    })();
+
+    /* 2. 点赞：一人一票（本机记录），数字来自服务端 */
+    (function votes() {
+      var btns = [].slice.call(document.querySelectorAll('[data-like]'));
+      if (!btns.length) return;
+      var KEY = 'gl_like_v1';
+      var mine = lsGet(KEY, {}) || {};
+      var row = document.getElementById('voteRow');
+
+      function paint(game, n) {
+        for (var i = 0; i < btns.length; i++) {
+          if (btns[i].getAttribute('data-like') !== game) continue;
+          var el = btns[i].querySelector('[data-like-n]');
+          if (el) el.textContent = n;
+        }
+      }
+      function off(msg) {
+        if (!row || row.getAttribute('data-off')) return;
+        row.setAttribute('data-off', '1');
+        var p = document.createElement('p');
+        p.className = 'sec-desc';
+        p.textContent = msg;
+        row.parentNode.insertBefore(p, row.nextSibling);
+      }
+
+      btns.forEach(function (b) { b.disabled = true; });
+
+      getJSON(API + '/like').then(function (res) {
+        if (!res.ok || !res.data || !res.data.likes) { off('点赞服务暂时不可用，稍后再来。'); return; }
+        Object.keys(res.data.likes).forEach(function (g) { paint(g, res.data.likes[g]); });
+        btns.forEach(function (b) {
+          if (mine[b.getAttribute('data-like')]) b.setAttribute('aria-pressed', 'true');
+          b.disabled = false;
+        });
+      }).catch(function () { off('点赞服务暂时不可用，稍后再来。'); });
+
+      btns.forEach(function (b) {
+        b.addEventListener('click', function () {
+          var g = b.getAttribute('data-like');
+          if (mine[g]) { toast('这一票你已经投过啦'); return; }
+          b.disabled = true;
+          getJSON(API + '/like', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ game: g })
+          }).then(function (res) {
+            b.disabled = false;
+            if (!res.ok || !res.data || typeof res.data.n !== 'number') { toast('没投上，稍后再试'); return; }
+            mine[g] = 1;
+            lsSet(KEY, mine);
+            paint(g, res.data.n);
+            b.setAttribute('aria-pressed', 'true');
+            b.classList.remove('is-pop');
+            void b.offsetWidth;
+            b.classList.add('is-pop');
+            var nm = b.querySelector('.vote-nm');
+            toast('已投给 ' + (nm ? nm.textContent : '这款游戏'));
+          }).catch(function () {
+            b.disabled = false;
+            toast('网络不通，稍后再试');
+          });
+        });
+      });
+    })();
+
+    /* 3. 留言板（仅 /board/ 页） */
+    (function board() {
+      var form = document.getElementById('bdForm');
+      var list = document.getElementById('bdList');
+      if (!form || !list) return;
+
+      var nameEl = document.getElementById('bdName');
+      var bodyEl = document.getElementById('bdBody');
+      var countEl = document.getElementById('bdCount');
+      var sendEl = document.getElementById('bdSend');
+      var msgEl = document.getElementById('bdMsg');
+      var offEl = document.getElementById('bdOff');
+      var emptyEl = document.getElementById('bdEmpty');
+      var loadingEl = document.getElementById('bdLoading');
+      var moreEl = document.getElementById('bdMore');
+      var MAX = 300;
+      var LIMIT = 30;
+      var all = [];
+      var offset = 0;
+
+      function say(text, kind) {
+        msgEl.textContent = text || '';
+        msgEl.className = 'bd-msg' + (kind ? ' ' + kind : '');
+      }
+
+      function item(c) {
+        var li = document.createElement('li');
+        li.className = 'bd-item';
+        var av = document.createElement('span');
+        av.className = 'bd-av';
+        av.setAttribute('aria-hidden', 'true');
+        var nmText = (c.name || '匿名玩家').trim();
+        av.textContent = nmText.charAt(0).toUpperCase();
+
+        var main = document.createElement('div');
+        main.className = 'bd-main';
+        var head = document.createElement('div');
+        head.className = 'bd-top';
+        var nm = document.createElement('span');
+        nm.className = 'bd-nm';
+        nm.textContent = nmText;
+        var tm = document.createElement('time');
+        tm.className = 'bd-time';
+        tm.setAttribute('datetime', c.created_at || '');
+        tm.textContent = when(c.created_at);
+        head.appendChild(nm);
+        head.appendChild(tm);
+        var p = document.createElement('p');
+        p.className = 'bd-body';
+        p.textContent = c.body;
+
+        main.appendChild(head);
+        main.appendChild(p);
+        li.appendChild(av);
+        li.appendChild(main);
+        return li;
+      }
+
+      function render() {
+        list.textContent = '';
+        all.forEach(function (c) { list.appendChild(item(c)); });
+        emptyEl.hidden = all.length > 0;
+      }
+
+      function load(more) {
+        getJSON(API + '/comment?limit=' + LIMIT + '&offset=' + offset).then(function (res) {
+          loadingEl.hidden = true;
+          if (!res.ok) {
+            offEl.hidden = false;
+            if (moreEl) moreEl.hidden = true;
+            if (!all.length) emptyEl.hidden = true;
+            return;
+          }
+          var items = (res.data && res.data.items) || [];
+          all = more ? all.concat(items) : items;
+          offset += items.length;
+          render();
+          if (moreEl) moreEl.hidden = items.length < LIMIT;
+        }).catch(function () {
+          loadingEl.hidden = true;
+          offEl.hidden = false;
+          if (moreEl) moreEl.hidden = true;
+        });
+      }
+
+      bodyEl.addEventListener('input', function () {
+        var n = bodyEl.value.length;
+        countEl.textContent = n + ' / ' + MAX;
+        countEl.classList.toggle('over', n >= MAX);
+      });
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var body = bodyEl.value.trim();
+        if (!body) { say('写点什么再发吧。', 'err'); bodyEl.focus(); return; }
+        if (sendEl.disabled) return;
+        sendEl.disabled = true;
+        say('正在发送…');
+        getJSON(API + '/comment', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ name: nameEl.value.trim(), body: body })
+        }).then(function (res) {
+          sendEl.disabled = false;
+          if (res.ok && res.data && res.data.item) {
+            all.unshift(res.data.item);
+            offset += 1;
+            bodyEl.value = '';
+            countEl.textContent = '0 / ' + MAX;
+            render();
+            say('发布成功，谢谢你。', 'ok');
+            return;
+          }
+          if (res.status === 429) {
+            var d = res.data || {};
+            say(d.error === 'too_fast' ? '发得有点快，等一分钟再发。' : '今天发得够多了，明天再来。', 'err');
+            return;
+          }
+          if (res.status === 503) {
+            offEl.hidden = false;
+            say('留言板还没接通服务器。', 'err');
+            return;
+          }
+          say('没发出去，稍后再试。', 'err');
+        }).catch(function () {
+          sendEl.disabled = false;
+          say('网络不通，稍后再试。', 'err');
+        });
+      });
+
+      if (moreEl) {
+        moreEl.addEventListener('click', function () {
+          moreEl.disabled = true;
+          load(true);
+          moreEl.disabled = false;
+        });
+      }
+
+      load(false);
+    })();
   })();
 
 })();

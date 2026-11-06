@@ -1,0 +1,24 @@
+{
+  "name": "游戏攻略大全",
+  "short_name": "攻略大全",
+  "description": "贰点零江湖、小小屠龙冰雪传奇、桃园：将帅录的开荒路线、职业选择、打金交易与团战攻略，整理成能直接照着做的步骤。",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#090A12",
+  "theme_color": "#090A12",
+  "categories": ["games", "reference"],
+  "icons": [
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "贰点零江湖", "short_name": "江湖", "url": "./g/ejl/" },
+    { "name": "小小屠龙", "short_name": "屠龙", "url": "./g/xxtl/" },
+    { "name": "桃园：将帅录", "short_name": "桃园", "url": "./g/ty/" }
+  ]
+}

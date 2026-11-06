@@ -28,8 +28,13 @@ function make(url, seed, opts) {
       if (opts.fetchStub) {
         window.__fetchCalls = [];
         window.fetch = url => {
-          window.__fetchCalls.push(String(url));
-          return opts.fetchStub(String(url));
+          const u = String(url);
+          /* 站内互动接口（api/notice 等）在测试里视为「后端未配置」，静默降级且不计数 */
+          if (/(^|\/)api\//.test(u)) {
+            return Promise.resolve({ ok: false, status: 503, json: () => Promise.resolve({ error: 'backend_not_configured' }) });
+          }
+          window.__fetchCalls.push(u);
+          return opts.fetchStub(u);
         };
       }
       /* geolocation 桩：opts.geo = { lat, lon } 走成功，{ error: 1 } 走拒绝 */
@@ -226,11 +231,10 @@ bookBtn.click();
 await wait(60);
 ok('再点取消收藏', bookBtn.getAttribute('aria-pressed') === 'false' && !JSON.parse(aw.localStorage.getItem('gl_book_v1') || '[]').includes('ejl-start'));
 
-/* 文章页搜索面板：/ 呼出（文章页没有内联搜索框） */
-ad.dispatchEvent(new aw.KeyboardEvent('keydown', { key: '/', bubbles: true }));
-await wait(80);
-ok('文章页 / 呼出搜索', ad.querySelector('.pal').classList.contains('open'));
-ad.querySelector('.pal').dispatchEvent(new aw.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+/* 文章页搜索：data.js 已改为懒加载（省 48K 首屏），/ 或按钮应触发动态加载而不是立即出面板 */
+ok('文章页不预载 data.js', ![...ad.querySelectorAll('script[src]')].some(s => /data\.js$/.test(s.getAttribute('src'))));
+ok('文章页有搜索按钮（懒加载入口）', !!ad.querySelector('[data-palette]'));
+ok('ui.js 含懒加载逻辑', /loadPalette/.test((await import('node:fs')).readFileSync('assets/ui.js', 'utf8')));
 
 /* 分享 */
 ok('文章页有分享区块', !!ad.querySelector('.share'));
@@ -807,6 +811,25 @@ ok('每个分站页恰好 1 个 H1（构建时从 h2 提升）', ['ejl', 'xxtl',
   return (h.match(/<h1[\s>]/g) || []).length === 1 && /<h1 class="game-h">/.test(h);
 }));
 ok('分站页标题保留游戏短名规则', seoMeta.filter(r => r.f.startsWith('g/')).every(r => !r.title.includes('游戏攻略大全')));
+
+/* ---------- 站内互动：公告 / 点赞 / 留言板 ---------- */
+console.log('\n[站内互动]');
+const fsSocial = (await import('node:fs'));
+const homeDoc = (await JSDOM.fromFile('index.html', { runScripts: 'outside-only' })).window.document;
+ok('首页有 votes 区块（3 个 data-like）', homeDoc.querySelectorAll('[data-like]').length === 3);
+ok('点赞数字带 data-like-n', homeDoc.querySelectorAll('[data-like-n]').length === 3);
+ok('ui.js 含公告/点赞/留言板三个模块', /gl_notice_v1/.test(uiJs) && /gl_like_v1/.test(uiJs) && /bdForm/.test(uiJs));
+ok('ui.js 社交模块在无 fetch 环境整体跳过', /typeof fetch !== 'function'\) return/.test(uiJs));
+const boardDoc = (await JSDOM.fromFile('board/index.html', { runScripts: 'outside-only' })).window.document;
+ok('留言板页有标题与表单', boardDoc.querySelector('h1')?.textContent === '留言板' && !!boardDoc.getElementById('bdForm'));
+ok('留言板昵称限 16 字、正文限 300 字', boardDoc.getElementById('bdName')?.getAttribute('maxlength') === '16' && boardDoc.getElementById('bdBody')?.getAttribute('maxlength') === '300');
+ok('留言板有无障碍播报区', boardDoc.getElementById('bdMsg')?.getAttribute('aria-live') === 'polite');
+ok('页脚有留言板入口（首页/文章页）', homeDoc.querySelector('.foot-nav a[href="board/"]') && !!axStatic.match(/foot-nav[\s\S]*?href="\.\.\/\.\.\/board\/"/));
+ok('sitemap 收录留言板', fsSocial.readFileSync('sitemap.xml', 'utf8').includes('<loc>https://wgame-bc7.pages.dev/board/</loc>'));
+const apiJs = fsSocial.readFileSync('functions/api/[[path]].js', 'utf8');
+ok('API 含四个路由与限流', /route === 'notice'/.test(apiJs) && /route === 'like'/.test(apiJs) && /route === 'comment'/.test(apiJs) && /60 \* 1000/.test(apiJs));
+ok('API 未绑 DB 时返回 503', /backend_not_configured/.test(apiJs));
+ok('schema.sql 有三张表', /CREATE TABLE IF NOT EXISTS likes/.test(fsSocial.readFileSync('schema.sql', 'utf8')) && /CREATE TABLE IF NOT EXISTS comments/.test(fsSocial.readFileSync('schema.sql', 'utf8')) && /CREATE TABLE IF NOT EXISTS notices/.test(fsSocial.readFileSync('schema.sql', 'utf8')));
 
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
 console.log(`\n结果：${pass} 通过 / ${fail} 失败`);

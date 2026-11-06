@@ -76,6 +76,7 @@ function blockHTML(b, up) {
     const base = up + 'assets/' + b.v;
     const w = b.w || 1080, h = b.h || 608;
     return '<figure class="fig"><picture>'
+      + '<source srcset="' + base + '.avif" type="image/avif">'
       + '<source srcset="' + base + '.webp" type="image/webp">'
       + '<img src="' + base + '.jpg" alt="' + esc(b.alt || '') + '" width="' + w + '" height="' + h + '" loading="lazy" decoding="async">'
       + '</picture>'
@@ -180,6 +181,7 @@ function footer(activeGame) {
         <a href="${UP}#library">攻略库</a>
         <a href="${UP}#route">开荒路线</a>
         <a href="${UP}#games">游戏</a>
+        <a href="${UP}board/">留言板</a>
         <a href="${UP}g/ejl/">贰点零江湖</a>
         <a href="${UP}g/xxtl/">小小屠龙</a>
         <a href="${UP}g/ty/">桃园：将帅录</a>
@@ -283,7 +285,7 @@ const PAGE_SCRIPT = `<script>
 })();
 </script>`;
 
-function page({ title, desc, canonical, jsonld, body, ogImage, ogType = 'article', bodyClass = '', guideId = '', headExtra = '' }) {
+function page({ title, desc, canonical, jsonld, body, ogImage, ogType = 'article', bodyClass = '', guideId = '', headExtra = '', noData = false }) {
   return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -312,6 +314,13 @@ ${ogType === 'article' ? `<meta property="article:published_time" content="${UPD
 <meta property="article:modified_time" content="${UPDATED}T08:00:00+08:00">` : ''}
 ${PRECONNECT}
 <link rel="icon" href="${FAVICON}">
+<link rel="manifest" href="${UP}assets/manifest.webmanifest">
+<link rel="apple-touch-icon" href="${UP}assets/apple-touch-icon.png">
+<meta name="color-scheme" content="dark">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="攻略大全">
 <link rel="stylesheet" href="${UP}assets/style.css">
 <script type="application/ld+json">${jsonld}</script>
 ${headExtra}
@@ -326,7 +335,7 @@ ${body}
 ${footer()}
 ${tabbar()}
 <div class="u-toast" id="uToast" role="status" aria-live="polite"><span class="u-dot" aria-hidden="true"></span><span class="u-text"></span></div>
-<script src="${UP}assets/data.js"></script>
+${(guideId || noData) ? '' : '<script src="' + UP + 'assets/data.js"></script>'}
 <script src="${UP}assets/ui.js"></script>
 ${PAGE_SCRIPT}
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
@@ -451,6 +460,12 @@ function articlePage(gi) {
   <section class="related"><h2>接着看</h2>
     ${related.map(x => `<a href="../${x.id}/"><span class="rel-t">${esc(x.title)}</span><span class="rel-g">${esc(GAMES[x.game].name)}</span></a>`).join('')}
   </section>
+  ${(() => {
+    const relIds = related.map(x => x.id);
+    const moreSame = sameGame.filter(x => !relIds.includes(x.id));
+    if (!moreSame.length) return '';
+    return `<nav class="more-g" aria-label="${esc(game.name)}其他攻略"><h2>${esc(game.name)} · 其他攻略</h2><ul>${moreSame.map(x => `<li><a href="../${x.id}/">${esc(x.title)}</a></li>`).join('')}</ul></nav>`;
+  })()}
   <div class="a-end">
     <a class="back" href="${UP}#library">← 返回攻略库</a>
     <a class="back" href="${UP}g/${game.id}/">看 ${esc(game.name)} 全部攻略</a>
@@ -462,7 +477,7 @@ function articlePage(gi) {
 }
 
 /* ---------- 首页注入：社交卡片 / 结构化数据 / 无脚本目录 ---------- */
-const HOME_DESC = '贰点零江湖、小小屠龙冰雪传奇、桃园：将帅录 的开荒路线、职业选择、打金交易与团战节奏，整理成能直接照着做的攻略。';
+const HOME_DESC = '贰点零江湖、小小屠龙冰雪传奇、桃园：将帅录三大游戏的开荒路线、职业选择、打金交易、团战站位与材料行情，整理成能直接照着做的步骤，按游戏和分类就能查到。';
 const HOME_TITLE = '游戏攻略大全 · 游戏攻略总站';
 
 function homeHead() {
@@ -599,10 +614,70 @@ function gamePage(key) {
     ogImage: SITE + GAME_IMG[key],
     ogType: 'website',
     bodyClass: 'view-game',
+    noData: true,
     body
   });
   UP = '../../';
   return { key, path: 'g/' + key + '/index.html', html };
+}
+
+/* ---------- 留言板：表单与列表由 assets/ui.js 渲染，这里只出骨架 ---------- */
+function boardPage() {
+  UP = '../';
+  const canonical = SITE + 'board/';
+  const jsonld = escJson({
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'WebPage', name: '留言板', url: canonical, inLanguage: 'zh-CN', isPartOf: { '@type': 'WebSite', name: SITE_NAME, url: SITE } },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: '首页', item: SITE },
+          { '@type': 'ListItem', position: 2, name: '留言板', item: canonical }
+        ]
+      }
+    ]
+  });
+  const html = page({
+    title: '留言板 · ' + SITE_NAME,
+    desc: '玩到哪儿卡住了、哪条攻略真帮上忙、想让我多写哪款游戏——都可以在这里留下。不用注册，填个昵称就能发，看到有意思的留言我会回。',
+    canonical,
+    jsonld,
+    ogImage: SITE + HERO.ty,
+    ogType: 'website',
+    bodyClass: 'page-board',
+    noData: true,
+    body: `<div class="wrap">
+  <section class="board" aria-labelledby="bdTitle">
+    <div class="board-head">
+      <h1 id="bdTitle">留言板</h1>
+      <p>玩到哪儿卡住了、哪条攻略真帮上忙、想让我多写哪款游戏——都可以写在这里。不用注册，填个昵称就能发（留空就是「匿名玩家」）。</p>
+    </div>
+    <form class="board-form" id="bdForm" novalidate>
+      <div class="bd-field">
+        <label class="bd-label" for="bdName">昵称（可留空）</label>
+        <input class="bd-input" id="bdName" name="name" type="text" maxlength="16" placeholder="匿名玩家" autocomplete="nickname">
+      </div>
+      <div class="bd-field">
+        <label class="bd-label" for="bdBody">想说的话</label>
+        <textarea class="bd-area" id="bdBody" name="body" maxlength="300" required placeholder="例如：屠龙攻沙那篇的卡点路线帮我过了第一次团战，感谢。"></textarea>
+      </div>
+      <div class="bd-foot">
+        <span class="bd-count" id="bdCount">0 / 300</span>
+        <button class="bd-send" type="submit" id="bdSend">发布留言</button>
+      </div>
+      <p class="bd-msg" id="bdMsg" role="status" aria-live="polite"></p>
+      <p class="bd-off" id="bdOff" hidden>留言板暂时连不上服务器，攻略内容不受影响，稍后再来试试。</p>
+    </form>
+    <ul class="bd-list" id="bdList" aria-label="最新留言" aria-live="polite"></ul>
+    <p class="bd-loading" id="bdLoading">正在加载留言…</p>
+    <p class="bd-empty" id="bdEmpty" hidden>还没有留言，你可以说第一句。</p>
+    <button class="bd-more" type="button" id="bdMore" hidden>加载更早的留言</button>
+  </section>
+</div>`
+  });
+  UP = '../../';
+  return html;
 }
 
 /* ---------- 404：失效链接落在这里，直接把全部攻略摊开，别让人走进死胡同 ---------- */
@@ -630,6 +705,7 @@ function notFoundPage() {
     ogType: 'website',
     bodyClass: 'page-404',
     headExtra: '<meta name="robots" content="noindex, follow">',
+    noData: true,
     body: `<div class="wrap">
   <section class="nf">
     <p class="nf-code">404 · 页面不存在</p>
@@ -671,10 +747,14 @@ files.forEach(f => {
   fs.writeFileSync(f.path, f.html, 'utf8');
 });
 
+fs.mkdirSync('board', { recursive: true });
+fs.writeFileSync('board/index.html', boardPage(), 'utf8');
+
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>${SITE}</loc><lastmod>${UPDATED}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
 ${ORDER.map(k => `  <url><loc>${SITE}g/${k}/</loc><lastmod>${UPDATED}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>`).join('\n')}
+  <url><loc>${SITE}board/</loc><lastmod>${UPDATED}</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
 ${GUIDES.map(gi => `  <url><loc>${SITE}a/${gi.id}/</loc><lastmod>${UPDATED}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`).join('\n')}
 </urlset>
 `;
