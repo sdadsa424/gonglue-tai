@@ -8,7 +8,8 @@
  *   POST   /api/like    {game}      点赞 +1
  *   GET    /api/comment?limit=30    留言列表（新→旧，最多 50）
  *   POST   /api/comment {name,body} 发留言
- *   DELETE /api/comment?id=1        删除留言（需 header: x-admin-key）
+ *   DELETE /api/comment?id=1        删除留言（真删除，需 header: x-admin-key）
+ *   DELETE /api/comment?id=hidden   彻底清除所有已隐藏的历史留言（需 header: x-admin-key）
  *
  * 依赖绑定：D1 数据库，变量名 DB（Pages 项目 → 设置 → 绑定 → D1）。
  * 未绑定 DB 时统一返回 503 {error:"backend_not_configured"}，前端据此隐藏模块，不报错。
@@ -156,10 +157,17 @@ export async function onRequest(context) {
       if (method === 'DELETE') {
         const key = request.headers.get('x-admin-key') || '';
         if (!env.ADMIN_KEY || key !== env.ADMIN_KEY) return json({ error: 'forbidden' }, 403);
-        const id = parseInt(url.searchParams.get('id') || '', 10);
+        const raw = (url.searchParams.get('id') || '').trim();
+        if (raw === 'hidden') {
+          /* 历史版本删除只是标记 hidden=1，行仍留在库里；这里把它们彻底删掉 */
+          const res = await DB.prepare('DELETE FROM comments WHERE hidden = 1').run();
+          return json({ ok: true, purged: (res.meta && res.meta.changes) || 0 });
+        }
+        const id = parseInt(raw, 10);
         if (!id) return json({ error: 'bad_id' }, 400);
-        await DB.prepare('UPDATE comments SET hidden = 1 WHERE id = ?').bind(id).run();
-        return json({ ok: true });
+        /* 删除改为真删除：直接从库里移除，而不是标记 hidden */
+        await DB.prepare('DELETE FROM comments WHERE id = ?').bind(id).run();
+        return json({ ok: true, deleted: id });
       }
 
       return json({ error: 'method_not_allowed' }, 405);
