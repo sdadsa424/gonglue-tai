@@ -1996,3 +1996,41 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 .achv-d{font-size:12.5px;line-height:1.55;color:#D9DDED}
 @media (max-width:760px){.achv{top:12px;padding:11px 16px}}
 @media (prefers-reduced-motion: reduce){.achv{transition:none}}
+
+/* 成就墙面板 */
+.achv-wall{
+  position:fixed;top:54px;right:14px;z-index:950;width:min(320px,92vw);
+  max-height:min(70vh,520px);overflow:auto;border-radius:16px;
+  background:var(--card-2);border:1px solid var(--line-2);
+  box-shadow:0 16px 44px rgba(0,0,0,.5);
+  animation:wallIn .25s ease both;
+}
+@keyframes wallIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.achv-wall-top{
+  position:sticky;top:0;display:flex;align-items:center;gap:8px;
+  padding:12px 14px;background:var(--card-2);border-bottom:1px solid var(--line);
+}
+.achv-wall-top b{font-size:14px;color:#fff;flex:1}
+.achv-wall-top span{font-size:11.5px;color:var(--muted)}
+.achv-wall-x{
+  width:26px;height:26px;display:grid;place-items:center;border-radius:50%;
+  border:1px solid var(--line-2);background:transparent;color:var(--muted);cursor:pointer;
+}
+.achv-wall-x:hover{color:#fff;border-color:rgba(255,61,154,.5)}
+.achv-rows{list-style:none;margin:0;padding:6px}
+.achv-row{
+  display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;
+  transition:background .15s ease;
+}
+.achv-row:hover{background:rgba(255,255,255,.04)}
+.achv-ico{flex:0 0 auto;font-size:18px;line-height:1;filter:grayscale(1);opacity:.5}
+.achv-row.got .achv-ico{filter:none;opacity:1}
+.achv-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.achv-body b{font-size:12.5px;font-weight:700;color:#AEB6D0}
+.achv-row.got .achv-body b{color:#FFD166}
+.achv-body i{font-style:normal;font-size:11.5px;line-height:1.5;color:var(--muted)}
+.achv-ok,.achv-no{flex:0 0 auto;font-style:normal;font-size:10px;font-weight:700;letter-spacing:.05em}
+.achv-ok{color:#2DD4A7}
+.achv-no{color:var(--muted);opacity:.7}
+@media (max-width:760px){.achv-wall{top:50px;right:8px}}
+@media (prefers-reduced-motion: reduce){.achv-wall{animation:none}}

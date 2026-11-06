@@ -647,6 +647,8 @@
   if (gid) {
 
   read.add(gid);
+  /* 成就引擎定义在本文件后段，延后一拍调用 */
+  setTimeout(function () { if (window.__achv) window.__achv.onRead(); }, 0);
 
   function maxScroll() {
     return Math.max(0, docEl.scrollHeight - window.innerHeight);
@@ -1429,6 +1431,7 @@
             if (!res.ok || !res.data || typeof res.data.n !== 'number') { toast('没投上，稍后再试'); return; }
             mine[g] = 1;
             lsSet(KEY, mine);
+            if (window.__achv) window.__achv.onLike();
             paint(g, res.data.n);
             b.setAttribute('aria-pressed', 'true');
             b.classList.remove('is-pop');
@@ -1554,6 +1557,7 @@
             bodyEl.value = '';
             countEl.textContent = '0 / ' + MAX;
             render();
+            if (window.__achv) window.__achv.unlock('comment_1');
             say('发布成功，谢谢你。', 'ok');
             return;
           }
@@ -1623,6 +1627,7 @@
         var cur = (location.hash.match(/#\/a\/([a-z0-9-]+)/) || [])[1];
         var pool = GUIDES_.filter(function (g) { return g.id !== cur; });
         var pick = pool[Math.floor(Math.random() * pool.length)];
+        if (window.__achv) window.__achv.onLuck();
         setTimeout(function () { location.hash = '#/a/' + pick.id; }, reduce ? 0 : 480);
       });
       btn.addEventListener('animationend', function () { btn.classList.remove('is-roll'); });
@@ -1684,21 +1689,16 @@
         '隐藏关卡通关：奖励就是再来一发 🎁',
         '沾沾喜气：今天的手气签偷偷升半档 🍀'
       ];
-      /* 成就奖励弹窗：首次解锁成就，之后随机掉落 */
+      /* 成就奖励弹窗：首次触发交给成就系统弹「彩蛋猎人」，之后随机掉落 */
       function rewardCard() {
-        var st = fGet('gl_egg_v1', { n: 0 });
-        st.n = (st.n | 0) + 1;
-        var first = !st.unlocked;
-        st.unlocked = true;
-        fSet('gl_egg_v1', st);
-
+        var eg = window.__achv;
+        if (eg && eg.unlock('egg_hunter') === 'new') return;
+        var n = eg ? eg.stat('egg') : 2;
         var card = document.createElement('div');
-        card.className = 'achv' + (first ? ' achv-first' : '');
+        card.className = 'achv';
         card.setAttribute('role', 'status');
-        var title = first ? '🏆 成就解锁 · 彩蛋猎人' : '🎁 第 ' + st.n + ' 次手速奖励';
-        var desc = first
-          ? '在 4 秒内连点站牌 8 次，唤醒了整片烟花。'
-          : REWARDS[Math.floor(Math.random() * REWARDS.length)];
+        var title = '🎁 第 ' + Math.max(n, 2) + ' 次手速奖励';
+        var desc = REWARDS[Math.floor(Math.random() * REWARDS.length)];
         card.innerHTML = '<b class="achv-t">' + title + '</b><span class="achv-d">' + desc + '</span>';
         document.body.appendChild(card);
         if (!reduce) { void card.offsetWidth; card.classList.add('in'); }
@@ -1772,6 +1772,126 @@
         rewardCard();
       });
     })();
+  })();
+
+  /* 6. 成就系统：9 枚成就 + 顶栏奖杯按钮 + 成就墙面板 */
+  (function achvSys() {
+    var KEY = 'gl_achv_v1';
+    function gL(k, fb) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : fb; } catch (e) { return fb; } }
+    function sL(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var st = gL(KEY, {}) || {};
+    st.u = st.u || {}; st.c = st.c || {}; st.d = st.d || {};
+    function save() { sL(KEY, st); }
+
+    var LIST = [
+      { id: 'egg_hunter', icon: '🥚', name: '彩蛋猎人', desc: '4 秒内连点站牌 8 次，唤醒烟花' },
+      { id: 'read_1', icon: '📖', name: '开卷有益', desc: '读完第一篇攻略' },
+      { id: 'read_10', icon: '📚', name: '攻略迷', desc: '读满 10 篇攻略' },
+      { id: 'read_all', icon: '👑', name: '全图鉴收藏家', desc: '读完全部攻略' },
+      { id: 'like_1', icon: '👍', name: '首赞见证', desc: '给喜欢的游戏投出第一票' },
+      { id: 'like_all', icon: '💜', name: '三位一体', desc: '三款游戏各投一票' },
+      { id: 'luck_3', icon: '🎲', name: '命运赌徒', desc: '掷 3 次「手气不错」' },
+      { id: 'comment_1', icon: '💬', name: '留言先锋', desc: '在留言板留下第一句话' },
+      { id: 'visit_3', icon: '🌙', name: '老朋友', desc: '累计 3 天来访' }
+    ];
+    function find(id) { for (var i = 0; i < LIST.length; i++) if (LIST[i].id === id) return LIST[i]; return null; }
+
+    var live = document.querySelector('.fun-live');
+    function announce(msg) { if (live) live.textContent = msg; }
+
+    function popup(a) {
+      var card = document.createElement('div');
+      card.className = 'achv achv-pop';
+      card.setAttribute('role', 'status');
+      card.innerHTML = '<b class="achv-t">🏆 成就解锁 · ' + a.icon + ' ' + a.name + '</b><span class="achv-d">' + a.desc + '</span>';
+      document.body.appendChild(card);
+      if (!reduce) { void card.offsetWidth; card.classList.add('in'); }
+      setTimeout(function () {
+        card.classList.remove('in');
+        setTimeout(function () { card.parentNode && card.parentNode.removeChild(card); }, reduce ? 0 : 400);
+      }, 3800);
+      announce('成就解锁：' + a.name + '，' + a.desc);
+    }
+
+    var rowsEl = null, countEl = null;
+    function refreshPanel() {
+      if (!rowsEl) return;
+      var got = 0, html = '';
+      for (var i = 0; i < LIST.length; i++) {
+        var a = LIST[i], has = !!st.u[a.id];
+        if (has) got++;
+        html += '<li class="achv-row' + (has ? ' got' : '') + '"><span class="achv-ico" aria-hidden="true">'
+          + (has ? a.icon : '🔒') + '</span><span class="achv-body"><b>' + esc2(a.name)
+          + '</b><i>' + esc2(a.desc) + '</i></span>'
+          + (has ? '<em class="achv-ok">已解锁</em>' : '<em class="achv-no">未解锁</em>') + '</li>';
+      }
+      rowsEl.innerHTML = html;
+      if (countEl) countEl.textContent = '已解锁 ' + got + ' / ' + LIST.length;
+    }
+    function esc2(t) { return String(t).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+
+    function unlock(id) {
+      if (st.u[id]) return 'old';
+      st.u[id] = 1; save();
+      var a = find(id);
+      if (a) popup(a);
+      refreshPanel();
+      return 'new';
+    }
+
+    /* 来访天数：每天首次访问记一天，满 3 天解锁「老朋友」 */
+    var dt = new Date();
+    var dk = dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate();
+    if (!st.d[dk]) {
+      st.d[dk] = 1; save();
+      if (Object.keys(st.d).length >= 3) unlock('visit_3');
+    }
+
+    window.__achv = {
+      unlock: unlock,
+      stat: function (k) { st.c[k] = (st.c[k] | 0) + 1; save(); return st.c[k]; },
+      onRead: function () {
+        var n = (gL('gl_read_v1', []) || []).length;
+        if (n >= 1) unlock('read_1');
+        if (n >= 10) unlock('read_10');
+        if (GUIDES_ && n >= GUIDES_.length) unlock('read_all');
+      },
+      onLike: function () {
+        var n = Object.keys(gL('gl_like_v1', {}) || {}).length;
+        if (n >= 1) unlock('like_1');
+        if (n >= 3) unlock('like_all');
+      },
+      onLuck: function () {
+        if (this.stat('luck') >= 3) unlock('luck_3');
+      }
+    };
+
+    /* 顶栏奖杯按钮 + 成就墙面板 */
+    var btn = document.getElementById('achvBtn');
+    if (!btn) return;
+    var pop = null;
+    function open() {
+      if (pop) { refreshPanel(); pop.hidden = false; return; }
+      pop = document.createElement('div');
+      pop.className = 'achv-wall';
+      pop.setAttribute('role', 'dialog');
+      pop.setAttribute('aria-label', '成就墙');
+      pop.innerHTML = '<div class="achv-wall-top"><b>成就墙</b><span data-achv-count></span>'
+        + '<button class="achv-wall-x" type="button" aria-label="关闭成就墙"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>'
+        + '<ul class="achv-rows" data-achv-rows></ul>';
+      document.body.appendChild(pop);
+      rowsEl = pop.querySelector('[data-achv-rows]');
+      countEl = pop.querySelector('[data-achv-count]');
+      pop.querySelector('.achv-wall-x').addEventListener('click', function () { pop.hidden = true; });
+      refreshPanel();
+    }
+    btn.addEventListener('click', function () {
+      if (pop && !pop.hidden) pop.hidden = true; else open();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && pop && !pop.hidden) pop.hidden = true;
+    });
   })();
 
 })();

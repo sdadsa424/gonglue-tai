@@ -147,6 +147,7 @@ function topbar(activeGame) {
       <a href="${UP}#games">游戏</a>
     </nav>
     <div class="tb-right">
+    <button class="luck-btn achv-btn" id="achvBtn" type="button" title="成就墙" aria-label="查看成就墙"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3"/></svg></button>
     <div class="wt" id="wt" role="button" tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-label="当地时间与天气，点击设置定位">
       <span class="wt-clock"><b data-wt-h>--</b><i aria-hidden="true">:</i><b data-wt-m>--</b></span>
       <span class="wt-wx" data-wt-wx hidden>
