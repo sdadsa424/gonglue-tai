@@ -1551,4 +1551,130 @@
     })();
   })();
 
+  /* 5. 趣味区：手气不错（随机攻略）/ 今日手气签（每日一签）/ 站牌连点彩蛋 */
+  (function fun() {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function fGet(k, fb) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : fb; } catch (e) { return fb; } }
+    function fSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+    /* 轻提示（aria-live，屏幕阅读器也能听到） */
+    var live = document.createElement('div');
+    live.className = 'fun-live';
+    live.setAttribute('aria-live', 'polite');
+    document.body.appendChild(live);
+    function toast(msg, ms) {
+      var t = document.createElement('div');
+      t.className = 'fun-toast';
+      t.textContent = msg;
+      document.body.appendChild(t);
+      if (!reduce) { /* 触发过渡 */ void t.offsetWidth; t.classList.add('in'); }
+      setTimeout(function () {
+        t.classList.remove('in');
+        setTimeout(function () { t.parentNode && t.parentNode.removeChild(t); }, reduce ? 0 : 350);
+      }, ms || 2600);
+      live.textContent = msg;
+    }
+
+    /* —— 手气不错：随机去一篇攻略（不重复当前页） —— */
+    (function luck() {
+      var btn = document.getElementById('luckBtn');
+      if (!btn || !GUIDES_ || !GUIDES_.length) return;
+      btn.addEventListener('click', function () {
+        if (!reduce) {
+          btn.classList.remove('is-roll');
+          void btn.offsetWidth;
+          btn.classList.add('is-roll');
+        }
+        var cur = (location.hash.match(/#\/a\/([a-z0-9-]+)/) || [])[1];
+        var pool = GUIDES_.filter(function (g) { return g.id !== cur; });
+        var pick = pool[Math.floor(Math.random() * pool.length)];
+        setTimeout(function () { location.hash = '#/a/' + pick.id; }, reduce ? 0 : 480);
+      });
+      btn.addEventListener('animationend', function () { btn.classList.remove('is-roll'); });
+    })();
+
+    /* —— 今日手气签：按日期固定抽取，全天同一签 —— */
+    (function fortune() {
+      var hero = document.querySelector('.hero-in');
+      if (!hero) return;
+      var POOL = [
+        { lv: '大吉', tx: '今天出货率肉眼可见地提升（心理加成，不写入服务器）' },
+        { lv: '大吉', tx: '进本就遇橙装掉落，记得先洗手再上线' },
+        { lv: '中吉', tx: '适合清每日：二十分钟收工，把时间留给晚饭' },
+        { lv: '中吉', tx: '摆摊能卖掉一件压箱底的货，定价别太贪' },
+        { lv: '中吉', tx: '野队遇到靠谱指挥，跟紧点，别单飞' },
+        { lv: '吉', tx: '平平淡淡练级日，挂机点位不用换' },
+        { lv: '吉', tx: '强化别上头：+3 佛系强化，碎了别砸键盘' },
+        { lv: '吉', tx: '抓宠符箓攒着，明天成功率看起来更高' },
+        { lv: '平', tx: '今天适合看攻略不动手，攒知识也是攒战力' },
+        { lv: '平', tx: '野外遇到红名绕着走，今天的你打不过任何人' }
+      ];
+      var day = new Date();
+      var key = day.getFullYear() + '-' + (day.getMonth() + 1) + '-' + day.getDate();
+      var h = 0;
+      for (var i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) >>> 0;
+      var pick = POOL[h % POOL.length];
+
+      var card = document.createElement('button');
+      card.type = 'button';
+      card.className = 'fortune';
+      card.setAttribute('aria-label', '今日手气签：' + pick.lv + '。点击重播抽签动画');
+      card.innerHTML = '<span class="fort-ico" aria-hidden="true">🥠</span>'
+        + '<span class="fort-main"><b class="fort-lv fort-' + pick.lv + '">今日手气 · ' + pick.lv + '</b>'
+        + '<span class="fort-tx">' + pick.tx + '</span></span>';
+
+      var games = hero.querySelector('.hero-games');
+      if (games) hero.insertBefore(card, games); else hero.appendChild(card);
+
+      card.addEventListener('click', function () {
+        if (reduce) { toast('今日的签就是这样，明天再来摇。'); return; }
+        card.classList.remove('is-shake');
+        void card.offsetWidth;
+        card.classList.add('is-shake');
+        setTimeout(function () { toast('摇完了——今日的签还是「' + pick.lv + '」，明天再来。'); }, 700);
+      });
+      card.addEventListener('animationend', function () { card.classList.remove('is-shake'); });
+    })();
+
+    /* —— 站牌连点彩蛋：4 秒内连点 8 次 → 全屏彩带 —— */
+    (function egg() {
+      var brand = document.querySelector('.brand');
+      if (!brand) return;
+      var hits = [], lastBurst = 0;
+      var SUBS = ['站长夸你手速惊人', '你发现了一个不存在的隐藏关卡', '彩蛋猎人就是你了'];
+      brand.addEventListener('click', function (e) {
+        var now = Date.now();
+        hits = hits.filter(function (t) { return now - t < 4000; });
+        hits.push(now);
+        if (hits.length < 8 || now - lastBurst < 10000) return;
+        hits = []; lastBurst = now;
+
+        if (!reduce) {
+          var layer = document.createElement('div');
+          layer.className = 'egg-layer';
+          layer.setAttribute('aria-hidden', 'true');
+          var COLORS = ['#FF3D9A', '#B44BF0', '#8B5CF6', '#2DD4A7', '#4C9AFF', '#FFB020'];
+          for (var i = 0; i < 28; i++) {
+            var bit = document.createElement('i');
+            bit.className = 'egg-bit';
+            bit.style.left = (Math.random() * 100) + 'vw';
+            bit.style.background = COLORS[i % COLORS.length];
+            bit.style.animationDelay = (Math.random() * 0.6) + 's';
+            bit.style.animationDuration = (1.6 + Math.random() * 1.2) + 's';
+            bit.style.setProperty('--dx', (Math.random() * 120 - 60) + 'px');
+            bit.style.setProperty('--rot', (Math.random() * 720 - 360) + 'deg');
+            layer.appendChild(bit);
+          }
+          document.body.appendChild(layer);
+          setTimeout(function () { layer.parentNode && layer.parentNode.removeChild(layer); }, 3200);
+        }
+        var sub = brand.querySelector('.brand-sub');
+        var old = sub && sub.textContent;
+        if (sub) sub.textContent = '🎉 ' + SUBS[Math.floor(Math.random() * SUBS.length)];
+        setTimeout(function () { if (sub && old) sub.textContent = old; }, 4000);
+        toast('🎉 彩蛋解锁！手速惊人，站长请你喝虚拟快乐水。');
+      });
+    })();
+  })();
+
 })();
