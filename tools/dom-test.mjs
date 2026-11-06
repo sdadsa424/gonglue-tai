@@ -825,7 +825,7 @@ const fsSocial = (await import('node:fs'));
 const homeDoc = (await JSDOM.fromFile('index.html', { runScripts: 'outside-only' })).window.document;
 ok('首页有 votes 区块（3 个 data-like）', homeDoc.querySelectorAll('[data-like]').length === 3);
 ok('点赞数字带 data-like-n', homeDoc.querySelectorAll('[data-like-n]').length === 3);
-ok('ui.js 含公告/点赞/留言板三个模块', /gl_notice_v2/.test(uiJs) && /gl_like_v1/.test(uiJs) && /bdForm/.test(uiJs));
+ok('ui.js 含公告/点赞/留言板三个模块', /gl_notice_v3/.test(uiJs) && /gl_like_v1/.test(uiJs) && /bdForm/.test(uiJs));
 ok('ui.js 社交模块在无 fetch 环境整体跳过', /typeof fetch !== 'function'\) return/.test(uiJs));
 const boardDoc = (await JSDOM.fromFile('board/index.html', { runScripts: 'outside-only' })).window.document;
 ok('留言板页有标题与表单', boardDoc.querySelector('h1')?.textContent === '留言板' && !!boardDoc.getElementById('bdForm'));

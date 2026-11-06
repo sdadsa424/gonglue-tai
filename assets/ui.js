@@ -1288,6 +1288,7 @@
       var top = document.querySelector('.topbar');
       if (!top) return;
       var heroAnchor = document.querySelector('.hero-in .hero-type');
+      var bell = null, cacheIt = null;
 
       /* 预占位：首屏插入胶囊会把下方海报整体下推（CLS）。对「从没关过公告」的访客
          先在原位放一个不可见占位，数据回来再换成真胶囊，位置不跳；
@@ -1297,7 +1298,7 @@
         if (hold && hold.parentNode) hold.parentNode.removeChild(hold);
         hold = null;
       }
-      if (heroAnchor && !Object.keys(lsGet('gl_notice_v2', {}) || {}).length) {
+      if (heroAnchor && !Object.keys(lsGet('gl_notice_v3', {}) || {}).length) {
         hold = document.createElement('div');
         hold.className = 'notice notice-hero notice-hold';
         hold.setAttribute('aria-hidden', 'true');
@@ -1307,12 +1308,22 @@
         heroAnchor.insertAdjacentElement('afterend', hold);
       }
 
-      getJSON(API + '/notice').then(function (res) {
-        if (!res.ok || !res.data || !res.data.items || !res.data.items.length) { dropHold(); return; }
-        var it = res.data.items[0];
-        var seen = lsGet('gl_notice_v2', {}) || {};
-        if (seen[it.id]) { dropHold(); return; }
+      /* 右下角小铃铛：公告被关掉或已读时兜底，想看随时点开 */
+      function makeBell() {
+        if (bell || !document.body) return;
+        bell = document.createElement('button');
+        bell.type = 'button';
+        bell.className = 'notice-bell';
+        bell.setAttribute('aria-label', '有公告，点击查看');
+        bell.innerHTML = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><i class="bell-dot" aria-hidden="true"></i>';
+        document.body.appendChild(bell);
+        bell.addEventListener('click', function () {
+          if (bell) { bell.parentNode.removeChild(bell); bell = null; }
+          if (cacheIt) renderBox(cacheIt);
+        });
+      }
 
+      function renderBox(it) {
         var box = document.createElement('div');
         box.className = 'notice' + (heroAnchor ? ' notice-hero' : '');
         var inner = document.createElement('div');
@@ -1326,13 +1337,14 @@
         var close = document.createElement('button');
         close.className = 'notice-x';
         close.type = 'button';
-        close.setAttribute('aria-label', '关闭公告');
+        close.setAttribute('aria-label', '关闭公告，关闭后可从右下角铃铛重新打开');
         close.textContent = '×';
         close.addEventListener('click', function () {
           box.hidden = true;
-          var s = lsGet('gl_notice_v2', {}) || {};
+          var s = lsGet('gl_notice_v3', {}) || {};
           s[it.id] = 1;
-          lsSet('gl_notice_v2', s);
+          lsSet('gl_notice_v3', s);
+          makeBell();
         });
         inner.appendChild(tag); inner.appendChild(txt); inner.appendChild(close);
         box.appendChild(inner);
@@ -1342,6 +1354,15 @@
         } else {
           top.parentNode.insertBefore(box, top.nextSibling);
         }
+      }
+
+      getJSON(API + '/notice').then(function (res) {
+        if (!res.ok || !res.data || !res.data.items || !res.data.items.length) { dropHold(); return; }
+        var it = res.data.items[0];
+        cacheIt = it;
+        var seen = lsGet('gl_notice_v3', {}) || {};
+        if (seen[it.id]) { dropHold(); makeBell(); return; }
+        renderBox(it);
       }).catch(function () { dropHold(); });
     })();
 
