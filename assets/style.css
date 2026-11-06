@@ -34,6 +34,7 @@ body::before{
   background:
     radial-gradient(760px 420px at 12% -8%,rgba(255,61,154,.16),transparent 62%),
     radial-gradient(820px 460px at 88% -4%,rgba(139,92,246,.18),transparent 64%),
+    radial-gradient(600px 340px at 50% -10%,rgba(255,176,32,.055),transparent 62%),
     radial-gradient(900px 520px at 50% 108%,rgba(76,154,255,.08),transparent 66%);
 }
 body::after{
@@ -840,7 +841,7 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
   .reveal{opacity:1;transform:none;transition:none}
   *{transition:none!important;animation:none!important}
   html{scroll-behavior:auto}
-  .fx-stars,.fx-band,.fx-glow,.fx-aurora,.fx-fx,.meteor{display:none!important}
+  .fx-stars,.fx-band,.fx-glow,.fx-bg,.fx-fx,.meteor{display:none!important}
 }
 
 /* ---------- 背景特效层（JS 注入，reduce 时跳过） ---------- */
@@ -870,23 +871,69 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
   66%{transform:translate3d(-3%,2%,0) scale(.94)}
 }
 
-/* 极光底光：全站 fixed，z:-1 在内容之下、页面底色之上 */
-.fx-aurora{position:fixed;inset:-12%;z-index:-1;pointer-events:none;overflow:hidden}
-.fx-aurora i{position:absolute;border-radius:50%;display:block}
-.fx-aurora i:nth-child(1){
-  width:56vw;height:40vh;left:-8vw;top:6vh;
-  background:radial-gradient(closest-side,rgba(255,61,154,.10),transparent);
-  animation:auroraDrift 34s ease-in-out infinite;
+/* 极光底光：全站分层背景（JS 注入 .fx-bg；reduce 时整层不建，退回 body::before 静态光斑） */
+.fx-bg{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+/* 1) 远景网格：顶部清晰、向四周淡出，制造纵深 */
+.fx-grid{
+  position:absolute;inset:-6% 0 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.055) 1px,transparent 1px);
+  background-size:68px 68px;
+  -webkit-mask-image:radial-gradient(ellipse 130% 80% at 50% -4%,#000 0%,rgba(0,0,0,.45) 44%,transparent 76%);
+  mask-image:radial-gradient(ellipse 130% 80% at 50% -4%,#000 0%,rgba(0,0,0,.45) 44%,transparent 76%);
+  opacity:.6;
+  transform:translate3d(0,var(--fy,0),0);
+  will-change:transform;
 }
-.fx-aurora i:nth-child(2){
-  width:50vw;height:42vh;right:-6vw;top:-6vh;
-  background:radial-gradient(closest-side,rgba(139,92,246,.12),transparent);
-  animation:auroraDrift 42s ease-in-out infinite reverse;
+/* 2) 星尘：48 颗缓慢明灭，全站可见 */
+.fx-dust{position:absolute;inset:0;transform:translate3d(0,var(--fy2,0),0);will-change:transform}
+.fx-dust b{
+  position:absolute;display:block;border-radius:50%;background:#fff;opacity:0;
+  animation:fxTwinkle 8s ease-in-out infinite;
 }
-.fx-aurora i:nth-child(3){
-  width:64vw;height:44vh;left:16vw;bottom:-16vh;
-  background:radial-gradient(closest-side,rgba(76,154,255,.09),transparent);
-  animation:auroraDrift 50s ease-in-out -16s infinite;
+@keyframes fxTwinkle{0%,100%{opacity:0;transform:scale(.8)}50%{opacity:.5;transform:scale(1)}}
+/* 3) 四团极光：不同周期缓慢漂移，招牌粉/紫/蓝 + 一点青 */
+.fx-blob{position:absolute;display:block;border-radius:50%}
+.fx-blob.b1{
+  width:64vw;height:52vh;left:-14vw;top:-10vh;
+  background:radial-gradient(closest-side,rgba(255,61,154,.17),transparent 72%);
+  animation:bgDrift 32s ease-in-out infinite;
+}
+.fx-blob.b2{
+  width:58vw;height:50vh;right:-12vw;top:-12vh;
+  background:radial-gradient(closest-side,rgba(139,92,246,.19),transparent 72%);
+  animation:bgDrift 40s ease-in-out -8s infinite reverse;
+}
+.fx-blob.b3{
+  width:74vw;height:56vh;left:4vw;bottom:-26vh;
+  background:radial-gradient(closest-side,rgba(76,154,255,.13),transparent 74%);
+  animation:bgDrift 48s ease-in-out -16s infinite;
+}
+.fx-blob.b4{
+  width:44vw;height:40vh;right:-8vw;bottom:-16vh;
+  background:radial-gradient(closest-side,rgba(45,212,167,.10),transparent 72%);
+  animation:bgDrift 56s ease-in-out -24s infinite reverse;
+}
+@keyframes bgDrift{
+  0%,100%{transform:translate3d(0,0,0) scale(1)}
+  33%{transform:translate3d(3%,-2.5%,0) scale(1.08)}
+  66%{transform:translate3d(-2.5%,2%,0) scale(.95)}
+}
+/* 4) 地平线光带：底部一条模糊渐变，压住画面收边 */
+.fx-horizon{
+  position:absolute;left:-12%;right:-12%;bottom:-8vh;height:34vh;
+  background:linear-gradient(90deg,transparent,rgba(255,61,154,.11) 30%,rgba(139,92,246,.13) 64%,transparent);
+  filter:blur(26px);
+  -webkit-mask-image:linear-gradient(#000,transparent);
+  mask-image:linear-gradient(#000,transparent);
+  opacity:.8;
+}
+@media (max-width:760px){
+  .fx-grid{background-size:46px 46px;opacity:.45}
+  .fx-blob.b1,.fx-blob.b2{width:120vw;height:44vh}
+  .fx-blob.b3,.fx-blob.b4{width:130vw;height:42vh}
+  .fx-horizon{height:26vh;filter:blur(18px)}
 }
 
 /* 首屏星空 + 流星 */

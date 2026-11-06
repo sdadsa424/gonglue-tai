@@ -2005,4 +2005,42 @@
     });
   })();
 
+  /* 全站分层背景：网格（远景）/ 星尘 / 四团极光 / 地平线光带，滚动做轻微视差。
+     reduce 时整层不建，退回 body::before 的静态光斑；纯装饰，不参与交互 */
+  (function fxBg() {
+    if (!document.body) return;
+    if (reduce) return;
+    var bg = document.createElement('div');
+    bg.className = 'fx-bg';
+    bg.setAttribute('aria-hidden', 'true');
+    bg.innerHTML = '<i class="fx-grid"></i><i class="fx-dust"></i>'
+      + '<i class="fx-blob b1"></i><i class="fx-blob b2"></i>'
+      + '<i class="fx-blob b3"></i><i class="fx-blob b4"></i>'
+      + '<i class="fx-horizon"></i>';
+    document.body.appendChild(bg);
+
+    var dust = bg.querySelector('.fx-dust'), frag = document.createDocumentFragment();
+    for (var i = 0; i < 48; i++) {
+      var s = document.createElement('b');
+      var sz = (Math.random() * 1.6 + 0.7).toFixed(1);
+      s.style.cssText = 'left:' + (Math.random() * 100).toFixed(2) + '%;top:' + (Math.random() * 100).toFixed(2)
+        + '%;width:' + sz + 'px;height:' + sz + 'px;animation-duration:' + (5 + Math.random() * 7).toFixed(2)
+        + 's;animation-delay:-' + (Math.random() * 10).toFixed(2) + 's';
+      frag.appendChild(s);
+    }
+    dust.appendChild(frag);
+
+    var ticking = false;
+    function upd() {
+      ticking = false;
+      var y = window.scrollY || window.pageYOffset || 0;
+      bg.style.setProperty('--fy', (-y * 0.035).toFixed(1) + 'px');
+      bg.style.setProperty('--fy2', (-y * 0.02).toFixed(1) + 'px');
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; window.requestAnimationFrame(upd); }
+    }, { passive: true });
+    upd();
+  })();
+
 })();

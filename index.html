@@ -1180,12 +1180,6 @@ window.addEventListener('resize', onScroll);
 (function () {
   if (PREFERS_REDUCE) return;
   var hero = document.querySelector('.hero');
-  // 全站极光底光
-  var aurora = document.createElement('div');
-  aurora.className = 'fx-aurora';
-  aurora.setAttribute('aria-hidden', 'true');
-  aurora.innerHTML = '<i></i><i></i><i></i>';
-  document.body.appendChild(aurora);
   if (!hero) return;
   // 星空 + 十二颗多形态流星（白/粉/紫/蓝/金，三种轨迹角，大小速度随机）
   var stars = document.createElement('div');
