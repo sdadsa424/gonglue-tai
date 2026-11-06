@@ -209,13 +209,7 @@ function footer(activeGame) {
         </div>
       </div>
       <nav class="foot-nav" aria-label="页脚导航">
-        <a href="${UP}#library">攻略库</a>
-        <a href="${UP}#route">开荒路线</a>
-        <a href="${UP}#games">游戏</a>
         <a href="${UP}board/">留言板</a>
-        <a href="${UP}g/ejl/">贰点零江湖</a>
-        <a href="${UP}g/xxtl/">小小屠龙</a>
-        <a href="${UP}g/ty/">桃园：将帅录</a>
       </nav>
     </div>
     <div class="foot-bottom">
