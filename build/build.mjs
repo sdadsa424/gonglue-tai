@@ -13,6 +13,7 @@ const { GAMES, CATS, GUIDES } = require('../assets/data.js');
 
 /* 站点根地址：默认新域名，可用 SITE_URL 覆盖，换域名时只改这一处 */
 const SITE = (process.env.SITE_URL || 'https://wgame-bc7.pages.dev/').replace(/\/+$/, '') + '/';
+const SITE_ORIGIN = SITE.replace(/\/$/, '');
 const SITE_NAME = '游戏攻略大全';
 /* ---------- 文章日期自动管理 ----------
  * build/dates.json 记录每篇的内容指纹 + 日期：
@@ -322,7 +323,7 @@ function page({ title, desc, canonical, jsonld, body, ogImage, ogType = 'article
 <script>/* 落点控制：刷新/新进入不恢复上次的滚动位置（前进后退仍交给浏览器） */
 (function(){try{var n=performance.getEntriesByType('navigation')[0];var t=n&&n.type;if(t!=='back_forward'&&'scrollRestoration' in history)history.scrollRestoration='manual';}catch(e){}})();</script>
 <script>/* 旧域名过渡：仅在 GitHub Pages 的副本上生效，正式域名不受影响 */
-(function(){var h=location.hostname;if(!/(^|\\.)github\\.io$/.test(h))return;var p=location.pathname.replace(/^\\/gonglue-tai(?=\\/|$)/,'')||'/';location.replace('https://wgame-bc7.pages.dev'+p+location.search+location.hash);})();</script>
+(function(){var h=location.hostname;if(!/(^|\\.)github\\.io$/.test(h))return;var p=location.pathname.replace(/^\\/gonglue-tai(?=\\/|$)/,'')||'/';location.replace('${SITE_ORIGIN}'+p+location.search+location.hash);})();</script>
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <link rel="canonical" href="${canonical}">
