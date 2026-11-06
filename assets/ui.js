@@ -1291,7 +1291,7 @@
       getJSON(API + '/notice').then(function (res) {
         if (!res.ok || !res.data || !res.data.items || !res.data.items.length) return;
         var it = res.data.items[0];
-        var seen = lsGet('gl_notice_v1', {}) || {};
+        var seen = lsGet('gl_notice_v2', {}) || {};
         if (seen[it.id]) return;
 
         var box = document.createElement('div');
@@ -1311,7 +1311,7 @@
         close.textContent = '×';
         close.addEventListener('click', function () {
           box.hidden = true;
-          var s = lsGet('gl_notice_v1', {}) || {};
+          var s = lsGet('gl_notice_v2', {}) || {};
           s[it.id] = 1;
           lsSet('gl_notice_v1', s);
         });
