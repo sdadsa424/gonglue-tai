@@ -1688,20 +1688,50 @@
           var layer = document.createElement('div');
           layer.className = 'egg-layer';
           layer.setAttribute('aria-hidden', 'true');
-          var COLORS = ['#FF3D9A', '#B44BF0', '#8B5CF6', '#2DD4A7', '#4C9AFF', '#FFB020'];
-          for (var i = 0; i < 28; i++) {
+          var COLORS = ['#FF3D9A', '#B44BF0', '#8B5CF6', '#2DD4A7', '#4C9AFF', '#FFB020', '#FFD166'];
+
+          /* 彩带：56 条从顶部飘落 */
+          for (var i = 0; i < 56; i++) {
             var bit = document.createElement('i');
             bit.className = 'egg-bit';
             bit.style.left = (Math.random() * 100) + 'vw';
             bit.style.background = COLORS[i % COLORS.length];
-            bit.style.animationDelay = (Math.random() * 0.6) + 's';
-            bit.style.animationDuration = (1.6 + Math.random() * 1.2) + 's';
-            bit.style.setProperty('--dx', (Math.random() * 120 - 60) + 'px');
+            bit.style.animationDelay = (Math.random() * 0.8) + 's';
+            bit.style.animationDuration = (1.6 + Math.random() * 1.4) + 's';
+            bit.style.setProperty('--dx', (Math.random() * 140 - 70) + 'px');
             bit.style.setProperty('--rot', (Math.random() * 720 - 360) + 'deg');
             layer.appendChild(bit);
           }
+
+          /* 烟花：5 发，错峰炸开，每发 14 粒放射 */
+          for (var f = 0; f < 5; f++) {
+            (function (idx) {
+              setTimeout(function () {
+                if (!layer.parentNode) return;
+                var fw = document.createElement('div');
+                fw.className = 'fw';
+                fw.style.left = (14 + Math.random() * 72) + 'vw';
+                fw.style.top = (12 + Math.random() * 46) + 'vh';
+                var flash = document.createElement('i');
+                flash.className = 'fw-flash';
+                fw.appendChild(flash);
+                for (var p = 0; p < 14; p++) {
+                  var spark = document.createElement('i');
+                  spark.className = 'fw-spark';
+                  spark.style.background = COLORS[(idx + p) % COLORS.length];
+                  spark.style.setProperty('--ang', (p / 14) * 360 + 'deg');
+                  spark.style.setProperty('--dist', (60 + Math.random() * 70) + 'px');
+                  spark.style.animationDelay = (Math.random() * 0.08) + 's';
+                  fw.appendChild(spark);
+                }
+                layer.appendChild(fw);
+                setTimeout(function () { fw.parentNode && fw.parentNode.removeChild(fw); }, 1300);
+              }, idx * 320 + Math.random() * 150);
+            })(f);
+          }
+
           document.body.appendChild(layer);
-          setTimeout(function () { layer.parentNode && layer.parentNode.removeChild(layer); }, 3200);
+          setTimeout(function () { layer.parentNode && layer.parentNode.removeChild(layer); }, 3600);
         }
         var sub = brand.querySelector('.brand-sub');
         var old = sub && sub.textContent;

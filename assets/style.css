@@ -1954,3 +1954,27 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
   .notice-new-badge,.notice-new .notice-in{animation:none}
   .notice-new .notice-in::after{animation-duration:7.2s}
 }
+
+/* 彩蛋烟花：闪光核心 + 放射火花 */
+.fw{position:absolute;width:0;height:0;pointer-events:none}
+.fw-flash{
+  position:absolute;left:-7px;top:-7px;width:14px;height:14px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.95),rgba(255,209,102,.5) 45%,transparent 70%);
+  animation:fwFlash .45s ease-out both;
+}
+@keyframes fwFlash{
+  0%{transform:scale(0);opacity:1}
+  60%{transform:scale(1.6);opacity:.9}
+  100%{transform:scale(2.2);opacity:0}
+}
+.fw-spark{
+  position:absolute;left:-2.5px;top:-2.5px;width:5px;height:5px;border-radius:50%;
+  box-shadow:0 0 6px currentColor;
+  animation:fwSpark .95s cubic-bezier(.16,.84,.44,1) both;
+}
+@keyframes fwSpark{
+  0%{transform:rotate(var(--ang,0deg)) translateX(0) scale(1);opacity:1}
+  65%{opacity:1}
+  100%{transform:rotate(var(--ang,0deg)) translateX(var(--dist,90px)) scale(.35);opacity:0}
+}
+@media (prefers-reduced-motion: reduce){.fw-flash,.fw-spark{animation:none !important;display:none}}
