@@ -638,6 +638,7 @@
 </footer>
 
 <script src="assets/data.js"></script>
+<script src="assets/dates.js"></script>
 <script src="assets/ui.js"></script>
 <script>
 /* ===== 渲染 ===== */
@@ -746,7 +747,7 @@ function entryHTML(gi) {
     + '<span class="entry-meta"><span>' + esc(game.name) + '</span><i class="divider"></i><span>' + esc(CATS[gi.cat]) + '</span><i class="divider"></i><span>' + esc(gi.level) + '</span>' + (isBook ? '<i class="divider"></i><span class="entry-star" title="已收藏">★</span>' : '') + (isRead ? '<i class="divider"></i><span class="entry-read">已读</span>' : '') + '</span>'
     + '<span class="entry-title">' + hl(gi.title) + '</span>'
     + '<span class="entry-dek">' + esc(gi.dek) + '</span>'
-    + '<span class="entry-foot">阅读约 ' + readMin(gi) + ' 分钟 · ' + sectionsOf(gi) + ' 节' + (pct > 8 && pct < 100 ? '<span class="entry-prog">· 读到 ' + pct + '%</span>' : '') + '</span>'
+    + '<span class="entry-foot">阅读约 ' + readMin(gi) + ' 分钟 · ' + sectionsOf(gi) + ' 节 · 更新于 ' + ((window.GL_DATES && window.GL_DATES[gi.id]) || '') + (pct > 8 && pct < 100 ? '<span class="entry-prog">· 读到 ' + pct + '%</span>' : '') + '</span>'
     + '</span></a>';
 }
 function matches(gi) {

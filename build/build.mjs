@@ -587,7 +587,7 @@ function gameEntry(gi) {
     + `<span class="entry-meta"><span>${esc(game.name)}</span><i class="divider"></i><span>${esc(CATS[gi.cat])}</span><i class="divider"></i><span>${esc(gi.level)}</span></span>`
     + `<span class="entry-title">${esc(gi.title)}</span>`
     + `<span class="entry-dek">${esc(gi.dek)}</span>`
-    + `<span class="entry-foot">阅读约 ${readMin(gi)} 分钟 · ${sectionsOf(gi)} 节</span>`
+    + `<span class="entry-foot">阅读约 ${readMin(gi)} 分钟 · ${sectionsOf(gi)} 节 · 更新于 ${gdate(gi)}</span>`
     + `</span></a>`;
 }
 
@@ -794,6 +794,9 @@ ${GUIDES.map(gi => `  <url><loc>${SITE}a/${gi.id}/</loc><lastmod>${gdate(gi)}</l
 </urlset>
 `;
 fs.writeFileSync('sitemap.xml', sitemap, 'utf8');
+
+/* 前端日期表：SPA 列表卡片运行时渲染用（静态分站页构建时直接取 DATES） */
+fs.writeFileSync('assets/dates.js', 'window.GL_DATES=' + JSON.stringify(Object.fromEntries(GUIDES.map(gi => [gi.id, gdate(gi)]))) + ';\n', 'utf8');
 
 fs.writeFileSync('404.html', notFoundPage(), 'utf8');
 
