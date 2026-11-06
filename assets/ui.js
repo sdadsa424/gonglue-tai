@@ -1876,6 +1876,117 @@
     })();
   })();
 
+  /* 5b. 海报彩带：电脑端鼠标在卡片上左右扫动→彩带跟着指针位置往下掉；手机端摇一摇→三张卡片一起撒彩带 */
+  (function posterFx() {
+    var posters = document.querySelectorAll('.hero-games .poster');
+    if (!posters.length) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+    var COLORS = ['#FF3D9A', '#B44BF0', '#8B5CF6', '#2DD4A7', '#4C9AFF', '#FFB020', '#FFD166', '#FF6B8A'];
+
+    /* 每张卡片挂一个彩带层（卡片本身 relative+overflow:hidden，彩带只在卡片内掉） */
+    var layers = [];
+    Array.prototype.forEach.call(posters, function (p) {
+      var lay = document.createElement('span');
+      lay.className = 'pc-layer';
+      lay.setAttribute('aria-hidden', 'true');
+      p.appendChild(lay);
+      layers.push(lay);
+    });
+
+    function drop(lay, xRatio, n, spread) {
+      if (lay.childElementCount > 90) return;
+      for (var i = 0; i < n; i++) {
+        var bit = document.createElement('i');
+        bit.className = 'pc-bit';
+        var x = xRatio * 100 + (Math.random() * (spread || 8) - (spread || 8) / 2);
+        bit.style.left = Math.max(2, Math.min(96, x)) + '%';
+        bit.style.background = COLORS[Math.floor(Math.random() * COLORS.length)];
+        bit.style.animationDuration = (1.1 + Math.random() * 0.9) + 's';
+        bit.style.setProperty('--dx', (Math.random() * 44 - 22) + 'px');
+        bit.style.setProperty('--rot', (Math.random() * 560 - 280) + 'deg');
+        bit.addEventListener('animationend', function () { this.remove(); });
+        lay.appendChild(bit);
+      }
+    }
+
+    /* —— 电脑端：精确指针在卡片上移动，横向动得多就往下撒，位置跟手 —— */
+    var fine = window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+    if (fine) {
+      Array.prototype.forEach.call(layers, function (lay) {
+        var card = lay.parentNode, lastX = -1, lastT = 0;
+        card.addEventListener('pointerenter', function (e) {
+          var r = card.getBoundingClientRect();
+          lastX = (e.clientX - r.left) / r.width;
+          drop(lay, lastX, 6, 16);
+        });
+        card.addEventListener('pointermove', function (e) {
+          var r = card.getBoundingClientRect();
+          var x = (e.clientX - r.left) / r.width;
+          var now = Date.now();
+          if (Math.abs(x - lastX) < 0.045 && now - lastT < 80) return;
+          lastX = x; lastT = now;
+          drop(lay, x, 2, 7);
+        });
+      });
+    }
+
+    /* —— 手机端：devicemotion 监测左右摇摆，触发全卡彩带 + 卡片轻摇 —— */
+    var lastShake = 0, g = { x: 0, y: 0, z: 0 };
+    function wobble(card) {
+      card.classList.remove('pc-wobble');
+      void card.offsetWidth;
+      card.classList.add('pc-wobble');
+    }
+    function burst() {
+      var now = Date.now();
+      if (now - lastShake < 1600) return;
+      lastShake = now;
+      layers.forEach(function (lay) {
+        wobble(lay.parentNode);
+        for (var w = 0; w < 3; w++) {
+          (function (d) {
+            setTimeout(function () { drop(lay, Math.random() * 0.8 + 0.1, 8, 20); }, d);
+          })(w * 220);
+        }
+      });
+    }
+    function onMotion(e) {
+      var a = e.accelerationIncludingGravity || e.acceleration;
+      if (!a || a.x == null) return;
+      var dx = Math.abs(a.x - g.x), dy = Math.abs(a.y - g.y), dz = Math.abs(a.z - g.z);
+      g = { x: a.x, y: a.y, z: a.z };
+      /* 左右摇摆：水平分量 dx 明显、总量超阈值才算一次摇动 */
+      if (dx > 11 && dx + dy + dz > 24) burst();
+    }
+    /* iOS 13+ 需要一次用户手势授权；首次触摸页面时申请，桌面浏览器静默跳过 */
+    function askPermission() {
+      var D = window.DeviceMotionEvent;
+      if (D && typeof D.requestPermission === 'function') {
+        D.requestPermission().then(function (s) { if (s === 'granted') window.addEventListener('devicemotion', onMotion); }).catch(function () {});
+      } else if (D) {
+        window.addEventListener('devicemotion', onMotion);
+      }
+    }
+    if ('ontouchstart' in window) {
+      document.addEventListener('touchend', askPermission, { once: true });
+      /* 首次访问提示一次：摇一摇有惊喜 */
+      var seen;
+      try { seen = localStorage.getItem('gl_pc_hint'); } catch (e) {}
+      if (!seen) {
+        try { localStorage.setItem('gl_pc_hint', '1'); } catch (e) {}
+        setTimeout(function () {
+          var t = document.createElement('div');
+          t.className = 'fun-toast';
+          t.textContent = '📱 摇一摇手机，海报会撒彩带';
+          document.body.appendChild(t);
+          void t.offsetWidth; t.classList.add('in');
+          setTimeout(function () { t.classList.remove('in'); setTimeout(function () { t.remove(); }, 350); }, 3400);
+        }, 1800);
+      }
+    }
+  })();
+
   /* 6. 成就系统：9 枚成就 + 顶栏奖杯按钮 + 成就墙面板 */
   (function achvSys() {
     var KEY = 'gl_achv_v1';
