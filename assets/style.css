@@ -1932,3 +1932,25 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 }
 @keyframes bellPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(1.35)}}
 @media (prefers-reduced-motion: reduce){.bell-dot{animation:none}}
+
+/* 新公告（48h 内）：NEW 徽标 + 扫光加速 + 光晕加强 */
+.notice-tag{position:relative}
+.notice-new-badge{
+  position:absolute;top:-7px;right:-30px;margin-left:4px;
+  font-size:9px;font-weight:800;letter-spacing:.08em;line-height:1;
+  color:#0B0D16;background:linear-gradient(135deg,#FFD166,#FF3D9A);
+  border-radius:999px;padding:3px 6px;
+  animation:newBadgePop .5s ease both,newBadgeBlink 1.6s ease-in-out .5s infinite;
+}
+@keyframes newBadgePop{from{opacity:0;transform:scale(.4) rotate(-8deg)}to{opacity:1;transform:scale(1) rotate(-6deg)}}
+@keyframes newBadgeBlink{0%,100%{opacity:1}50%{opacity:.55}}
+.notice-new .notice-in::after{animation-duration:3.6s}      /* 扫光加速：7.2s → 3.6s */
+.notice-new .notice-in{animation:newGlow 3.6s ease-in-out infinite}
+@keyframes newGlow{
+  0%,100%{box-shadow:0 0 0 rgba(255,61,154,0)}
+  50%{box-shadow:0 0 22px rgba(255,61,154,.35),0 0 44px rgba(180,75,240,.18)}
+}
+@media (prefers-reduced-motion: reduce){
+  .notice-new-badge,.notice-new .notice-in{animation:none}
+  .notice-new .notice-in::after{animation-duration:7.2s}
+}

@@ -3,6 +3,7 @@
  *
  * 路由（全部在 /api 下，命中本文件的 catch-all）：
  *   GET    /api/notice              公告列表（active=1，最多 3 条）
+ *   POST   /api/notice  {text}      发布新公告，顶替旧公告（需 header: x-admin-key）
  *   GET    /api/like                三款游戏的点赞数
  *   POST   /api/like    {game}      点赞 +1
  *   GET    /api/comment?limit=30    留言列表（新→旧，最多 50）
@@ -58,11 +59,27 @@ export async function onRequest(context) {
   try {
     /* ---------- 公告 ---------- */
     if (route === 'notice') {
-      if (method !== 'GET') return json({ error: 'method_not_allowed' }, 405);
-      const { results } = await DB.prepare(
-        'SELECT id, body, level, created_at FROM notices WHERE active = 1 ORDER BY id DESC LIMIT 3'
-      ).all();
-      return json({ items: results || [] });
+      if (method === 'GET') {
+        const { results } = await DB.prepare(
+          'SELECT id, body, level, created_at FROM notices WHERE active = 1 ORDER BY id DESC LIMIT 3'
+        ).all();
+        return json({ items: results || [] });
+      }
+      /* POST：发布新公告（管理用，需 x-admin-key）；新公告顶替旧公告 */
+      if (method === 'POST') {
+        const key = request.headers.get('x-admin-key') || '';
+        if (!env.ADMIN_KEY || key !== env.ADMIN_KEY) return json({ error: 'forbidden' }, 403);
+        const body = await request.json().catch(() => ({}));
+        const text = String(body.text || '').trim();
+        const level = ['info', 'warn', 'hot'].includes(body.level) ? body.level : 'info';
+        if (!text || text.length > 200) return json({ error: 'bad_text' }, 400);
+        await DB.prepare('UPDATE notices SET active = 0 WHERE active = 1').run();
+        const row = await DB.prepare(
+          'INSERT INTO notices (body, level, active, created_at) VALUES (?, ?, 1, datetime(\'now\')) RETURNING id, created_at'
+        ).bind(text, level).first();
+        return json({ ok: true, item: { id: row.id, body: text, level, created_at: row.created_at } }, 201);
+      }
+      return json({ error: 'method_not_allowed' }, 405);
     }
 
     /* ---------- 点赞 ---------- */

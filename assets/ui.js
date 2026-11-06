@@ -1324,13 +1324,27 @@
       }
 
       function renderBox(it) {
+        /* 48 小时内发布的公告算「新」，加 NEW 徽标与加速光效 */
+        var fresh = false;
+        try {
+          var pub = new Date(String(it.created_at).replace(' ', 'T') + 'Z'); /* D1 存 UTC */
+          fresh = isFinite(pub.getTime()) && (Date.now() - pub.getTime()) < 48 * 3600 * 1000;
+        } catch (e) {}
+
         var box = document.createElement('div');
-        box.className = 'notice' + (heroAnchor ? ' notice-hero' : '');
+        box.className = 'notice' + (heroAnchor ? ' notice-hero' : '') + (fresh ? ' notice-new' : '');
         var inner = document.createElement('div');
         inner.className = 'wrap notice-in';
         var tag = document.createElement('span');
         tag.className = 'notice-tag';
         tag.textContent = '公告';
+        if (fresh) {
+          var nb = document.createElement('span');
+          nb.className = 'notice-new-badge';
+          nb.setAttribute('aria-label', '新公告');
+          nb.textContent = 'NEW';
+          tag.appendChild(nb);
+        }
         var txt = document.createElement('p');
         txt.className = 'notice-txt';
         txt.textContent = it.body;
