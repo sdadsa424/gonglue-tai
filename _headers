@@ -17,6 +17,9 @@
 /assets/*.webp
   Cache-Control: public, max-age=604800
 
+/assets/*.avif
+  Cache-Control: public, max-age=604800
+
 /assets/*.jpg
   Cache-Control: public, max-age=604800
 
