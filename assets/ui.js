@@ -1282,10 +1282,12 @@
       try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {}
     }
 
-    /* 1. 公告条：插在顶栏下方，关掉后按公告 id 记住，不重复弹 */
+    /* 1. 公告条：首页插在首屏中央（大标题与海报之间，胶囊特效款），
+          其余页面插在顶栏下方（横条款）；关掉后按公告 id 记住，不重复弹 */
     (function notice() {
       var top = document.querySelector('.topbar');
       if (!top) return;
+      var heroAnchor = document.querySelector('.hero-in .hero-type');
       getJSON(API + '/notice').then(function (res) {
         if (!res.ok || !res.data || !res.data.items || !res.data.items.length) return;
         var it = res.data.items[0];
@@ -1293,7 +1295,7 @@
         if (seen[it.id]) return;
 
         var box = document.createElement('div');
-        box.className = 'notice';
+        box.className = 'notice' + (heroAnchor ? ' notice-hero' : '');
         var inner = document.createElement('div');
         inner.className = 'wrap notice-in';
         var tag = document.createElement('span');
@@ -1315,7 +1317,8 @@
         });
         inner.appendChild(tag); inner.appendChild(txt); inner.appendChild(close);
         box.appendChild(inner);
-        top.parentNode.insertBefore(box, top.nextSibling);
+        if (heroAnchor) heroAnchor.insertAdjacentElement('afterend', box);
+        else top.parentNode.insertBefore(box, top.nextSibling);
       }).catch(function () {});
     })();
 

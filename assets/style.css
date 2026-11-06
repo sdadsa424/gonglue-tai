@@ -1653,7 +1653,7 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 
 /* ============ 站内互动：公告 / 点赞 / 留言板 ============ */
 
-/* ---------- 公告条（顶栏下方，可关闭） ---------- */
+/* ---------- 公告条（其余页面：顶栏下方横条款） ---------- */
 .notice{
   border-bottom:1px solid var(--line);
   background:linear-gradient(90deg,rgba(255,61,154,.12),rgba(139,92,246,.08) 58%,rgba(139,92,246,0));
@@ -1661,8 +1661,14 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 .notice[hidden]{display:none}
 .notice-in{display:flex;align-items:center;gap:12px;padding:10px 0;font-size:13px;line-height:1.6;color:#D9DDED}
 .notice-tag{
+  display:inline-flex;align-items:center;gap:6px;
   flex:0 0 auto;font-size:11px;font-weight:700;letter-spacing:.06em;
   color:#0B0D16;background:var(--grad-2);border-radius:999px;padding:2px 9px;
+}
+/* 公告胶囊上的呼吸小圆点：提醒「有新消息」 */
+.notice-tag::before{
+  content:"";width:5px;height:5px;border-radius:50%;background:#0B0D16;
+  animation:tagPulse 2.6s ease-out infinite;
 }
 .notice-txt{flex:1;min-width:0;overflow-wrap:anywhere}
 .notice-x{
@@ -1672,6 +1678,66 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
   transition:color .18s ease,border-color .18s ease,background .18s ease;
 }
 .notice-x:hover{color:#fff;border-color:rgba(255,61,154,.5);background:rgba(255,61,154,.12)}
+
+/* ---------- 公告胶囊（首页首屏中央特效款） ----------
+   与首屏大标题同款活色板四层动效：配色轮转 26s / 渐变角度摆 18s / 扫光 7.2s / 呼吸光晕 6.4s，
+   周期与标题一致，色相基本同步；外层是 1.4px 渐变描边（padding 撑出），内层深色胶囊 */
+/* 胶囊款清掉横条款的底色与底边框 */
+.notice.notice-hero{border-bottom:0;background:none}
+.notice-hero{
+  --tc1:#FF3D9A;--tc2:#B44BF0;--tc3:#8B5CF6;--tglow:rgba(255,61,154,.55);--tdeg:104deg;
+  position:relative;margin:24px auto 6px;max-width:680px;
+  padding:1.4px;border-radius:999px;
+  background:linear-gradient(var(--tdeg),var(--tc1) 0%,var(--tc2) 46%,var(--tc3) 72%,var(--tc1) 100%);
+  animation:
+    heroTone 26s ease-in-out infinite,
+    heroAngle 18s ease-in-out infinite,
+    noticeBreath 6.4s ease-in-out infinite,
+    noticeDrop .55s cubic-bezier(.2,.9,.3,1.15) backwards;
+  will-change:filter;
+}
+.notice-hero .notice-in{
+  position:relative;overflow:hidden;border-radius:999px;
+  padding:11px 18px;font-size:13.5px;color:#E8EAF6;
+  background:rgba(11,13,22,.82);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+}
+/* 内层斜向扫光：与标题同周期同节奏（前 54% 静止在左侧外，后 30% 扫过） */
+.notice-hero .notice-in::after{
+  content:"";position:absolute;top:0;left:0;width:34%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.14) 45%,rgba(255,255,255,.22) 55%,transparent);
+  transform:translateX(-130%) skewX(-18deg);pointer-events:none;
+  animation:noticeSheen 7.2s linear infinite;
+}
+/* 关闭按钮在深色胶囊内提高对比 */
+.notice-hero .notice-x{color:#AEB6D0;border-color:rgba(255,255,255,.14)}
+.notice-hero .notice-x:hover{color:#fff;border-color:rgba(255,255,255,.32);background:rgba(255,255,255,.08)}
+@keyframes noticeSheen{
+  0%,54%{transform:translateX(-130%) skewX(-18deg)}
+  84%,100%{transform:translateX(330%) skewX(-18deg)}
+}
+/* 呼吸光晕：颜色取自动画中的 --tglow，随配色轮转一起变色 */
+@keyframes noticeBreath{
+  0%,100%{filter:drop-shadow(0 0 4px var(--tglow))}
+  50%{filter:drop-shadow(0 0 14px var(--tglow))}
+}
+/* 入场：从标题下方轻落 + 回弹 */
+@keyframes noticeDrop{
+  from{opacity:0;transform:translateY(-16px) scale(.94)}
+  to{opacity:1;transform:none}
+}
+/* 「公告」徽标上的小白点呼吸 */
+@keyframes tagPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.65)}
+  60%{box-shadow:0 0 0 5px rgba(255,255,255,0)}
+}
+@media (max-width:760px){
+  .notice-hero{max-width:100%;border-radius:18px}
+  .notice-hero .notice-in{border-radius:17px;padding:10px 13px;font-size:12.5px;gap:9px}
+}
+@media (prefers-reduced-motion:reduce){
+  .notice-hero,.notice-hero .notice-in::after,.notice-tag::before{animation:none}
+}
 
 /* ---------- 点赞 ---------- */
 .vote-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
