@@ -1688,18 +1688,46 @@
     /* —— 手气不错：随机去一篇攻略（不重复当前页） —— */
     (function luck() {
       var btn = document.getElementById('luckBtn');
-      if (!btn || !GUIDES_ || !GUIDES_.length) return;
+      if (!btn) return;
+      /* 文章页/留言板不预载 data.js：点骰子时按需动态加载 */
+      var seg = location.pathname.replace(/[^\/]*$/, '').split('/').filter(Boolean).length;
+      var BASE = new Array(seg + 1).join('../');
+      var loading = false, pendings = [];
+      function withGuides(cb) {
+        if (GUIDES_ && GUIDES_.length) return cb(GUIDES_);
+        pendings.push(cb);
+        if (loading) return;
+        loading = true;
+        var s = document.createElement('script');
+        s.src = BASE + 'assets/data.js';
+        s.onload = function () {
+          var g = null;
+          try { g = (0, eval)('GUIDES'); } catch (e) {}   /* data.js 顶层 const，经全局词法环境取 */
+          pendings.forEach(function (f) { try { f(g && g.length ? g : null); } catch (e) {} });
+          pendings = [];
+        };
+        s.onerror = function () { pendings = []; toast('数据没加载出来，稍后再试。'); };
+        document.head.appendChild(s);
+      }
       btn.addEventListener('click', function () {
         if (!reduce) {
           btn.classList.remove('is-roll');
           void btn.offsetWidth;
           btn.classList.add('is-roll');
         }
-        var cur = (location.hash.match(/#\/a\/([a-z0-9-]+)/) || [])[1];
-        var pool = GUIDES_.filter(function (g) { return g.id !== cur; });
-        var pick = pool[Math.floor(Math.random() * pool.length)];
-        if (window.__achv) window.__achv.onLuck();
-        setTimeout(function () { location.hash = '#/a/' + pick.id; }, reduce ? 0 : 480);
+        withGuides(function (guides) {
+          if (!guides || !guides.length) return;
+          var cur = (location.hash.match(/#\/a\/([a-z0-9-]+)/) || [])[1];
+          var pool = guides.filter(function (g) { return g.id !== cur; });
+          var pick = pool[Math.floor(Math.random() * pool.length)];
+          if (window.__achv) window.__achv.onLuck();
+          /* 首页走 hash 路由（有入场动画）；文章页/留言板没有路由脚本，直接跳静态页 */
+          if (document.getElementById('entryList')) {
+            setTimeout(function () { location.hash = '#/a/' + pick.id; }, reduce ? 0 : 480);
+          } else {
+            setTimeout(function () { location.href = BASE + 'a/' + pick.id + '/'; }, reduce ? 0 : 480);
+          }
+        });
       });
       btn.addEventListener('animationend', function () { btn.classList.remove('is-roll'); });
     })();
@@ -1736,6 +1764,9 @@
 
       var games = hero.querySelector('.hero-games');
       if (games) hero.insertBefore(card, games); else hero.appendChild(card);
+      /* 移除预占位（真实卡片已插到同一位置，高度几乎一致，不出跳动） */
+      var holdEl = hero.querySelector('.fortune-hold');
+      if (holdEl && holdEl.parentNode) holdEl.parentNode.removeChild(holdEl);
 
       card.addEventListener('click', function () {
         if (reduce) { toast('今日的签就是这样，明天再来摇。'); return; }
@@ -1918,6 +1949,15 @@
       st.d[dk] = 1; save();
       if (Object.keys(st.d).length >= 3) unlock('visit_3');
     }
+
+    /* 已读成就补判：文章页没有 data.js，读满全部的判定延迟到首页补齐；
+       已解锁时 unlock 返回 'old' 不弹窗，重复调用无副作用 */
+    setTimeout(function () {
+      var n = (gL('gl_read_v1', []) || []).length;
+      if (n >= 1) unlock('read_1');
+      if (n >= 10) unlock('read_10');
+      if (GUIDES_ && n >= GUIDES_.length) unlock('read_all');
+    }, 1500);
 
     window.__achv = {
       unlock: unlock,
