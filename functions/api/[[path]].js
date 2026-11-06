@@ -65,7 +65,8 @@ export async function onRequest(context) {
         ).all();
         return json({ items: results || [] });
       }
-      /* POST：发布新公告（管理用，需 x-admin-key）；新公告顶替旧公告 */
+      /* POST：发布新公告（管理用，需 x-admin-key）；
+         保留最近 3 条（新公告 + 前 2 条）供前端轮播展示 */
       if (method === 'POST') {
         const key = request.headers.get('x-admin-key') || '';
         if (!env.ADMIN_KEY || key !== env.ADMIN_KEY) return json({ error: 'forbidden' }, 403);
@@ -73,7 +74,9 @@ export async function onRequest(context) {
         const text = String(body.text || '').trim();
         const level = ['info', 'warn', 'hot'].includes(body.level) ? body.level : 'info';
         if (!text || text.length > 200) return json({ error: 'bad_text' }, 400);
-        await DB.prepare('UPDATE notices SET active = 0 WHERE active = 1').run();
+        await DB.prepare(
+          'UPDATE notices SET active = 0 WHERE active = 1 AND id NOT IN (SELECT id FROM notices ORDER BY id DESC LIMIT 2)'
+        ).run();
         const row = await DB.prepare(
           'INSERT INTO notices (body, level, active, created_at) VALUES (?, ?, 1, datetime(\'now\')) RETURNING id, created_at'
         ).bind(text, level).first();

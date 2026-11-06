@@ -2034,3 +2034,26 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 .achv-no{color:var(--muted);opacity:.7}
 @media (max-width:760px){.achv-wall{top:50px;right:8px}}
 @media (prefers-reduced-motion: reduce){.achv-wall{animation:none}}
+
+/* 公告轮播：单条展示，切换时文字淡入上移；圆点与箭头仅多条公告时出现 */
+.notice-swap{animation:noticeSwap .45s ease}
+@keyframes noticeSwap{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.notice-nav{
+  flex:0 0 auto;width:22px;height:22px;display:grid;place-items:center;
+  border:0;background:transparent;color:var(--muted);cursor:pointer;
+  font-size:15px;line-height:1;border-radius:50%;
+  transition:color .15s ease,background .15s ease;
+}
+.notice-nav:hover{color:#fff;background:rgba(255,255,255,.08)}
+.notice-dots{flex:0 0 auto;display:flex;align-items:center;gap:5px}
+.notice-dot{
+  width:6px;height:6px;padding:0;border-radius:50%;border:0;cursor:pointer;
+  background:rgba(255,255,255,.28);transition:background .2s ease,transform .2s ease;
+}
+.notice-dot[aria-current="true"]{background:#FF3D9A;transform:scale(1.25)}
+@media (max-width:760px){
+  .notice-nav{display:none}   /* 手机端靠自动轮换 + 圆点，胶囊不拥挤 */
+}
+@media (prefers-reduced-motion: reduce){
+  .notice-swap{animation:none}
+}

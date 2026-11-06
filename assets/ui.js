@@ -1325,23 +1325,31 @@
         });
       }
 
-      function renderBox(it) {
-        /* 48 小时内发布的公告算「新」，加 NEW 徽标与加速光效 */
-        var fresh = false;
-        try {
-          var pub = new Date(String(it.created_at).replace(' ', 'T') + 'Z'); /* D1 存 UTC */
-          fresh = isFinite(pub.getTime()) && (Date.now() - pub.getTime()) < 48 * 3600 * 1000;
-        } catch (e) {}
+      /* 轮播：多条公告一次只显示一条，6 秒自动切换，悬停暂停，
+         圆点/箭头可手动切换；每条独立判断 48h NEW 徽标 */
+      function renderBox(items) {
+        var idx = 0, timer = null, nb = null;
+        var dots = [];
+
+        function freshOf(it) {
+          try {
+            var pub = new Date(String(it.created_at).replace(' ', 'T') + 'Z'); /* D1 存 UTC */
+            return isFinite(pub.getTime()) && (Date.now() - pub.getTime()) < 48 * 3600 * 1000;
+          } catch (e) { return false; }
+        }
+        var freshAny = items.some(freshOf);
 
         var box = document.createElement('div');
-        box.className = 'notice' + (heroAnchor ? ' notice-hero' : '') + (fresh ? ' notice-new' : '');
+        box.className = 'notice' + (heroAnchor ? ' notice-hero' : '') + (freshAny ? ' notice-new' : '');
+        box.setAttribute('role', 'region');
+        box.setAttribute('aria-label', '站内公告');
         var inner = document.createElement('div');
         inner.className = 'wrap notice-in';
         var tag = document.createElement('span');
         tag.className = 'notice-tag';
         tag.textContent = '公告';
-        if (fresh) {
-          var nb = document.createElement('span');
+        if (freshAny) {
+          nb = document.createElement('span');
           nb.className = 'notice-new-badge';
           nb.setAttribute('aria-label', '新公告');
           nb.textContent = 'NEW';
@@ -1349,7 +1357,39 @@
         }
         var txt = document.createElement('p');
         txt.className = 'notice-txt';
-        txt.textContent = it.body;
+
+        /* 手动切换控件：仅多条公告时出现 */
+        var dotsWrap = null, prev = null, next = null;
+        if (items.length > 1) {
+          prev = document.createElement('button');
+          prev.className = 'notice-nav';
+          prev.type = 'button';
+          prev.setAttribute('aria-label', '上一条公告');
+          prev.textContent = '‹';
+          next = document.createElement('button');
+          next.className = 'notice-nav';
+          next.type = 'button';
+          next.setAttribute('aria-label', '下一条公告');
+          next.textContent = '›';
+          dotsWrap = document.createElement('span');
+          dotsWrap.className = 'notice-dots';
+          items.forEach(function (_, di) {
+            var d = document.createElement('button');
+            d.className = 'notice-dot';
+            d.type = 'button';
+            d.setAttribute('aria-label', '第 ' + (di + 1) + ' 条公告，共 ' + items.length + ' 条');
+            d.addEventListener('click', function () { paint(di, true); play(); });
+            dotsWrap.appendChild(d);
+            dots.push(d);
+          });
+        }
+
+        function markSeenAll() {
+          var s = lsGet('gl_notice_v3', {}) || {};
+          items.forEach(function (it) { s[it.id] = 1; });
+          lsSet('gl_notice_v3', s);
+        }
+
         var close = document.createElement('button');
         close.className = 'notice-x';
         close.type = 'button';
@@ -1357,12 +1397,42 @@
         close.textContent = '×';
         close.addEventListener('click', function () {
           box.hidden = true;
-          var s = lsGet('gl_notice_v3', {}) || {};
-          s[it.id] = 1;
-          lsSet('gl_notice_v3', s);
+          markSeenAll();
           makeBell();
         });
-        inner.appendChild(tag); inner.appendChild(txt); inner.appendChild(close);
+
+        function paint(i, animate) {
+          idx = (i + items.length) % items.length;
+          var it = items[idx];
+          txt.textContent = it.body;
+          if (nb) nb.hidden = !freshOf(it);
+          dots.forEach(function (d, di) {
+            if (di === idx) d.setAttribute('aria-current', 'true');
+            else d.removeAttribute('aria-current');
+          });
+          if (animate && !reduce) {
+            txt.classList.remove('notice-swap');
+            void txt.offsetWidth;
+            txt.classList.add('notice-swap');
+          }
+        }
+        function stop() { if (timer) { clearInterval(timer); timer = null; } }
+        function play() {
+          stop();
+          if (items.length > 1) timer = setInterval(function () { paint(idx + 1, true); }, 6000);
+        }
+
+        if (prev) prev.addEventListener('click', function () { paint(idx - 1, true); play(); });
+        if (next) next.addEventListener('click', function () { paint(idx + 1, true); play(); });
+        box.addEventListener('mouseenter', stop);
+        box.addEventListener('mouseleave', play);
+        box.addEventListener('focusin', stop);
+        box.addEventListener('focusout', play);
+
+        paint(0, false);
+        inner.appendChild(tag); inner.appendChild(txt);
+        if (prev) { inner.appendChild(prev); inner.appendChild(dotsWrap); inner.appendChild(next); }
+        inner.appendChild(close);
         box.appendChild(inner);
         if (heroAnchor) {
           heroAnchor.insertAdjacentElement('afterend', box);
@@ -1370,15 +1440,16 @@
         } else {
           top.parentNode.insertBefore(box, top.nextSibling);
         }
+        play();
       }
 
       getJSON(API + '/notice').then(function (res) {
         if (!res.ok || !res.data || !res.data.items || !res.data.items.length) { dropHold(); return; }
-        var it = res.data.items[0];
-        cacheIt = it;
+        var items = res.data.items;
+        cacheIt = items;
         var seen = lsGet('gl_notice_v3', {}) || {};
-        if (seen[it.id]) { dropHold(); makeBell(); return; }
-        renderBox(it);
+        if (seen[items[0].id]) { dropHold(); makeBell(); return; }
+        renderBox(items);
       }).catch(function () { dropHold(); });
     })();
 
