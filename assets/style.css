@@ -1978,3 +1978,21 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
   100%{transform:rotate(var(--ang,0deg)) translateX(var(--dist,90px)) scale(.35);opacity:0}
 }
 @media (prefers-reduced-motion: reduce){.fw-flash,.fw-spark{animation:none !important;display:none}}
+
+/* 成就奖励弹窗：彩蛋触发后顶部滑入 */
+.achv{
+  position:fixed;top:18px;left:50%;transform:translate(-50%,-16px);
+  z-index:9999;display:flex;flex-direction:column;gap:4px;align-items:center;
+  max-width:88vw;padding:13px 22px;border-radius:16px;
+  background:var(--card-2);border:1px solid rgba(255,209,102,.45);
+  box-shadow:0 12px 36px rgba(0,0,0,.5),0 0 24px rgba(255,209,102,.12);
+  text-align:center;opacity:0;pointer-events:none;
+  transition:opacity .35s ease,transform .35s ease;
+}
+.achv.in{opacity:1;transform:translate(-50%,0)}
+.achv-first{border-color:rgba(255,61,154,.55);box-shadow:0 12px 36px rgba(0,0,0,.5),0 0 30px rgba(255,61,154,.2)}
+.achv-t{font-size:14px;font-weight:800;color:#FFD166;letter-spacing:.02em}
+.achv-first .achv-t{color:#FF9DC0}
+.achv-d{font-size:12.5px;line-height:1.55;color:#D9DDED}
+@media (max-width:760px){.achv{top:12px;padding:11px 16px}}
+@media (prefers-reduced-motion: reduce){.achv{transition:none}}

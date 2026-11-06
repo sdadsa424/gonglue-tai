@@ -1671,12 +1671,44 @@
       card.addEventListener('animationend', function () { card.classList.remove('is-shake'); });
     })();
 
-    /* —— 站牌连点彩蛋：4 秒内连点 8 次 → 全屏彩带 —— */
+    /* —— 站牌连点彩蛋：4 秒内连点 8 次 → 全屏烟花彩带 + 成就奖励 —— */
     (function egg() {
       var brand = document.querySelector('.brand');
       if (!brand) return;
       var hits = [], lastBurst = 0;
       var SUBS = ['站长夸你手速惊人', '你发现了一个不存在的隐藏关卡', '彩蛋猎人就是你了'];
+      var REWARDS = [
+        '手速认证通过：站长请你喝虚拟快乐水 🥤',
+        '获得称号：键盘幸存者 ⌨️',
+        '本场烟花由你赞助承包 🎆',
+        '隐藏关卡通关：奖励就是再来一发 🎁',
+        '沾沾喜气：今天的手气签偷偷升半档 🍀'
+      ];
+      /* 成就奖励弹窗：首次解锁成就，之后随机掉落 */
+      function rewardCard() {
+        var st = fGet('gl_egg_v1', { n: 0 });
+        st.n = (st.n | 0) + 1;
+        var first = !st.unlocked;
+        st.unlocked = true;
+        fSet('gl_egg_v1', st);
+
+        var card = document.createElement('div');
+        card.className = 'achv' + (first ? ' achv-first' : '');
+        card.setAttribute('role', 'status');
+        var title = first ? '🏆 成就解锁 · 彩蛋猎人' : '🎁 第 ' + st.n + ' 次手速奖励';
+        var desc = first
+          ? '在 4 秒内连点站牌 8 次，唤醒了整片烟花。'
+          : REWARDS[Math.floor(Math.random() * REWARDS.length)];
+        card.innerHTML = '<b class="achv-t">' + title + '</b><span class="achv-d">' + desc + '</span>';
+        document.body.appendChild(card);
+        if (!reduce) { void card.offsetWidth; card.classList.add('in'); }
+        setTimeout(function () {
+          card.classList.remove('in');
+          setTimeout(function () { card.parentNode && card.parentNode.removeChild(card); }, reduce ? 0 : 400);
+        }, 3800);
+        live.textContent = title + '，' + desc;
+      }
+
       brand.addEventListener('click', function (e) {
         var now = Date.now();
         hits = hits.filter(function (t) { return now - t < 4000; });
@@ -1737,7 +1769,7 @@
         var old = sub && sub.textContent;
         if (sub) sub.textContent = '🎉 ' + SUBS[Math.floor(Math.random() * SUBS.length)];
         setTimeout(function () { if (sub && old) sub.textContent = old; }, 4000);
-        toast('🎉 彩蛋解锁！手速惊人，站长请你喝虚拟快乐水。');
+        rewardCard();
       });
     })();
   })();
