@@ -285,6 +285,9 @@ const PAGE_SCRIPT = `<script>
 })();
 </script>`;
 
+/* Cloudflare Web Analytics：账户面板生成的 beacon token，全站页面统一注入 */
+const CF_BEACON = '<!-- Cloudflare Web Analytics --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon=\'{"token": "633cfde81fda41078f9b04e89ba0ea4e"}\'></script><!-- End Cloudflare Web Analytics -->';
+
 function page({ title, desc, canonical, jsonld, body, ogImage, ogType = 'article', bodyClass = '', guideId = '', headExtra = '', noData = false }) {
   return `<!DOCTYPE html>
 <html lang="zh-CN">
@@ -323,6 +326,7 @@ ${PRECONNECT}
 <meta name="apple-mobile-web-app-title" content="攻略大全">
 <link rel="stylesheet" href="${UP}assets/style.css">
 <script type="application/ld+json">${jsonld}</script>
+${CF_BEACON}
 ${headExtra}
 </head>
 <body${bodyClass ? ' class="' + bodyClass + '"' : ''}${guideId ? ' data-guide-id="' + guideId + '"' : ''}>
@@ -508,7 +512,8 @@ function homeHead() {
 <meta name="twitter:description" content="${esc(HOME_DESC)}">
 <meta name="twitter:image" content="${SITE}${HERO.ty}">
 ${PRECONNECT}
-<script type="application/ld+json">${jsonld}</script>`;
+<script type="application/ld+json">${jsonld}</script>
+${CF_BEACON}`;
 }
 
 function homeNoScript() {
