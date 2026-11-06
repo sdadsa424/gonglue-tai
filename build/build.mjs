@@ -14,6 +14,9 @@ const { GAMES, CATS, GUIDES } = require('../assets/data.js');
 const SITE = (process.env.SITE_URL || 'https://wgame-bc7.pages.dev/').replace(/\/+$/, '') + '/';
 const SITE_NAME = '游戏攻略大全';
 const UPDATED = '2026-11-05';
+/* 文章日期：单篇可用 data 里的 d 字段覆盖（新增文章标当天），未标注则回落到全站 UPDATED */
+const gdate = gi => gi.d || UPDATED;
+const GDATE = guideId => (GUIDES.find(g => g.id === guideId) || {}).d || UPDATED;
 const ORDER = ['ejl', 'xxtl', 'ty'];
 const CS = 'ggboy6123';
 
@@ -313,8 +316,8 @@ function page({ title, desc, canonical, jsonld, body, ogImage, ogType = 'article
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(desc)}">
 <meta name="twitter:image" content="${ogImage}">
-${ogType === 'article' ? `<meta property="article:published_time" content="${UPDATED}T08:00:00+08:00">
-<meta property="article:modified_time" content="${UPDATED}T08:00:00+08:00">` : ''}
+${ogType === 'article' ? `<meta property="article:published_time" content="${GDATE(guideId)}T08:00:00+08:00">
+<meta property="article:modified_time" content="${GDATE(guideId)}T08:00:00+08:00">` : ''}
 ${PRECONNECT}
 <link rel="icon" href="${FAVICON}">
 <link rel="manifest" href="${UP}assets/manifest.webmanifest">
@@ -398,8 +401,8 @@ function articlePage(gi) {
         inLanguage: 'zh-CN',
         image: [img],
         mainEntityOfPage: { '@type': 'WebPage', '@id': url },
-        datePublished: UPDATED,
-        dateModified: UPDATED,
+        datePublished: gdate(gi),
+        dateModified: gdate(gi),
         articleSection: CATS[gi.cat],
         keywords: [game.name, CATS[gi.cat], gi.level, '游戏攻略'].join(','),
         author: { '@type': 'Organization', name: SITE_NAME },
@@ -444,7 +447,7 @@ function articlePage(gi) {
   <h1 class="a-title">${esc(gi.title)}</h1>
   <p class="a-dek">${esc(gi.dek)}</p>
   <div class="a-foot">
-    <span>阅读约 ${readMin(gi)} 分钟</span><span>${sectionsOf(gi)} 节</span><span>更新于 ${UPDATED}</span>
+    <span>阅读约 ${readMin(gi)} 分钟</span><span>${sectionsOf(gi)} 节</span><span>更新于 ${gdate(gi)}</span>
     <button class="book-btn" type="button" data-book="${gi.id}" aria-pressed="false" title="收藏这篇攻略">收藏</button>
     <div class="fs-ctrl" role="group" aria-label="正文字号">
       <button type="button" data-fs="s" aria-pressed="false" title="小号字">A−</button>
@@ -760,7 +763,7 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
   <url><loc>${SITE}</loc><lastmod>${UPDATED}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
 ${ORDER.map(k => `  <url><loc>${SITE}g/${k}/</loc><lastmod>${UPDATED}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>`).join('\n')}
   <url><loc>${SITE}board/</loc><lastmod>${UPDATED}</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-${GUIDES.map(gi => `  <url><loc>${SITE}a/${gi.id}/</loc><lastmod>${UPDATED}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`).join('\n')}
+${GUIDES.map(gi => `  <url><loc>${SITE}a/${gi.id}/</loc><lastmod>${gdate(gi)}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`).join('\n')}
 </urlset>
 `;
 fs.writeFileSync('sitemap.xml', sitemap, 'utf8');
