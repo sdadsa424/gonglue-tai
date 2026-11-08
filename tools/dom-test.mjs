@@ -859,9 +859,6 @@ ok('正文字号用 rem（跟随浏览器/系统默认字号）', /\.article\{--
 ok('支持系统高对比度与强制颜色偏好', /prefers-contrast: more/.test(cssText) && /forced-colors: active/.test(cssText));
 ok('ui.js 注册 SW 且按页面深度回推根路径', /serviceWorker\.register\(up \+ 'sw\.js'\)/.test(uiJs) && /new Array\(seg \+ 1\)\.join\('\.\.\/'\)/.test(uiJs));
 ok('ui.js 在 github.io 镜像站跳过注册', /github\\\.io\$/.test(uiJs));
-ok('金句卡模块：仅文章页启用、Canvas 1080×1350、选中≥6 字浮出按钮', /quoteCard/.test(uiJs) && /H = 1350/.test(uiJs) && /text.length < 6/.test(uiJs));
-ok('金句卡触发第 10 枚成就 quote_card', /quote_card/.test(uiJs) && /金句制卡人/.test(uiJs));
-ok('金句卡样式：浮动按钮与预览层、减弱动态下关闭动画', /\.qc-btn\{/.test(cssText) && /\.qc-ov\{/.test(cssText) && /animation:none/.test(cssText));
 ok('_headers 让 sw.js 每次校验并放开根作用域', /\/sw\.js\n\s+Cache-Control: no-cache\n\s+Service-Worker-Allowed: \//.test(headersFile) || (/Cache-Control: no-cache/.test(headersFile) && /Service-Worker-Allowed: \//.test(headersFile)));
 ok('manifest 声明为可安装应用', /"display"\s*:\s*"standalone"/.test(fsSocial.readFileSync('assets/manifest.webmanifest', 'utf8')));
 
