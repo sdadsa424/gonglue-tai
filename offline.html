@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>离线了 · 游戏攻略大全</title>
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#090A12">
+<meta name="color-scheme" content="dark">
+<!-- 离线页刻意不引用任何外部资源：断网时 CSS/JS 都可能没缓存，内联才能保证它一定渲染得出来 -->
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{
+    display:flex;align-items:center;justify-content:center;min-height:100vh;padding:28px;
+    background:radial-gradient(120% 90% at 50% -10%,#1B1430 0%,#0B0D16 46%,#090A12 100%);
+    color:#ECEEEA;font:15px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .card{
+    width:100%;max-width:460px;padding:32px 28px;border-radius:20px;text-align:center;
+    background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.02));
+    border:1px solid rgba(255,255,255,.09);
+    box-shadow:0 24px 60px -20px rgba(0,0,0,.75), inset 0 1px 0 rgba(255,255,255,.06);
+  }
+  .mark{width:54px;height:54px;margin:0 auto 16px;border-radius:15px;display:grid;place-items:center;
+    background:linear-gradient(140deg,rgba(255,61,154,.22),rgba(45,212,167,.18));
+    border:1px solid rgba(255,61,154,.35)}
+  .mark svg{width:26px;height:26px;stroke:#FFD9EC;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  h1{margin:0 0 8px;font-size:20px;letter-spacing:.2px}
+  p{margin:0;color:#9AA0B8;font-size:13.5px}
+  .hint{margin-top:14px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.07);color:#B9BFD5;font-size:12.5px;text-align:left}
+  .btns{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;justify-content:center}
+  a,button{
+    font:inherit;font-size:13px;padding:9px 18px;border-radius:999px;cursor:pointer;text-decoration:none;
+    border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#DDE1EE;
+    transition:color .18s ease,border-color .18s ease,background .18s ease;
+  }
+  a:hover,button:hover{color:#fff;border-color:rgba(255,61,154,.5);background:rgba(255,61,154,.12)}
+  a.primary{background:linear-gradient(135deg,#FF3D9A,#B23BE8);border-color:transparent;color:#fff;font-weight:600}
+  a.primary:hover{filter:brightness(1.08)}
+  .foot{margin-top:20px;font-size:11.5px;color:#6C738C}
+  @media (prefers-reduced-motion:no-preference){
+    .card{animation:in .4s ease both}
+    @keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  }
+</style>
+</head>
+<body>
+  <main class="card">
+    <div class="mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M2.5 8.5a15 15 0 0 1 19 0"/><path d="M5.5 12a10.5 10.5 0 0 1 13 0"/><path d="M8.5 15.5a6 6 0 0 1 7 0"/><circle cx="12" cy="19" r="1.2" fill="#FFD9EC" stroke="none"/><path d="M3 3l18 18" stroke="#FF3D9A"/></svg>
+    </div>
+    <h1>现在没有网络</h1>
+    <p>这篇攻略还没缓存过，连上网就能继续看。</p>
+    <div class="hint">已经打开过的文章可以离线阅读：用浏览器或微信的「返回」退回去，或点下面的按钮回首页。</div>
+    <div class="btns">
+      <button type="button" onclick="location.reload()">重新加载</button>
+      <a class="primary" href="./">回首页</a>
+    </div>
+    <p class="foot">游戏攻略大全 · 离线页</p>
+  </main>
+</body>
+</html>

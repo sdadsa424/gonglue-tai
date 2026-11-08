@@ -838,6 +838,24 @@ ok('API 含四个路由与限流', /route === 'notice'/.test(apiJs) && /route ==
 ok('API 未绑 DB 时返回 503', /backend_not_configured/.test(apiJs));
 ok('schema.sql 有三张表', /CREATE TABLE IF NOT EXISTS likes/.test(fsSocial.readFileSync('schema.sql', 'utf8')) && /CREATE TABLE IF NOT EXISTS comments/.test(fsSocial.readFileSync('schema.sql', 'utf8')) && /CREATE TABLE IF NOT EXISTS notices/.test(fsSocial.readFileSync('schema.sql', 'utf8')));
 
+/* ---------- PWA 离线缓存 ---------- */
+console.log('\n[离线缓存]');
+const swJs = fsSocial.readFileSync('sw.js', 'utf8');
+const offlineHtml = fsSocial.readFileSync('offline.html', 'utf8');
+const headersFile = fsSocial.readFileSync('_headers', 'utf8');
+ok('sw.js 已由模板生成且版本号已注入', !/__VERSION__/.test(swJs) && /const VERSION = '[0-9a-f]{10}'/.test(swJs));
+ok('SW 缓存名带版本（改内容即失效旧缓存）', /const CACHE = 'gl-' \+ VERSION/.test(swJs));
+ok('SW 导航请求走 network-first 并有离线兜底', /navFirst/.test(swJs) && /cache\.match\(abs\('offline\.html'\)\)/.test(swJs));
+ok('SW 静态资源走 stale-while-revalidate', /staleWhileRevalidate/.test(swJs));
+ok('SW 不缓存接口与跨域请求', /indexOf\('\/api\/'\) > -1\) return/.test(swJs) && /url\.origin !== self\.location\.origin\) return/.test(swJs));
+ok('预缓存清单含核心资源与离线页', ['assets/style.css', 'assets/ui.js', 'assets/data.js', 'offline.html', 'board/'].every(p => swJs.includes("'" + p + "'")));
+ok('离线页不引用外部资源（断网也渲染得出来）', !/<link[^>]+stylesheet/.test(offlineHtml) && !/<script[^>]+src=/.test(offlineHtml));
+ok('离线页不被索引', /<meta name="robots" content="noindex/.test(offlineHtml));
+ok('ui.js 注册 SW 且按页面深度回推根路径', /serviceWorker\.register\(up \+ 'sw\.js'\)/.test(uiJs) && /new Array\(seg \+ 1\)\.join\('\.\.\/'\)/.test(uiJs));
+ok('ui.js 在 github.io 镜像站跳过注册', /github\\\.io\$/.test(uiJs));
+ok('_headers 让 sw.js 每次校验并放开根作用域', /\/sw\.js\n\s+Cache-Control: no-cache\n\s+Service-Worker-Allowed: \//.test(headersFile) || (/Cache-Control: no-cache/.test(headersFile) && /Service-Worker-Allowed: \//.test(headersFile)));
+ok('manifest 声明为可安装应用', /"display"\s*:\s*"standalone"/.test(fsSocial.readFileSync('assets/manifest.webmanifest', 'utf8')));
+
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
 console.log(`\n结果：${pass} 通过 / ${fail} 失败`);
 process.exit(fail ? 1 : 0);

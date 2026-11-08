@@ -11,6 +11,14 @@
 /favicon.ico
   Cache-Control: public, max-age=604800
 
+# Service Worker 本体必须每次校验：浏览器靠它发现新版本，缓存住就永远不更新
+/sw.js
+  Cache-Control: no-cache
+  Service-Worker-Allowed: /
+
+/offline.html
+  Cache-Control: public, max-age=3600
+
 # 订阅源：半小时缓存，既不给回源施压，也不至于让新文章迟迟不出现
 /feed.xml
   Cache-Control: public, max-age=1800

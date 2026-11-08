@@ -2116,4 +2116,17 @@
     upd();
   })();
 
+  /* ---------- PWA 离线缓存：注册 service worker ----------
+   * 只在正式域名注册：GitHub Pages 镜像会立刻跳转，在那儿装一个 worker 纯属浪费。
+   * 路径按当前页面深度回推根目录，文章页（/a/x/）也能正确找到 /sw.js */
+  (function swReg() {
+    if (!('serviceWorker' in navigator)) return;
+    var h = location.hostname;
+    if (/(^|\.)github\.io$/.test(h)) return;
+    if (location.protocol !== 'https:' && h !== 'localhost' && h !== '127.0.0.1') return;
+    var seg = location.pathname.split('/').filter(Boolean).length;
+    var up = seg ? new Array(seg + 1).join('../') : '';
+    navigator.serviceWorker.register(up + 'sw.js').catch(function () {});
+  })();
+
 })();

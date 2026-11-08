@@ -833,4 +833,17 @@ fs.writeFileSync('404.html', notFoundPage(), 'utf8');
 
 fs.writeFileSync('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${SITE}sitemap.xml\n`, 'utf8');
 
+/* ---------- Service Worker（离线缓存）----------
+ * 由 build/sw.template.js 生成：版本号取「关键资源内容」的指纹，
+ * 样式/脚本/数据任一变动，版本就变，老缓存随之作废，不会出现「改了但用户还看旧版」 */
+const SW_TEMPLATE = fs.readFileSync(path.join(import.meta.dirname, 'sw.template.js'), 'utf8');
+const swHash = crypto.createHash('sha1')
+  .update(fs.readFileSync('assets/style.css'))
+  .update(fs.readFileSync('assets/ui.js'))
+  .update(fs.readFileSync('assets/data.js'))
+  .update(fs.readFileSync('assets/dates.js'))
+  .update(SW_TEMPLATE)
+  .digest('hex').slice(0, 10);
+fs.writeFileSync('sw.js', SW_TEMPLATE.replace('__VERSION__', swHash), 'utf8');
+
 console.log('生成攻略页：' + GUIDES.length + ' 篇 · 分站页：' + ORDER.length + ' 个 · 404.html / sitemap.xml / robots.txt / feed.xml 已更新');
