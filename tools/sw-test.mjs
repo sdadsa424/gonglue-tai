@@ -29,8 +29,14 @@ const server = http.createServer(async (req, res) => {
   if (!file.startsWith(ROOT)) { res.writeHead(403).end(); return; }
   if (p.endsWith('/')) file = path.join(file, 'index.html');
   try {
-    const buf = await readFile(file);
-    res.writeHead(200, { 'Content-Type': MIME[path.extname(file)] || 'application/octet-stream' });
+    let buf, ext = path.extname(file);
+    try {
+      buf = await readFile(file);
+    } catch (e0) {
+      /* 模拟 Cloudflare Pages 的漂亮 URL：/offline 命中 offline.html */
+      if (!ext) { buf = await readFile(file + '.html'); ext = '.html'; } else throw e0;
+    }
+    res.writeHead(200, { 'Content-Type': MIME[ext] || 'application/octet-stream' });
     res.end(buf);
   } catch (e) {
     try {

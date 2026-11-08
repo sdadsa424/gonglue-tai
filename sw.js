@@ -8,7 +8,7 @@
  *   接口 /api/*       完全不拦——点赞、留言必须实时，不能被缓存糊住
  *   跨域请求（天气/IP/统计）不拦——交给浏览器
  */
-const VERSION = 'e4a4b4fca0';
+const VERSION = 'a694f7bffe';
 const CACHE = 'gl-' + VERSION;
 /* 部署在子路径（如 GitHub Pages 的 /gonglue-tai/）时，scope 就是子路径根 */
 const ROOT = self.registration.scope;
@@ -23,6 +23,8 @@ const CORE = [
   'assets/icon-192.png',
   'assets/manifest.webmanifest',
   'favicon.ico',
+  /* Cloudflare Pages 会把 /offline.html 308 到 /offline，两条都收，谁通用谁 */
+  'offline',
   'offline.html',
   'board/'
 ];
@@ -72,7 +74,8 @@ async function navFirst(req) {
   } catch (e) {
     const hit = await cache.match(req, { ignoreSearch: true });
     if (hit) return hit;
-    const off = await cache.match(abs('offline.html'));
+    /* 离线页按两条路径找：Pages 上是 /offline，静态托管/本地是 /offline.html */
+    const off = await cache.match(abs('offline')) || await cache.match(abs('offline.html'));
     if (off) return off;
     return new Response('离线，且这篇还没缓存过', {
       status: 503,
