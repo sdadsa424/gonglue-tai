@@ -1227,7 +1227,15 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 .lib-book b{font-weight:600;color:#FF9ACB;font-variant-numeric:tabular-nums}
 .lib-book:hover{color:#fff;border-color:rgba(255,61,154,.45)}
 .lib-book[aria-pressed="true"]{color:#FFD9EC;border-color:rgba(255,61,154,.55);background:rgba(255,61,154,.12)}
-.lib-bar-l{display:flex;align-items:center;gap:12px;min-width:0}
+/* 「最近更新」排序：和收藏按钮同形态，开启时用青色区分（是排序不是筛选） */
+.lib-sort{
+  display:inline-flex;align-items:center;gap:6px;padding:5px 13px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);
+  font-size:12.5px;color:#B9BFD5;transition:color .18s ease,border-color .18s ease,background .18s ease;
+}
+.lib-sort:hover{color:#fff;border-color:rgba(45,212,167,.45)}
+.lib-sort[aria-pressed="true"],.lib-sort.on{color:#CFF7EC;border-color:rgba(45,212,167,.55);background:rgba(45,212,167,.12)}
+.lib-bar-l{display:flex;align-items:center;gap:12px;min-width:0;flex-wrap:wrap}
 
 /* 回到顶部：环形进度 */
 .to-top{overflow:hidden}
@@ -2118,4 +2126,15 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 .fortune-hold{width:100%;max-width:560px;margin:16px auto 0;min-height:60px}
 @media (max-width:760px){
   .fortune-hold{max-width:100%;min-height:57px}
+}
+
+/* 搜索落地高亮：从搜索结果点进来时，正文里命中的那段先亮一下再淡成下划线 */
+.hit-mark{background:linear-gradient(180deg,rgba(255,61,154,.28),rgba(255,61,154,.16));color:inherit;border-radius:3px;padding:0 2px;box-shadow:0 0 0 1px rgba(255,61,154,.35);animation:hitPulse 1.1s ease 2}
+.hit-mark.is-old{background:transparent;box-shadow:none;color:inherit;border-bottom:1px solid rgba(255,61,154,.55);border-radius:0;animation:none;transition:background .5s ease,box-shadow .5s ease}
+@keyframes hitPulse{
+  0%,100%{background:rgba(255,61,154,.16)}
+  50%{background:rgba(255,61,154,.34)}
+}
+@media (prefers-reduced-motion: reduce){
+  .hit-mark,.hit-mark.is-old{animation:none !important}
 }

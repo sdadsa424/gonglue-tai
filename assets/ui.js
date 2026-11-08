@@ -525,9 +525,11 @@
         }).join('');
         paint();
       }
-      function go(id) {
+      /* 带上命中的关键词，落地页据此滚到那一段并高亮 —— 「搜到」要能变成「找到」 */
+      function go(id, q) {
         if (!id) return;
-        window.location.href = BASE + 'a/' + id + '/';
+        var kw = (q || '').trim();
+        window.location.href = BASE + 'a/' + id + '/' + (kw ? '?hit=' + encodeURIComponent(kw) : '');
       }
       function open() {
         if (pal.classList.contains('open')) return;
@@ -566,7 +568,7 @@
           paint();
         } else if (e.key === 'Enter') {
           e.preventDefault();
-          if (items[active]) go(items[active].gi.id);
+          if (items[active]) go(items[active].gi.id, input.value);
         } else if (e.key === 'Escape') {
           close();
         } else if (e.key === 'Tab') {
@@ -582,7 +584,7 @@
       });
       pal.addEventListener('click', function (e) {
         var li = e.target.closest('.pal-item');
-        if (li) go(li.dataset.id);
+        if (li) go(li.dataset.id, input.value);
       });
       palMask.addEventListener('click', close);
 
@@ -663,8 +665,79 @@
   }
 
   /* 上次读到中间段：给一个「继续」入口，而不是强行跳走 */
+  /* ---------- 搜索落地：从结果页跳来（?hit=关键词）时滚到命中段落并高亮 ---------- */
+  var hitJumped = false;
+  (function hitLanding() {
+    var m = /[?&]hit=([^&#]*)/.exec(location.search);
+    if (!m || !article) return;
+    var q = '';
+    try { q = decodeURIComponent(m[1].replace(/\+/g, ' ')).trim(); } catch (e) { return; }
+    if (!q) return;
+    var root = article.querySelector('.prose');
+    if (!root) return;
+
+    /* 先整词找，找不到再拆成单字词——「挂机 点位」这种多词查询也能命中 */
+    var tries = [q].concat(q.split(/\s+/).filter(function (t) { return t && t !== q; }));
+    var node = null, at = -1, word = '';
+    for (var i = 0; i < tries.length && !node; i++) {
+      var w = tries[i].toLowerCase();
+      var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+      while (walker.nextNode()) {
+        var txt = walker.currentNode.nodeValue;
+        if (!txt) continue;
+        var p = txt.toLowerCase().indexOf(w);
+        if (p > -1) { node = walker.currentNode; at = p; word = tries[i]; break; }
+      }
+    }
+    if (!node) { toast('这篇里没找到「' + q + '」，已打开整篇'); return; }
+
+    /* 把地址补成小节锚点：页面自带的「首屏落点」脚本见到锚点就不再把页面拉回顶部 */
+    var secId = '', cur = node.parentNode;
+    while (cur && cur !== root) {
+      var sib = cur;
+      while (sib) {
+        if (sib.id && /^s\d+$/.test(sib.id)) { secId = sib.id; break; }
+        sib = sib.previousElementSibling;
+      }
+      if (secId) break;
+      cur = cur.parentElement;
+    }
+    if (secId) {
+      try { history.replaceState(null, '', location.pathname + '#' + secId); } catch (e) {}
+    }
+    /* 去掉 ?hit=，刷新或分享时不再重复跳转 */
+    try { history.replaceState(null, '', location.pathname + location.hash); } catch (e) {}
+    /* 此行不得写在上面 replaceState 之前，否则 hash 会被覆盖掉 */
+
+    var range = document.createRange();
+    try {
+      range.setStart(node, at);
+      range.setEnd(node, at + word.length);
+      var mark = document.createElement('mark');
+      mark.className = 'hit-mark';
+      range.surroundContents(mark);
+    } catch (e) { return; }
+
+    function land() {
+      if (!mark.parentNode) return;
+      if (mark.scrollIntoView) mark.scrollIntoView({ block: 'center', behavior: 'auto' });
+    }
+    /* 落地直接落在文章中部：跳过逐段入场动画，全部立即显现，
+       否则视口里的段落还处于透明待入场状态，会看到一屏空白。
+       fx 类由后面的动画模块统一添加，这里延后一拍再补显现场 */
+    setTimeout(function () {
+      [].forEach.call(document.querySelectorAll('.fx:not(.fx-in)'), function (el) { el.classList.add('fx-in'); });
+      land();
+    }, 0);
+    if (window.requestAnimationFrame) requestAnimationFrame(land);
+    window.addEventListener('load', function () { setTimeout(land, 60); }, { once: true });
+    setTimeout(function () { mark.className = 'hit-mark is-old'; }, 4000);
+    hitJumped = true;
+    toast('已定位到「' + word + '」');
+  })();
+
   var saved = pos.get(gid);
-  if (saved >= 12 && saved <= 92) {
+  if (!hitJumped && saved >= 12 && saved <= 92) {
     var resume = document.createElement('button');
     resume.type = 'button';
     resume.className = 'resume';

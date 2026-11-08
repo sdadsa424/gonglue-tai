@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>游戏攻略大全</title>
+  <link>https://wgame-bc7.pages.dev/</link>
+  <description>贰点零江湖、小小屠龙冰雪传奇、桃园：将帅录三大游戏的开荒路线、职业选择、打金交易、团战站位与材料行情，整理成能直接照着做的步骤，按游戏和分类就能查到。</description>
+  <language>zh-cn</language>
+  <lastBuildDate>Fri, 06 Nov 2026 00:00:00 GMT</lastBuildDate>
+  <generator>build.mjs</generator>
+  <atom:link href="https://wgame-bc7.pages.dev/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>红名与死亡掉落：动手之前先算这笔账</title>
+    <link>https://wgame-bc7.pages.dev/a/xxtl-red/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/xxtl-red/</guid>
+    <category>小小屠龙 · 冰雪传奇</category>
+    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
+    <description>传奇类玩法的 PK 从来不免费：杀人涨 PK 值，被人杀了掉东西。值不值得动手，取决于你算不算得清成本和收益。</description>
+  </item>
+  <item>
+    <title>幸运与爆率：到底哪一层在决定你出不出货</title>
+    <link>https://wgame-bc7.pages.dev/a/xxtl-luck/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/xxtl-luck/</guid>
+    <category>小小屠龙 · 冰雪传奇</category>
+    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
+    <description>「爆率」不是一个数字。它由基础掉落表、幸运加成、归属权三层叠在一起，搞清楚哪一层在起作用，才知道该堆什么。</description>
+  </item>
+  <item>
+    <title>阵容模板：0 级成型队到 40 级毕业</title>
+    <link>https://wgame-bc7.pages.dev/a/ty-team/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-team/</guid>
+    <category>桃园：将帅录</category>
+    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
+    <description>零氪微氪直接抄这套：刘关张加蔡文姬的经典模板，从 0 级开荒一路用到 40 级毕业调整，加点和技能优先级全部给全。</description>
+  </item>
+  <item>
+    <title>1-40 级怎么练：练级点与每日任务</title>
+    <link>https://wgame-bc7.pages.dev/a/ty-roadmap/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-roadmap/</guid>
+    <category>桃园：将帅录</category>
+    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
+    <description>1 到 40 级是一条清晰的路线：跟任务走、按等级换练级地图、每日固定几件事做完。转职节点和每日清单都在这里。</description>
+  </item>
+  <item>
+    <title>关羽全玩法：突骑爆发流与反击流</title>
+    <link>https://wgame-bc7.pages.dev/a/ty-guanyu/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-guanyu/</guid>
+    <category>桃园：将帅录</category>
+    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
+    <description>关羽是物理爆发收割型核心，核心机制是群体 AOE 加斩杀终结，不是站桩持续输出。前期养成到后期毕业配队，两条分支一次讲清。</description>
+  </item>
+  <item>
+    <title>装备词条与宝石：先堆哪一项，后堆哪一项</title>
+    <link>https://wgame-bc7.pages.dev/a/ty-gear/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-gear/</guid>
+    <category>桃园：将帅录</category>
+    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
+    <description>同样是紫装，词条错位就差一档。顺序应该是：先定武将定位，再决定堆攻击、暴击还是速度。</description>
+  </item>
+  <item>
+    <title>每日 20 分钟：固定动作清单与先后顺序</title>
+    <link>https://wgame-bc7.pages.dev/a/ty-daily/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-daily/</guid>
+    <category>桃园：将帅录</category>
+    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
+    <description>回合制最容易犯的错，是把时间花在「看起来有收益」的事上。每天固定做完这五件事，剩下的时间再谈养成。</description>
+  </item>
+  <item>
+    <title>站位定胜负：战斗规则完整拆解</title>
+    <link>https://wgame-bc7.pages.dev/a/ty-combat/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-combat/</guid>
+    <category>桃园：将帅录</category>
+    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
+    <description>回合对战不止比输出高低。站位、位移、连击击飞和 PVP 数值修正共同构成整套战斗体系，熟悉规则才能把阵容打出上限。</description>
+  </item>
+  <item>
+    <title>抓宠物全指南：符箓、成功率与蹲点表</title>
+    <link>https://wgame-bc7.pages.dev/a/ty-catch/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-catch/</guid>
+    <category>桃园：将帅录</category>
+    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
+    <description>抓宠物的流程很简单：把野怪血量压低，扔降魔符箓。难的是按稀有度选对符箓、按刷新时间蹲对点位，这份指南一次说清。</description>
+  </item>
+  <item>
+    <title>起号方案：五张、十六张、三十五张怎么选</title>
+    <link>https://wgame-bc7.pages.dev/a/ty-account/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-account/</guid>
+    <category>桃园：将帅录</category>
+    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
+    <description>起号的核心不是充得越多越好，而是每一档的资源能不能接上你的养成节奏。三档方案各管一段进度，先看清每档给什么。</description>
+  </item>
+  <item>
+    <title>技能点不够用：刷怪一套、打架一套怎么分</title>
+    <link>https://wgame-bc7.pages.dev/a/ejl-skill/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ejl-skill/</guid>
+    <category>贰点零江湖</category>
+    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
+    <description>技能点永远点不满全部技能。取舍的标准不是「哪个强」，而是「你一天里在哪个场景待得最久」。</description>
+  </item>
+  <item>
+    <title>野外遭遇战：先手怎么拿，打不过怎么走</title>
+    <link>https://wgame-bc7.pages.dev/a/ejl-pk/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ejl-pk/</guid>
+    <category>贰点零江湖</category>
+    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
+    <description>野外打架输赢很少取决于装备差多少，多数时候是「谁先动手」和「谁先撤」这两件事决定的。</description>
+  </item>
+  <item>
+    <title>从起源冰城到冰雪之城：第一周的转生节奏</title>
+    <link>https://wgame-bc7.pages.dev/a/xxtl-start/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/xxtl-start/</guid>
+    <category>小小屠龙 · 冰雪传奇</category>
+    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
+    <description>单职业开局，真正的分水岭在二大陆。转生材料决定你什么时候能进去。</description>
+  </item>
+  <item>
+    <title>攻沙前 30 分钟：集结、卡点与复活点</title>
+    <link>https://wgame-bc7.pages.dev/a/xxtl-siege/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/xxtl-siege/</guid>
+    <category>小小屠龙 · 冰雪传奇</category>
+    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
+    <description>沙城不是靠人多，是靠谁先站住门口。</description>
+  </item>
+  <item>
+    <title>二大陆选图：怪密度与回收距离的取舍</title>
+    <link>https://wgame-bc7.pages.dev/a/xxtl-map/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/xxtl-map/</guid>
+    <category>小小屠龙 · 冰雪传奇</category>
+    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
+    <description>进了冰雪之城，选图的逻辑就变了：不是哪张经验高，而是哪张能待满一小时不被清。</description>
+  </item>
+  <item>
+    <title>选行会看三件事：在线人数、指挥、分配</title>
+    <link>https://wgame-bc7.pages.dev/a/xxtl-guild/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/xxtl-guild/</guid>
+    <category>小小屠龙 · 冰雪传奇</category>
+    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
+    <description>攻沙能不能打，一半在开打前就定了。行会选错，装备再好也只是别人的战功。</description>
+  </item>
+  <item>
+    <title>非绑定出货：散人打宝的定价与节奏</title>
+    <link>https://wgame-bc7.pages.dev/a/xxtl-farm/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/xxtl-farm/</guid>
+    <category>小小屠龙 · 冰雪传奇</category>
+    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
+    <description>商城不卖毕业神器，高阶装备全靠爆。散人能做的，是把爆出来的东西卖在对的时间。</description>
+  </item>
+  <item>
+    <title>一人三职怎么切：战士、法师、道士的场景分工</title>
+    <link>https://wgame-bc7.pages.dev/a/xxtl-class/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/xxtl-class/</guid>
+    <category>小小屠龙 · 冰雪传奇</category>
+    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
+    <description>觉醒之后可以自由换职业，装备词条全继承。切换不是换号，是换工具。</description>
+  </item>
+  <item>
+    <title>BOSS 蹲点：记三个时间，站两个位置</title>
+    <link>https://wgame-bc7.pages.dev/a/xxtl-boss/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/xxtl-boss/</guid>
+    <category>小小屠龙 · 冰雪传奇</category>
+    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
+    <description>冰雪服的 BOSS 是定时资源。记全表没意义，记住你抢得到的那三只就够。</description>
+  </item>
+  <item>
+    <title>军团战：掠阵位与先手权的取舍</title>
+    <link>https://wgame-bc7.pages.dev/a/ty-war/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-war/</guid>
+    <category>桃园：将帅录</category>
+    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
+    <description>军团战不是拼总战力，是拼谁先把对面的核心打哑。</description>
+  </item>
+  <item>
+    <title>前三天别乱花：开局的资源优先级</title>
+    <link>https://wgame-bc7.pages.dev/a/ty-start/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-start/</guid>
+    <category>桃园：将帅录</category>
+    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
+    <description>回合制拼的是阵容完整度，不是单将数值。前三天的资源，决定你什么时候能凑出第一套能打的队。</description>
+  </item>
+  <item>
+    <title>战宠从抓到毕业：五步把一只练到能上场</title>
+    <link>https://wgame-bc7.pages.dev/a/ty-pet-guide/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-pet-guide/</guid>
+    <category>桃园：将帅录</category>
+    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
+    <description>选亚种、抓、洗、合、打书，每一步都有能省钱的做法。零氪也能养出一只能上场的毕业宠。</description>
+  </item>
+  <item>
+    <title>战宠不是装饰：先练能上阵的那一只</title>
+    <link>https://wgame-bc7.pages.dev/a/ty-pet/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-pet/</guid>
+    <category>桃园：将帅录</category>
+    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
+    <description>战宠等于多一个位置。资源有限时，一只练满胜过五只半成品。</description>
+  </item>
+  <item>
+    <title>盾系、谋士、弓手、辅助：站位与出手顺序</title>
+    <link>https://wgame-bc7.pages.dev/a/ty-lineup/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-lineup/</guid>
+    <category>桃园：将帅录</category>
+    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
+    <description>位置有限，六个定位不可能全上。谁站前排、谁先手，比谁星级高更影响胜负。</description>
+  </item>
+  <item>
+    <title>武将培养的三条线：等级、星级、兵种</title>
+    <link>https://wgame-bc7.pages.dev/a/ty-grow/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-grow/</guid>
+    <category>桃园：将帅录</category>
+    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
+    <description>三条线各有各的卡点。先升哪条，取决于你现在卡在哪一环。</description>
+  </item>
+  <item>
+    <title>不卷数值怎么玩：慢节奏的资源账</title>
+    <link>https://wgame-bc7.pages.dev/a/ty-budget/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-budget/</guid>
+    <category>桃园：将帅录</category>
+    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
+    <description>这游戏主打策略、不靠数值碾压，意味着耐心比充值更值钱。</description>
+  </item>
+  <item>
+    <title>推图卡关排查：站不住、打不动，还是节奏慢</title>
+    <link>https://wgame-bc7.pages.dev/a/ty-boss/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-boss/</guid>
+    <category>桃园：将帅录</category>
+    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
+    <description>卡关别急着升级。先看战报，判断是哪一种失败，再对症下药。</description>
+  </item>
+  <item>
+    <title>五大属性与 12 条转职分支加点</title>
+    <link>https://wgame-bc7.pages.dev/a/ty-attr/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-attr/</guid>
+    <category>桃园：将帅录</category>
+    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
+    <description>每级 5 点潜能，加点不是玄学。先把定位想清楚，再决定这 5 点往哪放。</description>
+  </item>
+  <item>
+    <title>零氪的第一桶金：摆摊、材料与装备保值</title>
+    <link>https://wgame-bc7.pages.dev/a/ejl-zero/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ejl-zero/</guid>
+    <category>贰点零江湖</category>
+    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
+    <description>这游戏不卖战力，钱只能从怪身上出来。搞清楚什么该捡、什么该摆、什么必须自己留着。</description>
+  </item>
+  <item>
+    <title>阵营战与攻城：破门、夺旗、守点三段节奏</title>
+    <link>https://wgame-bc7.pages.dev/a/ejl-war/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ejl-war/</guid>
+    <category>贰点零江湖</category>
+    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
+    <description>阵营战不是野外 PK 的放大版。谁顶门口、谁拆建筑、谁断补给，开打前就得定死。</description>
+  </item>
+</channel>
+</rss>

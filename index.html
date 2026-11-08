@@ -27,6 +27,7 @@
 <!-- BUILD:HEAD -->
 <meta name="theme-color" content="#090A12">
 <link rel="canonical" href="https://wgame-bc7.pages.dev/">
+<link rel="alternate" type="application/rss+xml" title="游戏攻略大全 · 最新更新" href="https://wgame-bc7.pages.dev/feed.xml">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="游戏攻略大全">
 <meta property="og:locale" content="zh_CN">
@@ -300,6 +301,7 @@
       <div class="lib-bar-l">
         <span id="libCount" aria-live="polite">正在加载</span>
         <button class="lib-book" id="onlyBook" type="button" aria-pressed="false" hidden>★ 收藏 <b id="bookCount">0</b></button>
+        <button class="lib-sort" id="onlyNew" type="button" aria-pressed="false" title="按更新时间从新到旧排列">↕ 最近更新</button>
       </div>
       <button class="lib-clear" id="clearFilter" type="button" hidden>清除筛选</button>
     </div>
@@ -692,7 +694,7 @@ function blockHTML(b, up) {
 /* 首屏画面为静态 HTML，脚本不生成图片引用 */
 
 /* ---------- 攻略库 ---------- */
-const state = { game: 'all', cat: 'all', q: '', book: false };
+const state = { game: 'all', cat: 'all', q: '', book: false, sortNew: false };
 const filterGame = document.getElementById('filterGame');
 const filterCat = document.getElementById('filterCat');
 const entryList = document.getElementById('entryList');
@@ -701,6 +703,7 @@ const libCount = document.getElementById('libCount');
 const clearFilter = document.getElementById('clearFilter');
 const searchInput = document.getElementById('searchInput');
 const onlyBook = document.getElementById('onlyBook');
+const onlyNew = document.getElementById('onlyNew');
 const bookCount = document.getElementById('bookCount');
 
 function countBy(kind, val) {
@@ -766,11 +769,16 @@ function syncBookUI() {
 }
 function renderEntries() {
   const list = GUIDES.filter(matches);
+  /* 「最近更新」：按构建期日期表倒序；同日按 id 稳定排序，避免每次渲染跳动 */
+  if (state.sortNew) {
+    const D = window.GL_DATES || {};
+    list.sort((a, b) => (String(D[b.id] || '').localeCompare(String(D[a.id] || ''))) || (a.id < b.id ? 1 : -1));
+  }
   entryList.innerHTML = list.map(entryHTML).join('');
   staggerEntries(entryList);
   emptyState.classList.toggle('on', list.length === 0);
-  libCount.textContent = '显示 ' + list.length + ' / ' + GUIDES.length + ' 篇';
-  clearFilter.hidden = !(state.game !== 'all' || state.cat !== 'all' || state.q || state.book);
+  libCount.textContent = '显示 ' + list.length + ' / ' + GUIDES.length + ' 篇' + (state.sortNew ? ' · 最近更新在前' : '');
+  clearFilter.hidden = !(state.game !== 'all' || state.cat !== 'all' || state.q || state.book || state.sortNew);
   syncBookUI();
 }
 
@@ -981,8 +989,19 @@ clearFilter.addEventListener('click', () => {
   state.cat = 'all';
   state.q = '';
   state.book = false;
+  state.sortNew = false;
+  onlyNew.setAttribute('aria-pressed', 'false');
+  onlyNew.classList.remove('on');
   searchInput.value = '';
   renderFilters();
+  renderEntries();
+});
+
+/* ---------- 最近更新排序 ---------- */
+onlyNew.addEventListener('click', () => {
+  state.sortNew = !state.sortNew;
+  onlyNew.setAttribute('aria-pressed', String(state.sortNew));
+  onlyNew.classList.toggle('on', state.sortNew);
   renderEntries();
 });
 

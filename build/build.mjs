@@ -327,6 +327,7 @@ function page({ title, desc, canonical, jsonld, body, ogImage, ogType = 'article
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <link rel="canonical" href="${canonical}">
+<link rel="alternate" type="application/rss+xml" title="${SITE_NAME} · 最新更新" href="${SITE}feed.xml">
 <meta name="theme-color" content="#090A12">
 <meta property="og:type" content="${ogType}">
 <meta property="og:site_name" content="${SITE_NAME}">
@@ -526,6 +527,7 @@ function homeHead() {
   });
   return `<meta name="theme-color" content="#090A12">
 <link rel="canonical" href="${SITE}">
+<link rel="alternate" type="application/rss+xml" title="${SITE_NAME} · 最新更新" href="${SITE}feed.xml">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="${SITE_NAME}">
 <meta property="og:locale" content="zh_CN">
@@ -791,6 +793,39 @@ ${GUIDES.map(gi => `  <url><loc>${SITE}a/${gi.id}/</loc><lastmod>${gdate(gi)}</l
 `;
 fs.writeFileSync('sitemap.xml', sitemap, 'utf8');
 
+/* ---------- RSS 2.0 订阅源 ----------
+ * 按更新日期倒序取最近 30 篇，pubDate 用文章日期（北京时间 08:00），
+ * 描述取「一句话结论」dek，读者在阅读器里就能判断要不要点进来
+ */
+const RSS_LIMIT = 30;
+const rfc822 = d => new Date(d + 'T08:00:00+08:00').toUTCString();
+const xesc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const feedItems = [...GUIDES]
+  .sort((a, b) => (gdate(b) + 'Z' + b.id).localeCompare(gdate(a) + 'Z' + a.id))
+  .slice(0, RSS_LIMIT);
+const feed = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>${xesc(SITE_NAME)}</title>
+  <link>${SITE}</link>
+  <description>${xesc(HOME_DESC)}</description>
+  <language>zh-cn</language>
+  <lastBuildDate>${rfc822(SITE_LASTMOD)}</lastBuildDate>
+  <generator>build.mjs</generator>
+  <atom:link href="${SITE}feed.xml" rel="self" type="application/rss+xml"/>
+${feedItems.map(gi => `  <item>
+    <title>${xesc(gi.title)}</title>
+    <link>${SITE}a/${gi.id}/</link>
+    <guid isPermaLink="true">${SITE}a/${gi.id}/</guid>
+    <category>${xesc(GAMES[gi.game].name)}</category>
+    <pubDate>${rfc822(gdate(gi))}</pubDate>
+    <description>${xesc(gi.dek)}</description>
+  </item>`).join('\n')}
+</channel>
+</rss>
+`;
+fs.writeFileSync('feed.xml', feed, 'utf8');
+
 /* 前端日期表：SPA 列表卡片运行时渲染用（静态分站页构建时直接取 DATES） */
 fs.writeFileSync('assets/dates.js', 'window.GL_DATES=' + JSON.stringify(Object.fromEntries(GUIDES.map(gi => [gi.id, gdate(gi)]))) + ';\n', 'utf8');
 
@@ -798,4 +833,4 @@ fs.writeFileSync('404.html', notFoundPage(), 'utf8');
 
 fs.writeFileSync('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${SITE}sitemap.xml\n`, 'utf8');
 
-console.log('生成攻略页：' + GUIDES.length + ' 篇 · 分站页：' + ORDER.length + ' 个 · 404.html / sitemap.xml / robots.txt 已更新');
+console.log('生成攻略页：' + GUIDES.length + ' 篇 · 分站页：' + ORDER.length + ' 个 · 404.html / sitemap.xml / robots.txt / feed.xml 已更新');

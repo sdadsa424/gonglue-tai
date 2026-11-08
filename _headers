@@ -11,6 +11,11 @@
 /favicon.ico
   Cache-Control: public, max-age=604800
 
+# 订阅源：半小时缓存，既不给回源施压，也不至于让新文章迟迟不出现
+/feed.xml
+  Cache-Control: public, max-age=1800
+  Content-Type: application/rss+xml; charset=utf-8
+
 # 显式的 CSP 暂不启用：站内大量内联脚本与 busuanzi/天气接口需要逐个放行，
 # 上线前需在预览环境逐页验证，避免白屏。需要时先加 Report-Only 观察。
 
