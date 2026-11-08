@@ -851,6 +851,10 @@ ok('SW 不缓存接口与跨域请求', /indexOf\('\/api\/'\) > -1\) return/.tes
 ok('预缓存清单含核心资源与离线页', ['assets/style.css', 'assets/ui.js', 'assets/data.js', 'offline.html', 'board/'].every(p => swJs.includes("'" + p + "'")));
 ok('离线页不引用外部资源（断网也渲染得出来）', !/<link[^>]+stylesheet/.test(offlineHtml) && !/<script[^>]+src=/.test(offlineHtml));
 ok('离线页不被索引', /<meta name="robots" content="noindex/.test(offlineHtml));
+ok('离线页有已缓存文章列表（Cache API 现场读取，标题从缓存 HTML 提取）', /caches\.keys\(\)/.test(offlineHtml) && /cachedList/.test(offlineHtml) && /<title>/.test(offlineHtml));
+ok('离线页回首页链接固定指向站点根', /homeEl\.href = location\.origin \+ '\/'/.test(offlineHtml));
+ok('正文字号用 rem（跟随浏览器/系统默认字号）', /\.article\{--fs-p:\.906rem/.test(cssText) && !/--fs-p:14\.5px/.test(cssText));
+ok('支持系统高对比度与强制颜色偏好', /prefers-contrast: more/.test(cssText) && /forced-colors: active/.test(cssText));
 ok('ui.js 注册 SW 且按页面深度回推根路径', /serviceWorker\.register\(up \+ 'sw\.js'\)/.test(uiJs) && /new Array\(seg \+ 1\)\.join\('\.\.\/'\)/.test(uiJs));
 ok('ui.js 在 github.io 镜像站跳过注册', /github\\\.io\$/.test(uiJs));
 ok('_headers 让 sw.js 每次校验并放开根作用域', /\/sw\.js\n\s+Cache-Control: no-cache\n\s+Service-Worker-Allowed: \//.test(headersFile) || (/Cache-Control: no-cache/.test(headersFile) && /Service-Worker-Allowed: \//.test(headersFile)));

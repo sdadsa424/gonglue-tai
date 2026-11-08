@@ -1082,12 +1082,14 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
 .fs-ctrl button:hover{color:#fff}
 .fs-ctrl button[aria-pressed="true"]{background:rgba(255,255,255,.11);color:#fff}
 
-.article{--fs-p:14.5px;--fs-li:14px;--fs-dek:14.5px}
+/* 正文字号用 rem：跟随浏览器/系统的「默认字号」设置（有些用户会把浏览器字号调大），
+   固定 px 会把这种偏好吃掉，rem 能让正文跟着放大 */
+.article{--fs-p:.906rem;--fs-li:.875rem;--fs-dek:.906rem}
 .article .prose p{font-size:var(--fs-p)}
 .article .prose ul li{font-size:var(--fs-li)}
 .article .a-dek{font-size:var(--fs-dek)}
-.article[data-fs="s"]{--fs-p:13.5px;--fs-li:13px;--fs-dek:13.5px}
-.article[data-fs="l"]{--fs-p:16px;--fs-li:15.5px;--fs-dek:16px}
+.article[data-fs="s"]{--fs-p:.844rem;--fs-li:.813rem;--fs-dek:.844rem}
+.article[data-fs="l"]{--fs-p:1rem;--fs-li:.969rem;--fs-dek:1rem}
 
 .to-top{
   position:fixed;right:24px;bottom:24px;z-index:55;
@@ -2137,4 +2139,19 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 }
 @media (prefers-reduced-motion: reduce){
   .hit-mark,.hit-mark.is-old{animation:none !important}
+}
+
+/* 跟随系统偏好：开了「提高对比度」的用户，弱化文字与描边都提一档；
+   「强制颜色」模式下不依赖自定义色，保证系统高对比主题可用 */
+@media (prefers-contrast: more){
+  :root{--muted:#B4BAD0;--dim:#9AA1B8;--line:rgba(255,255,255,.16);--line-2:rgba(255,255,255,.28)}
+  .prose p,.prose ul li,.prose .note{color:#F2F4FB}
+  .a-dek,.a-meta,.toc a,.foot,.foot-nav a,.lib-count,.entry-foot{color:#C9CFE2}
+  .card,.entry,.poster,.toc,.lib-bar{border-color:rgba(255,255,255,.2)}
+  .hit-mark{background:rgba(255,61,154,.34);box-shadow:0 0 0 1px rgba(255,61,154,.8)}
+}
+@media (forced-colors: active){
+  .poster,.entry,.card,.toc,.lib-bar{border:1px solid CanvasText}
+  :focus-visible{outline:2px solid Highlight}
+  .fx{opacity:1 !important;transform:none !important}
 }

@@ -842,6 +842,7 @@ const swHash = crypto.createHash('sha1')
   .update(fs.readFileSync('assets/ui.js'))
   .update(fs.readFileSync('assets/data.js'))
   .update(fs.readFileSync('assets/dates.js'))
+  .update(fs.readFileSync('offline.html'))
   .update(SW_TEMPLATE)
   .digest('hex').slice(0, 10);
 fs.writeFileSync('sw.js', SW_TEMPLATE.replace('__VERSION__', swHash), 'utf8');

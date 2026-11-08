@@ -138,6 +138,22 @@ try {
   const body = await evalJs(`document.body.innerText.replace(/\\s+/g, ' ').slice(0, 60)`);
   ok('断网打开没读过的文章 → 离线页', /没有网络/.test(String(body)), String(body));
 
+  /* 离线页要能把「已经缓存过的文章」列出来，断网时能直接挑着看（列表是靠 Cache API 现场读的，
+     标题从缓存里的 <title> 提取，多给一点时间） */
+  await sleep(1200);
+  const list = await evalJs(`(function(){
+    var box = document.getElementById('cached');
+    if (!box || box.hidden) return { n: 0, items: [] };
+    return {
+      n: Number(document.getElementById('cachedN').textContent) || 0,
+      items: [].map.call(document.querySelectorAll('#cachedList .cl-t'), function(e){ return e.textContent; })
+    };
+  })()`);
+  ok('离线页列出已缓存的篇数', Number(list && list.n) >= 1, JSON.stringify(list));
+  ok('离线页列表包含读过的文章', !!(list && list.items.some(t => /新手村/.test(t))), JSON.stringify(list && list.items));
+  const homePath = await evalJs(`(function(){var a=document.getElementById('homeLink');return a?new URL(a.href).pathname:'-'})()`);
+  ok('离线页回首页落在站点根（不是当前失败的地址）', String(homePath) === '/', String(homePath));
+
   console.log('[4] 恢复网络（重启服务）');
   await startServer();
   await nav(`http://127.0.0.1:${PORT}/a/ty-account/`);

@@ -10,7 +10,7 @@
 <!-- 离线页刻意不引用任何外部资源：断网时 CSS/JS 都可能没缓存，内联才能保证它一定渲染得出来 -->
 <style>
   *{box-sizing:border-box}
-  html,body{margin:0;height:100%}
+  html,body{margin:0;min-height:100%}
   body{
     display:flex;align-items:center;justify-content:center;min-height:100vh;padding:28px;
     background:radial-gradient(120% 90% at 50% -10%,#1B1430 0%,#0B0D16 46%,#090A12 100%);
@@ -18,7 +18,7 @@
     -webkit-font-smoothing:antialiased;
   }
   .card{
-    width:100%;max-width:460px;padding:32px 28px;border-radius:20px;text-align:center;
+    width:100%;max-width:470px;padding:32px 28px;border-radius:20px;text-align:center;
     background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.02));
     border:1px solid rgba(255,255,255,.09);
     box-shadow:0 24px 60px -20px rgba(0,0,0,.75), inset 0 1px 0 rgba(255,255,255,.06);
@@ -41,10 +41,33 @@
   a.primary{background:linear-gradient(135deg,#FF3D9A,#B23BE8);border-color:transparent;color:#fff;font-weight:600}
   a.primary:hover{filter:brightness(1.08)}
   .foot{margin-top:20px;font-size:11.5px;color:#6C738C}
+  /* 已缓存文章列表 */
+  .cached{margin-top:18px;text-align:left;animation:cin .3s ease both}
+  .cached[hidden]{display:none}
+  .cached-h{display:flex;align-items:baseline;gap:6px;font-size:12px;color:#8C93AB;
+    letter-spacing:.4px;text-transform:uppercase;margin-bottom:8px}
+  .cached-h b{font-size:13px;color:#FFD9EC;font-weight:700;letter-spacing:0}
+  .cached-list{list-style:none;margin:0;padding:0;max-height:258px;overflow:auto;overscroll-behavior:contain;
+    border-radius:12px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.025)}
+  .cached-list::-webkit-scrollbar{width:6px}
+  .cached-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14);border-radius:3px}
+  .cached-list li+li{border-top:1px solid rgba(255,255,255,.055)}
+  .cl-a{display:flex;align-items:baseline;gap:8px;padding:9px 12px;border:0;border-radius:0;
+    background:none;color:#DDE1EE;font-size:12.8px;line-height:1.5}
+  .cl-a:hover{background:rgba(255,61,154,.1);border:0;color:#fff}
+  .cl-t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .cl-s{flex:0 0 auto;font-size:11px;color:#6C738C}
+  .cached-tip{margin-top:8px;font-size:11.5px;color:#6C738C}
+  @media (max-width:420px){
+    .cached-list{max-height:210px}
+    .cl-s{display:none}
+  }
   @media (prefers-reduced-motion:no-preference){
     .card{animation:in .4s ease both}
     @keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
   }
+  @keyframes cin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.cached{animation:none}}
 </style>
 </head>
 <body>
@@ -53,13 +76,129 @@
       <svg viewBox="0 0 24 24"><path d="M2.5 8.5a15 15 0 0 1 19 0"/><path d="M5.5 12a10.5 10.5 0 0 1 13 0"/><path d="M8.5 15.5a6 6 0 0 1 7 0"/><circle cx="12" cy="19" r="1.2" fill="#FFD9EC" stroke="none"/><path d="M3 3l18 18" stroke="#FF3D9A"/></svg>
     </div>
     <h1>现在没有网络</h1>
-    <p>这篇攻略还没缓存过，连上网就能继续看。</p>
-    <div class="hint">已经打开过的文章可以离线阅读：用浏览器或微信的「返回」退回去，或点下面的按钮回首页。</div>
+    <p id="lead">这一篇还没缓存过，连上网就能继续看。</p>
+
+    <section class="cached" id="cached" hidden aria-labelledby="cachedH">
+      <div class="cached-h" id="cachedH">断网也能读 <b id="cachedN">0</b> 篇</div>
+      <ul class="cached-list" id="cachedList"></ul>
+      <p class="cached-tip" id="cachedTip" hidden></p>
+    </section>
+
+    <div class="hint" id="hint" hidden>还没缓存任何文章。连上网打开几篇，之后断网也能继续读。</div>
+
     <div class="btns">
       <button type="button" onclick="location.reload()">重新加载</button>
-      <a class="primary" href="./">回首页</a>
+      <a class="primary" href="/" id="homeLink">回首页</a>
     </div>
     <p class="foot">游戏攻略大全 · 离线页</p>
   </main>
+<script>
+(function(){
+  var box = document.getElementById('cached')
+    , listEl = document.getElementById('cachedList')
+    , numEl = document.getElementById('cachedN')
+    , tipEl = document.getElementById('cachedTip')
+    , hintEl = document.getElementById('hint')
+    , leadEl = document.getElementById('lead')
+    , homeEl = document.getElementById('homeLink');
+
+  /* 回首页：断网时不能用相对路径（会落到当前这个不存在的地址上） */
+  try { homeEl.href = location.origin + '/'; } catch (e) {}
+
+  /* 打开的是文章页时，把话说明白一点 */
+  if (/\/a\/[^/]+\/?(index\.html)?$/.test(location.pathname)) {
+    leadEl.textContent = '这一篇还没缓存过，暂时连不上网。下面是已经存下来、断网也能读的：';
+  }
+
+  var LIMIT = 14;
+
+  function isPage(u) {
+    return u.origin === location.origin && /\/$/.test(u.pathname);
+  }
+  function skip(u) {
+    return /offline/.test(u.pathname);
+  }
+
+  async function readTitle(cache, req) {
+    try {
+      var res = await cache.match(req, { ignoreSearch: true });
+      if (!res) return '';
+      var html = await res.text();
+      var m = html.match(/<title>([\s\S]*?)<\/title>/i);
+      return m ? m[1].replace(/\s+/g, ' ').trim() : '';
+    } catch (e) { return ''; }
+  }
+
+  async function run() {
+    if (!('caches' in window)) {
+      hintEl.textContent = '这个浏览器不支持离线阅读，连上网就能继续看。';
+      hintEl.hidden = false;
+      return;
+    }
+    var keys = [];
+    try { keys = await caches.keys(); } catch (e) { keys = []; }
+
+    var rows = [], seen = {};
+    for (var i = 0; i < keys.length; i++) {
+      var cache;
+      try { cache = await caches.open(keys[i]); } catch (e) { continue; }
+      var reqs = [];
+      try { reqs = await cache.keys(); } catch (e) { reqs = []; }
+      /* 缓存按写入顺序排列，倒着走就是「最近读过的在前」 */
+      for (var j = reqs.length - 1; j >= 0; j--) {
+        var req = reqs[j], u;
+        try { u = new URL(req.url); } catch (e) { continue; }
+        if (skip(u) || !isPage(u)) continue;
+        var path = u.pathname.replace(/index\.html$/, '');
+        if (seen[path]) continue;
+        seen[path] = 1;
+        rows.push({ path: path, cache: cache, req: req });
+      }
+    }
+
+    if (!rows.length) { hintEl.hidden = false; return; }
+
+    var total = rows.length;
+    rows = rows.slice(0, LIMIT);
+    var frag = document.createDocumentFragment();
+
+    for (var k = 0; k < rows.length; k++) {
+      var row = rows[k];
+      var title = await readTitle(row.cache, row.req);
+      var parts = title ? title.split(' · ') : [];
+
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.className = 'cl-a';
+      a.href = row.path;
+
+      var name = document.createElement('span');
+      name.className = 'cl-t';
+      name.textContent = parts[0] || (row.path === '/' ? '首页' : row.path);
+      a.appendChild(name);
+
+      if (parts[1]) {
+        var sub = document.createElement('span');
+        sub.className = 'cl-s';
+        sub.textContent = parts[1];
+        a.appendChild(sub);
+      }
+
+      li.appendChild(a);
+      frag.appendChild(li);
+    }
+
+    listEl.appendChild(frag);
+    numEl.textContent = String(rows.length);
+    if (total > rows.length) {
+      tipEl.textContent = '还有 ' + (total - rows.length) + ' 个已缓存页面，回首页可以继续翻。';
+      tipEl.hidden = false;
+    }
+    box.hidden = false;
+  }
+
+  run();
+})();
+</script>
 </body>
 </html>
