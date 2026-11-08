@@ -851,6 +851,8 @@ ok('SW 不缓存接口与跨域请求', /indexOf\('\/api\/'\) > -1\) return/.tes
 ok('预缓存清单含核心资源与离线页', ['assets/style.css', 'assets/ui.js', 'assets/data.js', 'offline.html', 'board/'].every(p => swJs.includes("'" + p + "'")));
 ok('离线页不引用外部资源（断网也渲染得出来）', !/<link[^>]+stylesheet/.test(offlineHtml) && !/<script[^>]+src=/.test(offlineHtml));
 ok('离线页不被索引', /<meta name="robots" content="noindex/.test(offlineHtml));
+ok('SW 缓存导航去掉查询串（同一文章只存一份）', /const path = new URL\(req\.url\)\.pathname/.test(swJs) && /cache\.put\(new URL\(path, ROOT\)\.href/.test(swJs));
+ok('_headers 给 /offline 与 /offline.html 都配缓存（Pages 308 到 /offline）', /\/offline\n\s+Cache-Control: public, max-age=3600/.test(headersFile));
 ok('离线页有已缓存文章列表（Cache API 现场读取，标题从缓存 HTML 提取）', /caches\.keys\(\)/.test(offlineHtml) && /cachedList/.test(offlineHtml) && /<title>/.test(offlineHtml));
 ok('离线页回首页链接固定指向站点根', /homeEl\.href = location\.origin \+ '\/'/.test(offlineHtml));
 ok('正文字号用 rem（跟随浏览器/系统默认字号）', /\.article\{--fs-p:\.906rem/.test(cssText) && !/--fs-p:14\.5px/.test(cssText));

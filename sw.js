@@ -8,7 +8,7 @@
  *   接口 /api/*       完全不拦——点赞、留言必须实时，不能被缓存糊住
  *   跨域请求（天气/IP/统计）不拦——交给浏览器
  */
-const VERSION = '35e83a3fb8';
+const VERSION = '6006b7383c';
 const CACHE = 'gl-' + VERSION;
 /* 部署在子路径（如 GitHub Pages 的 /gonglue-tai/）时，scope 就是子路径根 */
 const ROOT = self.registration.scope;
@@ -66,9 +66,11 @@ async function navFirst(req) {
   const cache = await caches.open(CACHE);
   try {
     const res = await fetch(req);
-    /* 只缓存正常 HTML；404/500 这类不落盘，免得把错误页固化下来 */
+    /* 只缓存正常 HTML；404/500 这类不落盘，免得把错误页固化下来。
+       缓存键去掉查询串：同一篇文章不管带什么参数（如搜索高亮 ?hit=）都只存一份 */
     if (res && res.ok && (res.headers.get('content-type') || '').indexOf('text/html') > -1) {
-      cache.put(req, res.clone()).catch(() => {});
+      const path = new URL(req.url).pathname;
+      cache.put(new URL(path, ROOT).href, res.clone()).catch(() => {});
     }
     return res;
   } catch (e) {

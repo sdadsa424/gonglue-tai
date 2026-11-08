@@ -16,6 +16,10 @@
   Cache-Control: no-cache
   Service-Worker-Allowed: /
 
+# Pages 把 /offline.html 308 到 /offline，实际对外的是 /offline，两条都配
+/offline
+  Cache-Control: public, max-age=3600
+
 /offline.html
   Cache-Control: public, max-age=3600
 

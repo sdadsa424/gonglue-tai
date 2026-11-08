@@ -121,6 +121,11 @@ try {
   const title = await evalJs(`document.querySelector('.a-title') && document.querySelector('.a-title').textContent`);
   ok('文章页正常渲染', /新手村/.test(String(title)), String(title));
 
+  /* 带查询串（如搜索高亮 ?hit=）再访同一篇，缓存键应去查询串，不产生重复副本 */
+  await nav(`http://127.0.0.1:${PORT}/a/ejl-start/?hit=%E4%BD%93%E5%8A%9B`);
+  const keyOk = await evalJs(`caches.keys().then(ks => caches.open(ks[0])).then(c => c.keys()).then(ks => ks.filter(k => k.url.indexOf('/a/ejl-start/') > -1).map(k => k.url))`);
+  ok('带查询串访问也只存一份（键无 ?hit=）', Array.isArray(keyOk) && keyOk.length === 1 && keyOk[0].indexOf('?') < 0, JSON.stringify(keyOk));
+
   console.log('[3] 真断网（停掉本地服务）');
   await stopServer();
 
