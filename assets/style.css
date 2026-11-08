@@ -2155,3 +2155,49 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
   :focus-visible{outline:2px solid Highlight}
   .fx{opacity:1 !important;transform:none !important}
 }
+
+/* 金句卡：选中正文浮出的小按钮 + 预览层 */
+.qc-btn{
+  position:fixed;z-index:120;display:inline-flex;align-items:center;gap:6px;
+  padding:8px 14px;border-radius:999px;font-size:12.5px;font-weight:600;letter-spacing:.2px;
+  color:#FFF1F8;background:linear-gradient(135deg,rgba(255,61,154,.96),rgba(139,92,246,.96));
+  border:1px solid rgba(255,255,255,.22);cursor:pointer;
+  box-shadow:0 10px 26px -10px rgba(255,61,154,.85), 0 2px 8px -2px rgba(0,0,0,.6);
+  animation:qcPop .16s ease both;
+}
+.qc-btn span{font-size:11px;opacity:.95;transform:translateY(-.5px)}
+.qc-btn:hover{filter:brightness(1.06)}
+@keyframes qcPop{from{opacity:0;transform:translateY(4px) scale(.94)}to{opacity:1;transform:none}}
+
+.qc-ov{
+  position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:24px;
+  background:rgba(5,6,12,.82);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  opacity:0;transition:opacity .2s ease;
+}
+.qc-ov.in{opacity:1}
+.qc-box{display:flex;flex-direction:column;align-items:center;gap:14px;max-height:100%;transform:translateY(8px) scale(.98);transition:transform .24s cubic-bezier(.2,.7,.3,1)}
+.qc-ov.in .qc-box{transform:none}
+.qc-img{
+  max-width:min(90vw,420px);max-height:min(70vh,660px);width:auto;height:auto;
+  border-radius:16px;border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 30px 70px -25px rgba(0,0,0,.9), 0 0 0 1px rgba(255,61,154,.1);
+  -webkit-user-select:none;user-select:none;-webkit-touch-callout:default;
+}
+.qc-acts{display:flex;gap:10px}
+.qc-dl,.qc-close{
+  font:inherit;font-size:13px;padding:9px 20px;border-radius:999px;cursor:pointer;
+  border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);color:#E7EAF5;
+  transition:background .18s ease,color .18s ease,border-color .18s ease;
+}
+.qc-dl{background:linear-gradient(135deg,#FF3D9A,#8B5CF6);border-color:transparent;color:#fff;font-weight:600}
+.qc-dl:hover{filter:brightness(1.07)}
+.qc-close:hover{background:rgba(255,255,255,.12);color:#fff}
+.qc-tip{margin:0;font-size:11.5px;color:#8B91A9}
+html.qc-lock{overflow:hidden}
+@media (max-width:560px){
+  .qc-box{gap:12px}
+  .qc-img{max-width:86vw;max-height:62vh}
+}
+@media (prefers-reduced-motion: reduce){
+  .qc-btn,.qc-ov,.qc-box{animation:none !important;transition:none !important}
+}
