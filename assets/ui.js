@@ -1008,27 +1008,6 @@
     }
   })();
 
-  /* ---------- 题图视差：滚动时大字符浮得比光带慢一点，出纵深 ---------- */
-  (function coverFx() {
-    var cover = document.querySelector('.a-cover');
-    if (!cover || reduce) return;
-    var tick = false;
-    function upd() {
-      tick = false;
-      var r = cover.getBoundingClientRect();
-      if (r.bottom < -240 || r.top > window.innerHeight + 240) return;
-      var p = (r.top + r.height / 2 - window.innerHeight / 2) / window.innerHeight;
-      cover.style.setProperty('--cy', (p * -22).toFixed(1) + 'px');
-      cover.style.setProperty('--cx', (p * 18).toFixed(1) + 'px');
-    }
-    window.addEventListener('scroll', function () {
-      if (tick) return;
-      tick = true;
-      requestAnimationFrame(upd);
-    }, { passive: true });
-    upd();
-  })();
-
   /* ---------- 阅读进度条：按「文章自身」的比例算，2px 贴在视口顶端 ---------- */
   (function readBar() {
     if (!article) return;

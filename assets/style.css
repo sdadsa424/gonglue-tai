@@ -2166,61 +2166,6 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 @media (hover:none){.sword-veil{display:none}}
 @media (prefers-reduced-motion:reduce){.sword-veil{display:none !important}}
 
-/* ============ 程序化题图：构建期生成的大字符 + 光带 + 细网格，零图片请求 ============ */
-.a-cover{
-  position:relative;height:196px;margin:0 0 24px;border-radius:16px;overflow:hidden;
-  border:1px solid rgba(255,255,255,.09);
-  background:linear-gradient(118deg,#0B0F1C 0%,#121729 46%,#0A0D17 100%);
-  isolation:isolate;
-}
-.a-cover .ac-glow{
-  position:absolute;left:52%;top:54%;width:76%;height:178%;
-  transform:translate3d(calc(-50% + var(--cx,0px)),calc(-50% + var(--cy,0px) * .6),0) rotate(-13deg);
-  background:radial-gradient(closest-side,var(--ac),transparent 72%);
-  opacity:.26;filter:blur(7px);pointer-events:none;
-}
-.a-cover .ac-grid{
-  position:absolute;inset:0;opacity:.55;pointer-events:none;
-  background-image:
-    linear-gradient(to right,rgba(255,255,255,.06) 1px,transparent 1px),
-    linear-gradient(to bottom,rgba(255,255,255,.06) 1px,transparent 1px);
-  background-size:38px 38px;
-  -webkit-mask-image:radial-gradient(124% 104% at 84% 42%,#000 10%,transparent 76%);
-  mask-image:radial-gradient(124% 104% at 84% 42%,#000 10%,transparent 76%);
-}
-.a-cover .ac-art{position:absolute;inset:0;width:100%;height:100%}
-.a-cover .ac-cut{fill:none;stroke:var(--ac);stroke-width:1.1;opacity:.5;vector-effect:non-scaling-stroke}
-.a-cover .ac-arc{fill:none;stroke:rgba(255,255,255,.13);stroke-width:1;vector-effect:non-scaling-stroke}
-.a-cover .ac-glyph{
-  position:absolute;right:6%;top:50%;
-  transform:translate3d(var(--cx,0px),calc(-50% + var(--cy,0px) * 1.7),0);
-  font-size:clamp(104px,16vw,164px);line-height:1;font-weight:900;letter-spacing:-.02em;
-  color:transparent;
-  -webkit-text-stroke:1px rgba(255,255,255,.30);
-  background:linear-gradient(198deg,var(--ac),rgba(255,255,255,.04) 74%);
-  -webkit-background-clip:text;background-clip:text;
-  opacity:.5;pointer-events:none;user-select:none;
-}
-.a-cover.flip .ac-glyph{right:auto;left:6%}
-.a-cover.flip .ac-glow{left:44%}
-.a-cover .ac-no{
-  position:absolute;left:22px;bottom:17px;font-size:10.5px;letter-spacing:.16em;
-  color:rgba(255,255,255,.5);font-variant-numeric:tabular-nums;
-}
-.a-cover .ac-tag{
-  position:absolute;left:20px;top:18px;display:inline-flex;align-items:center;gap:7px;
-  padding:4px 11px 4px 9px;border-radius:999px;
-  background:rgba(8,10,18,.5);border:1px solid rgba(255,255,255,.12);
-  font-size:11px;letter-spacing:.04em;color:rgba(255,255,255,.76);backdrop-filter:blur(4px);
-}
-.a-cover .ac-tag i{width:5px;height:5px;border-radius:50%;background:var(--ac);box-shadow:0 0 8px var(--ac)}
-@media (max-width:760px){
-  .a-cover{height:142px;border-radius:13px;margin-bottom:18px}
-  .a-cover .ac-glyph{font-size:88px;opacity:.42}
-  .a-cover .ac-no{left:16px;bottom:13px;font-size:9.5px}
-  .a-cover .ac-tag{left:14px;top:13px;font-size:10px}
-}
-
 /* ============ 阅读进度条：按文章自身比例，2px 渐变细线 ============ */
 .read-bar{
   position:fixed;left:0;top:0;right:0;height:2px;z-index:90;pointer-events:none;
