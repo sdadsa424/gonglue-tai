@@ -2116,6 +2116,247 @@
     upd();
   })();
 
+  /* 8. 剑意：鼠标划过，拖出一道渐隐的剑光
+   *    —— 纯氛围彩蛋，不抢任何交互。画布 pointer-events:none，只在
+   *    「有精确指针 + 系统没要求减弱动态」时挂载；RAF 只在划动后的 0.45 秒内跑，
+   *    静止就停帧并清空画布，挂机不耗电；窗口失焦 / 切到后台立即收剑。
+   *    剑身是三段叠画的渐细折线（外层柔光 + 主题色实芯 + 白芯），速度越快越宽越亮，
+   *    剑尖随速度溅火星；按下左键炸开一圈剑气波纹。 */
+  (function swordTrail() {
+    var mq = window.matchMedia;
+    if (!mq) return;
+    if (!mq('(hover:hover) and (pointer:fine)').matches) return;     // 触屏不挂：手指本来就盖住轨迹
+    if (mq('(prefers-reduced-motion: reduce)').matches) return;      // 尊重系统「减弱动态」
+    if (!window.CanvasRenderingContext2D) return;                    // 无 Canvas 环境（含测试沙箱）直接跳过
+
+    var cv = document.createElement('canvas');
+    cv.className = 'sword-veil';
+    cv.setAttribute('aria-hidden', 'true');
+    var ctx = null;
+    try { ctx = cv.getContext && cv.getContext('2d'); } catch (e) { ctx = null; }
+    if (!ctx) return;
+
+    /* 主题色：文章页/分站页把 --ac 写在行内，取过来让剑光和所在栏目同色 */
+    var accent = '#FF3D9A';
+    try {
+      var host = document.querySelector('.article[style*="--ac"], .game-hero[style*="--ac"]');
+      var m = host && /--ac\s*:\s*(#[0-9a-fA-F]{3,8})/.exec(host.getAttribute('style') || '');
+      if (m) accent = m[1];
+    } catch (e) {}
+
+    function hex2rgb(h) {
+      h = String(h).replace('#', '');
+      if (h.length === 3) h = h.charAt(0) + h.charAt(0) + h.charAt(1) + h.charAt(1) + h.charAt(2) + h.charAt(2);
+      var n = parseInt(h.slice(0, 6), 16);
+      return isNaN(n) ? '255,61,154' : ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255);
+    }
+    var RGB = hex2rgb(accent);
+    function tint(v) { return 'rgba(' + RGB + ',' + k01(v).toFixed(3) + ')'; }
+    function white(v) { return 'rgba(255,255,255,' + k01(v).toFixed(3) + ')'; }
+    function k01(v) { v = +v; return !isFinite(v) ? 0 : v < 0 ? 0 : v > 1 ? 1 : v; }
+
+    var LIFE = 400, MAXP = 26, SPARK_LIFE = 620, RING_LIFE = 560;
+    var pts = [], bits = [], rings = [];
+    var W = 0, H = 0, dpr = 1, raf = 0, lastT = 0, dead = false, live = false;
+
+    function size() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);              // 2 倍封顶，4K 屏也不拖 GPU
+      W = window.innerWidth || 360;
+      H = window.innerHeight || 640;
+      cv.width = Math.max(1, Math.round(W * dpr));
+      cv.height = Math.max(1, Math.round(H * dpr));
+      cv.style.width = W + 'px';
+      cv.style.height = H + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    size();
+    (document.body || document.documentElement).appendChild(cv);
+    window.addEventListener('resize', size, { passive: true });
+
+    function seg(a, b) {
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.stroke();
+    }
+
+    function spark(from, ux, uy, speed) {
+      if (bits.length > 40) return;
+      var n = speed > 2.2 ? 2 : 1, now = performance.now();
+      for (var i = 0; i < n; i++) {
+        var side = Math.random() < 0.5 ? 1 : -1, sp = 1.4 + Math.random() * 2.6;
+        bits.push({
+          x: from.x, y: from.y, t: now,
+          vx: -ux * sp - uy * side * Math.random() * 1.9,
+          vy: -uy * sp + ux * side * Math.random() * 1.9,
+          w: 0.6 + Math.random() * 1.2,
+          a: 0.45 + Math.random() * 0.55,
+          c: Math.random() < 0.45 ? '#FFFFFF' : accent
+        });
+      }
+    }
+
+    function tick() {
+      raf = 0;
+      if (dead) return;
+      try {
+      var now = performance.now();
+      var dt = lastT ? Math.min(now - lastT, 48) : 16.7;
+      var step = dt / 16.7;
+      lastT = now;
+
+      while (pts.length && now - pts[0].t > LIFE) pts.shift();
+      for (var i = bits.length - 1; i >= 0; i--) {
+        var s = bits[i];
+        if (now - s.t > SPARK_LIFE) { bits.splice(i, 1); continue; }
+        s.x += s.vx * step;
+        s.y += s.vy * step;
+        s.vx *= 0.94;
+        s.vy *= 0.94;
+      }
+      for (var j = rings.length - 1; j >= 0; j--) if (now - rings[j].t > RING_LIFE) rings.splice(j, 1);
+
+      ctx.clearRect(0, 0, W, H);
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      /* 剑身：从尾到头，越新越宽越亮，天然形成收锋 */
+      for (var k = 1; k < pts.length; k++) {
+        var a = pts[k - 1], b = pts[k];
+        var life = k01(1 - (now - b.t) / LIFE);
+        var sp = k01((b.v || 0) / 2.4);
+        var w = (1.1 + sp * 5.2) * (0.28 + life * 0.92);
+        if (w < 0.06) continue;
+        ctx.strokeStyle = tint((0.05 + 0.15 * sp) * life * life);
+        ctx.lineWidth = w * 2.8;
+        seg(a, b);
+        ctx.strokeStyle = tint((0.20 + 0.34 * sp) * life);
+        ctx.lineWidth = w * 1.2;
+        seg(a, b);
+        ctx.strokeStyle = white((0.26 + 0.46 * sp) * life * life);
+        ctx.lineWidth = Math.max(0.5, w * 0.4);
+        seg(a, b);
+      }
+
+      /* 剑尖：一小团随速度膨胀的高光 */
+      if (pts.length) {
+        var h = pts[pts.length - 1], hs = k01((h.v || 0) / 2.4);
+        var rr = 16 + hs * 26;
+        var g = ctx.createRadialGradient(h.x, h.y, 0, h.x, h.y, rr);
+        g.addColorStop(0, white(0.36 + hs * 0.4));
+        g.addColorStop(0.34, tint(0.22 + hs * 0.26));
+        g.addColorStop(1, tint(0));
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(h.x, h.y, rr, 0, 6.2832);
+        ctx.fill();
+      }
+
+      /* 火星 */
+      for (var n = 0; n < bits.length; n++) {
+        var b2 = bits[n], la = k01(1 - (now - b2.t) / SPARK_LIFE);
+        ctx.globalAlpha = la * la * b2.a;
+        ctx.strokeStyle = b2.c;
+        ctx.lineWidth = b2.w;
+        ctx.beginPath();
+        ctx.moveTo(b2.x, b2.y);
+        ctx.lineTo(b2.x - b2.vx * 2.6, b2.y - b2.vy * 2.6);
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+
+      /* 剑气波纹（点击） */
+      for (var q = 0; q < rings.length; q++) {
+        var rg = rings[q], p = k01((now - rg.t) / RING_LIFE);
+        var rad = 5 + 58 * (1 - Math.pow(1 - p, 2.2));
+        var fade = (1 - p) * (1 - p);
+        ctx.strokeStyle = tint(0.4 * fade);
+        ctx.lineWidth = 3.2 * (1 - p) + 0.4;
+        ctx.beginPath();
+        ctx.arc(rg.x, rg.y, rad, 0, 6.2832);
+        ctx.stroke();
+        ctx.strokeStyle = white(0.34 * fade);
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(rg.x, rg.y, rad * 0.72, 0, 6.2832);
+        ctx.stroke();
+      }
+
+      } catch (e) { /* 任何一帧出错都吞掉，别让 RAF 带病停摆留下半截光 */ }
+
+      ctx.globalCompositeOperation = 'source-over';
+      if (pts.length > 1 || bits.length || rings.length) {
+        raf = window.requestAnimationFrame(tick);
+      } else {
+        ctx.clearRect(0, 0, W, H);
+        lastT = 0;
+        live = false;
+        cv.classList.remove('on');
+      }
+    }
+
+    function start() {
+      if (dead || raf) return;
+      if (!live) { live = true; cv.classList.add('on'); }
+      raf = window.requestAnimationFrame(tick);
+    }
+
+    function onMove(e) {
+      if (dead) return;
+      var now = performance.now(), last = pts[pts.length - 1];
+      var v = 0;
+      if (last) {
+        var dx = e.clientX - last.x, dy = e.clientY - last.y;
+        var d = Math.sqrt(dx * dx + dy * dy);
+        if (d < 1.2) return;                    // 手抖级别不动，省得堆点
+        v = d / Math.max(now - last.t, 1);
+        if (v > 0.85) spark(last, dx / d, dy / d, v);
+      }
+      pts.push({ x: e.clientX, y: e.clientY, t: now, v: v });
+      if (pts.length > MAXP) pts.shift();
+      start();
+    }
+
+    function onDown(e) {
+      if (dead || e.button !== 0) return;
+      rings.push({ x: e.clientX, y: e.clientY, t: performance.now() });
+      if (rings.length > 4) rings.shift();
+      start();
+    }
+
+    function onHide() {
+      if (document.hidden) clear();
+    }
+    function clear() {
+      pts.length = 0; bits.length = 0; rings.length = 0;
+    }
+
+    function destroy() {
+      dead = true;
+      if (raf) { window.cancelAnimationFrame(raf); raf = 0; }
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerdown', onDown);
+      window.removeEventListener('blur', clear);
+      document.removeEventListener('visibilitychange', onHide);
+      window.removeEventListener('resize', size);
+      if (cv.parentNode) cv.parentNode.removeChild(cv);
+    }
+
+    window.addEventListener('pointermove', onMove, { passive: true });
+    window.addEventListener('pointerdown', onDown, { passive: true });
+    window.addEventListener('blur', clear);
+    document.addEventListener('visibilitychange', onHide);
+
+    /* 系统偏好中途改成「减弱动态」→ 立即收剑下线 */
+    try {
+      var rm = mq('(prefers-reduced-motion: reduce)');
+      var onRM = function () { if (rm.matches) destroy(); };
+      if (rm.addEventListener) rm.addEventListener('change', onRM);
+      else if (rm.addListener) rm.addListener(onRM);
+    } catch (e) {}
+  })();
+
   /* ---------- PWA 离线缓存：注册 service worker ----------
    * 只在正式域名注册：GitHub Pages 镜像会立刻跳转，在那儿装一个 worker 纯属浪费。
    * 路径按当前页面深度回推根目录，文章页（/a/x/）也能正确找到 /sw.js */

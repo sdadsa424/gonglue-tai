@@ -2155,3 +2155,13 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
   :focus-visible{outline:2px solid Highlight}
   .fx{opacity:1 !important;transform:none !important}
 }
+
+/* 剑意：鼠标划过拖出的剑光画布（JS 注入，纯氛围，永不拦截点击）
+   z-index 压在顶栏下拉(70)之下、内容之上；混合模式让白光在暗底上「发光」 */
+.sword-veil{
+  position:fixed;left:0;top:0;z-index:60;pointer-events:none;
+  opacity:0;transition:opacity .35s ease;mix-blend-mode:screen;
+}
+.sword-veil.on{opacity:1}
+@media (hover:none){.sword-veil{display:none}}
+@media (prefers-reduced-motion:reduce){.sword-veil{display:none !important}}

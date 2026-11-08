@@ -862,6 +862,11 @@ ok('ui.js 在 github.io 镜像站跳过注册', /github\\\.io\$/.test(uiJs));
 ok('_headers 让 sw.js 每次校验并放开根作用域', /\/sw\.js\n\s+Cache-Control: no-cache\n\s+Service-Worker-Allowed: \//.test(headersFile) || (/Cache-Control: no-cache/.test(headersFile) && /Service-Worker-Allowed: \//.test(headersFile)));
 ok('manifest 声明为可安装应用', /"display"\s*:\s*"standalone"/.test(fsSocial.readFileSync('assets/manifest.webmanifest', 'utf8')));
 
+ok('剑意：只在精确指针且系统未要求减弱动态时挂载', /\(function swordTrail\(\)/.test(uiJs) && /hover:hover\) and \(pointer:fine\)/.test(uiJs) && /prefers-reduced-motion: reduce\)'\)\.matches\) return/.test(uiJs) && /CanvasRenderingContext2D/.test(uiJs));
+ok('剑意：三段叠画（柔光/实心/白芯）+ 加法混合 + 剑尖径向高光', /globalCompositeOperation = 'lighter'/.test(uiJs) && /createRadialGradient/.test(uiJs) && /ctx\.lineWidth = w \* 2\.8/.test(uiJs) && /Math\.max\(0\.5, w \* 0\.4\)/.test(uiJs));
+ok('剑意：静止即停帧并清空画布（不常驻 RAF）', /raf = window\.requestAnimationFrame\(tick\)/.test(uiJs) && /else \{\s*ctx\.clearRect\(0, 0, W, H\);\s*lastT = 0;/.test(uiJs));
+ok('剑意样式：画布不拦点击、层级低于顶栏下拉、减弱动态下隐藏', /\.sword-veil\{[^}]*pointer-events:none[^}]*\}/.test(cssText) && /\.sword-veil\{[^}]*z-index:60/.test(cssText) && !/z-index:9\d\d/.test((cssText.split('.sword-veil{')[1]||'').split('}')[0]) && /prefers-reduced-motion:reduce\)\{\.sword-veil\{display:none !important\}/.test(cssText));
+
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
 console.log(`\n结果：${pass} 通过 / ${fail} 失败`);
 process.exit(fail ? 1 : 0);
