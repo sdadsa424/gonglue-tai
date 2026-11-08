@@ -456,10 +456,25 @@ function articlePage(gi) {
   }).join('');
   const heads = gi.blocks.filter(b => b.t === 'h');
   const tocHTML = heads.length >= 3
-    ? '<nav class="toc" aria-label="本文目录"><p class="toc-h">本文目录</p><ol>'
+    ? '<nav class="toc" aria-label="本文目录"><p class="toc-h">本文目录<span class="toc-n"></span></p><ol>'
       + heads.map((b, i) => '<li><a href="#s' + (i + 1) + '">' + esc(b.v) + '</a></li>').join('')
       + '</ol></nav>'
     : '';
+
+  /* 程序化题图：大字符 + 斜切光带 + 细网格 + 编号，全部 CSS/SVG，不产生任何图片请求。
+     位置和倾角按文章序号微调，同一栏目的 9 篇文章题图各不相同但风格统一 */
+  const coverHTML = '<figure class="a-cover' + (flatIdx % 2 ? ' flip' : '') + '"'
+    + ' style="--ci:' + (flatIdx % 9) + '" aria-hidden="true">'
+    + '<span class="ac-glow"></span>'
+    + '<span class="ac-grid"></span>'
+    + '<svg class="ac-art" viewBox="0 0 1200 240" preserveAspectRatio="none">'
+    + '<path class="ac-cut" d="M-10 ' + (128 + (flatIdx % 5) * 9) + ' L1210 ' + (34 + (flatIdx % 7) * 7) + '"/>'
+    + '<path class="ac-arc" d="M-60 250 Q 300 ' + (74 + (flatIdx % 4) * 12) + ' 720 196 T 1260 ' + (108 + (flatIdx % 6) * 8) + '"/>'
+    + '</svg>'
+    + '<span class="ac-glyph">' + esc(game.short) + '</span>'
+    + '<span class="ac-no">NO.' + (IDX[gi.id] || '01') + ' / ' + esc(CATS[gi.cat]) + '</span>'
+    + '<span class="ac-tag"><i></i>' + esc(game.name) + '</span>'
+    + '</figure>';
 
   const body = `<div class="wrap">
 <article class="article" style="--ac:${game.accent}">
@@ -467,6 +482,7 @@ function articlePage(gi) {
     <a href="${UP}">首页</a><i>/</i><span>${esc(game.name)}</span><i>/</i><span>${esc(CATS[gi.cat])}</span>
   </nav>
   <div class="a-accent"></div>
+  ${coverHTML}
   <div class="a-meta"><span>${esc(game.name)}</span><i class="divider"></i><span>${esc(CATS[gi.cat])}</span><i class="divider"></i><span>${esc(gi.level)}</span><i class="divider"></i><span>${IDX[gi.id]} 号</span></div>
   <h1 class="a-title">${esc(gi.title)}</h1>
   <p class="a-dek">${esc(gi.dek)}</p>

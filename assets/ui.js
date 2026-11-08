@@ -291,7 +291,7 @@
     var float = document.createElement('nav');
     float.className = 'toc-float';
     float.setAttribute('aria-label', '文章目录');
-    float.innerHTML = '<p class="toc-h">本文目录</p>' + (ol ? ol.outerHTML : '');
+    float.innerHTML = '<p class="toc-h">本文目录<span class="toc-n"></span></p>' + (ol ? ol.outerHTML : '');
     document.body.appendChild(float);
 
     var inlineLinks = [].slice.call(toc.querySelectorAll('a'));
@@ -299,7 +299,16 @@
     var targets = links.map(function (a) {
       return document.getElementById((a.getAttribute('href') || '').replace('#', ''));
     });
+    var nInline = toc.querySelector('.toc-n'), nFloat = float.querySelector('.toc-n');
+    var seen = -1;                    /* 读到过的最远小节：往回滚不取消已读标记 */
     var spyTick = false;
+    function syncCount() {
+      var t = (seen + 1) + '/' + targets.length;
+      if (nInline) nInline.textContent = t;
+      if (nFloat) nFloat.textContent = t;
+      var nS = document.querySelector('.toc-sheet .toc-n');
+      if (nS) nS.textContent = t;
+    }
     function spy() {
       spyTick = false;
       var active = -1;
@@ -307,15 +316,19 @@
         if (!targets[i]) continue;
         if (targets[i].getBoundingClientRect().top <= 150) active = i;
       }
+      if (active > seen) seen = active;
       for (var j = 0; j < links.length; j++) {
         var on = j === active;
         links[j].classList.toggle('on', on);
+        links[j].classList.toggle('done', j <= seen && !on);
         /* 目录高亮同步给读屏：当前读到哪一节 */
         if (on) links[j].setAttribute('aria-current', 'location'); else links[j].removeAttribute('aria-current');
       }
+      syncCount();
       for (var k = 0; k < inlineLinks.length; k++) {
         var on2 = k === active;
         inlineLinks[k].classList.toggle('on', on2);
+        inlineLinks[k].classList.toggle('done', k <= seen && !on2);
         if (on2) inlineLinks[k].setAttribute('aria-current', 'location'); else inlineLinks[k].removeAttribute('aria-current');
       }
     }
@@ -341,7 +354,7 @@
       var sheet = document.createElement('nav');
       sheet.className = 'toc-sheet';
       sheet.setAttribute('aria-label', '本文目录');
-      sheet.innerHTML = '<p class="toc-h">本文目录</p>' + (ol ? ol.outerHTML : '');
+      sheet.innerHTML = '<p class="toc-h">本文目录<span class="toc-n"></span></p>' + (ol ? ol.outerHTML : '');
       document.body.appendChild(mask);
       document.body.appendChild(sheet);
 
@@ -993,6 +1006,55 @@
         hd.appendChild(a);
       })(heads[j]);
     }
+  })();
+
+  /* ---------- 题图视差：滚动时大字符浮得比光带慢一点，出纵深 ---------- */
+  (function coverFx() {
+    var cover = document.querySelector('.a-cover');
+    if (!cover || reduce) return;
+    var tick = false;
+    function upd() {
+      tick = false;
+      var r = cover.getBoundingClientRect();
+      if (r.bottom < -240 || r.top > window.innerHeight + 240) return;
+      var p = (r.top + r.height / 2 - window.innerHeight / 2) / window.innerHeight;
+      cover.style.setProperty('--cy', (p * -22).toFixed(1) + 'px');
+      cover.style.setProperty('--cx', (p * 18).toFixed(1) + 'px');
+    }
+    window.addEventListener('scroll', function () {
+      if (tick) return;
+      tick = true;
+      requestAnimationFrame(upd);
+    }, { passive: true });
+    upd();
+  })();
+
+  /* ---------- 阅读进度条：按「文章自身」的比例算，2px 贴在视口顶端 ---------- */
+  (function readBar() {
+    if (!article) return;
+    var bar = document.createElement('div');
+    bar.className = 'read-bar';
+    bar.setAttribute('aria-hidden', 'true');
+    bar.innerHTML = '<i></i>';
+    document.body.appendChild(bar);
+    var fill = bar.firstChild;
+    var tick = false;
+    function upd() {
+      tick = false;
+      var top = article.getBoundingClientRect().top + window.scrollY;
+      var span = article.offsetHeight - window.innerHeight * 0.72;
+      var p = span > 0 ? (window.scrollY - top + 150) / span : 0;
+      p = p < 0 ? 0 : p > 1 ? 1 : p;
+      fill.style.transform = 'scaleX(' + p.toFixed(4) + ')';
+      bar.classList.toggle('on', window.scrollY > top - 80 && p > 0.001);
+    }
+    window.addEventListener('scroll', function () {
+      if (tick) return;
+      tick = true;
+      requestAnimationFrame(upd);
+    }, { passive: true });
+    window.addEventListener('resize', upd);
+    upd();
   })();
 
   /* ---------- 顶栏：当地时间 + 天气（IP 定位 → open-meteo，本地缓存 30 分钟） ----------
@@ -1968,7 +2030,9 @@
       { id: 'like_all', icon: '💜', name: '三位一体', desc: '三款游戏各投一票' },
       { id: 'luck_3', icon: '🎲', name: '命运赌徒', desc: '掷 3 次「手气不错」' },
       { id: 'comment_1', icon: '💬', name: '留言先锋', desc: '在留言板留下第一句话' },
-      { id: 'visit_3', icon: '🌙', name: '老朋友', desc: '累计 3 天来访' }
+      { id: 'visit_3', icon: '🌙', name: '老朋友', desc: '累计 3 天来访' },
+      { id: 'loot_1', icon: '📦', name: '拾荒者', desc: '把一篇攻略读到底，捡到第一件装备' },
+      { id: 'loot_legend', icon: '🌟', name: '欧皇附体', desc: '读完一篇，掉落一件传说装备' }
     ];
     function find(id) { for (var i = 0; i < LIST.length; i++) if (LIST[i].id === id) return LIST[i]; return null; }
 
@@ -2355,6 +2419,116 @@
       if (rm.addEventListener) rm.addEventListener('change', onRM);
       else if (rm.addListener) rm.addListener(onRM);
     } catch (e) {}
+  })();
+
+  /* 9. 击杀掉落：把一篇文章读到底 = 击杀一次，右下角掉一件装备
+   *    装备池按栏目分，稀有度 5 档加权随机（55/27/12/5/1）；
+   *    每篇每天只结算一次，记录只存本机 localStorage，不上传；
+   *    首件解锁「拾荒者」，传说掉落解锁「欧皇附体」。 */
+  (function lootDrop() {
+    var wrap = document.querySelector('.article');
+    var m = /\/a\/([^/]+)\//.exec(location.pathname);
+    if (!wrap || !m) return;
+    var aid = m[1];
+    var key = /^ejl-/.test(aid) ? 'ejl' : /^xxtl-/.test(aid) ? 'xxtl' : 'ty';
+
+    /* 名称 / 属性 / 稀有度（1 普通 → 5 传说） */
+    var POOL = {
+      ejl: [
+        ['金创药（小）', '生命 +80 · 冷却 1 秒', 1], ['玄铁矿', '强化材料 · 可堆叠 99', 1],
+        ['祝福油', '装备祝福 +1 · 失败不降级', 2], ['记忆头盔', '防御 +6 · 负重 +20', 2],
+        ['井中月', '攻击 +22 · 攻速 +1', 3], ['幽灵战衣', '防御 +18 · 闪避 +3%', 3],
+        ['泰坦戒指', '攻击 +12 · 生命 +150', 3], ['龙纹剑', '攻击 +38 · 暴击 +2%', 4],
+        ['赤月法杖', '魔法 +34 · 施法速度 +6%', 4], ['战神盔甲', '防御 +26 · 韧性 +4%', 4],
+        ['屠龙刀', '攻击 +52 · 暴击 +5% · 全服公告', 5], ['天尊道袍', '全属性 +20 · 每秒回血 1%', 5]
+      ],
+      xxtl: [
+        ['冰晶碎片', '合成材料 · 可堆叠 999', 1], ['雪蚕丝', '缝纫材料 · 极品布甲主料', 1],
+        ['雪魄项链', '魔法 +18 · 冰抗 +12', 2], ['极寒护腕', '防御 +9 · 攻击速度 +1', 2],
+        ['寒铁战甲', '防御 +24 · 冰冻抗性 +15', 3], ['龙鳞盾', '格挡 +18% · 防御 +16', 3],
+        ['冰霜之刃', '攻击 +41 · 附加冰伤 12', 4], ['雪域斗篷', '闪避 +6% · 移动速度 +8%', 4],
+        ['霜龙之心', '全属性 +25 · 冰霜技能 +1', 5], ['冰魄神石', '镶嵌：攻击 +30 · 冰冻几率 +5%', 5]
+      ],
+      ty: [
+        ['粮草', '行军消耗 · 可堆叠 500', 1], ['战马草料', '坐骑体力 +20', 1],
+        ['战鼓', '全队士气 +8 · 首回合生效', 2], ['兵书', '谋略 +12 · 技能冷却 -1 回合', 2],
+        ['虎符', '统率 +15 · 可多带 1 支部队', 3], ['铁胎弓', '武力 +18 · 远程伤害 +10%', 3],
+        ['连环甲', '防御 +22 · 受击减伤 6%', 3], ['方天画戟', '武力 +36 · 溅射 25%', 4],
+        ['的卢', '速度 +30 · 突围成功率 +20%', 4], ['诸葛连弩', '武力 +28 · 每回合额外一击', 4],
+        ['青龙偃月刀', '武力 +48 · 首击必暴', 5], ['玉玺', '全属性 +22 · 每回合回复士气', 5]
+      ]
+    };
+    var RAR = ['', '普通', '精良', '稀有', '史诗', '传说'];
+    var KEY = 'gl_loot_v1';
+    var today = new Date().toLocaleDateString('sv-SE');
+
+    var store;
+    try { store = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { store = {}; }
+    if (store[aid] && store[aid].d === today) return;     /* 这篇今天已经掉过 */
+
+    var r = Math.random() * 100;
+    var tier = r < 55 ? 1 : r < 82 ? 2 : r < 94 ? 3 : r < 99 ? 4 : 5;
+    var pool = POOL[key] || POOL.ejl;
+    var cand = pool.filter(function (x) { return x[2] === tier; });
+    if (!cand.length) cand = pool;
+    var item = cand[Math.floor(Math.random() * cand.length)];
+
+    var fired = false, tick = false;
+    function nearBottom() {
+      var box = wrap.getBoundingClientRect();
+      return window.scrollY + window.innerHeight >= box.top + window.scrollY + box.height - 24;
+    }
+    function check() {
+      tick = false;
+      if (fired || !nearBottom()) return;
+      fired = true;
+      window.setTimeout(show, 380);
+    }
+    window.addEventListener('scroll', function () {
+      if (fired || tick) return;
+      tick = true;
+      window.requestAnimationFrame(check);
+    }, { passive: true });
+
+    function show() {
+      var title = (document.querySelector('.a-title') || {}).textContent || document.title;
+      title = title.replace(/\s+/g, ' ').trim();
+      if (title.length > 20) title = title.slice(0, 20) + '…';
+
+      var card = document.createElement('aside');
+      card.className = 'loot r' + tier;
+      card.setAttribute('role', 'status');
+      card.setAttribute('aria-live', 'polite');
+      card.innerHTML = '<p class="loot-k"><span>击杀</span><b></b></p>'
+        + '<div class="loot-item"><span class="loot-ico" aria-hidden="true">◆</span>'
+        + '<span class="loot-body"><b class="loot-name">' + item[0] + '</b>'
+        + '<span class="loot-rar">' + RAR[tier] + '</span></span></div>'
+        + '<p class="loot-stat">' + item[1] + '</p>'
+        + '<div class="loot-acts"><button class="loot-take" type="button">收下</button>'
+        + '<span class="loot-note">每篇每天只掉一次</span></div>';
+      card.querySelector('.loot-k b').textContent = title;
+      document.body.appendChild(card);
+      if (!reduce) { void card.offsetWidth; card.classList.add('in'); } else card.classList.add('in');
+
+      function close() {
+        card.classList.remove('in');
+        window.setTimeout(function () { card.parentNode && card.parentNode.removeChild(card); }, reduce ? 0 : 320);
+        document.removeEventListener('keydown', onKey);
+      }
+      function onKey(e) { if (e.key === 'Escape' || e.key === 'Esc') close(); }
+      document.addEventListener('keydown', onKey);
+      card.querySelector('.loot-take').addEventListener('click', function () {
+        store[aid] = { d: today, n: item[0], r: tier };
+        try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {}
+        close();
+        var fresh = false;
+        if (window.__achv) {
+          fresh = window.__achv.unlock('loot_1') === 'new';
+          if (tier === 5) window.__achv.unlock('loot_legend');
+        }
+        if (!fresh) toast(item[0] + ' 已收入行囊');
+      });
+    }
   })();
 
   /* ---------- PWA 离线缓存：注册 service worker ----------

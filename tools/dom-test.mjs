@@ -867,6 +867,19 @@ ok('剑意：三段叠画（柔光/实心/白芯）+ 加法混合 + 剑尖径向
 ok('剑意：静止即停帧并清空画布（不常驻 RAF）', /raf = window\.requestAnimationFrame\(tick\)/.test(uiJs) && /else \{\s*ctx\.clearRect\(0, 0, W, H\);\s*lastT = 0;/.test(uiJs));
 ok('剑意样式：画布不拦点击、层级低于顶栏下拉、减弱动态下隐藏', /\.sword-veil\{[^}]*pointer-events:none[^}]*\}/.test(cssText) && /\.sword-veil\{[^}]*z-index:60/.test(cssText) && !/z-index:9\d\d/.test((cssText.split('.sword-veil{')[1]||'').split('}')[0]) && /prefers-reduced-motion:reduce\)\{\.sword-veil\{display:none !important\}/.test(cssText));
 
+ok('程序化题图：全部 35 篇都有 .a-cover（大字符/编号/斜切线），题图内零图片请求', (() => {
+  const dirs = fsMod2.readdirSync('a');
+  return dirs.length === 35 && dirs.every(d => /class="a-cover/.test(fsMod2.readFileSync(`a/${d}/index.html`, 'utf8')))
+    && !/<img[^>]+ac-/.test(fsMod2.readFileSync('a/ejl-boss/index.html', 'utf8'));
+})());
+ok('题图视差与翻面布局：滚动写 --cy/--cx，奇偶序号左右翻转', /coverFx/.test(uiJs) && /setProperty\('--cy'/.test(uiJs) && /\.a-cover\.flip \.ac-glyph/.test(cssText) && /--cx/.test(uiJs));
+ok('阅读进度条：按文章自身比例 scaleX，起点之前不显示', /readBar/.test(uiJs) && /scaleX\(' \+ p\.toFixed/.test(uiJs) && /p > 0\.001/.test(uiJs) && /\.read-bar i\{/.test(cssText));
+ok('目录小节进度：计数器 + 已读标记（往回滚不取消）', /toc-n/.test(uiJs) && /var seen = -1/.test(uiJs) && /classList\.toggle\('done', j <= seen && !on\)/.test(uiJs) && /\.toc a\.done\{/.test(cssText));
+ok('击杀掉落：读完到底掉装备，5 档稀有度加权，每篇每天一次', /lootDrop/.test(uiJs) && /gl_loot_v1/.test(uiJs) && /r < 55 \? 1 : r < 82 \? 2 : r < 94 \? 3 : r < 99 \? 4 : 5/.test(uiJs) && /store\[aid\] && store\[aid\]\.d === today\) return/.test(uiJs));
+ok('掉落装备池：三个栏目各 10-12 件（ejl/xxtl/ty）', /ejl: \[/.test(uiJs) && /xxtl: \[/.test(uiJs) && /ty: \[/.test(uiJs) && (uiJs.match(/, [1-5]\]/g) || []).length >= 34);
+ok('掉落联动成就：拾荒者 + 欧皇附体（传说掉落解锁）', /unlock\('loot_1'\)/.test(uiJs) && /unlock\('loot_legend'\)/.test(uiJs) && /loot_legend', icon: '🌟'/.test(uiJs));
+ok('掉落卡样式：稀有度配色变量 + 传说金光 + 移动端贴底', /\.loot\.r5\{--lr:#FFB020\}/.test(cssText) && /rgba\(255,176,32,\.55\)/.test(cssText) && /@media \(max-width:760px\)\{\.loot\{/.test(cssText));
+
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
 console.log(`\n结果：${pass} 通过 / ${fail} 失败`);
 process.exit(fail ? 1 : 0);
