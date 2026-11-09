@@ -209,7 +209,7 @@ function footer(activeGame) {
     <div class="foot-in">
       <div>
         <p class="foot-name">${SITE_NAME}</p>
-        <p>一个玩家整理的攻略站，把三款游戏里真正会用到的判断写成条目：什么时候走、什么时候留、什么该卖、什么该留。站内文章按游戏与阶段索引，持续补充。</p>
+        <p>一个玩家整理的攻略站，把四款游戏里真正会用到的判断写成条目：什么时候走、什么时候留、什么该卖、什么该留。站内文章按游戏与阶段索引，持续补充。</p>
         <p class="foot-cs">获取游戏与开服信息：<button class="cs-pill dark" type="button" data-copy="${CS}"><b>游戏客服 ${CS}</b><span class="cs-act">复制</span></button></p>
         <div class="foot-share">
           <button class="share-btn sm" type="button" data-share-copy>复制本站链接</button>

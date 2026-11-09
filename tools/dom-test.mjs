@@ -913,6 +913,8 @@ ok('露娜2 首页集成：第 4 张 poster / game-card / 投票按钮，统计 
     && (home.match(/class="game-card"/g) || []).length === 4
     && home.includes('data-like="luna2"')
     && home.includes('<b id="statGames">4</b>') && home.includes('<b id="statGuides">39</b>') && home.includes('<b id="statCats">7</b>')
+    && /const ORDER = \['ejl', 'xxtl', 'ty', 'luna2'\];/.test(home)
+    && home.includes('四款游戏')
     && !/game-soon|gs-tag/.test(home);
 })());
 ok('倒计时模块：每秒刷新天/时/分/秒，到点换「已公测」并停掉定时器', /launchCd/.test(uiJs) && /window\.clearInterval\(iv\)/.test(uiJs) && /cd-over">已公测/.test(uiJs) && /Date\.parse\(box\.getAttribute\('data-launch'\)\)/.test(uiJs));
