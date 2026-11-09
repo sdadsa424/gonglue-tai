@@ -1958,52 +1958,6 @@
       btn.addEventListener('animationend', function () { btn.classList.remove('is-roll'); });
     })();
 
-    /* —— 今日手气签：按日期固定抽取，全天同一签 —— */
-    (function fortune() {
-      var hero = document.querySelector('.hero-in');
-      if (!hero) return;
-      var POOL = [
-        { lv: '大吉', tx: '今天出货率肉眼可见地提升（心理加成，不写入服务器）' },
-        { lv: '大吉', tx: '进本就遇橙装掉落，记得先洗手再上线' },
-        { lv: '中吉', tx: '适合清每日：二十分钟收工，把时间留给晚饭' },
-        { lv: '中吉', tx: '摆摊能卖掉一件压箱底的货，定价别太贪' },
-        { lv: '中吉', tx: '野队遇到靠谱指挥，跟紧点，别单飞' },
-        { lv: '吉', tx: '平平淡淡练级日，挂机点位不用换' },
-        { lv: '吉', tx: '强化别上头：+3 佛系强化，碎了别砸键盘' },
-        { lv: '吉', tx: '抓宠符箓攒着，明天成功率看起来更高' },
-        { lv: '平', tx: '今天适合看攻略不动手，攒知识也是攒战力' },
-        { lv: '平', tx: '野外遇到红名绕着走，今天的你打不过任何人' }
-      ];
-      var day = new Date();
-      var key = day.getFullYear() + '-' + (day.getMonth() + 1) + '-' + day.getDate();
-      var h = 0;
-      for (var i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) >>> 0;
-      var pick = POOL[h % POOL.length];
-
-      var card = document.createElement('button');
-      card.type = 'button';
-      card.className = 'fortune';
-      card.setAttribute('aria-label', '今日手气签：' + pick.lv + '。点击重播抽签动画');
-      card.innerHTML = '<span class="fort-ico" aria-hidden="true">🥠</span>'
-        + '<span class="fort-main"><b class="fort-lv fort-' + pick.lv + '">今日手气 · ' + pick.lv + '</b>'
-        + '<span class="fort-tx">' + pick.tx + '</span></span>';
-
-      var games = hero.querySelector('.hero-games');
-      if (games) hero.insertBefore(card, games); else hero.appendChild(card);
-      /* 移除预占位（真实卡片已插到同一位置，高度几乎一致，不出跳动） */
-      var holdEl = hero.querySelector('.fortune-hold');
-      if (holdEl && holdEl.parentNode) holdEl.parentNode.removeChild(holdEl);
-
-      card.addEventListener('click', function () {
-        if (reduce) { toast('今日的签就是这样，明天再来摇。'); return; }
-        card.classList.remove('is-shake');
-        void card.offsetWidth;
-        card.classList.add('is-shake');
-        setTimeout(function () { toast('摇完了——今日的签还是「' + pick.lv + '」，明天再来。'); }, 700);
-      });
-      card.addEventListener('animationend', function () { card.classList.remove('is-shake'); });
-    })();
-
     /* —— 站牌连点彩蛋：4 秒内连点 8 次 → 全屏烟花彩带 + 成就奖励 —— */
     (function egg() {
       var brand = document.querySelector('.brand');
@@ -2015,7 +1969,7 @@
         '获得称号：键盘幸存者 ⌨️',
         '本场烟花由你赞助承包 🎆',
         '隐藏关卡通关：奖励就是再来一发 🎁',
-        '沾沾喜气：今天的手气签偷偷升半档 🍀'
+        '沾沾喜气：今天适合写攻略，素材翻倍 🍀'
       ];
       /* 成就奖励弹窗：首次触发交给成就系统弹「彩蛋猎人」，之后随机掉落 */
       function rewardCard() {
