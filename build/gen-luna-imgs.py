@@ -36,7 +36,7 @@ def load(rel):
 # ---------- hero：ts2 自由转职（1334x750 横版） ----------
 ts2 = load('ts2.jpg')
 
-# 横版 1264x628 + 960w：取中上部（人物主体通常在中上）
+# 横版 1264x711 + 960w：ts2 本身约 16:9，整图缩放不裁切（此前裁成 1264x628 会把底部标题切掉）
 def crop_box(im, tw, th, focus_y=0.42):
     w, h = im.size
     r = tw / th
@@ -50,9 +50,9 @@ def crop_box(im, tw, th, focus_y=0.42):
         box = (0, y0, w, y0 + nh)
     return im.crop(box)
 
-wide = crop_box(ts2, 1264, 628).resize((1264, 628), Image.LANCZOS)
+wide = ts2.resize((1264, 711), Image.LANCZOS)
 save3(wide, 'luna2-hero', q_avif=52)
-wide960 = wide.resize((960, 477), Image.LANCZOS)
+wide960 = wide.resize((960, 540), Image.LANCZOS)
 save3(wide960, 'luna2-hero_960w', q_avif=52)
 
 # 竖版 750x1000 + 480w：从横图中央裁 2:3 竖条（500x750）再放大 1.5x

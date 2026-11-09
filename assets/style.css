@@ -653,8 +653,8 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
 /* ---------- 动效增强 二期 ---------- */
 @keyframes posterDrift{
   0%{transform:scale(1) translate3d(0,0,0)}
-  50%{transform:scale(1.055) translate3d(1.2%,-1.4%,0)}
-  100%{transform:scale(1.02) translate3d(-1%,.8%,0)}
+  50%{transform:scale(1.025) translate3d(.5%,-.6%,0)}
+  100%{transform:scale(1.01) translate3d(-.4%,.4%,0)}
 }
 @keyframes tabGlow{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.0)}50%{box-shadow:0 0 10px 2px var(--ac)}}
 @keyframes nodePulse{0%,100%{box-shadow:0 0 0 0 rgba(143,208,177,.45)}60%{box-shadow:0 0 0 9px rgba(143,208,177,0)}}
