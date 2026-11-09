@@ -835,6 +835,7 @@ ok('页脚有留言板入口（首页/文章页）', homeDoc.querySelector('.foo
 ok('sitemap 收录留言板', fsSocial.readFileSync('sitemap.xml', 'utf8').includes('<loc>https://wgame-bc7.pages.dev/board/</loc>'));
 const apiJs = fsSocial.readFileSync('functions/api/[[path]].js', 'utf8');
 ok('API 含四个路由与限流', /route === 'notice'/.test(apiJs) && /route === 'like'/.test(apiJs) && /route === 'comment'/.test(apiJs) && /60 \* 1000/.test(apiJs));
+ok('公告支持 DELETE 单条/清空（需 x-admin-key）', /method === 'DELETE'/.test(apiJs) && /DELETE FROM notices WHERE id = \?/.test(apiJs) && /id === 'all'/.test(apiJs));
 ok('API 未绑 DB 时返回 503', /backend_not_configured/.test(apiJs));
 ok('schema.sql 有三张表', /CREATE TABLE IF NOT EXISTS likes/.test(fsSocial.readFileSync('schema.sql', 'utf8')) && /CREATE TABLE IF NOT EXISTS comments/.test(fsSocial.readFileSync('schema.sql', 'utf8')) && /CREATE TABLE IF NOT EXISTS notices/.test(fsSocial.readFileSync('schema.sql', 'utf8')));
 

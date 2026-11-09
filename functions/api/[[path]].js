@@ -4,6 +4,7 @@
  * 路由（全部在 /api 下，命中本文件的 catch-all）：
  *   GET    /api/notice              公告列表（active=1，最多 3 条）
  *   POST   /api/notice  {text}      发布新公告，顶替旧公告（需 header: x-admin-key）
+ *   DELETE /api/notice?id=5         删除单条公告；id=all 清空（需 header: x-admin-key）
  *   GET    /api/like                三款游戏的点赞数
  *   POST   /api/like    {game}      点赞 +1
  *   GET    /api/comment?limit=30    留言列表（新→旧，最多 50）
@@ -82,6 +83,20 @@ export async function onRequest(context) {
           'INSERT INTO notices (body, level, active, created_at) VALUES (?, ?, 1, datetime(\'now\')) RETURNING id, created_at'
         ).bind(text, level).first();
         return json({ ok: true, item: { id: row.id, body: text, level, created_at: row.created_at } }, 201);
+      }
+      /* DELETE：删除公告（管理用，需 x-admin-key）；?id=3 删单条，?id=all 清空 */
+      if (method === 'DELETE') {
+        const key = request.headers.get('x-admin-key') || '';
+        if (!env.ADMIN_KEY || key !== env.ADMIN_KEY) return json({ error: 'forbidden' }, 403);
+        const id = url.searchParams.get('id') || '';
+        if (id === 'all') {
+          const r = await DB.prepare('DELETE FROM notices').run();
+          return json({ ok: true, deleted: (r.meta && r.meta.changes) || 0 });
+        }
+        const n = parseInt(id, 10);
+        if (!n) return json({ error: 'bad_id' }, 400);
+        const r = await DB.prepare('DELETE FROM notices WHERE id = ?').bind(n).run();
+        return json({ ok: true, deleted: (r.meta && r.meta.changes) || 0 });
       }
       return json({ error: 'method_not_allowed' }, 405);
     }
