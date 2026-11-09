@@ -928,6 +928,16 @@ ok('露娜2 官方图集：3 张三件套 + figure 结构', (() => {
   return bases.every(b => ['jpg', 'webp', 'avif'].every(e => fsMod2.existsSync('assets/' + b + '.' + e)))
     && bases.every(b => figs.includes(b + '.avif') && figs.includes(b + '.webp') && figs.includes(b + '.jpg'));
 })());
+ok('露娜2 hero 轮播：5 张特色图三件套 + ui.js 模块 + 圆点样式', (() => {
+  const g2 = fsMod2.readFileSync('g/luna2/index.html', 'utf8');
+  const car = (g2.match(/<div class="art hero-carousel"[\s\S]*?<\/picture>\s*<\/div>/) || [''])[0];
+  if ((car.match(/<picture class="hc/g) || []).length !== 5) return false;
+  const bases = ['social', 'job', 'cute', 'fun', 'faithful'];
+  if (!bases.every(b => ['jpg', 'webp', 'avif'].every(e =>
+    fsMod2.existsSync('assets/luna2-slide-' + b + '.' + e) && fsMod2.existsSync('assets/luna2-slide-' + b + '_960w.' + e)))) return false;
+  if (!bases.every(b => car.includes('luna2-slide-' + b + '.avif') && car.includes('luna2-slide-' + b + '.jpg'))) return false;
+  return /heroCarousel/.test(uiJs) && /hc-dot/.test(uiJs) && /\.hc-dot\[aria-current="true"\]/.test(cssText);
+})());
 
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
 console.log(`\n结果：${pass} 通过 / ${fail} 失败`);

@@ -1039,6 +1039,53 @@
     });
   })();
 
+  /* ---------- 分站 hero 轮播：.hero-carousel 里 .hc 依次淡入淡出，5 秒一张 ----------
+   *    圆点可点，悬停暂停；reduced-motion 不自动播（手动点圆点仍可用） */
+  (function heroCarousel() {
+    var roots = document.querySelectorAll('.hero-carousel');
+    if (!roots.length) return;
+    Array.prototype.forEach.call(roots, function (root) {
+      var slides = Array.prototype.slice.call(root.querySelectorAll('.hc'));
+      if (slides.length < 2) return;
+      var dotsWrap = document.createElement('div');
+      dotsWrap.className = 'hc-dots';
+      var dots = slides.map(function (_, i) {
+        var d = document.createElement('button');
+        d.type = 'button';
+        d.className = 'hc-dot';
+        d.setAttribute('aria-label', '第 ' + (i + 1) + ' 张宣传图，共 ' + slides.length + ' 张');
+        d.addEventListener('click', function () { show(i); play(); });
+        dotsWrap.appendChild(d);
+        return d;
+      });
+      root.appendChild(dotsWrap);
+      var idx = 0, iv = 0;
+      function show(i) {
+        idx = (i + slides.length) % slides.length;
+        slides.forEach(function (s, si) {
+          s.classList.toggle('is-on', si === idx);
+          if (si === idx) s.removeAttribute('aria-hidden');
+          else s.setAttribute('aria-hidden', 'true');
+        });
+        dots.forEach(function (d, di) {
+          if (di === idx) d.setAttribute('aria-current', 'true');
+          else d.removeAttribute('aria-current');
+        });
+      }
+      function stop() { if (iv) { window.clearInterval(iv); iv = 0; } }
+      function play() {
+        stop();
+        if (!reduce && slides.length > 1) iv = window.setInterval(function () { show(idx + 1); }, 5000);
+      }
+      root.addEventListener('mouseenter', stop);
+      root.addEventListener('mouseleave', play);
+      root.addEventListener('focusin', stop);
+      root.addEventListener('focusout', play);
+      show(0);
+      play();
+    });
+  })();
+
   /* ---------- 阅读进度条：按「文章自身」的比例算，2px 贴在视口顶端 ---------- */
   (function readBar() {
     if (!article) return;

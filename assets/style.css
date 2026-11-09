@@ -2193,6 +2193,16 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 .game-hero .cd-unit b{font-size:19px}
 .luna-legal{margin-top:16px;font-size:11px;line-height:1.9;color:#5F6580}
 
+/* ---------- 分站 hero 轮播：特色图淡入淡出 + 右下角圆点 ---------- */
+.hero-carousel{position:relative}
+.hero-carousel .hc{position:absolute;inset:0;margin:0;opacity:0;transition:opacity .7s ease}
+.hero-carousel .hc.is-on{opacity:1}
+.hero-carousel .hc img{animation:none}
+.hc-dots{position:absolute;right:14px;bottom:12px;display:flex;gap:7px;z-index:3}
+.hc-dot{width:9px;height:9px;padding:0;border-radius:50%;border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.18);cursor:pointer}
+.hc-dot[aria-current="true"]{background:var(--ac);border-color:var(--ac);box-shadow:0 0 8px var(--ac)}
+@media (prefers-reduced-motion: reduce){.hero-carousel .hc{transition:none}}
+
 /* ---------- 官方图集：原画 / 实机 / 经典壁纸 ---------- */
 .luna-gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
 .luna-gal figure{margin:0;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03)}

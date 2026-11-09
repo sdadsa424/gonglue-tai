@@ -82,4 +82,17 @@ for rel, base in PAIRS:
         im = im.resize((1014, int(im.height * 1014 / im.width)), Image.LANCZOS)
     save3(im, base, q_avif=58)
 
+# ---------- 分站 hero 轮播：五张特色图整图缩放（与 hero 同为 16:9） ----------
+SLIDES = [
+    ('ts1.jpg', 'luna2-slide-social'),    # 社交满格
+    ('ts2.jpg', 'luna2-slide-job'),       # 自由转职
+    ('ts3.jpg', 'luna2-slide-cute'),      # 超萌可爱
+    ('ts4.jpg', 'luna2-slide-fun'),       # 乐享欢闹
+    ('ts5.jpg', 'luna2-slide-faithful'),  # 原汁原味
+]
+for rel, base in SLIDES:
+    im = load(rel).resize((1264, 711), Image.LANCZOS)
+    save3(im, base, q_avif=52)
+    save3(im.resize((960, 540), Image.LANCZOS), base + '_960w', q_avif=52)
+
 print('DONE')
