@@ -2,7 +2,7 @@
   "_说明": "站长平台 HTML 验证码：把各平台给的 content 值填进来，重新构建即会注入全站 <head>。留空表示不输出。",
   "_平台": "google=Google Search Console / bing=Bing Webmaster / baidu=百度搜索资源平台 / sogou=搜狗站长 / so360=360 站长",
   "google": "",
-  "bing": "",
+  "bing": "55794BF95917DB3041B064115FF47015",
   "baidu": "",
   "sogou": "",
   "so360": ""
