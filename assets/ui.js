@@ -1040,13 +1040,18 @@
   })();
 
   /* ---------- 分站 hero 轮播：.hero-carousel 里 .hc 依次淡入淡出，5 秒一张 ----------
-   *    圆点可点，悬停暂停；reduced-motion 不自动播（手动点圆点仍可用） */
+   *    圆点可点、左下角计数、键盘 ←/→、触屏滑动；悬停/切后台暂停；
+   *    reduced-motion 不自动播（手动操作仍可用）；预加载下一张防切换空白 */
   (function heroCarousel() {
     var roots = document.querySelectorAll('.hero-carousel');
     if (!roots.length) return;
     Array.prototype.forEach.call(roots, function (root) {
       var slides = Array.prototype.slice.call(root.querySelectorAll('.hc'));
       if (slides.length < 2) return;
+      root.setAttribute('tabindex', '0');
+      root.setAttribute('role', 'group');
+      root.setAttribute('aria-roledescription', '轮播');
+
       var dotsWrap = document.createElement('div');
       dotsWrap.className = 'hc-dots';
       var dots = slides.map(function (_, i) {
@@ -1059,7 +1064,13 @@
         return d;
       });
       root.appendChild(dotsWrap);
-      var idx = 0, iv = 0;
+
+      var count = document.createElement('span');
+      count.className = 'hc-count';
+      count.setAttribute('aria-hidden', 'true');
+      root.appendChild(count);
+
+      var idx = 0, iv = 0, hidden = false;
       function show(i) {
         idx = (i + slides.length) % slides.length;
         slides.forEach(function (s, si) {
@@ -1071,16 +1082,35 @@
           if (di === idx) d.setAttribute('aria-current', 'true');
           else d.removeAttribute('aria-current');
         });
+        count.textContent = (idx + 1 < 10 ? '0' : '') + (idx + 1) + ' / ' + (slides.length < 10 ? '0' : '') + slides.length;
+        var nxt = slides[(idx + 1) % slides.length].querySelector('img');
+        if (nxt && nxt.decode) nxt.decode().catch(function () { });
       }
       function stop() { if (iv) { window.clearInterval(iv); iv = 0; } }
       function play() {
         stop();
-        if (!reduce && slides.length > 1) iv = window.setInterval(function () { show(idx + 1); }, 5000);
+        if (!reduce && slides.length > 1 && !hidden) iv = window.setInterval(function () { show(idx + 1); }, 5000);
       }
       root.addEventListener('mouseenter', stop);
       root.addEventListener('mouseleave', play);
       root.addEventListener('focusin', stop);
       root.addEventListener('focusout', play);
+      root.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowLeft') { show(idx - 1); play(); e.preventDefault(); }
+        if (e.key === 'ArrowRight') { show(idx + 1); play(); e.preventDefault(); }
+      });
+      /* 触屏滑动：横向位移超 42px 判定翻页 */
+      var sx = null;
+      root.addEventListener('pointerdown', function (e) { if (e.pointerType === 'touch') sx = e.clientX; });
+      root.addEventListener('pointerup', function (e) {
+        if (sx === null) return;
+        var dx = e.clientX - sx; sx = null;
+        if (Math.abs(dx) > 42) { show(idx + (dx < 0 ? 1 : -1)); play(); }
+      });
+      document.addEventListener('visibilitychange', function () {
+        hidden = document.hidden;
+        if (hidden) stop(); else play();
+      });
       show(0);
       play();
     });

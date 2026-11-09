@@ -936,7 +936,9 @@ ok('露娜2 hero 轮播：5 张特色图三件套 + ui.js 模块 + 圆点样式'
   if (!bases.every(b => ['jpg', 'webp', 'avif'].every(e =>
     fsMod2.existsSync('assets/luna2-slide-' + b + '.' + e) && fsMod2.existsSync('assets/luna2-slide-' + b + '_960w.' + e)))) return false;
   if (!bases.every(b => car.includes('luna2-slide-' + b + '.avif') && car.includes('luna2-slide-' + b + '.jpg'))) return false;
-  return /heroCarousel/.test(uiJs) && /hc-dot/.test(uiJs) && /\.hc-dot\[aria-current="true"\]/.test(cssText);
+  return /heroCarousel/.test(uiJs) && /hc-dot/.test(uiJs) && /hc-count/.test(uiJs)
+    && /tabindex', '0'/.test(uiJs) && /ArrowRight/.test(uiJs) && /pointerType === 'touch'/.test(uiJs)
+    && /\.hc-dot::after/.test(cssText) && /\.hc-count\{/.test(cssText) && /\.hc-dot\[aria-current="true"\]/.test(cssText);
 })());
 
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));

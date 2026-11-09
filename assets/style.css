@@ -2193,14 +2193,19 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 .game-hero .cd-unit b{font-size:19px}
 .luna-legal{margin-top:16px;font-size:11px;line-height:1.9;color:#5F6580}
 
-/* ---------- 分站 hero 轮播：特色图淡入淡出 + 右下角圆点 ---------- */
-.hero-carousel{position:relative}
+/* ---------- 分站 hero 轮播：特色图淡入淡出 + 圆点/计数 ---------- */
+.hero-carousel{position:relative;outline:none}
 .hero-carousel .hc{position:absolute;inset:0;margin:0;opacity:0;transition:opacity .7s ease}
 .hero-carousel .hc.is-on{opacity:1}
 .hero-carousel .hc img{animation:none}
-.hc-dots{position:absolute;right:14px;bottom:12px;display:flex;gap:7px;z-index:3}
-.hc-dot{width:9px;height:9px;padding:0;border-radius:50%;border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.18);cursor:pointer}
+/* 圆点装进玻璃胶囊，亮图上也看得清；::after 扩大命中区到 ~28px，手机好点 */
+.hc-dots{position:absolute;right:12px;bottom:10px;display:flex;gap:4px;z-index:3;padding:6px 9px;border-radius:999px;background:rgba(10,12,22,.5);backdrop-filter:blur(5px)}
+.hc-dot{position:relative;width:8px;height:8px;padding:0;border-radius:50%;border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.18);cursor:pointer}
+.hc-dot::after{content:'';position:absolute;inset:-9px}
 .hc-dot[aria-current="true"]{background:var(--ac);border-color:var(--ac);box-shadow:0 0 8px var(--ac)}
+.hc-dot:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.hc-count{position:absolute;left:12px;bottom:10px;z-index:3;padding:4px 10px;border-radius:999px;background:rgba(10,12,22,.5);backdrop-filter:blur(5px);font-size:11px;letter-spacing:.1em;color:#E7EAF6;font-variant-numeric:tabular-nums;pointer-events:none}
+.hero-carousel:focus-visible{box-shadow:inset 0 0 0 2px var(--ac)}
 @media (prefers-reduced-motion: reduce){.hero-carousel .hc{transition:none}}
 
 /* ---------- 官方图集：原画 / 实机 / 经典壁纸 ---------- */
