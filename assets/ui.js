@@ -1008,6 +1008,37 @@
     }
   })();
 
+  /* ---------- 公测倒计时：读 [data-launch] 的 ISO 时间，每秒刷新天/时/分/秒 ----------
+   *    到点后整块换成「已公测」，并停掉定时器（不留常驻计时）；时间为空或无法解析直接跳过 */
+  (function launchCd() {
+    var boxes = document.querySelectorAll('[data-launch]');
+    if (!boxes.length) return;
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+    Array.prototype.forEach.call(boxes, function (box) {
+      var end = Date.parse(box.getAttribute('data-launch'));
+      if (!end) return;
+      var d = box.querySelector('[data-cd="d"]'), h = box.querySelector('[data-cd="h"]');
+      var m = box.querySelector('[data-cd="m"]'), sec = box.querySelector('[data-cd="s"]');
+      var iv = 0;
+      function over() {
+        if (iv) { window.clearInterval(iv); iv = 0; }
+        box.classList.add('done');
+        box.innerHTML = '<p class="cd-over">已公测 · 攻略陆续更新</p>';
+      }
+      function tick() {
+        var left = end - Date.now();
+        if (left <= 0) { over(); return; }
+        var t = Math.floor(left / 1000);
+        if (d) d.textContent = pad(Math.floor(t / 86400));
+        if (h) h.textContent = pad(Math.floor(t % 86400 / 3600));
+        if (m) m.textContent = pad(Math.floor(t % 3600 / 60));
+        if (sec) sec.textContent = pad(t % 60);
+      }
+      tick();
+      if (!box.classList.contains('done')) iv = window.setInterval(tick, 1000);
+    });
+  })();
+
   /* ---------- 阅读进度条：按「文章自身」的比例算，2px 贴在视口顶端 ---------- */
   (function readBar() {
     if (!article) return;

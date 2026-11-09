@@ -881,6 +881,19 @@ ok('掉落装备池：三个栏目各 10-12 件（ejl/xxtl/ty）', /ejl: \[/.tes
 ok('掉落联动成就：拾荒者 + 欧皇附体（传说掉落解锁）', /unlock\('loot_1'\)/.test(uiJs) && /unlock\('loot_legend'\)/.test(uiJs) && /loot_legend', icon: '🌟'/.test(uiJs));
 ok('掉落卡样式：稀有度配色变量 + 传说金光 + 移动端贴底', /\.loot\.r5\{--lr:#FFB020\}/.test(cssText) && /rgba\(255,176,32,\.55\)/.test(cssText) && /@media \(max-width:760px\)\{\.loot\{/.test(cssText));
 
+ok('露娜2 预热分站：/g/luna2/ 存在，宣传名 + 资质名双标注 + PC 端游 + 倒计时容器', (() => {
+  const luna = fsMod2.readFileSync('g/luna2/index.html', 'utf8');
+  return luna.includes('露娜2：拾光之约') && luna.includes('资质名称：露娜2') && luna.includes('PC 端游')
+    && /data-launch="2026-12-10T00:00:00\+08:00"/.test(luna)
+    && luna.includes('"@type":"VideoGame"') && luna.includes('"alternateName":"露娜2"')
+    && luna.includes('assets/og-luna2.png');
+})());
+ok('露娜2 不进攻略库：data.js 的 GAMES 与文章数据均无 luna2（0 篇不参与收录/点赞/筛选）', !/luna2/.test(fsMod2.readFileSync('assets/data.js', 'utf8')) && !fsMod2.existsSync('a/luna2'));
+ok('露娜2 首页预告：游戏区通栏横幅 + 倒计时 + 链接到分站；分享图存在', /<a class="game-soon" href="g\/luna2\/"/.test(fsMod2.readFileSync('index.html', 'utf8')) && /data-launch="2026-12-10T00:00:00\+08:00"/.test(fsMod2.readFileSync('index.html', 'utf8')) && fsMod2.existsSync('assets/og-luna2.png'));
+ok('倒计时模块：每秒刷新天/时/分/秒，到点换「已公测」并停掉定时器', /launchCd/.test(uiJs) && /window\.clearInterval\(iv\)/.test(uiJs) && /cd-over">已公测/.test(uiJs) && /Date\.parse\(box\.getAttribute\('data-launch'\)\)/.test(uiJs));
+ok('预热页进 sitemap（daily 0.8），文案三处时间一致', fsMod2.readFileSync('sitemap.xml', 'utf8').includes('<loc>https://wgame-bc7.pages.dev/g/luna2/</loc>') && fsMod2.readFileSync('build/build.mjs', 'utf8').includes("date: '2026.12.10'") && fsMod2.readFileSync('build/build.mjs', 'utf8').includes("iso: '2026-12-10T00:00:00+08:00'"));
+ok('预热页样式：倒计时单位、检查清单编号、移动端单列、减弱动态关动画', /\.game-soon\{/.test(cssText) && /\.cd-unit\{/.test(cssText) && /\.luna-list li\{/.test(cssText) && /@media \(max-width:760px\)\{\s*\.game-soon\{grid-template-columns:1fr/.test(cssText) && /\.gs-tag i\{animation:none\}/.test(cssText));
+
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
 console.log(`\n结果：${pass} 通过 / ${fail} 失败`);
 process.exit(fail ? 1 : 0);
