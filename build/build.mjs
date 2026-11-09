@@ -79,6 +79,16 @@ const FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vi
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const escJson = s => JSON.stringify(s).replace(/</g, '\\u003c');
 
+/* 描述长度裁剪：搜索结果里超过 100 字会被截断成省略号，且截断点多在半句，
+ * 这里主动在 100 字内最后一个句读处断开，保证 SERP 里读起来是完整的一口气 */
+const clipDesc = (s, max = 100) => {
+  const t = String(s || '').replace(/\s+/g, ' ').trim();
+  if (t.length <= max) return t;
+  const head = t.slice(0, max);
+  const cut = Math.max(head.lastIndexOf('。'), head.lastIndexOf('；'), head.lastIndexOf('，'), head.lastIndexOf('、'));
+  return (cut >= 60 ? head.slice(0, cut) : head.replace(/[，、；]$/, '')) + '…';
+};
+
 const IDX = {};
 ORDER.forEach(k => {
   let n = 0;
@@ -334,6 +344,7 @@ const VERIFY_META = (() => {
 })();
 
 function page({ title, desc, canonical, jsonld, body, ogImage, ogType = 'article', bodyClass = '', guideId = '', headExtra = '', noData = false }) {
+  const dsc = clipDesc(desc || '');
   return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -344,20 +355,20 @@ function page({ title, desc, canonical, jsonld, body, ogImage, ogType = 'article
 <script>/* 旧域名过渡：仅在 GitHub Pages 的副本上生效，正式域名不受影响 */
 (function(){var h=location.hostname;if(!/(^|\\.)github\\.io$/.test(h))return;var p=location.pathname.replace(/^\\/gonglue-tai(?=\\/|$)/,'')||'/';location.replace('${SITE_ORIGIN}'+p+location.search+location.hash);})();</script>
 <title>${esc(title)}</title>
-<meta name="description" content="${esc(desc)}">
-${/noindex/.test(headExtra) ? '' : '<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">\n'}<link rel="canonical" href="${canonical}">
+<meta name="description" content="${esc(dsc)}">
+${/noindex/.test(headExtra) ? '' : '<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">\n'}${canonical ? `<link rel="canonical" href="${canonical}">` : ''}
 ${VERIFY_META ? VERIFY_META + '\n' : ''}<link rel="alternate" type="application/rss+xml" title="${SITE_NAME} · 最新更新" href="${SITE}feed.xml">
 <meta name="theme-color" content="#090A12">
 <meta property="og:type" content="${ogType}">
 <meta property="og:site_name" content="${SITE_NAME}">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:title" content="${esc(title)}">
-<meta property="og:description" content="${esc(desc)}">
-<meta property="og:url" content="${canonical}">
+<meta property="og:description" content="${esc(dsc)}">
+<meta property="og:url" content="${canonical || SITE}">
 <meta property="og:image" content="${ogImage}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(title)}">
-<meta name="twitter:description" content="${esc(desc)}">
+<meta name="twitter:description" content="${esc(dsc)}">
 <meta name="twitter:image" content="${ogImage}">
 ${ogType === 'article' ? `<meta property="article:published_time" content="${GDATE(guideId)}T08:00:00+08:00">
 <meta property="article:modified_time" content="${GDATE(guideId)}T08:00:00+08:00">` : ''}
@@ -528,8 +539,8 @@ function articlePage(gi) {
 }
 
 /* ---------- 首页注入：社交卡片 / 结构化数据 / 无脚本目录 ---------- */
-const HOME_DESC = '贰点零江湖、小小屠龙冰雪传奇、桃园：将帅录三大游戏的开荒路线、职业选择、打金交易、团战站位与材料行情，整理成能直接照着做的步骤，按游戏和分类就能查到。';
-const HOME_TITLE = '游戏攻略大全 · 游戏攻略总站';
+const HOME_DESC = '露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙的开荒路线、职业选择、魔附养成、打金交易与团战站位，都整理成能直接照着做的步骤，按游戏和分类就能查到。';
+const HOME_TITLE = '游戏攻略大全 · 露娜2 / 将帅录 / 屠龙';
 
 function homeHead() {
   const jsonld = escJson({
@@ -630,6 +641,11 @@ function gamePage(key) {
   body = body.replace(/href="#\/"/g, 'href="../../"');
   /* 图片原本相对站点根，搬到 /g/<key>/ 后要回两级 */
   body = body.replace(/"assets\//g, '"../../assets/').replace(/, assets\//g, ', ../../assets/');
+  /* 静态分站页没有「隐藏视图」这回事，hero 图就是首屏 LCP：
+     首页为了省带宽给它加了 lazy，落地页要还原成 eager 并提高抓取优先级
+     （.art 可能是普通大图，也可能是 .art.hero-carousel 轮播，只动第一张） */
+  body = body.replace(/(<div class="art[^"]*"[^>]*>)([\s\S]*?<\/picture>)/, (m, open, inner) =>
+    open + inner.replace(' loading="lazy"', '').replace('<img ', '<img fetchpriority="high" '));
 
   const jsonld = JSON.stringify({
     '@context': 'https://schema.org',
@@ -747,7 +763,7 @@ function notFoundPage() {
   const html = page({
     title: `页面不存在 · ${SITE_NAME}`,
     desc: `这个地址没有对应内容。站内 ${GUIDES.length} 篇攻略按游戏列在这里，也可以直接搜标题。`,
-    canonical: SITE + '404.html',
+    canonical: '',
     jsonld: JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'WebPage',

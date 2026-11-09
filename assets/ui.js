@@ -1514,22 +1514,26 @@
       var heroAnchor = document.querySelector('.hero-in .hero-type');
       var bell = null, cacheIt = null;
 
-      /* 预占位：首屏插入胶囊会把下方海报整体下推（CLS）。对「从没关过公告」的访客
-         先在原位放一个不可见占位，数据回来再换成真胶囊，位置不跳；
+      /* 预占位：首屏插入胶囊会把下方海报整体下推（CLS）。占位直接写在 HTML 里
+         （首帧就占住高度，连 JS 执行前的那一下跳动也省了），数据回来再换成真胶囊；
          已读或接口失败时立即移除，不留空洞 */
-      var hold = null;
+      var hold = document.querySelector('.notice-hold');
+      var seenAll = function () { return Object.keys(lsGet('gl_notice_v3', {}) || {}).length > 0; };
       function dropHold() {
         if (hold && hold.parentNode) hold.parentNode.removeChild(hold);
         hold = null;
       }
-      if (heroAnchor && !Object.keys(lsGet('gl_notice_v3', {}) || {}).length) {
-        hold = document.createElement('div');
-        hold.className = 'notice notice-hero notice-hold';
-        hold.setAttribute('aria-hidden', 'true');
-        var hi = document.createElement('div');
-        hi.className = 'wrap notice-in';
-        hold.appendChild(hi);
-        heroAnchor.insertAdjacentElement('afterend', hold);
+      if (heroAnchor) {
+        if (hold && seenAll()) dropHold();
+        else if (!hold && !seenAll()) {
+          hold = document.createElement('div');
+          hold.className = 'notice notice-hero notice-hold';
+          hold.setAttribute('aria-hidden', 'true');
+          var hi = document.createElement('div');
+          hi.className = 'wrap notice-in';
+          hold.appendChild(hi);
+          heroAnchor.insertAdjacentElement('afterend', hold);
+        }
       }
 
       /* 右下角小铃铛：公告被关掉或已读时兜底，想看随时点开 */

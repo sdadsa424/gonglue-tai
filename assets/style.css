@@ -1327,6 +1327,7 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 @media (max-width:760px){
   .tb-kbd{display:none}
   .tb-search{width:34px;height:34px;padding:0;justify-content:center;border-color:transparent;background:transparent}
+  .tb-search span{display:none} /* 只留放大镜图标，文字在 34px 圆钮里会被挤成竖排 */
   .tb-search:active{background:rgba(255,255,255,.06)}
 }
 
