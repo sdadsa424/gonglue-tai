@@ -823,8 +823,8 @@ ok('分站页标题保留游戏短名规则', seoMeta.filter(r => r.f.startsWith
 console.log('\n[站内互动]');
 const fsSocial = (await import('node:fs'));
 const homeDoc = (await JSDOM.fromFile('index.html', { runScripts: 'outside-only' })).window.document;
-ok('首页有 votes 区块（3 个 data-like）', homeDoc.querySelectorAll('[data-like]').length === 3);
-ok('点赞数字带 data-like-n', homeDoc.querySelectorAll('[data-like-n]').length === 3);
+ok('首页有 votes 区块（4 个 data-like）', homeDoc.querySelectorAll('[data-like]').length === 4);
+ok('点赞数字带 data-like-n', homeDoc.querySelectorAll('[data-like-n]').length === 4);
 ok('ui.js 含公告/点赞/留言板三个模块', /gl_notice_v3/.test(uiJs) && /gl_like_v1/.test(uiJs) && /bdForm/.test(uiJs));
 ok('ui.js 社交模块在无 fetch 环境整体跳过', /typeof fetch !== 'function'\) return/.test(uiJs));
 const boardDoc = (await JSDOM.fromFile('board/index.html', { runScripts: 'outside-only' })).window.document;
@@ -867,9 +867,9 @@ ok('剑意：三段叠画（柔光/实心/白芯）+ 加法混合 + 剑尖径向
 ok('剑意：静止即停帧并清空画布（不常驻 RAF）', /raf = window\.requestAnimationFrame\(tick\)/.test(uiJs) && /else \{\s*ctx\.clearRect\(0, 0, W, H\);\s*lastT = 0;/.test(uiJs));
 ok('剑意样式：画布不拦点击、层级低于顶栏下拉、减弱动态下隐藏', /\.sword-veil\{[^}]*pointer-events:none[^}]*\}/.test(cssText) && /\.sword-veil\{[^}]*z-index:60/.test(cssText) && !/z-index:9\d\d/.test((cssText.split('.sword-veil{')[1]||'').split('}')[0]) && /prefers-reduced-motion:reduce\)\{\.sword-veil\{display:none !important\}/.test(cssText));
 
-ok('题图已撤除：35 篇文章头部不再有 .a-cover，样式与脚本零残留', (() => {
+ok('题图已撤除：39 篇文章头部不再有 .a-cover，样式与脚本零残留', (() => {
   const dirs = fsMod2.readdirSync('a');
-  return dirs.length === 35
+  return dirs.length === 39
     && dirs.every(d => !/a-cover/.test(fsMod2.readFileSync(`a/${d}/index.html`, 'utf8')))
     && !/a-cover|ac-glyph|coverFx/.test(cssText + uiJs);
 })());
@@ -877,22 +877,46 @@ ok('文章头部结构：面包屑后仍是强调条 + 元信息 + h1 标题（�
 ok('阅读进度条：按文章自身比例 scaleX，起点之前不显示', /readBar/.test(uiJs) && /scaleX\(' \+ p\.toFixed/.test(uiJs) && /p > 0\.001/.test(uiJs) && /\.read-bar i\{/.test(cssText));
 ok('目录小节进度：计数器 + 已读标记（往回滚不取消）', /toc-n/.test(uiJs) && /var seen = -1/.test(uiJs) && /classList\.toggle\('done', j <= seen && !on\)/.test(uiJs) && /\.toc a\.done\{/.test(cssText));
 ok('击杀掉落：读完到底掉装备，5 档稀有度加权，每篇每天一次', /lootDrop/.test(uiJs) && /gl_loot_v1/.test(uiJs) && /r < 55 \? 1 : r < 82 \? 2 : r < 94 \? 3 : r < 99 \? 4 : 5/.test(uiJs) && /store\[aid\] && store\[aid\]\.d === today\) return/.test(uiJs));
-ok('掉落装备池：三个栏目各 10-12 件（ejl/xxtl/ty）', /ejl: \[/.test(uiJs) && /xxtl: \[/.test(uiJs) && /ty: \[/.test(uiJs) && (uiJs.match(/, [1-5]\]/g) || []).length >= 34);
+ok('掉落装备池：四个栏目（ejl/xxtl/ty/luna2）合计 50 件以上', /ejl: \[/.test(uiJs) && /xxtl: \[/.test(uiJs) && /ty: \[/.test(uiJs) && /luna2: \[/.test(uiJs) && (uiJs.match(/, [1-5]\]/g) || []).length >= 50);
 ok('掉落联动成就：拾荒者 + 欧皇附体（传说掉落解锁）', /unlock\('loot_1'\)/.test(uiJs) && /unlock\('loot_legend'\)/.test(uiJs) && /loot_legend', icon: '🌟'/.test(uiJs));
 ok('掉落卡样式：稀有度配色变量 + 传说金光 + 移动端贴底', /\.loot\.r5\{--lr:#FFB020\}/.test(cssText) && /rgba\(255,176,32,\.55\)/.test(cssText) && /@media \(max-width:760px\)\{\.loot\{/.test(cssText));
 
-ok('露娜2 预热分站：/g/luna2/ 存在，宣传名 + 资质名双标注 + PC 端游 + 倒计时容器', (() => {
+ok('露娜2 转正式分站：g/luna2/ 由 gamePage 生成，4 篇 entries 铺好 + 资质名 + 倒计时', (() => {
   const luna = fsMod2.readFileSync('g/luna2/index.html', 'utf8');
   return luna.includes('露娜2：拾光之约') && luna.includes('资质名称：露娜2') && luna.includes('PC 端游')
     && /data-launch="2026-12-10T00:00:00\+08:00"/.test(luna)
-    && luna.includes('"@type":"VideoGame"') && luna.includes('"alternateName":"露娜2"')
-    && luna.includes('assets/og-luna2.png');
+    && (luna.match(/class="entry"/g) || []).length === 4
+    && luna.includes('assets/luna2-hero.jpg') && luna.includes('"@type":"CollectionPage"');
 })());
-ok('露娜2 不进攻略库：data.js 的 GAMES 与文章数据均无 luna2（0 篇不参与收录/点赞/筛选）', !/luna2/.test(fsMod2.readFileSync('assets/data.js', 'utf8')) && !fsMod2.existsSync('a/luna2'));
-ok('露娜2 首页预告：游戏区通栏横幅 + 倒计时 + 链接到分站；分享图存在', /<a class="game-soon" href="g\/luna2\/"/.test(fsMod2.readFileSync('index.html', 'utf8')) && /data-launch="2026-12-10T00:00:00\+08:00"/.test(fsMod2.readFileSync('index.html', 'utf8')) && fsMod2.existsSync('assets/og-luna2.png'));
+ok('露娜2 进攻略库：GAMES.luna2 + 4 篇文章（a/luna2-*）+ 新分类「系统玩法」', (() => {
+  const data = fsMod2.readFileSync('assets/data.js', 'utf8');
+  const dirs = fsMod2.readdirSync('a').filter(d => d.startsWith('luna2-'));
+  return data.includes("id: 'luna2'") && dirs.length === 4 && data.includes("sys: '系统玩法'");
+})());
+ok('露娜2 首页集成：第 4 张 poster / game-card / 投票按钮，统计 4 款 39 篇 7 分类，旧横幅零残留', (() => {
+  const home = fsMod2.readFileSync('index.html', 'utf8');
+  return (home.match(/class="poster"/g) || []).length === 4
+    && (home.match(/class="game-card"/g) || []).length === 4
+    && home.includes('data-like="luna2"')
+    && home.includes('<b id="statGames">4</b>') && home.includes('<b id="statGuides">39</b>') && home.includes('<b id="statCats">7</b>')
+    && !/game-soon|gs-tag/.test(home);
+})());
 ok('倒计时模块：每秒刷新天/时/分/秒，到点换「已公测」并停掉定时器', /launchCd/.test(uiJs) && /window\.clearInterval\(iv\)/.test(uiJs) && /cd-over">已公测/.test(uiJs) && /Date\.parse\(box\.getAttribute\('data-launch'\)\)/.test(uiJs));
-ok('预热页进 sitemap（daily 0.8），文案三处时间一致', fsMod2.readFileSync('sitemap.xml', 'utf8').includes('<loc>https://wgame-bc7.pages.dev/g/luna2/</loc>') && fsMod2.readFileSync('build/build.mjs', 'utf8').includes("date: '2026.12.10'") && fsMod2.readFileSync('build/build.mjs', 'utf8').includes("iso: '2026-12-10T00:00:00+08:00'"));
-ok('预热页样式：倒计时单位、检查清单编号、移动端单列、减弱动态关动画', /\.game-soon\{/.test(cssText) && /\.cd-unit\{/.test(cssText) && /\.luna-list li\{/.test(cssText) && /@media \(max-width:760px\)\{\s*\.game-soon\{grid-template-columns:1fr/.test(cssText) && /\.gs-tag i\{animation:none\}/.test(cssText));
+ok('露娜2 进 sitemap（ORDER weekly 0.9），预热期 og 图已删除', fsMod2.readFileSync('sitemap.xml', 'utf8').includes('<loc>https://wgame-bc7.pages.dev/g/luna2/</loc>') && !fsMod2.existsSync('assets/og-luna2.png'));
+ok('露娜2 文章页 SEO：四篇标题都不超 30 字，游戏短名正确', ['luna2-mofu', 'luna2-stall', 'luna2-auto', 'luna2-skill'].every(id => {
+  const t = (fsMod2.readFileSync('a/' + id + '/index.html', 'utf8').match(/<title>([^<]*)<\/title>/) || [])[1] || '';
+  return t.length <= 30 && t.includes('露娜2');
+}));
+ok('露娜2 配图完整：4 篇攻略的 img 块都有 jpg/webp/avif 三件套', (() => {
+  const data = fsMod2.readFileSync('assets/data.js', 'utf8');
+  const bases = new Set();
+  const re = /\{ t: 'img', v: '(luna2-[^']+)'/g;
+  let m;
+  while ((m = re.exec(data))) bases.add(m[1]);
+  if (bases.size !== 10) return false;
+  return Array.from(bases).every(b => ['jpg', 'webp', 'avif'].every(e => fsMod2.existsSync('assets/' + b + '.' + e)));
+})());
+ok('露娜2 样式：投票 4 列 + hero 倒计时缩小版 + 资质说明；预热页样式零残留', /\.vote-row\{display:grid;grid-template-columns:repeat\(4,minmax\(0,1fr\)\)/.test(cssText) && /\.game-hero \.launch-cd\{margin-top:4px\}/.test(cssText) && /\.luna-legal\{/.test(cssText) && !/game-soon|luna-hero|luna-list/.test(cssText));
 
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
 console.log(`\n结果：${pass} 通过 / ${fail} 失败`);

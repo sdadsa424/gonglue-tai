@@ -45,25 +45,12 @@ const gdate = gi => (DATES[gi.id] || {}).d || SEED_DATE;
 const GDATE = guideId => (DATES[guideId] || {}).d || SEED_DATE;
 /* 全站级 lastmod：取所有文章日期的最大值 */
 const SITE_LASTMOD = GUIDES.map(gdate).sort().pop();
-const ORDER = ['ejl', 'xxtl', 'ty'];
+const ORDER = ['ejl', 'xxtl', 'ty', 'luna2'];
 const CS = 'ggboy6123';
 
-/* 公测预热（不属于攻略库：还没有文章，不参与收录计数、点赞与筛选）
-   资质名称与宣传名称不一致：标题、卡片、meta 用宣传名；页脚与结构化数据标资质名。
-   公测时间只在这里改一处，站点倒计时、文案、结构化数据全部跟着走。 */
-const LAUNCH = {
-  id: 'luna2',
-  legal: '露娜2',                    /* 资质（审批）名称 */
-  name: '露娜2：拾光之约',            /* 官方宣传版本特色名 */
-  date: '2026.12.10',
-  iso: '2026-12-10T00:00:00+08:00',
-  short: '2026-12-10',
-  platform: 'PC 端游',
-  accent: '#A78BFA'
-};
 
 /* 搜索结果标题里用的游戏短名：只用于 title，页面显示仍用完整游戏名 */
-const SEO_NAME = { ejl: '贰点零江湖', xxtl: '小小屠龙', ty: '桃园将帅录' };
+const SEO_NAME = { ejl: '贰点零江湖', xxtl: '小小屠龙', ty: '桃园将帅录', luna2: '露娜2' };
 
 /* 标题最多约 30 个汉字才会完整显示，超了就把游戏名换成短名、再去掉「攻略」两个字 */
 function seoTitle(head, gameKey) {
@@ -85,7 +72,7 @@ function seoDesc(gi) {
   return d;
 }
 
-const HERO = { ejl: 'assets/hero-ejl.jpg', xxtl: 'assets/hero-xxtl.jpg', ty: 'assets/hero-ty.jpg' };
+const HERO = { ejl: 'assets/hero-ejl.jpg', xxtl: 'assets/hero-xxtl.jpg', ty: 'assets/hero-ty.jpg', luna2: 'assets/luna2-hero.jpg' };
 const FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230B0D16'/%3E%3Crect x='5' y='5' width='5' height='22' fill='%23FF3D9A'/%3E%3Cg fill='%23ECEEEA'%3E%3Crect x='15' y='7' width='12' height='2'/%3E%3Crect x='15' y='14' width='12' height='2'/%3E%3Crect x='15' y='21' width='8' height='2'/%3E%3C/g%3E%3C/svg%3E";
 
 /* ---------- 工具 ---------- */
@@ -573,7 +560,7 @@ ${ORDER.map(k => GUIDES.filter(x => x.game === k).map(gi => `          <li><a hr
 /* ---------- 分站静态页 ----------
    分站内容原本只在首页 #/g/<key> 里，靠前端渲染 —— 搜索引擎看不到，也没法单独分享。
    这里把首页那段真实标记原样抽出来（单一数据来源，不重复维护），落成 /g/<key>/ 静态页。 */
-const GAME_IMG = { ejl: 'assets/ejl-hero.jpg', xxtl: 'assets/xxtl-siege.jpg', ty: 'assets/ty-key.jpg' };
+const GAME_IMG = { ejl: 'assets/ejl-hero.jpg', xxtl: 'assets/xxtl-siege.jpg', ty: 'assets/ty-key.jpg', luna2: 'assets/luna2-hero.jpg' };
 
 function gameBlock(key) {
   const html = fs.readFileSync('index.html', 'utf8');
@@ -668,117 +655,6 @@ function gamePage(key) {
   UP = '../../';
   return { key, path: 'g/' + key + '/index.html', html };
 }
-
-/* ---------- 公测预热页 /g/luna2/ ----------
-   新游还没开服，没有任何攻略可收录，所以不进 GUIDES / ORDER：
-   单独一页，主打「公测时间 + 开服前准备 + 客服入口」，公测后再转成正式分站。 */
-function lunaPage() {
-  const L = LAUNCH;
-  const canonical = SITE + 'g/' + L.id + '/';
-  const otherGames = ORDER.map(k => `<a class="ln-g" href="../${k}/" style="--ac:${GAMES[k].accent}">`
-    + `<b>${esc(GAMES[k].name)}</b><span>${esc(GAMES[k].tag)}</span></a>`).join('');
-
-  const body = `<section class="luna-hero" style="--ac:${L.accent}">
-  <div class="wrap">
-    <p class="luna-tag"><i></i>${esc(L.platform)} · 即将公测</p>
-    <h1 class="luna-title">${esc(L.name)}</h1>
-    <p class="luna-dek">官方公布的公测时间是 <b>${esc(L.date)}</b>，${esc(L.platform)}。开服前要准备的东西不多，但都值得现在动手：客户端、账号、以及开服当天的时间安排。</p>
-    <div class="launch-cd" data-launch="${L.iso}" data-launch-name="${esc(L.name)}" aria-label="距离公测">
-      <div class="cd-unit"><b data-cd="d">--</b><span>天</span></div>
-      <div class="cd-unit"><b data-cd="h">--</b><span>时</span></div>
-      <div class="cd-unit"><b data-cd="m">--</b><span>分</span></div>
-      <div class="cd-unit"><b data-cd="s">--</b><span>秒</span></div>
-    </div>
-    <p class="luna-note">距 ${esc(L.date)} 公测 · 具体开服时刻以官方公告为准 · 资质名称：${esc(L.legal)}</p>
-    <div class="luna-acts">
-      <button class="cs-pill" type="button" data-copy="${CS}"><b>游戏客服 ${CS}</b><span class="cs-act">复制</span></button>
-      <a class="luna-back" href="../../">先看另外三款的攻略<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 12h15"/><path d="M13 6l6 6-6 6"/></svg></a>
-    </div>
-  </div>
-</section>
-
-<div class="wrap luna-main">
-  <section class="luna-sec">
-    <h2 class="luna-h">公测信息</h2>
-    <dl class="luna-facts">
-      <div><dt>平台</dt><dd>${esc(L.platform)}<em>客户端运行，不是手机端</em></dd></div>
-      <div><dt>公测时间</dt><dd>${esc(L.date)}<em>暂定，官方若调整以公告为准</em></dd></div>
-      <div><dt>资质名称</dt><dd>${esc(L.legal)}<em>版号与备案使用的名称</em></dd></div>
-      <div><dt>宣传名称</dt><dd>${esc(L.name)}<em>官方宣传版本特色名</em></dd></div>
-    </dl>
-  </section>
-
-  <section class="luna-sec">
-    <h2 class="luna-h">开服前这四件事，提前做掉</h2>
-    <ol class="luna-list">
-      <li><b>先把客户端和磁盘留够</b><span>公测当天再下载，最容易堵在下载页。提前腾出空间、把安装包放好，开服时直接更新进游戏。</span></li>
-      <li><b>账号、实名、密保先过一遍</b><span>开服当天注册通道最挤。能提前注册的先注册，实名和密保一次弄完，别在排队时才发现要验证。</span></li>
-      <li><b>想清楚开服那天的时间</b><span>${esc(L.date)} 是周四，先看自己哪个时段真的能坐下来玩。开服高峰掉线很常见，硬挤不如错峰。</span></li>
-      <li><b>留一个能问到人的渠道</b><span>开服最容易卡在登录、选区、首充这几步。客服号在页面下方，复制后搜索添加，遇到问题直接问。</span></li>
-    </ol>
-  </section>
-
-  <section class="luna-sec">
-    <h2 class="luna-h">本站接下来会写什么</h2>
-    <p class="luna-p">公测当天起，按「先跑通、再算收益」的顺序补攻略：<b>开服首日流程</b> → <b>起号与资源优先级</b> → <b>日常与收益结构</b>。写完会进总站攻略库，也会出现在首页的「最近更新」里。</p>
-    <div class="luna-others">${otherGames}</div>
-  </section>
-
-  <section class="luna-sec luna-cta">
-    <div><b>要开服信息、下载地址或进玩家群？</b><span>客服号 ${CS}，复制后搜索添加。</span></div>
-    <button class="cs-pill" type="button" data-copy="${CS}"><b>游戏客服 ${CS}</b><span class="cs-act">复制</span></button>
-  </section>
-
-  <p class="luna-foot">本站为玩家向攻略站，与游戏厂商无隶属关系。游戏名称、公测时间以官方公布为准；页面标注的资质名称 ${esc(L.legal)} 为该游戏审批备案名称。</p>
-</div>`;
-
-  const jsonld = JSON.stringify({
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'VideoGame',
-        name: L.name,
-        alternateName: L.legal,
-        url: canonical,
-        inLanguage: 'zh-CN',
-        gamePlatform: 'PC',
-        applicationCategory: 'Game',
-        releaseDate: L.short,
-        publisher: { '@type': 'Organization', name: SITE_NAME }
-      },
-      {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: '首页', item: SITE },
-          { '@type': 'ListItem', position: 2, name: L.name, item: canonical }
-        ]
-      },
-      {
-        '@type': 'WebPage',
-        name: L.name + ' 公测时间与开服前准备',
-        url: canonical,
-        inLanguage: 'zh-CN',
-        isPartOf: { '@type': 'WebSite', name: SITE_NAME, url: SITE }
-      }
-    ]
-  });
-
-  UP = '../../';
-  const html = page({
-    title: L.name + ' 12.10 公测 · ' + L.platform + '开服准备',
-    desc: L.name + '（资质名称 ' + L.legal + '）' + L.platform + '，' + L.date + ' 公测。开服前要准备的四件事、公测信息与本站在公测后的攻略更新计划。',
-    canonical,
-    jsonld,
-    ogImage: SITE + 'assets/og-luna2.png',
-    ogType: 'website',
-    bodyClass: 'view-launch',
-    noData: true,
-    body
-  });
-  UP = '../../';
-  return { key: L.id, path: 'g/' + L.id + '/index.html', html };
-}
-
 
 function boardPage() {
   UP = '../';
@@ -899,7 +775,6 @@ inject('index.html', 'BUILD:NOSCRIPT', homeNoScript());
 const files = [];
 GUIDES.forEach(gi => files.push(articlePage(gi)));
 ORDER.forEach(k => files.push(gamePage(k)));
-files.push(lunaPage());
 
 files.forEach(f => {
   fs.mkdirSync(path.dirname(f.path), { recursive: true });
@@ -913,7 +788,6 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>${SITE}</loc><lastmod>${SITE_LASTMOD}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
 ${ORDER.map(k => `  <url><loc>${SITE}g/${k}/</loc><lastmod>${SITE_LASTMOD}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>`).join('\n')}
-  <url><loc>${SITE}g/${LAUNCH.id}/</loc><lastmod>${SITE_LASTMOD}</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>${SITE}board/</loc><lastmod>${SITE_LASTMOD}</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
 ${GUIDES.map(gi => `  <url><loc>${SITE}a/${gi.id}/</loc><lastmod>${gdate(gi)}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`).join('\n')}
 </urlset>

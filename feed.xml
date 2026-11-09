@@ -5,9 +5,41 @@
   <link>https://wgame-bc7.pages.dev/</link>
   <description>贰点零江湖、小小屠龙冰雪传奇、桃园：将帅录三大游戏的开荒路线、职业选择、打金交易、团战站位与材料行情，整理成能直接照着做的步骤，按游戏和分类就能查到。</description>
   <language>zh-cn</language>
-  <lastBuildDate>Fri, 06 Nov 2026 00:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Mon, 09 Nov 2026 00:00:00 GMT</lastBuildDate>
   <generator>build.mjs</generator>
   <atom:link href="https://wgame-bc7.pages.dev/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>摆摊开店全流程：贩卖与购入怎么选</title>
+    <link>https://wgame-bc7.pages.dev/a/luna2-stall/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/luna2-stall/</guid>
+    <category>露娜2：拾光之约</category>
+    <pubDate>Mon, 09 Nov 2026 00:00:00 GMT</pubDate>
+    <description>从技能栏到定价确认一共四步。开店容易，把东西卖出去靠的是定价对照。</description>
+  </item>
+  <item>
+    <title>法师修士转职加点：1 转技能取舍与 2 转任务</title>
+    <link>https://wgame-bc7.pages.dev/a/luna2-skill/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/luna2-skill/</guid>
+    <category>露娜2：拾光之约</category>
+    <pubDate>Mon, 09 Nov 2026 00:00:00 GMT</pubDate>
+    <description>技能训练窗口里每一级都要真金白银的 SP 和金币。法师修士两系怎么点、2 转任务在哪接，这一篇说清。</description>
+  </item>
+  <item>
+    <title>魔附系统怎么玩：宝石数量决定成败</title>
+    <link>https://wgame-bc7.pages.dev/a/luna2-mofu/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/luna2-mofu/</guid>
+    <category>露娜2：拾光之约</category>
+    <pubDate>Mon, 09 Nov 2026 00:00:00 GMT</pubDate>
+    <description>魔附是露娜2 里装备成型的核心一环：选对材料、攒够宝石，比点十次手快更有用。</description>
+  </item>
+  <item>
+    <title>挂机辅助设置全拆解：两页选项各管什么</title>
+    <link>https://wgame-bc7.pages.dev/a/luna2-auto/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/luna2-auto/</guid>
+    <category>露娜2：拾光之约</category>
+    <pubDate>Mon, 09 Nov 2026 00:00:00 GMT</pubDate>
+    <description>挂机不是点个按钮就走。移动还是定点、复活回哪、技能什么顺序，这四项决定了你睡一觉起来涨了多少。</description>
+  </item>
   <item>
     <title>红名与死亡掉落：动手之前先算这笔账</title>
     <link>https://wgame-bc7.pages.dev/a/xxtl-red/</link>
@@ -215,38 +247,6 @@
     <category>桃园：将帅录</category>
     <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
     <description>这游戏主打策略、不靠数值碾压，意味着耐心比充值更值钱。</description>
-  </item>
-  <item>
-    <title>推图卡关排查：站不住、打不动，还是节奏慢</title>
-    <link>https://wgame-bc7.pages.dev/a/ty-boss/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-boss/</guid>
-    <category>桃园：将帅录</category>
-    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
-    <description>卡关别急着升级。先看战报，判断是哪一种失败，再对症下药。</description>
-  </item>
-  <item>
-    <title>五大属性与 12 条转职分支加点</title>
-    <link>https://wgame-bc7.pages.dev/a/ty-attr/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-attr/</guid>
-    <category>桃园：将帅录</category>
-    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
-    <description>每级 5 点潜能，加点不是玄学。先把定位想清楚，再决定这 5 点往哪放。</description>
-  </item>
-  <item>
-    <title>零氪的第一桶金：摆摊、材料与装备保值</title>
-    <link>https://wgame-bc7.pages.dev/a/ejl-zero/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ejl-zero/</guid>
-    <category>贰点零江湖</category>
-    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
-    <description>这游戏不卖战力，钱只能从怪身上出来。搞清楚什么该捡、什么该摆、什么必须自己留着。</description>
-  </item>
-  <item>
-    <title>阵营战与攻城：破门、夺旗、守点三段节奏</title>
-    <link>https://wgame-bc7.pages.dev/a/ejl-war/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ejl-war/</guid>
-    <category>贰点零江湖</category>
-    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
-    <description>阵营战不是野外 PK 的放大版。谁顶门口、谁拆建筑、谁断补给，开打前就得定死。</description>
   </item>
 </channel>
 </rss>

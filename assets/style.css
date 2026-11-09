@@ -1813,7 +1813,7 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 }
 
 /* ---------- 点赞 ---------- */
-.vote-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.vote-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
 .vote{
   display:flex;align-items:center;gap:11px;padding:15px 18px;border-radius:14px;
   border:1px solid var(--line);background:var(--card);cursor:pointer;text-align:left;
@@ -1835,6 +1835,7 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 .vote[disabled]{cursor:default;opacity:.85}
 @media (max-width:760px){
   .vote-row{grid-template-columns:1fr;gap:9px}
+@media (max-width:1080px) and (min-width:761px){.vote-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
   .vote{padding:13px 16px}
 }
 
@@ -2186,6 +2187,12 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 .toc a.done::before{color:var(--ac);opacity:.7}
 .toc-float a.done{color:#6C7288}
 
+/* ============ 露娜2 分站：hero 倒计时与资质说明 ============ */
+.game-hero .launch-cd{margin-top:4px}
+.game-hero .cd-unit{min-width:56px;padding:7px 6px 5px}
+.game-hero .cd-unit b{font-size:19px}
+.luna-legal{margin-top:16px;font-size:11px;line-height:1.9;color:#5F6580}
+
 /* ============ 击杀掉落卡：读完一篇文章掉一件装备 ============ */
 .loot{
   position:fixed;right:22px;bottom:22px;z-index:940;width:304px;max-width:calc(100vw - 32px);
@@ -2243,33 +2250,7 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 @media (max-width:760px){.loot{left:12px;right:12px;bottom:12px;width:auto}}
 @media (prefers-reduced-motion:reduce){.loot{transition:none;transform:none}}
 
-/* ============ 公测预告：首页通栏横幅 ============ */
-.game-soon{
-  display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:26px;
-  margin-top:18px;padding:20px 22px;border-radius:16px;
-  border:1px solid rgba(167,139,250,.30);
-  background:
-    radial-gradient(88% 150% at 86% 6%,rgba(167,139,250,.20),transparent 62%),
-    linear-gradient(128deg,rgba(26,23,46,.94),rgba(13,13,22,.94));
-  transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .3s ease,box-shadow .4s ease;
-}
-.game-soon:hover{transform:translateY(-3px);border-color:rgba(167,139,250,.55);box-shadow:0 26px 54px -32px rgba(0,0,0,.95)}
-.gs-tag{
-  display:inline-flex;align-items:center;gap:7px;margin-bottom:9px;
-  font-size:11px;letter-spacing:.05em;color:#C4B5FD;
-}
-.gs-tag i{width:5px;height:5px;border-radius:50%;background:#A78BFA;box-shadow:0 0 9px #A78BFA;animation:gsPulse 2.4s ease-in-out infinite}
-@keyframes gsPulse{0%,100%{opacity:.45}50%{opacity:1}}
-.gs-name{font-size:20px;font-weight:800;letter-spacing:.005em;color:#fff;line-height:1.35}
-.gs-desc{margin-top:6px;font-size:12.5px;line-height:1.85;color:var(--muted);max-width:56ch}
-.gs-desc b{color:#E6E1FF;font-weight:700}
-.gs-legal{margin-top:7px;font-size:10.5px;letter-spacing:.02em;color:#5F6580}
-.gs-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
-.gs-go{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:#C4B5FD}
-.gs-go svg{transition:transform .3s ease}
-.game-soon:hover .gs-go svg{transform:translateX(3px)}
-
-/* 倒计时单位：横幅与分站页共用 */
+/* 倒计时单位：分站 hero 用 */
 .launch-cd{display:flex;align-items:flex-end;gap:8px}
 .cd-unit{
   min-width:54px;padding:8px 6px 6px;border-radius:10px;text-align:center;
@@ -2282,98 +2263,8 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 .cd-unit span{display:block;margin-top:1px;font-size:10px;letter-spacing:.1em;color:#7B8199}
 .cd-over{font-size:13px;font-weight:700;color:#C4B5FD}
 
-/* ============ 公测预热分站 /g/luna2/ ============ */
-.view-launch .progress{display:none}
-.luna-hero{
-  position:relative;padding:52px 0 42px;overflow:hidden;
-  background:
-    radial-gradient(70% 120% at 50% -10%,rgba(167,139,250,.22),transparent 66%),
-    radial-gradient(50% 90% at 88% 20%,rgba(139,92,246,.14),transparent 70%);
-  border-bottom:1px solid rgba(255,255,255,.06);
-}
-.luna-hero::after{
-  content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
-  background-image:radial-gradient(rgba(255,255,255,.16) .7px,transparent .8px);
-  background-size:64px 64px;
-  -webkit-mask-image:radial-gradient(70% 90% at 50% 0,#000,transparent 72%);
-  mask-image:radial-gradient(70% 90% at 50% 0,#000,transparent 72%);
-}
-.luna-hero .wrap{position:relative;z-index:1;text-align:center}
-.luna-tag{
-  display:inline-flex;align-items:center;gap:8px;margin-bottom:16px;
-  padding:5px 13px;border-radius:999px;font-size:11.5px;letter-spacing:.04em;
-  color:#D6CDFF;background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.34);
-}
-.luna-tag i{width:5px;height:5px;border-radius:50%;background:#A78BFA;box-shadow:0 0 10px #A78BFA}
-.luna-title{
-  font-size:clamp(30px,4.6vw,50px);font-weight:900;line-height:1.2;letter-spacing:-.01em;
-  color:#fff;
-  background:linear-gradient(176deg,#fff 30%,#CBBFFB 100%);
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-}
-.luna-dek{margin:14px auto 26px;max-width:58ch;font-size:14px;line-height:1.9;color:#A7ADCB}
-.luna-dek b{color:#fff;font-weight:700}
-.luna-hero .launch-cd{justify-content:center;gap:10px}
-.luna-hero .cd-unit{min-width:76px;padding:12px 8px 9px;border-radius:12px;background:rgba(255,255,255,.055)}
-.luna-hero .cd-unit b{font-size:34px}
-.luna-note{margin-top:14px;font-size:11.5px;color:#6F7593;letter-spacing:.01em}
-.luna-acts{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:22px;flex-wrap:wrap}
-.luna-back{
-  display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:#A7ADCB;
-  padding:7px 2px;border-bottom:1px solid rgba(255,255,255,.14);
-}
-.luna-back:hover{color:#fff;border-color:rgba(255,255,255,.4)}
-
-.luna-main{padding:30px 0 60px;max-width:880px}
-.luna-sec{
-  padding:24px 26px;border-radius:16px;margin-bottom:16px;
-  border:1px solid rgba(255,255,255,.075);background:rgba(255,255,255,.024);
-}
-.luna-h{font-size:16px;font-weight:800;color:#fff;margin-bottom:14px;letter-spacing:.01em}
-.luna-facts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.luna-facts div{padding:12px 14px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.055)}
-.luna-facts dt{font-size:10.5px;letter-spacing:.08em;color:#7B8199}
-.luna-facts dd{margin-top:3px;font-size:14px;font-weight:700;color:#fff}
-.luna-facts dd em{display:block;margin-top:3px;font-size:10.5px;font-weight:400;font-style:normal;color:#6F7593}
-.luna-list{list-style:none;counter-reset:ln;display:grid;gap:14px}
-.luna-list li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px;align-items:start}
-.luna-list li::before{
-  counter-increment:ln;content:counter(ln,decimal-leading-zero);
-  display:grid;place-items:center;height:26px;border-radius:7px;
-  font-size:11px;font-weight:800;color:#C4B5FD;
-  background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.26);
-  font-variant-numeric:tabular-nums;
-}
-.luna-list b{display:block;font-size:14px;color:#fff;font-weight:700;line-height:1.6}
-.luna-list span{display:block;margin-top:4px;font-size:12.5px;line-height:1.85;color:var(--muted)}
-.luna-p{font-size:13px;line-height:1.9;color:var(--muted)}
-.luna-p b{color:#E6E1FF}
-.luna-others{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:16px}
-.ln-g{
-  display:block;padding:12px 13px;border-radius:10px;
-  border:1px solid rgba(255,255,255,.075);background:rgba(255,255,255,.028);
-  border-left:2px solid var(--ac);transition:background .25s ease,transform .25s ease;
-}
-.ln-g:hover{background:rgba(255,255,255,.055);transform:translateY(-2px)}
-.ln-g b{display:block;font-size:12.5px;color:#fff;font-weight:700;line-height:1.4}
-.ln-g span{display:block;margin-top:3px;font-size:10.5px;color:#6F7593}
-.luna-cta{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.luna-cta b{display:block;font-size:13.5px;color:#fff}
-.luna-cta span{display:block;margin-top:3px;font-size:11.5px;color:#6F7593}
-.luna-foot{font-size:11px;line-height:1.9;color:#5F6580;padding:0 2px}
 
 @media (max-width:760px){
-  .game-soon{grid-template-columns:1fr;gap:16px;padding:17px 16px;border-radius:14px}
-  .gs-right{align-items:flex-start}
-  .luna-hero{padding:34px 0 30px}
-  .luna-hero .cd-unit{min-width:60px}
-  .luna-hero .cd-unit b{font-size:25px}
-  .luna-sec{padding:18px 16px;border-radius:13px}
-  .luna-facts{grid-template-columns:1fr}
-  .luna-others{grid-template-columns:1fr}
-  .luna-cta{flex-direction:column;align-items:flex-start}
 }
 @media (prefers-reduced-motion:reduce){
-  .gs-tag i{animation:none}
-  .game-soon,.ln-g,.gs-go svg{transition:none}
 }
