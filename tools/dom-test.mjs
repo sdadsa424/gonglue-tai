@@ -918,6 +918,16 @@ ok('露娜2 配图完整：4 篇攻略的 img 块都有 jpg/webp/avif 三件套'
   return Array.from(bases).every(b => ['jpg', 'webp', 'avif'].every(e => fsMod2.existsSync('assets/' + b + '.' + e)));
 })());
 ok('露娜2 样式：投票 4 列 + hero 倒计时缩小版 + 资质说明；预热页样式零残留', /\.vote-row\{display:grid;grid-template-columns:repeat\(4,minmax\(0,1fr\)\)/.test(cssText) && /\.game-hero \.launch-cd\{margin-top:4px\}/.test(cssText) && /\.luna-legal\{/.test(cssText) && !/game-soon|luna-hero|luna-list/.test(cssText));
+ok('露娜2 官方图集：3 张三件套 + figure 结构', (() => {
+  const gal = fsMod2.readFileSync('g/luna2/index.html', 'utf8');
+  if (!/官方图集/.test(gal)) return false;
+  const figs = (gal.match(/<div class="luna-gal">[\s\S]*?<\/div>/) || [''])[0];
+  const count = (figs.match(/<figure>/g) || []).length;
+  if (count !== 3) return false;
+  const bases = ['luna2-art-village', 'luna2-ss-dress', 'luna2-classic'];
+  return bases.every(b => ['jpg', 'webp', 'avif'].every(e => fsMod2.existsSync('assets/' + b + '.' + e)))
+    && bases.every(b => figs.includes(b + '.avif') && figs.includes(b + '.webp') && figs.includes(b + '.jpg'));
+})());
 
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
 console.log(`\n结果：${pass} 通过 / ${fail} 失败`);
