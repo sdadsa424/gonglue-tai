@@ -315,6 +315,24 @@ const PAGE_SCRIPT = `<script>
 /* Cloudflare Web Analytics：账户面板生成的 beacon token，全站页面统一注入 */
 const CF_BEACON = '<!-- Cloudflare Web Analytics --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon=\'{"token": "633cfde81fda41078f9b04e89ba0ea4e"}\'></script><!-- End Cloudflare Web Analytics -->';
 
+/* 站长平台验证码：build/seo.json 里填哪个，就在所有页面输出对应 meta；留空不输出 */
+const SEO_VERIFY = (() => {
+  try { return JSON.parse(fs.readFileSync('build/seo.json', 'utf8')); } catch (e) { return {}; }
+})();
+const VERIFY_META = (() => {
+  const NAME = {
+    google: 'google-site-verification',
+    bing: 'msvalidate.01',
+    baidu: 'baidu-site-verification',
+    sogou: 'sogou_site_verification',
+    so360: '360-site-verification'
+  };
+  return Object.keys(NAME)
+    .filter(k => SEO_VERIFY[k])
+    .map(k => `<meta name="${NAME[k]}" content="${esc(String(SEO_VERIFY[k]))}">`)
+    .join('\n');
+})();
+
 function page({ title, desc, canonical, jsonld, body, ogImage, ogType = 'article', bodyClass = '', guideId = '', headExtra = '', noData = false }) {
   return `<!DOCTYPE html>
 <html lang="zh-CN">
@@ -327,8 +345,8 @@ function page({ title, desc, canonical, jsonld, body, ogImage, ogType = 'article
 (function(){var h=location.hostname;if(!/(^|\\.)github\\.io$/.test(h))return;var p=location.pathname.replace(/^\\/gonglue-tai(?=\\/|$)/,'')||'/';location.replace('${SITE_ORIGIN}'+p+location.search+location.hash);})();</script>
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
-<link rel="canonical" href="${canonical}">
-<link rel="alternate" type="application/rss+xml" title="${SITE_NAME} · 最新更新" href="${SITE}feed.xml">
+${/noindex/.test(headExtra) ? '' : '<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">\n'}<link rel="canonical" href="${canonical}">
+${VERIFY_META ? VERIFY_META + '\n' : ''}<link rel="alternate" type="application/rss+xml" title="${SITE_NAME} · 最新更新" href="${SITE}feed.xml">
 <meta name="theme-color" content="#090A12">
 <meta property="og:type" content="${ogType}">
 <meta property="og:site_name" content="${SITE_NAME}">
@@ -528,8 +546,9 @@ function homeHead() {
     ]
   });
   return `<meta name="theme-color" content="#090A12">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
 <link rel="canonical" href="${SITE}">
-<link rel="alternate" type="application/rss+xml" title="${SITE_NAME} · 最新更新" href="${SITE}feed.xml">
+${VERIFY_META ? VERIFY_META + '\n' : ''}<link rel="alternate" type="application/rss+xml" title="${SITE_NAME} · 最新更新" href="${SITE}feed.xml">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="${SITE_NAME}">
 <meta property="og:locale" content="zh_CN">

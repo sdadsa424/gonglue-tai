@@ -833,6 +833,19 @@ ok('留言板昵称限 16 字、正文限 300 字', boardDoc.getElementById('bdN
 ok('留言板有无障碍播报区', boardDoc.getElementById('bdMsg')?.getAttribute('aria-live') === 'polite');
 ok('页脚有留言板入口（首页/文章页）', homeDoc.querySelector('.foot-nav a[href="board/"]') && !!axStatic.match(/foot-nav[\s\S]*?href="\.\.\/\.\.\/board\/"/));
 ok('sitemap 收录留言板', fsSocial.readFileSync('sitemap.xml', 'utf8').includes('<loc>https://wgame-bc7.pages.dev/board/</loc>'));
+ok('收录准备：robots 声明 sitemap + 全站 robots meta + 站长验证注入钩子', (() => {
+  const rb = fsSocial.readFileSync('robots.txt', 'utf8');
+  const home = fsSocial.readFileSync('index.html', 'utf8');
+  const art = fsSocial.readFileSync('a/luna2-mofu/index.html', 'utf8');
+  const bd = fsSocial.readFileSync('build/build.mjs', 'utf8');
+  return /Sitemap: https:\/\/wgame-bc7\.pages\.dev\/sitemap\.xml/.test(rb)
+    && /name="robots" content="index,follow,max-image-preview:large,max-snippet:-1"/.test(home)
+    && /name="robots" content="index,follow,max-image-preview:large,max-snippet:-1"/.test(art)
+    && /build\/seo\.json/.test(bd) && /google-site-verification/.test(bd) && /baidu-site-verification/.test(bd)
+    && fsSocial.existsSync('build/seo.json')
+    && fsSocial.readdirSync('.').some(f => /^[0-9a-f]{32}\.txt$/.test(f))
+    && fsSocial.existsSync('tools/indexnow.mjs') && fsSocial.existsSync('tools/baidu-push.mjs');
+})());
 const apiJs = fsSocial.readFileSync('functions/api/[[path]].js', 'utf8');
 ok('API 含四个路由与限流', /route === 'notice'/.test(apiJs) && /route === 'like'/.test(apiJs) && /route === 'comment'/.test(apiJs) && /60 \* 1000/.test(apiJs));
 ok('公告支持 DELETE 单条/清空（需 x-admin-key）', /method === 'DELETE'/.test(apiJs) && /DELETE FROM notices WHERE id = \?/.test(apiJs) && /id === 'all'/.test(apiJs));
