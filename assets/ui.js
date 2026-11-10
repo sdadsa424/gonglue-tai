@@ -1268,31 +1268,51 @@
       }
       return o;
     }
-    function getJSON(url, ms) {
+    function getJSON(url, ms, ac) {
       if (!window.fetch) return Promise.reject(new Error('no fetch'));
       var opt = { cache: 'no-store' };
       var C = window.AbortController, timer = 0;
-      if (C) { var ac = new C(); opt.signal = ac.signal; timer = setTimeout(function () { ac.abort(); }, ms || 7000); }
+      if (C && !ac) ac = new C();
+      if (ac) {
+        opt.signal = ac.signal;
+        timer = setTimeout(function () { ac.abort(); }, ms || 7000);
+      }
       return fetch(url, opt).then(function (r) {
         if (!r.ok) throw new Error('http ' + r.status);
         return r.json();
       }).then(function (j) { if (timer) clearTimeout(timer); return j; },
               function (e) { if (timer) clearTimeout(timer); throw e; });
     }
+    /* IP 定位：两个源并行竞速，谁先返回有效坐标就用谁，另一个立刻中止。
+       旧版串行 fallback 要等首选失败/超时才试备用（最坏 12s）。 */
     function locateByIP() {
-      return getJSON('https://ipwho.is/?fields=success,latitude,longitude,city', 6000)
-        .then(function (j) {
-          if (!j || j.success === false || !j.latitude) throw new Error('geo');
-          ipCity = j.city || '';
-          return { lat: j.latitude, lon: j.longitude, city: ipCity, src: 'ip' };
-        })
-        .catch(function () {
-          return getJSON('https://ipapi.co/json/', 6000).then(function (j) {
-            if (!j || !j.latitude) throw new Error('geo2');
+      return new Promise(function (resolve, reject) {
+        var C = window.AbortController;
+        var urls = [
+          'https://ipwho.is/?fields=success,latitude,longitude,city',
+          'https://ipapi.co/json/'
+        ];
+        var acs = urls.map(function () { return C ? new C() : null; });
+        var done = false, failed = 0;
+        urls.forEach(function (url, idx) {
+          getJSON(url, 6000, acs[idx]).then(function (j) {
+            if (done) return;
+            var ok = idx === 0
+              ? (j && j.success !== false && j.latitude)
+              : (j && j.latitude);
+            if (!ok) throw new Error('geo' + idx);
+            done = true;
             ipCity = j.city || '';
-            return { lat: j.latitude, lon: j.longitude, city: ipCity, src: 'ip' };
+            acs.forEach(function (ac, k) {
+              if (k !== idx && ac) { try { ac.abort(); } catch (e) {} }
+            });
+            resolve({ lat: j.latitude, lon: j.longitude, city: ipCity, src: 'ip' });
+          }).catch(function () {
+            if (done) return;
+            if (++failed === urls.length) reject(new Error('geo failed'));
           });
         });
+      });
     }
     function currentPos() {
       var s = savedLoc();

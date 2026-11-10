@@ -142,6 +142,7 @@ let UP = '../../';
 
 /* 顶栏天气会连两个外部接口、页脚有第三方统计：提前建连，省掉两轮 TLS 握手 */
 const PRECONNECT = `<link rel="preconnect" href="https://ipwho.is" crossorigin>
+<link rel="preconnect" href="https://ipapi.co" crossorigin>
 <link rel="preconnect" href="https://api.open-meteo.com" crossorigin>
 <link rel="dns-prefetch" href="https://busuanzi.ibruce.info">`;
 

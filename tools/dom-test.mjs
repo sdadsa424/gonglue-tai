@@ -489,10 +489,25 @@ ok('拿到天气后展开', !!wtWx && !wtWx.hasAttribute('hidden'));
 ok('温度四舍五入到整数度', wtd.querySelector('[data-wt-temp]').textContent === '26°', wtd.querySelector('[data-wt-temp]').textContent);
 ok('晴天出太阳图标', !!wtd.querySelector('.wt-ico .wi-sun'));
 ok('悬停文案带城市与天气', /合肥/.test(wtWx.getAttribute('title') || '') && /晴/.test(wtWx.getAttribute('title') || ''), wtWx.getAttribute('title'));
-ok('请求先定位再查天气', wtPage.window.__fetchCalls.length === 2 &&
-  /ipwho\.is/.test(wtPage.window.__fetchCalls[0]) && /open-meteo/.test(wtPage.window.__fetchCalls[1]),
+ok('两个 IP 源并行竞速，取到坐标后再查天气', wtPage.window.__fetchCalls.length === 3 &&
+  /ipwho\.is/.test(wtPage.window.__fetchCalls[0]) &&
+  /ipapi\.co/.test(wtPage.window.__fetchCalls[1]) &&
+  /open-meteo/.test(wtPage.window.__fetchCalls[2]),
   wtPage.window.__fetchCalls.join(' | '));
 wtPage.window.close();
+
+const geoFailPage = await make(BASE, {}, {
+  fetchStub: url => /ipwho\.is/.test(url)
+    ? Promise.reject(new Error('primary down'))
+    : Promise.resolve({ ok: true, json: () => Promise.resolve(/open-meteo/.test(url) ? WXOK : GEO) })
+});
+await wait(400);
+ok('首选定位源失败时备用源仍能出天气', (() => {
+  const w = geoFailPage.window.document.querySelector('[data-wt-wx]');
+  const tEl = geoFailPage.window.document.querySelector('[data-wt-temp]');
+  return !!w && !w.hasAttribute('hidden') && !!tEl && tEl.textContent === '26°';
+})());
+geoFailPage.window.close();
 
 const nightPage = await make(BASE, {}, {
   fetchStub: wxStub(GEO, { current: { temperature_2m: 3.2, weather_code: 0, is_day: 0 } })
@@ -528,6 +543,11 @@ failPage.window.close();
 const artWt = fsm.readFileSync('a/xxtl-siege/index.html', 'utf8');
 ok('攻略页也带时间天气块', /data-wt-m/.test(artWt) && /class="wt"/.test(artWt));
 const cssWt = fsMod2.readFileSync('assets/style.css', 'utf8');
+const offTiny = fsm.readFileSync('offline.html', 'utf8');
+const tinySizes = [...cssWt.matchAll(/font-size:\s*(\d+(?:\.\d+)?)px/g)]
+  .concat([...offTiny.matchAll(/font-size:\s*(\d+(?:\.\d+)?)px/g)])
+  .map(m => Number(m[1])).filter(n => n < 12);
+ok('全站小字统一到 12px 及以上', tinySizes.length === 0, tinySizes.join(','));
 ok('天气动效在减弱动效时关闭', /@media \(prefers-reduced-motion:no-preference\)\{[\s\S]*\.wi-rain \.d\{animation/.test(cssWt));
 
 /* 定位：面板、手动选城市、精确定位 */
@@ -722,6 +742,7 @@ console.log('\n[加载速度与 404]');
 const nfHomeDoc = (await import('node:fs')).readFileSync('index.html', 'utf8');
 /* preconnect：天气链路两跳 + 第三方统计 */
 ok('首页预连接天气接口', /<link rel="preconnect" href="https:\/\/ipwho\.is" crossorigin>/.test(nfHomeDoc) && /<link rel="preconnect" href="https:\/\/api\.open-meteo\.com" crossorigin>/.test(nfHomeDoc));
+ok('备用 IP 定位源已预连接', /preconnect" href="https:\/\/ipapi\.co"/.test(nfHomeDoc) && /ipapi\.co/.test(axStatic));
 ok('文章页预连接天气接口', /preconnect" href="https:\/\/api\.open-meteo\.com/.test(axStatic));
 ok('统计域名有 dns-prefetch', /<link rel="dns-prefetch" href="https:\/\/busuanzi\.ibruce\.info">/.test(axStatic));
 /* 图片异步解码 */
