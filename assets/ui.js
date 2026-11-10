@@ -2093,7 +2093,7 @@
       { id: 'read_10', icon: '📚', name: '攻略迷', desc: '读满 10 篇攻略' },
       { id: 'read_all', icon: '👑', name: '全图鉴收藏家', desc: '读完全部攻略' },
       { id: 'like_1', icon: '👍', name: '首赞见证', desc: '给喜欢的游戏投出第一票' },
-      { id: 'like_all', icon: '💜', name: '三位一体', desc: '三款游戏各投一票' },
+      { id: 'like_all', icon: '💜', name: '三位一体', desc: '任意 3 款游戏各投一票' },
       { id: 'luck_3', icon: '🎲', name: '命运赌徒', desc: '掷 3 次「手气不错」' },
       { id: 'comment_1', icon: '💬', name: '留言先锋', desc: '在留言板留下第一句话' },
       { id: 'visit_3', icon: '🌙', name: '老朋友', desc: '累计 3 天来访' },
