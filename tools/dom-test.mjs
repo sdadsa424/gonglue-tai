@@ -883,7 +883,7 @@ ok('剑意样式：画布不拦点击、层级低于顶栏下拉、减弱动态�
 
 ok('题图已撤除：50 篇文章头部不再有 .a-cover，样式与脚本零残留', (() => {
   const dirs = fsMod2.readdirSync('a');
-  return dirs.length === 50
+  return dirs.length === 51
     && dirs.every(d => !/a-cover/.test(fsMod2.readFileSync(`a/${d}/index.html`, 'utf8')))
     && !/a-cover|ac-glyph|coverFx/.test(cssText + uiJs);
 })());
@@ -907,12 +907,12 @@ ok('露娜2 进攻略库：GAMES.luna2 + 7 篇文章（a/luna2-*）+ 新分类�
   const dirs = fsMod2.readdirSync('a').filter(d => d.startsWith('luna2-'));
   return data.includes("id: 'luna2'") && dirs.length === 7 && data.includes("sys: '系统玩法'");
 })());
-ok('露娜2 首页集成：第 4 张 poster / game-card / 投票按钮，统计 5 款 50 篇 7 分类，旧横幅零残留', (() => {
+ok('露娜2 首页集成：第 4 张 poster / game-card / 投票按钮，统计 5 款 51 篇 7 分类，旧横幅零残留', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   return (home.match(/class="poster"/g) || []).length === 5
     && (home.match(/class="game-card"/g) || []).length === 5
     && home.includes('data-like="luna2"') && home.includes('data-like="yxlc"')
-    && home.includes('<b id="statGames">5</b>') && home.includes('<b id="statGuides">50</b>') && home.includes('<b id="statCats">7</b>')
+    && home.includes('<b id="statGames">5</b>') && home.includes('<b id="statGuides">51</b>') && home.includes('<b id="statCats">7</b>')
     && /const ORDER = \['ejl', 'xxtl', 'ty', 'luna2', 'yxlc'\];/.test(home)
     && home.includes('五款游戏')
     && !/game-soon|gs-tag/.test(home);
