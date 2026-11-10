@@ -587,6 +587,38 @@ ${ORDER.map(k => GUIDES.filter(x => x.game === k).map(gi => `          <li><a hr
     </noscript>`;
 }
 
+/* ---------- 首页全站目录 ----------
+   五款游戏、全部攻略的静态索引：站内一眼跳转，同时给搜索引擎铺满内链。
+   数据全部来自 assets/data.js，重建即自动同步，永远不会和攻略篇数脱节。 */
+function catalogBlock() {
+  const cols = ORDER.map(k => {
+    const g = GAMES[k];
+    const list = GUIDES.filter(x => x.game === k);
+    return `      <div class="cat-col" style="--ac:${g.accent}">
+        <a class="cat-g" href="g/${k}/" title="看 ${esc(g.name)} 全部攻略">
+          <span class="cat-dot" aria-hidden="true"></span>
+          <b>${esc(g.name)}</b>
+          <span class="cat-n">${list.length} 篇</span>
+          <span class="cat-go" aria-hidden="true">→</span>
+        </a>
+        <ol class="cat-list">
+${list.map(gi => `          <li><a href="a/${gi.id}/"><span>${esc(gi.title)}</span></a></li>`).join('\n')}
+        </ol>
+      </div>`;
+  }).join('\n');
+
+  return `<div class="sec-head">
+      <div>
+        <h2 class="sec-title" id="catalogTitle">全站目录</h2>
+        <p class="sec-desc">五款游戏的全部 ${GUIDES.length} 篇攻略，按游戏分组平铺。点游戏名进分站看全部，点标题直接打开那一篇。</p>
+      </div>
+      <p class="sec-note">${ORDER.length} 款游戏 · ${GUIDES.length} 篇攻略</p>
+    </div>
+    <div class="cat-grid">
+${cols}
+    </div>`;
+}
+
 /* ---------- 分站静态页 ----------
    分站内容原本只在首页 #/g/<key> 里，靠前端渲染 —— 搜索引擎看不到，也没法单独分享。
    这里把首页那段真实标记原样抽出来（单一数据来源，不重复维护），落成 /g/<key>/ 静态页。 */
@@ -805,6 +837,7 @@ function inject(file, marker, content) {
 
 inject('index.html', 'BUILD:HEAD', homeHead());
 inject('index.html', 'BUILD:NOSCRIPT', homeNoScript());
+inject('index.html', 'BUILD:CATALOG', catalogBlock());
 
 
 const files = [];
