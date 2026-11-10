@@ -792,13 +792,34 @@
           }
         }, { rootMargin: '0px 0px -6% 0px', threshold: 0.01 });
         var fold = window.innerHeight * 0.85;
+        var pending = [];
         for (var b = 0; b < blocks.length; b++) {
           var el = blocks[b];
           var top = el.getBoundingClientRect ? el.getBoundingClientRect().top : 0;
           if (top < fold) continue; /* 已在首屏：直接可见，不做位移动画 */
           el.classList.add('fx');
           io.observe(el);
+          pending.push(el);
         }
+        /* 兜底：iOS Safari 在锚点跳转/程序化滚动后可能不触发 IntersectionObserver，
+           正文块会一直停在 opacity:0 —— scroll 扫描强制补显 */
+        function sweepFx() {
+          if (!pending.length) return;
+          pending = pending.filter(function (el) {
+            if (el.classList.contains('fx-in')) return false;
+            var r = el.getBoundingClientRect();
+            if (r.top < window.innerHeight && r.bottom > 0) { el.classList.add('fx-in'); return false; }
+            return true;
+          });
+          if (!pending.length) {
+            window.removeEventListener('scroll', sweepFx);
+            window.removeEventListener('resize', sweepFx);
+          }
+        }
+        window.addEventListener('scroll', sweepFx, { passive: true });
+        window.addEventListener('resize', sweepFx);
+        setTimeout(sweepFx, 800);
+        setTimeout(sweepFx, 1600);
       }
     }
 

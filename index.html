@@ -1530,15 +1530,36 @@ window.addEventListener('resize', onScroll);
       entries.forEach(function (en) {
         if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
       });
-    }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
+    }, { threshold: 0, rootMargin: '0px 0px -6% 0px' });
+    var pending = [];
     els.forEach(function (el) {
       var r = el.getBoundingClientRect();
       if (r.top < window.innerHeight && r.bottom > 0) {
         el.classList.add('in');
       } else {
         io.observe(el);
+        pending.push(el);
       }
     });
+    /* 兜底：iOS Safari 在程序化平滑滚动（底部 tab / 板块跳转）后可能不触发
+       IntersectionObserver，段落会一直停在 opacity:0 —— 用 scroll 扫描强制补显 */
+    function sweep() {
+      if (!pending.length) return;
+      pending = pending.filter(function (el) {
+        if (el.classList.contains('in')) return false;
+        var r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight && r.bottom > 0) { el.classList.add('in'); return false; }
+        return true;
+      });
+      if (!pending.length) {
+        window.removeEventListener('scroll', sweep);
+        window.removeEventListener('resize', sweep);
+      }
+    }
+    window.addEventListener('scroll', sweep, { passive: true });
+    window.addEventListener('resize', sweep);
+    setTimeout(sweep, 800);   /* 平滑滚动到位后的兜底 */
+    setTimeout(sweep, 1600);
   }
   var topbar = document.querySelector('.topbar');
   function onTopbarScroll() { topbar.classList.toggle('scrolled', window.scrollY > 8); }
