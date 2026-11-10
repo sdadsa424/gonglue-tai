@@ -8,7 +8,7 @@
   i2.jpg  2048x1216 茅台转盘活动界面             → 图集（活动展示）
   i3.jpg  512x512  MU 徽标                       → 图集
 """
-from PIL import Image
+from PIL import Image, ImageFilter, ImageEnhance
 import os
 
 SRC = r'C:/Users/老王/AppData/Local/Temp/yximg'
@@ -52,11 +52,25 @@ hero = scene.resize((1264, 711), Image.LANCZOS)
 save3(hero, 'yxlc-hero', q_avif=52)
 save3(hero.resize((960, 540), Image.LANCZOS), 'yxlc-hero_960w', q_avif=52)
 
-# ---------- 竖版 poster 750x1000 + 480w：取场景图左侧三职业角色区 ----------
-w, h = scene.size                      # 2048x1152
-pw = int(h * 3 / 4)                    # 864
-x0 = 40                                # 角色群偏左，稍微留出仙踪林边缘
-poster = scene.crop((x0, 0, x0 + pw, h)).resize((750, 1000), Image.LANCZOS)
+# ---------- 竖版 poster 750x1000 + 480w：官方主视觉 i14.jpg（2848x1600）完整图 + 模糊延展 ----------
+keyart = load('i14.jpg')               # 2848x1600
+KW, KH = 1200, 1600
+kbw = 1600 * 3 // 4                    # 背景居中裁 3:4
+kbg = keyart.crop(((2848 - kbw) // 2, 0, (2848 - kbw) // 2 + kbw, 1600)).resize((KW, KH), Image.LANCZOS)
+kbg = kbg.filter(ImageFilter.GaussianBlur(48))
+kbg = ImageEnhance.Brightness(kbg).enhance(0.72)
+kfg = keyart.resize((KW, 675), Image.LANCZOS)   # 整图完整缩放
+kmask = Image.new('L', (KW, 675), 255)
+_kpx = kmask.load()
+_F = 60
+for _y in range(_F):
+    _a = int(255 * _y / _F)
+    for _x in range(KW):
+        _kpx[_x, _y] = _a
+        _kpx[_x, 674 - _y] = _a
+poster = kbg.copy()
+poster.paste(kfg, (0, (KH - 675) // 2), kmask)
+poster = poster.resize((750, 1000), Image.LANCZOS)
 save3(poster, 'hero-yxlc', q_avif=52)
 save3(poster.resize((480, 640), Image.LANCZOS), 'hero-yxlc_480w', q_avif=52)
 
@@ -72,8 +86,8 @@ save3(s_ret.resize((960, 540), Image.LANCZOS), 'yxlc-slide-return_960w', q_avif=
 gal1 = scene.resize((1600, 900), Image.LANCZOS)
 save3(gal1, 'yxlc-art-scene', q_avif=55)
 
-wh, ww = wheel.size                   # 2048x1216
-gal2 = wheel.crop((0, (wh - int(ww * 9 / 16)) // 2, ww, (wh + int(ww * 9 / 16)) // 2)).resize((1600, 900), Image.LANCZOS)
+ww, wh = wheel.size                   # 2048x1216（宽x高）
+gal2 = wheel.resize((1600, int(1600 * wh / ww)), Image.LANCZOS)  # 保持原比例，不再裁切
 save3(gal2, 'yxlc-event-wheel', q_avif=55)
 
 save3(war, 'yxlc-poster-war', q_jpg=86, q_webp=84, q_avif=58)
