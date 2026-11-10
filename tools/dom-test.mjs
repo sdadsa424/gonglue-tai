@@ -988,6 +988,31 @@ ok('移动端横向筛选行可键盘聚焦且有分组标签', (() => {
     && /id="filterCat"[^>]*role="group"[^>]*aria-label="[^"]*"[^>]*tabindex="0"/.test(h);
 })());
 
+/* ---------- 回归护栏：贰点零江湖官网「游戏特色」图 ---------- */
+ok('ejl 分站 hero 轮播：官网 3 张特色图（jpg/webp/avif + 960w）', (() => {
+  const g = fsMod2.readFileSync('g/ejl/index.html', 'utf8');
+  const car = (g.match(/<div class="art hero-carousel"[\s\S]*?<\/picture>\s*<\/div>/) || [''])[0];
+  if ((car.match(/<picture class="hc/g) || []).length !== 3) return false;
+  const bases = ['boss', 'pet', 'qi'];
+  return bases.every(b => ['jpg', 'webp', 'avif'].every(e =>
+    fsMod2.existsSync('assets/ejl-feat-' + b + '.' + e)
+    && fsMod2.existsSync('assets/ejl-feat-' + b + '_960w.' + e)))
+    && bases.every(b => car.includes('ejl-feat-' + b + '.avif') && car.includes('ejl-feat-' + b + '.jpg'))
+    && /heroCarousel/.test(uiJs);
+})());
+ok('ejl 官方特色图集：5 张原图完整展示、三件套齐全且首页视图同步', (() => {
+  const g = fsMod2.readFileSync('g/ejl/index.html', 'utf8');
+  const home = fsMod2.readFileSync('index.html', 'utf8');
+  const gal = (g.match(/<div class="luna-gal">[\s\S]*?<\/div>/) || [''])[0];
+  if ((gal.match(/<figure>/g) || []).length !== 5) return false;
+  const bases = ['ejl-feat-boss', 'ejl-feat-pet', 'ejl-feat-qi', 'ejl-feat-classic', 'ejl-feat-poster'];
+  return bases.every(b => ['jpg', 'webp', 'avif'].every(e => fsMod2.existsSync('assets/' + b + '.' + e)))
+    && bases.every(b => gal.includes(b + '.avif') && gal.includes(b + '.webp') && gal.includes(b + '.jpg'))
+    && (gal.match(/<figcaption>/g) || []).length === 5
+    && /\.luna-gal img\{[^}]*object-fit:contain/.test(cssText)
+    && home.includes('游戏特色 · 官方图集') && home.includes('图片版权归原厂商所有');
+})());
+
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
 console.log(`\n结果：${pass} 通过 / ${fail} 失败`);
 process.exit(fail ? 1 : 0);
