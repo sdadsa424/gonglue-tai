@@ -105,6 +105,38 @@
     <description>BOSS 掉的不只是装备，还有全服关注的稀有材料。摸清刷新节奏，散人也能从大佬嘴里分一口。</description>
   </item>
   <item>
+    <title>轻功、师徒与结拜：不花钱的三条捷径</title>
+    <link>https://wgame-bc7.pages.dev/a/ejl-social/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ejl-social/</guid>
+    <category>贰点零江湖</category>
+    <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
+    <description>不用坐骑的轻功、能带开荒的师傅、一起刷装备的结拜兄弟——官网明说这三套系统都原样开放，而且都不靠充值。</description>
+  </item>
+  <item>
+    <title>气功武学加点：端游老方案怎么平移</title>
+    <link>https://wgame-bc7.pages.dev/a/ejl-qigong/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ejl-qigong/</guid>
+    <category>贰点零江湖</category>
+    <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
+    <description>官网明确气功加点逻辑和端游对齐，没有另起一套天赋树。老玩家照着当年点，新人则要先分清刷怪和打架是两套需求。</description>
+  </item>
+  <item>
+    <title>门派从建到打：招人、抢地盘与门派战</title>
+    <link>https://wgame-bc7.pages.dev/a/ejl-guild/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ejl-guild/</guid>
+    <category>贰点零江湖</category>
+    <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
+    <description>门派不只是多个聊天频道。官网把建帮、抢地盘、门派战放在同一条线里，缺人、缺统一上线时间，哪一步都推不动。</description>
+  </item>
+  <item>
+    <title>正邪双派怎么选：专属地图、阵营技能与野外开战</title>
+    <link>https://wgame-bc7.pages.dev/a/ejl-faction/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ejl-faction/</guid>
+    <category>贰点零江湖</category>
+    <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
+    <description>开局那一选不是换个称号：两派各有独立地图、阵营技能和剧情线，还决定了你以后在野外被谁追、跟谁组队。</description>
+  </item>
+  <item>
     <title>摆摊开店全流程：贩卖与购入怎么选</title>
     <link>https://wgame-bc7.pages.dev/a/luna2-stall/</link>
     <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/luna2-stall/</guid>
@@ -215,38 +247,6 @@
     <category>桃园：将帅录</category>
     <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
     <description>起号的核心不是充得越多越好，而是每一档的资源能不能接上你的养成节奏。三档方案各管一段进度，先看清每档给什么。</description>
-  </item>
-  <item>
-    <title>技能点不够用：刷怪一套、打架一套怎么分</title>
-    <link>https://wgame-bc7.pages.dev/a/ejl-skill/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ejl-skill/</guid>
-    <category>贰点零江湖</category>
-    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-    <description>技能点永远点不满全部技能。取舍的标准不是「哪个强」，而是「你一天里在哪个场景待得最久」。</description>
-  </item>
-  <item>
-    <title>野外遭遇战：先手怎么拿，打不过怎么走</title>
-    <link>https://wgame-bc7.pages.dev/a/ejl-pk/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ejl-pk/</guid>
-    <category>贰点零江湖</category>
-    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-    <description>野外打架输赢很少取决于装备差多少，多数时候是「谁先动手」和「谁先撤」这两件事决定的。</description>
-  </item>
-  <item>
-    <title>从起源冰城到冰雪之城：第一周的转生节奏</title>
-    <link>https://wgame-bc7.pages.dev/a/xxtl-start/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/xxtl-start/</guid>
-    <category>小小屠龙 · 冰雪传奇</category>
-    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
-    <description>单职业开局，真正的分水岭在二大陆。转生材料决定你什么时候能进去。</description>
-  </item>
-  <item>
-    <title>攻沙前 30 分钟：集结、卡点与复活点</title>
-    <link>https://wgame-bc7.pages.dev/a/xxtl-siege/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/xxtl-siege/</guid>
-    <category>小小屠龙 · 冰雪传奇</category>
-    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
-    <description>沙城不是靠人多，是靠谁先站住门口。</description>
   </item>
 </channel>
 </rss>
