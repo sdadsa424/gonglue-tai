@@ -189,7 +189,7 @@ ul{margin:0;padding:0;list-style:none}
   background:linear-gradient(to top,rgba(6,7,14,.92),rgba(6,7,14,.5) 52%,transparent);
   display:flex;flex-direction:column;gap:3px;
 }
-.poster-name{font-size:17px;font-weight:700;color:#fff;line-height:1.35}
+.poster-name{font-size:17px;font-weight:700;color:#fff;line-height:1.35;text-wrap:balance}
 .poster-tag{font-size:12px;color:rgba(255,255,255,.66)}
 .poster-count{
   position:absolute;right:10px;top:10px;z-index:2;font-size:12px;color:#fff;
@@ -1826,7 +1826,7 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
   border-color:rgba(255,61,154,.5);
   background:linear-gradient(180deg,rgba(255,61,154,.13),rgba(255,61,154,.04));
 }
-.vote-nm{flex:1;min-width:0;font-size:14px;font-weight:600;color:#E7EAF6;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vote-nm{flex:1;min-width:0;font-size:14px;font-weight:600;color:#E7EAF6;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;white-space:normal;word-break:keep-all;overflow:hidden;padding:2px 0}
 .vote-ic{flex:0 0 auto;width:19px;height:19px;color:var(--dim);transition:color .2s ease,transform .2s ease}
 .vote[aria-pressed="true"] .vote-ic{color:var(--pink);transform:scale(1.1)}
 .vote-n{flex:0 0 auto;font-variant-numeric:tabular-nums;font-size:13px;color:var(--muted);min-width:2.4em;text-align:right}

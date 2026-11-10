@@ -540,8 +540,8 @@ function articlePage(gi) {
 }
 
 /* ---------- 首页注入：社交卡片 / 结构化数据 / 无脚本目录 ---------- */
-const HOME_DESC = '露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙、英雄连城的开荒路线、职业选择、魔附养成、打金交易与团战站位，都整理成能直接照着做的步骤，按游戏和分类就能查到。';
-const HOME_TITLE = '游戏攻略大全 · 露娜2 / 将帅录 / 屠龙 / 奇迹MU';
+const HOME_DESC = '露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙 · 冰雪传奇、英雄连城 · 奇迹MU的开荒路线、职业选择、魔附养成、打金交易与团战站位，都整理成能直接照着做的步骤，按游戏和分类就能查到。';
+const HOME_TITLE = '游戏攻略大全 · 贰点零江湖 / 小小屠龙 · 冰雪传奇 / 桃园：将帅录 / 露娜2：拾光之约 / 英雄连城 · 奇迹MU';
 
 function homeHead() {
   const jsonld = escJson({
@@ -613,7 +613,7 @@ function gameBlock(key) {
 function gameEntry(gi) {
   const game = GAMES[gi.game];
   return `<a class="entry" href="../../a/${gi.id}/" style="--ac:${game.accent}">`
-    + `<span class="entry-tab">${esc(game.short)}<i>${IDX[gi.id]}</i></span>`
+    + `<span class="entry-tab" title="${esc(game.name)}" aria-label="${esc(game.name)}">${esc(game.short)}<i>${IDX[gi.id]}</i></span>`
     + `<span class="entry-body">`
     + `<span class="entry-meta"><span>${esc(game.name)}</span><i class="divider"></i><span>${esc(CATS[gi.cat])}</span><i class="divider"></i><span>${esc(gi.level)}</span></span>`
     + `<span class="entry-title">${esc(gi.title)}</span>`
@@ -730,7 +730,7 @@ function boardPage() {
       </div>
       <div class="bd-field">
         <label class="bd-label" for="bdBody">想说的话</label>
-        <textarea class="bd-area" id="bdBody" name="body" maxlength="300" required placeholder="例如：屠龙攻沙那篇的卡点路线帮我过了第一次团战，感谢。"></textarea>
+        <textarea class="bd-area" id="bdBody" name="body" maxlength="300" required placeholder="例如：小小屠龙 · 冰雪传奇 攻沙那篇的卡点路线帮我过了第一次团战，感谢。"></textarea>
       </div>
       <div class="bd-foot">
         <span class="bd-count" id="bdCount">0 / 300</span>

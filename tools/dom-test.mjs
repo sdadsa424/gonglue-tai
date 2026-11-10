@@ -1064,6 +1064,34 @@ ok('官网改写攻略页结构完整：小节目录 / 要点 / 表格 / 本服�
   }) && fsMod2.readFileSync('assets/data.js', 'utf8').includes("id: 'ejl-faction'");
 })());
 
+/* ---------- 回归护栏：全站统一使用正式完整游戏名 ---------- */
+ok('名称统一：社交标题/描述/海报/投票/分站文案均为五款完整游戏名，旧简称已清除', (() => {
+  const NAMES = ['贰点零江湖', '小小屠龙 · 冰雪传奇', '桃园：将帅录', '露娜2：拾光之约', '英雄连城 · 奇迹MU'];
+  const home = fsMod2.readFileSync('index.html', 'utf8');
+  const head = (home.match(/<!-- BUILD:HEAD -->[\s\S]*?<!-- \/BUILD:HEAD -->/) || [''])[0];
+  const legacy = /露娜2 \/ 将帅录 \/ 屠龙 \/ 奇迹MU|<span class="poster-name">小小屠龙<\/span>|<span class="vote-nm">(小小屠龙|英雄连城)<\/span>|，露娜2 看重转职|，奇迹MU 看重打宝/.test(home);
+  return !legacy && NAMES.every(n => head.includes(n)) && NAMES.every(n => home.includes(n))
+    && home.includes('aria-label="小小屠龙 · 冰雪传奇 游戏特色宣传图轮播"');
+})());
+ok('名称统一：搜索标题仍 ≤30 字且只用正式名（避免搜索结果截断）', (() => {
+  const t = (fsMod2.readFileSync('index.html', 'utf8').match(/<title>([^<]*)<\/title>/) || [''])[1];
+  return t.length <= 30 && t.includes('贰点零江湖') && t.includes('小小屠龙 · 冰雪传奇')
+    && !/将帅录 \/ 屠龙|屠龙 \/ 奇迹MU/.test(t);
+})());
+ok('名称统一不动技术标识：URL slug / 文章 id / GAMES key / API 白名单保持原代号', (() => {
+  const api = fsMod2.readFileSync('functions/api/[[path]].js', 'utf8');
+  const data = fsMod2.readFileSync('assets/data.js', 'utf8');
+  return /const GAMES = \['ejl', 'xxtl', 'ty', 'luna2', 'yxlc'\]/.test(api)
+    && /ejl: \{ id: 'ejl'/.test(data)
+    && ['g/ejl/index.html', 'a/ejl-faction/index.html', 'a/ty-pet-daily/index.html'].every(p => fsMod2.existsSync(p));
+})());
+ok('攻略条目徽标带完整游戏名（title + aria-label），技术 id 不变', (() => {
+  const home = fsMod2.readFileSync('index.html', 'utf8');
+  const g = fsMod2.readFileSync('g/ejl/index.html', 'utf8');
+  return home.includes('entry-tab" title="\' + esc(game.name)')
+    && g.includes('class="entry-tab" title="贰点零江湖" aria-label="贰点零江湖"');
+})());
+
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
 console.log(`\n结果：${pass} 通过 / ${fail} 失败`);
 process.exit(fail ? 1 : 0);
