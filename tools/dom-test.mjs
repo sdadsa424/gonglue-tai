@@ -1013,6 +1013,34 @@ ok('ejl 官方特色图集：5 张原图完整展示、三件套齐全且首页�
     && home.includes('游戏特色 · 官方图集') && home.includes('图片版权归原厂商所有');
 })());
 
+/* ---------- 回归护栏：小小屠龙官网「游戏特色」图 ---------- */
+ok('xxtl 分站 hero 轮播：官网 3 张特色图（16:9 延展 + 960w 三件套）', (() => {
+  const g = fsMod2.readFileSync('g/xxtl/index.html', 'utf8');
+  const car = (g.match(/<div class="art hero-carousel"[\s\S]*?<\/picture>\s*<\/div>/) || [''])[0];
+  if ((car.match(/<picture class="hc/g) || []).length !== 3) return false;
+  const keys = ['ice', 'gold', 'siege'];
+  return keys.every(k => ['jpg', 'webp', 'avif'].every(e =>
+    fsMod2.existsSync('assets/xxtl-hero-' + k + '.' + e)
+    && fsMod2.existsSync('assets/xxtl-hero-' + k + '_960w.' + e)))
+    && keys.every(k => car.includes('xxtl-hero-' + k + '.avif') && car.includes('xxtl-hero-' + k + '.jpg'))
+    && (car.match(/width="1264" height="711"/g) || []).length === 3
+    && /heroCarousel/.test(uiJs);
+})());
+ok('xxtl 官方特色图集：5 张 4:3 原图完整展示、三件套齐全且首页视图同步', (() => {
+  const g = fsMod2.readFileSync('g/xxtl/index.html', 'utf8');
+  const home = fsMod2.readFileSync('index.html', 'utf8');
+  const gal = (g.match(/<div class="luna-gal r43">[\s\S]*?<\/div>/) || [''])[0];
+  if ((gal.match(/<figure>/g) || []).length !== 5) return false;
+  const keys = ['ice', 'skill', 'gold', 'idle', 'siege'];
+  return keys.every(k => ['jpg', 'webp', 'avif'].every(e => fsMod2.existsSync('assets/xxtl-feat-' + k + '.' + e)))
+    && keys.every(k => gal.includes('xxtl-feat-' + k + '.avif') && gal.includes('xxtl-feat-' + k + '.webp') && gal.includes('xxtl-feat-' + k + '.jpg'))
+    && (gal.match(/<figcaption>/g) || []).length === 5
+    && (gal.match(/width="1264" height="945"/g) || []).length === 5
+    && /\.luna-gal\.r43 img\{aspect-ratio:4\/3\}/.test(cssText)
+    && /\.luna-gal img\{[^}]*object-fit:contain/.test(cssText)
+    && home.includes('小小屠龙 · 冰雪传奇') && home.includes('图片版权归原厂商所有');
+})());
+
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
 console.log(`\n结果：${pass} 通过 / ${fail} 失败`);
 process.exit(fail ? 1 : 0);
