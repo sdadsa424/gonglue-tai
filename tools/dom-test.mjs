@@ -881,9 +881,9 @@ ok('剑意：三段叠画（柔光/实心/白芯）+ 加法混合 + 剑尖径向
 ok('剑意：静止即停帧并清空画布（不常驻 RAF）', /raf = window\.requestAnimationFrame\(tick\)/.test(uiJs) && /else \{\s*ctx\.clearRect\(0, 0, W, H\);\s*lastT = 0;/.test(uiJs));
 ok('剑意样式：画布不拦点击、层级低于顶栏下拉、减弱动态下隐藏', /\.sword-veil\{[^}]*pointer-events:none[^}]*\}/.test(cssText) && /\.sword-veil\{[^}]*z-index:60/.test(cssText) && !/z-index:9\d\d/.test((cssText.split('.sword-veil{')[1]||'').split('}')[0]) && /prefers-reduced-motion:reduce\)\{\.sword-veil\{display:none !important\}/.test(cssText));
 
-ok('题图已撤除：44 篇文章头部不再有 .a-cover，样式与脚本零残留', (() => {
+ok('题图已撤除：50 篇文章头部不再有 .a-cover，样式与脚本零残留', (() => {
   const dirs = fsMod2.readdirSync('a');
-  return dirs.length === 44
+  return dirs.length === 50
     && dirs.every(d => !/a-cover/.test(fsMod2.readFileSync(`a/${d}/index.html`, 'utf8')))
     && !/a-cover|ac-glyph|coverFx/.test(cssText + uiJs);
 })());
@@ -895,24 +895,24 @@ ok('掉落装备池：五个栏目（ejl/xxtl/ty/luna2/yxlc）合计 50 件以�
 ok('掉落联动成就：拾荒者 + 欧皇附体（传说掉落解锁）', /unlock\('loot_1'\)/.test(uiJs) && /unlock\('loot_legend'\)/.test(uiJs) && /loot_legend', icon: '🌟'/.test(uiJs));
 ok('掉落卡样式：稀有度配色变量 + 传说金光 + 移动端贴底', /\.loot\.r5\{--lr:#FFB020\}/.test(cssText) && /rgba\(255,176,32,\.55\)/.test(cssText) && /@media \(max-width:760px\)\{\.loot\{/.test(cssText));
 
-ok('露娜2 转正式分站：g/luna2/ 由 gamePage 生成，4 篇 entries 铺好 + 资质名 + 倒计时', (() => {
+ok('露娜2 转正式分站：g/luna2/ 由 gamePage 生成，7 篇 entries 铺好 + 资质名 + 倒计时', (() => {
   const luna = fsMod2.readFileSync('g/luna2/index.html', 'utf8');
   return luna.includes('露娜2：拾光之约') && luna.includes('资质名称：露娜2') && luna.includes('PC 端游')
     && /data-launch="2026-12-10T00:00:00\+08:00"/.test(luna)
-    && (luna.match(/class="entry"/g) || []).length === 4
+    && (luna.match(/class="entry"/g) || []).length === 7
     && luna.includes('assets/luna2-hero.jpg') && luna.includes('"@type":"CollectionPage"');
 })());
-ok('露娜2 进攻略库：GAMES.luna2 + 4 篇文章（a/luna2-*）+ 新分类「系统玩法」', (() => {
+ok('露娜2 进攻略库：GAMES.luna2 + 7 篇文章（a/luna2-*）+ 新分类「系统玩法」', (() => {
   const data = fsMod2.readFileSync('assets/data.js', 'utf8');
   const dirs = fsMod2.readdirSync('a').filter(d => d.startsWith('luna2-'));
-  return data.includes("id: 'luna2'") && dirs.length === 4 && data.includes("sys: '系统玩法'");
+  return data.includes("id: 'luna2'") && dirs.length === 7 && data.includes("sys: '系统玩法'");
 })());
-ok('露娜2 首页集成：第 4 张 poster / game-card / 投票按钮，统计 4 款 39 篇 7 分类，旧横幅零残留', (() => {
+ok('露娜2 首页集成：第 4 张 poster / game-card / 投票按钮，统计 5 款 50 篇 7 分类，旧横幅零残留', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   return (home.match(/class="poster"/g) || []).length === 5
     && (home.match(/class="game-card"/g) || []).length === 5
     && home.includes('data-like="luna2"') && home.includes('data-like="yxlc"')
-    && home.includes('<b id="statGames">5</b>') && home.includes('<b id="statGuides">44</b>') && home.includes('<b id="statCats">7</b>')
+    && home.includes('<b id="statGames">5</b>') && home.includes('<b id="statGuides">50</b>') && home.includes('<b id="statCats">7</b>')
     && /const ORDER = \['ejl', 'xxtl', 'ty', 'luna2', 'yxlc'\];/.test(home)
     && home.includes('五款游戏')
     && !/game-soon|gs-tag/.test(home);

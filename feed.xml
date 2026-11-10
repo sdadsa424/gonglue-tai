@@ -25,6 +25,22 @@
     <description>战士、法师、弓箭手的经典铁三角原样回归。选职业只是第一步，开服前三天把挂机与资源节奏安排对，比职业本身更影响进度。</description>
   </item>
   <item>
+    <title>攻城战入门：公会报名、集结与攻门要点</title>
+    <link>https://wgame-bc7.pages.dev/a/yxlc-siege/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/yxlc-siege/</guid>
+    <category>英雄连城 · 奇迹MU</category>
+    <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
+    <description>攻城是 MU 系的终极团战：打的是人数、指挥和后援补给。第一次攻城前，这篇把流程和坑都过一遍。</description>
+  </item>
+  <item>
+    <title>交易与搬砖：哪些货最值钱、往哪卖</title>
+    <link>https://wgame-bc7.pages.dev/a/yxlc-market/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/yxlc-market/</guid>
+    <category>英雄连城 · 奇迹MU</category>
+    <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
+    <description>装备自由交易是这服最大的卖点。搞清楚什么货紧俏、什么时候出手，挂机刷的材料才不白攒。</description>
+  </item>
+  <item>
     <title>连线战斗规则：同色连携与属性克制</title>
     <link>https://wgame-bc7.pages.dev/a/yxlc-line/</link>
     <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/yxlc-line/</guid>
@@ -41,12 +57,44 @@
     <description>未鉴定装备全靠概率开出极品，鉴定没有捷径。词条按职业筛、拾取过滤先设好、BOSS 点位分工蹲，打宝的收益差就差在这三件事上。</description>
   </item>
   <item>
+    <title>开服日常清单：每天 40 分钟做满收益</title>
+    <link>https://wgame-bc7.pages.dev/a/yxlc-daily/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/yxlc-daily/</guid>
+    <category>英雄连城 · 奇迹MU</category>
+    <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
+    <description>不删档一区开服后，每天该做什么、先做什么，一张清单说清。顺序对了，同样的时间多拿一半资源。</description>
+  </item>
+  <item>
     <title>血色城堡组队打法：门票、阵容与守点站位</title>
     <link>https://wgame-bc7.pages.dev/a/yxlc-blood/</link>
     <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/yxlc-blood/</guid>
     <category>英雄连城 · 奇迹MU</category>
     <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
     <description>限时专属副本，门票「透明披风」全靠日常攒，进场即消耗。队伍怎么搭、流程怎么走、收尾怎么守，决定你这一张票是稳赚还是打水漂。</description>
+  </item>
+  <item>
+    <title>社交玩法盘点：好友组队与牵手结婚系统</title>
+    <link>https://wgame-bc7.pages.dev/a/luna2-social/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/luna2-social/</guid>
+    <category>露娜2：拾光之约</category>
+    <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
+    <description>露娜2 的社交不是摆设：组队有加成、好友有交互、牵手结婚还有专属玩法。会用社交系统的玩家，升级永远快人一步。</description>
+  </item>
+  <item>
+    <title>职业怎么选：战士游侠法师修士各有各的玩法</title>
+    <link>https://wgame-bc7.pages.dev/a/luna2-class/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/luna2-class/</guid>
+    <category>露娜2：拾光之约</category>
+    <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
+    <description>四个基础职业对应四种完全不同的节奏。选职业不是选强度，是选你每天愿意重复的那套操作。</description>
+  </item>
+  <item>
+    <title>世界 BOSS 与稀有怪：刷新规律与捡漏技巧</title>
+    <link>https://wgame-bc7.pages.dev/a/luna2-boss/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/luna2-boss/</guid>
+    <category>露娜2：拾光之约</category>
+    <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
+    <description>BOSS 掉的不只是装备，还有全服关注的稀有材料。摸清刷新节奏，散人也能从大佬嘴里分一口。</description>
   </item>
   <item>
     <title>摆摊开店全流程：贩卖与购入怎么选</title>
@@ -199,54 +247,6 @@
     <category>小小屠龙 · 冰雪传奇</category>
     <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
     <description>进了冰雪之城，选图的逻辑就变了：不是哪张经验高，而是哪张能待满一小时不被清。</description>
-  </item>
-  <item>
-    <title>选行会看三件事：在线人数、指挥、分配</title>
-    <link>https://wgame-bc7.pages.dev/a/xxtl-guild/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/xxtl-guild/</guid>
-    <category>小小屠龙 · 冰雪传奇</category>
-    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
-    <description>攻沙能不能打，一半在开打前就定了。行会选错，装备再好也只是别人的战功。</description>
-  </item>
-  <item>
-    <title>非绑定出货：散人打宝的定价与节奏</title>
-    <link>https://wgame-bc7.pages.dev/a/xxtl-farm/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/xxtl-farm/</guid>
-    <category>小小屠龙 · 冰雪传奇</category>
-    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
-    <description>商城不卖毕业神器，高阶装备全靠爆。散人能做的，是把爆出来的东西卖在对的时间。</description>
-  </item>
-  <item>
-    <title>一人三职怎么切：战士、法师、道士的场景分工</title>
-    <link>https://wgame-bc7.pages.dev/a/xxtl-class/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/xxtl-class/</guid>
-    <category>小小屠龙 · 冰雪传奇</category>
-    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
-    <description>觉醒之后可以自由换职业，装备词条全继承。切换不是换号，是换工具。</description>
-  </item>
-  <item>
-    <title>BOSS 蹲点：记三个时间，站两个位置</title>
-    <link>https://wgame-bc7.pages.dev/a/xxtl-boss/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/xxtl-boss/</guid>
-    <category>小小屠龙 · 冰雪传奇</category>
-    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
-    <description>冰雪服的 BOSS 是定时资源。记全表没意义，记住你抢得到的那三只就够。</description>
-  </item>
-  <item>
-    <title>军团战：掠阵位与先手权的取舍</title>
-    <link>https://wgame-bc7.pages.dev/a/ty-war/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-war/</guid>
-    <category>桃园：将帅录</category>
-    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
-    <description>军团战不是拼总战力，是拼谁先把对面的核心打哑。</description>
-  </item>
-  <item>
-    <title>前三天别乱花：开局的资源优先级</title>
-    <link>https://wgame-bc7.pages.dev/a/ty-start/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-start/</guid>
-    <category>桃园：将帅录</category>
-    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
-    <description>回合制拼的是阵容完整度，不是单将数值。前三天的资源，决定你什么时候能凑出第一套能打的队。</description>
   </item>
 </channel>
 </rss>
