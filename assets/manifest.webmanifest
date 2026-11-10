@@ -54,6 +54,11 @@
       "name": "小小屠龙",
       "short_name": "屠龙",
       "url": "./g/xxtl/"
+    },
+    {
+      "name": "英雄连城 · 奇迹MU",
+      "short_name": "英雄连城",
+      "url": "./g/yxlc/"
     }
   ]
 }

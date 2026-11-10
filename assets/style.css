@@ -1814,7 +1814,7 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 }
 
 /* ---------- 点赞 ---------- */
-.vote-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.vote-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
 .vote{
   display:flex;align-items:center;gap:11px;padding:15px 18px;border-radius:14px;
   border:1px solid var(--line);background:var(--card);cursor:pointer;text-align:left;

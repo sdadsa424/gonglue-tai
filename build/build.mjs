@@ -45,12 +45,12 @@ const gdate = gi => (DATES[gi.id] || {}).d || SEED_DATE;
 const GDATE = guideId => (DATES[guideId] || {}).d || SEED_DATE;
 /* 全站级 lastmod：取所有文章日期的最大值 */
 const SITE_LASTMOD = GUIDES.map(gdate).sort().pop();
-const ORDER = ['ejl', 'xxtl', 'ty', 'luna2'];
+const ORDER = ['ejl', 'xxtl', 'ty', 'luna2', 'yxlc'];
 const CS = 'ggboy6123';
 
 
 /* 搜索结果标题里用的游戏短名：只用于 title，页面显示仍用完整游戏名 */
-const SEO_NAME = { ejl: '贰点零江湖', xxtl: '小小屠龙', ty: '桃园将帅录', luna2: '露娜2' };
+const SEO_NAME = { ejl: '贰点零江湖', xxtl: '小小屠龙', ty: '桃园将帅录', luna2: '露娜2', yxlc: '英雄连城' };
 
 /* 标题最多约 30 个汉字才会完整显示，超了就把游戏名换成短名、再去掉「攻略」两个字 */
 function seoTitle(head, gameKey) {
@@ -72,7 +72,7 @@ function seoDesc(gi) {
   return d;
 }
 
-const HERO = { ejl: 'assets/hero-ejl.jpg', xxtl: 'assets/hero-xxtl.jpg', ty: 'assets/hero-ty.jpg', luna2: 'assets/luna2-hero.jpg' };
+const HERO = { ejl: 'assets/hero-ejl.jpg', xxtl: 'assets/hero-xxtl.jpg', ty: 'assets/hero-ty.jpg', luna2: 'assets/luna2-hero.jpg', yxlc: 'assets/yxlc-hero.jpg' };
 const FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230B0D16'/%3E%3Crect x='5' y='5' width='5' height='22' fill='%23FF3D9A'/%3E%3Cg fill='%23ECEEEA'%3E%3Crect x='15' y='7' width='12' height='2'/%3E%3Crect x='15' y='14' width='12' height='2'/%3E%3Crect x='15' y='21' width='8' height='2'/%3E%3C/g%3E%3C/svg%3E";
 
 /* ---------- 工具 ---------- */
@@ -590,7 +590,7 @@ ${ORDER.map(k => GUIDES.filter(x => x.game === k).map(gi => `          <li><a hr
 /* ---------- 分站静态页 ----------
    分站内容原本只在首页 #/g/<key> 里，靠前端渲染 —— 搜索引擎看不到，也没法单独分享。
    这里把首页那段真实标记原样抽出来（单一数据来源，不重复维护），落成 /g/<key>/ 静态页。 */
-const GAME_IMG = { ejl: 'assets/ejl-hero.jpg', xxtl: 'assets/xxtl-siege.jpg', ty: 'assets/ty-key.jpg', luna2: 'assets/luna2-hero.jpg' };
+const GAME_IMG = { ejl: 'assets/ejl-hero.jpg', xxtl: 'assets/xxtl-siege.jpg', ty: 'assets/ty-key.jpg', luna2: 'assets/luna2-hero.jpg', yxlc: 'assets/yxlc-hero.jpg' };
 
 function gameBlock(key) {
   const html = fs.readFileSync('index.html', 'utf8');
