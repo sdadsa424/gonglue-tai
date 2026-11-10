@@ -23,8 +23,8 @@ await send('Emulation.setDeviceMetricsOverride', { width: +W, height: +H, device
 await send('Page.navigate', { url });
 await sleep(2600);
 if (selector) {
-  await send('Runtime.evaluate', { expression: `document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({block:'center'}); document.querySelectorAll('.hc-dot')[0]?.click()`, returnByValue: true });
-  await sleep(1200);
+  await send('Runtime.evaluate', { expression: `(() => { const el = document.querySelector(${JSON.stringify(selector)}); if (el) { const y = el.getBoundingClientRect().top + window.scrollY - 80; window.scrollTo({ top: y, behavior: 'instant' }); } })()`, returnByValue: true });
+  await sleep(1800);
 }
 const shot = await send('Page.captureScreenshot', { format: 'png' });
 const { writeFileSync } = await import('node:fs');
