@@ -4,7 +4,8 @@
  *
  * 策略：
  *   导航请求（HTML）  network-first —— 有网永远拿最新的，断网退回缓存，再退回离线页
- *   静态资源          stale-while-revalidate —— 先给缓存（秒开），后台静默更新
+ *   静态资源          network-first —— 同样网络优先：部署后第一次刷新就是新版，
+ *                     不会出现「先给旧缓存、要刷两次才更新」；断网退回缓存保离线可用
  *   接口 /api/*       完全不拦——点赞、留言必须实时，不能被缓存糊住
  *   跨域请求（天气/IP/统计）不拦——交给浏览器
  */
@@ -58,7 +59,7 @@ self.addEventListener('fetch', event => {
   if (req.mode === 'navigate') {
     event.respondWith(navFirst(req));
   } else {
-    event.respondWith(staleWhileRevalidate(req));
+    event.respondWith(netFirst(req));
   }
 });
 
@@ -86,15 +87,15 @@ async function navFirst(req) {
   }
 }
 
-async function staleWhileRevalidate(req) {
+async function netFirst(req) {
   const cache = await caches.open(CACHE);
-  const hit = await cache.match(req);
-  const network = fetch(req).then(res => {
+  try {
+    const res = await fetch(req);
     if (res && res.ok) cache.put(req, res.clone()).catch(() => {});
     return res;
-  }).catch(() => null);
-  if (hit) return hit;
-  const res = await network;
-  if (res) return res;
-  return new Response('', { status: 504, statusText: 'offline' });
+  } catch (e) {
+    const hit = await cache.match(req);
+    if (hit) return hit;
+    return new Response('', { status: 504, statusText: 'offline' });
+  }
 }

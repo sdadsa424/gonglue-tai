@@ -860,7 +860,7 @@ const headersFile = fsSocial.readFileSync('_headers', 'utf8');
 ok('sw.js 已由模板生成且版本号已注入', !/__VERSION__/.test(swJs) && /const VERSION = '[0-9a-f]{10}'/.test(swJs));
 ok('SW 缓存名带版本（改内容即失效旧缓存）', /const CACHE = 'gl-' \+ VERSION/.test(swJs));
 ok('SW 导航请求走 network-first 并有离线兜底', /navFirst/.test(swJs) && /cache\.match\(abs\('offline\.html'\)\)/.test(swJs));
-ok('SW 静态资源走 stale-while-revalidate', /staleWhileRevalidate/.test(swJs));
+ok('SW 静态资源走 network-first（部署后首刷即新版）', /netFirst/.test(swJs) && !/staleWhileRevalidate/.test(swJs));
 ok('SW 不缓存接口与跨域请求', /indexOf\('\/api\/'\) > -1\) return/.test(swJs) && /url\.origin !== self\.location\.origin\) return/.test(swJs));
 ok('预缓存清单含核心资源与离线页', ['assets/style.css', 'assets/ui.js', 'assets/data.js', 'offline.html', 'board/'].every(p => swJs.includes("'" + p + "'")));
 ok('离线页不引用外部资源（断网也渲染得出来）', !/<link[^>]+stylesheet/.test(offlineHtml) && !/<script[^>]+src=/.test(offlineHtml));
