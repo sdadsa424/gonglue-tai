@@ -23,7 +23,11 @@ for (const f of files) {
     const clean = ref.split('#')[0].split('?')[0];
     if (!clean) continue;
     checked++;
-    let target = path.resolve(dir, clean);
+    // 以 / 开头的是站点根绝对路径，必须相对项目根解析；
+    // 老写法 path.resolve(dir, '/a/x/') 在 Windows 会落到盘符根 C:\a\x\，误报一大片死链
+    let target = clean.startsWith('/')
+      ? path.resolve(root, '.' + clean)
+      : path.resolve(dir, clean);
     if (clean.endsWith('/')) target = path.join(target, 'index.html');
     if (!fs.existsSync(target)) {
       bad++;

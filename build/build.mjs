@@ -867,7 +867,7 @@ fs.writeFileSync('assets/dates.js', 'window.GL_DATES=' + JSON.stringify(Object.f
 
 fs.writeFileSync('404.html', notFoundPage(), 'utf8');
 
-fs.writeFileSync('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${SITE}sitemap.xml\n`, 'utf8');
+fs.writeFileSync('robots.txt', `User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${SITE}sitemap.xml\n`, 'utf8');
 
 /* ---------- Service Worker（离线缓存）----------
  * 由 build/sw.template.js 生成：版本号取「关键资源内容」的指纹，

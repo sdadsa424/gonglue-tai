@@ -956,6 +956,17 @@ ok('露娜2 hero 轮播：5 张特色图三件套 + ui.js 模块 + 圆点样式'
     && /\.hc-dot::after/.test(cssText) && /\.hc-count\{/.test(cssText) && /\.hc-dot\[aria-current="true"\]/.test(cssText);
 })());
 
+/* ---------- 回归护栏：本轮全面体检修掉的边界问题 ---------- */
+console.log('\n[回归护栏]');
+ok('链接检查工具按站点根解析 / 绝对路径（Windows 不再误报死链）', /clean\.startsWith\('\/\'\)/.test(fsSocial.readFileSync('tools/check.mjs', 'utf8')));
+ok('API 的 HEAD 探测按 GET 处理（监控/爬虫不再拿到 405）', /request\.method === 'HEAD' \? 'GET' : request\.method/.test(apiJs));
+ok('robots 屏蔽 /api/ 互动接口', /Disallow: \/api\//.test(fsSocial.readFileSync('robots.txt', 'utf8')));
+ok('移动端横向筛选行可键盘聚焦且有分组标签', (() => {
+  const h = fsSocial.readFileSync('index.html', 'utf8');
+  return /id="filterGame"[^>]*role="group"[^>]*aria-label="[^"]*"[^>]*tabindex="0"/.test(h)
+    && /id="filterCat"[^>]*role="group"[^>]*aria-label="[^"]*"[^>]*tabindex="0"/.test(h);
+})());
+
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
 console.log(`\n结果：${pass} 通过 / ${fail} 失败`);
 process.exit(fail ? 1 : 0);

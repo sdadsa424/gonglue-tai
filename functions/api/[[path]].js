@@ -56,7 +56,9 @@ export async function onRequest(context) {
 
   const url = new URL(request.url);
   const route = url.pathname.replace(/^\/api\/?/, '').replace(/\/+$/, '');
-  const method = request.method;
+  /* HEAD 探测（监控 / 爬虫 / 负载均衡健康检查）按 GET 处理，
+     否则会被下面各分支判成 405；响应体由运行时按 HEAD 语义自动省略 */
+  const method = request.method === 'HEAD' ? 'GET' : request.method;
 
   try {
     /* ---------- 公告 ---------- */
