@@ -2208,57 +2208,30 @@
     });
   })();
 
-  /* 全站炫彩背景：双 mesh 色场 + 彩虹光轮 + 极光丝带 + 网格扫光 + 彩色星尘。
-     首屏 hero 自带不透明底，另铺一层流动极光衔接；reduce / 低核 / 手机自动减层，
-     页面切到后台暂停全部装饰动画。纯装饰层，不参与任何交互 */
+  /* 全站分层背景：网格（远景）/ 星尘 / 四团极光 / 地平线光带，滚动做轻微视差。
+     reduce 时整层不建，退回 body::before 的静态光斑；纯装饰，不参与交互 */
   (function fxBg() {
-    if (!document.body || reduce) return;
-    var root = document.documentElement;
-    var mq = window.matchMedia;
-    var small = !!(mq && mq('(max-width:760px)').matches);
-    var lowCpu = !!(navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
-    var lite = small || lowCpu;
-    root.classList.add('fx-on');
-    if (lite) root.classList.add('fx-lite');
-
+    if (!document.body) return;
+    if (reduce) return;
     var bg = document.createElement('div');
     bg.className = 'fx-bg';
     bg.setAttribute('aria-hidden', 'true');
-    bg.innerHTML = '<i class="fx-mesh"></i><i class="fx-mesh m2"></i>'
-      + '<i class="fx-iris"></i>'
-      + '<i class="fx-ribbon"></i><i class="fx-ribbon r2"></i>'
-      + '<i class="fx-grid"></i><i class="fx-sheen"></i><i class="fx-dust"></i>'
+    bg.innerHTML = '<i class="fx-grid"></i><i class="fx-dust"></i>'
       + '<i class="fx-blob b1"></i><i class="fx-blob b2"></i>'
       + '<i class="fx-blob b3"></i><i class="fx-blob b4"></i>'
       + '<i class="fx-horizon"></i>';
     document.body.appendChild(bg);
 
-    /* 星尘：颜色取主题环，位置/明灭/上浮周期全部随机，避免看出规律 */
-    var COLORS = ['255,61,154', '139,92,246', '76,154,255', '45,212,167', '255,176,32', '255,255,255'];
     var dust = bg.querySelector('.fx-dust'), frag = document.createDocumentFragment();
-    var n = lite ? 22 : 54;
-    for (var i = 0; i < n; i++) {
+    for (var i = 0; i < 48; i++) {
       var s = document.createElement('b');
       var sz = (Math.random() * 1.6 + 0.7).toFixed(1);
-      var c = COLORS[Math.floor(Math.random() * COLORS.length)];
       s.style.cssText = 'left:' + (Math.random() * 100).toFixed(2) + '%;top:' + (Math.random() * 100).toFixed(2)
-        + '%;width:' + sz + 'px;height:' + sz + 'px;--dc:rgba(' + c + ',.85)'
-        + ';animation-duration:' + (5 + Math.random() * 7).toFixed(2) + 's,'
-        + (18 + Math.random() * 14).toFixed(2) + 's'
-        + ';animation-delay:-' + (Math.random() * 10).toFixed(2) + 's,-'
-        + (Math.random() * 16).toFixed(2) + 's';
+        + '%;width:' + sz + 'px;height:' + sz + 'px;animation-duration:' + (5 + Math.random() * 7).toFixed(2)
+        + 's;animation-delay:-' + (Math.random() * 10).toFixed(2) + 's';
       frag.appendChild(s);
     }
     dust.appendChild(frag);
-
-    var hero = document.querySelector('.hero');
-    if (hero) {
-      var hv = document.createElement('div');
-      hv.className = 'fx-hero';
-      hv.setAttribute('aria-hidden', 'true');
-      hv.innerHTML = '<i class="fx-hero-iris"></i><i class="fx-hero-aurora"></i><i class="fx-hero-aurora h2"></i>';
-      hero.insertBefore(hv, hero.firstChild);
-    }
 
     var ticking = false;
     function upd() {
@@ -2271,11 +2244,6 @@
       if (!ticking) { ticking = true; window.requestAnimationFrame(upd); }
     }, { passive: true });
     upd();
-
-    /* 切到后台立刻停帧，回来自动续上；不额外耗电 */
-    document.addEventListener('visibilitychange', function () {
-      root.classList.toggle('fx-paused', !!document.hidden);
-    });
   })();
 
   /* 8. 剑意：鼠标划过，拖出一道渐隐的剑光
