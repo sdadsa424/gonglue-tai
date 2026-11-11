@@ -1146,6 +1146,48 @@ ok('官网职业数据只取创建界面：五项初始属性与 220/250 级解�
     && t.includes('初始属性') && t.includes('天鹰') && t.includes('黑王马');
 })());
 
+/* ---------- 回归护栏：内容防护（反扒脚本 / 安全响应头 / 接口来源校验） ---------- */
+ok('防护脚本注入全站：首页、分站、文章、404、留言板都带 guard.js', (() => {
+  const files = ['index.html', 'g/ejl/index.html', 'a/ejl-start/index.html', '404.html', 'board/index.html'];
+  return files.every(f => fsMod2.readFileSync(f, 'utf8').includes('assets/guard.js'))
+    && fsMod2.existsSync('assets/guard.js');
+})());
+ok('防护脚本覆盖关键拦截点：反嵌套 / 右键 / 快捷键 / 复制尾注 / devtools 检测', (() => {
+  const g = fsMod2.readFileSync('assets/guard.js', 'utf8');
+  return ['contextmenu', 'dragstart', 'keydown', 'copy', 'data-devtools', 'top.location.replace', '?dev=1']
+    .every(k => g.includes(k)) && /sessionStorage/.test(g);
+})());
+ok('Service Worker 预缓存防护脚本，且版本随资源内容变化', (() => {
+  return swJs.includes("'assets/guard.js'") && /const CACHE = 'gl-' \+ VERSION/.test(swJs)
+    && !/__VERSION__/.test(swJs);
+})());
+ok('安全响应头：CSP 白名单 / 防盗链 / 禁套壳 / 接口防收录', (() => {
+  const h = fsMod2.readFileSync('_headers', 'utf8');
+  return /Content-Security-Policy: default-src 'self'/.test(h)
+    && /frame-ancestors 'self'/.test(h)
+    && /object-src 'none'/.test(h)
+    && /Cross-Origin-Resource-Policy: same-origin/.test(h)
+    && /X-Permitted-Cross-Domain-Policies: none/.test(h)
+    && /\/api\/\*[\s\S]*?X-Robots-Tag: noindex/.test(h)
+    && /script-src[^;]*busuanzi\.ibruce\.info/.test(h);
+})());
+ok('互动接口：写请求校验来源 + 点赞限频 + 管理密钥定长比较', (() => {
+  const api = fsMod2.readFileSync('functions/api/[[path]].js', 'utf8');
+  return /function fromSite/.test(api) && /cross_site_blocked/.test(api)
+    && /likeAllowed/.test(api) && /LIKE_MAX = 20/.test(api)
+    && /function safeEqual/.test(api) && !/key !== env\.ADMIN_KEY/.test(api)
+    && (api.match(/fromSite\(request\)/g) || []).length >= 2;
+})());
+ok('每页带版权指纹 meta，不同文章指纹不同', (() => {
+  const home = fsMod2.readFileSync('index.html', 'utf8');
+  const a = fsMod2.readFileSync('a/ejl-start/index.html', 'utf8');
+  const b = fsMod2.readFileSync('a/ejl-class/index.html', 'utf8');
+  const pick = s => (s.match(/<meta name="x-content-id" content="([^"]+)"/) || [])[1] || '';
+  return /内容受版权保护/.test(home) && /内容受版权保护/.test(a)
+    && pick(home).indexOf('home-') === 0 && pick(a) && pick(b)
+    && pick(a) !== pick(b) && pick(home) !== pick(a);
+})());
+
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
 console.log(`\n结果：${pass} 通过 / ${fail} 失败`);
 process.exit(fail ? 1 : 0);

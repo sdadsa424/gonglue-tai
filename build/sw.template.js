@@ -19,6 +19,7 @@ const CORE = [
   '',
   'assets/style.css',
   'assets/ui.js',
+  'assets/guard.js',
   'assets/data.js',
   'assets/dates.js',
   'assets/icon-192.png',
