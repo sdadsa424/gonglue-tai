@@ -5,9 +5,57 @@
   <link>https://wgame-bc7.pages.dev/</link>
   <description>露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙 · 冰雪传奇、英雄连城 · 奇迹MU的开荒路线、职业选择、魔附养成、打金交易与团战站位，都整理成能直接照着做的步骤，按游戏和分类就能查到。</description>
   <language>zh-cn</language>
-  <lastBuildDate>Tue, 10 Nov 2026 00:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Wed, 11 Nov 2026 00:00:00 GMT</lastBuildDate>
   <generator>build.mjs</generator>
   <atom:link href="https://wgame-bc7.pages.dev/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>组队与战盟：固定队比临时队值钱在哪</title>
+    <link>https://wgame-bc7.pages.dev/a/yxlc-social/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/yxlc-social/</guid>
+    <category>英雄连城 · 奇迹MU</category>
+    <pubDate>Wed, 11 Nov 2026 00:00:00 GMT</pubDate>
+    <description>官网攻略栏目把社交玩法与公会争霸单列成篇。对散人来说，真正影响收益的是能不能凑齐固定队：血色城堡要人、攻城要指挥、出货要渠道。</description>
+  </item>
+  <item>
+    <title>跨服战场怎么打：先手、集火与阵容分工</title>
+    <link>https://wgame-bc7.pages.dev/a/yxlc-pvp/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/yxlc-pvp/</guid>
+    <category>英雄连城 · 奇迹MU</category>
+    <pubDate>Wed, 11 Nov 2026 00:00:00 GMT</pubDate>
+    <description>官网把跨服 PVP 列为重点玩法：对手来自别的服务器，个人操作之外还要看战前阵容判断和战中的集火顺序。这套流程不依赖任何未公布数值，进场前就能定好。</description>
+  </item>
+  <item>
+    <title>宠物与召唤：官网写明的部分先吃透</title>
+    <link>https://wgame-bc7.pages.dev/a/yxlc-pet/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/yxlc-pet/</guid>
+    <category>英雄连城 · 奇迹MU</category>
+    <pubDate>Wed, 11 Nov 2026 00:00:00 GMT</pubDate>
+    <description>官网创建界面里，弓箭手有补助魔法和召唤魔法，圣导师身边有天鹰和黑王马做宠物。先把这两个能确认的随行来源用明白，别急着照别的游戏经验去凑元素搭配。</description>
+  </item>
+  <item>
+    <title>零氪追赶：资源优先级与等级差怎么补</title>
+    <link>https://wgame-bc7.pages.dev/a/yxlc-f2p/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/yxlc-f2p/</guid>
+    <category>英雄连城 · 奇迹MU</category>
+    <pubDate>Wed, 11 Nov 2026 00:00:00 GMT</pubDate>
+    <description>官网攻略栏目讲「平民玩家的逆袭」，本站把能落地的部分拆成顺序：先保挂机效率，再保装备循环，最后才碰外观与投机。顺序对了，等级差是能追的。</description>
+  </item>
+  <item>
+    <title>五大职业创建界面全对照：初始属性与解锁条件</title>
+    <link>https://wgame-bc7.pages.dev/a/yxlc-class-five/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/yxlc-class-five/</guid>
+    <category>英雄连城 · 奇迹MU</category>
+    <pubDate>Wed, 11 Nov 2026 00:00:00 GMT</pubDate>
+    <description>官网「游戏特色」轮播把五个职业的创建界面都摆出来了：剑士、魔法师、弓箭手开局可选，魔剑士要 220 级、圣导师要 250 级。先把这张属性表看懂，再决定主号练谁。</description>
+  </item>
+  <item>
+    <title>战斗流派怎么搭：近战、法系与辅助三套顺序</title>
+    <link>https://wgame-bc7.pages.dev/a/yxlc-build/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/yxlc-build/</guid>
+    <category>英雄连城 · 奇迹MU</category>
+    <pubDate>Wed, 11 Nov 2026 00:00:00 GMT</pubDate>
+    <description>官网攻略栏目反复讲「打造专属战斗流派」，落到这个版本其实就是三件事：按职业初始属性定方向、主输出技能先满、刷怪和打架分成两套顺序。</description>
+  </item>
   <item>
     <title>翅膀合成与养成路线：玛雅宝石怎么用</title>
     <link>https://wgame-bc7.pages.dev/a/yxlc-wings/</link>
@@ -199,54 +247,6 @@
     <category>桃园：将帅录</category>
     <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
     <description>1 到 40 级是一条清晰的路线：跟任务走、按等级换练级地图、每日固定几件事做完。转职节点和每日清单都在这里。</description>
-  </item>
-  <item>
-    <title>关羽全玩法：突骑爆发流与反击流</title>
-    <link>https://wgame-bc7.pages.dev/a/ty-guanyu/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-guanyu/</guid>
-    <category>桃园：将帅录</category>
-    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-    <description>关羽是物理爆发收割型核心，核心机制是群体 AOE 加斩杀终结，不是站桩持续输出。前期养成到后期毕业配队，两条分支一次讲清。</description>
-  </item>
-  <item>
-    <title>装备词条与宝石：先堆哪一项，后堆哪一项</title>
-    <link>https://wgame-bc7.pages.dev/a/ty-gear/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-gear/</guid>
-    <category>桃园：将帅录</category>
-    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-    <description>同样是紫装，词条错位就差一档。顺序应该是：先定武将定位，再决定堆攻击、暴击还是速度。</description>
-  </item>
-  <item>
-    <title>每日 20 分钟：固定动作清单与先后顺序</title>
-    <link>https://wgame-bc7.pages.dev/a/ty-daily/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-daily/</guid>
-    <category>桃园：将帅录</category>
-    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-    <description>回合制最容易犯的错，是把时间花在「看起来有收益」的事上。每天固定做完这五件事，剩下的时间再谈养成。</description>
-  </item>
-  <item>
-    <title>站位定胜负：战斗规则完整拆解</title>
-    <link>https://wgame-bc7.pages.dev/a/ty-combat/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-combat/</guid>
-    <category>桃园：将帅录</category>
-    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-    <description>回合对战不止比输出高低。站位、位移、连击击飞和 PVP 数值修正共同构成整套战斗体系，熟悉规则才能把阵容打出上限。</description>
-  </item>
-  <item>
-    <title>抓宠物全指南：符箓、成功率与蹲点表</title>
-    <link>https://wgame-bc7.pages.dev/a/ty-catch/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-catch/</guid>
-    <category>桃园：将帅录</category>
-    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-    <description>抓宠物的流程很简单：把野怪血量压低，扔降魔符箓。难的是按稀有度选对符箓、按刷新时间蹲对点位，这份指南一次说清。</description>
-  </item>
-  <item>
-    <title>起号方案：五张、十六张、三十五张怎么选</title>
-    <link>https://wgame-bc7.pages.dev/a/ty-account/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-account/</guid>
-    <category>桃园：将帅录</category>
-    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-    <description>起号的核心不是充得越多越好，而是每一档的资源能不能接上你的养成节奏。三档方案各管一段进度，先看清每档给什么。</description>
   </item>
 </channel>
 </rss>

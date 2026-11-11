@@ -902,9 +902,9 @@ ok('剑意：三段叠画（柔光/实心/白芯）+ 加法混合 + 剑尖径向
 ok('剑意：静止即停帧并清空画布（不常驻 RAF）', /raf = window\.requestAnimationFrame\(tick\)/.test(uiJs) && /else \{\s*ctx\.clearRect\(0, 0, W, H\);\s*lastT = 0;/.test(uiJs));
 ok('剑意样式：画布不拦点击、层级低于顶栏下拉、减弱动态下隐藏', /\.sword-veil\{[^}]*pointer-events:none[^}]*\}/.test(cssText) && /\.sword-veil\{[^}]*z-index:60/.test(cssText) && !/z-index:9\d\d/.test((cssText.split('.sword-veil{')[1]||'').split('}')[0]) && /prefers-reduced-motion:reduce\)\{\.sword-veil\{display:none !important\}/.test(cssText));
 
-ok('题图已撤除：55 篇文章头部不再有 .a-cover，样式与脚本零残留', (() => {
+ok('题图已撤除：61 篇文章头部不再有 .a-cover，样式与脚本零残留', (() => {
   const dirs = fsMod2.readdirSync('a');
-  return dirs.length === 55
+  return dirs.length === GUIDE_N
     && dirs.every(d => !/a-cover/.test(fsMod2.readFileSync(`a/${d}/index.html`, 'utf8')))
     && !/a-cover|ac-glyph|coverFx/.test(cssText + uiJs);
 })());
@@ -928,12 +928,12 @@ ok('露娜2 进攻略库：GAMES.luna2 + 7 篇文章（a/luna2-*）+ 新分类�
   const dirs = fsMod2.readdirSync('a').filter(d => d.startsWith('luna2-'));
   return data.includes("id: 'luna2'") && dirs.length === 7 && data.includes("sys: '系统玩法'");
 })());
-ok('露娜2 首页集成：第 4 张 poster / game-card / 投票按钮，统计 5 款 55 篇 7 分类，旧横幅零残留', (() => {
+ok('露娜2 首页集成：第 4 张 poster / game-card / 投票按钮，统计 5 款 61 篇 7 分类，旧横幅零残留', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   return (home.match(/class="poster"/g) || []).length === 5
     && (home.match(/class="game-card"/g) || []).length === 5
     && home.includes('data-like="luna2"') && home.includes('data-like="yxlc"')
-    && home.includes('<b id="statGames">5</b>') && home.includes('<b id="statGuides">55</b>') && home.includes('<b id="statCats">7</b>')
+    && home.includes('<b id="statGames">5</b>') && home.includes('<b id="statGuides">61</b>') && home.includes('<b id="statCats">7</b>')
     && /const ORDER = \['ejl', 'xxtl', 'ty', 'luna2', 'yxlc'\];/.test(home)
     && home.includes('五款游戏')
     && !/game-soon|gs-tag/.test(home);
@@ -1042,16 +1042,16 @@ ok('xxtl 官方特色图集：5 张 4:3 原图完整展示、三件套齐全且�
 })());
 
 /* ---------- 回归护栏：贰点零江湖官网资讯改写的 4 篇攻略 ---------- */
-ok('官网资讯改写：ejl 新增 4 篇玩法攻略，全站口径同步到 55 篇 / ejl 13 篇', (() => {
+ok('官网资讯改写：ejl 新增 4 篇玩法攻略，全站口径同步到 61 篇 / ejl 13 篇', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   const ids = ['ejl-faction', 'ejl-qigong', 'ejl-guild', 'ejl-social'];
-  return GUIDE_N === 55 && GP_COUNTS.ejl === 13
+  return GUIDE_N === 61 && GP_COUNTS.ejl === 13
     && ids.every(id => DATA.GUIDES.some(g => g.id === id && g.game === 'ejl'
       && g.take.length === 4 && g.blocks.length >= 6 && g.blocks.some(b => b.t === 'table')))
     && ids.every(id => fsMod2.existsSync(`a/${id}/index.html`) && fsMod2.existsSync(`a/${id}/qr.svg`))
-    && home.includes('<b id="statGuides">55</b>')
+    && home.includes('<b id="statGuides">61</b>')
     && home.includes('data-count="ejl" data-count-fmt="{n} 篇">13 篇')
-    && home.includes('攻略目录（共 55 篇）')
+    && home.includes('攻略目录（共 61 篇）')
     && ids.every(id => fsMod2.readFileSync('sitemap.xml', 'utf8').includes(`a/${id}/`));
 })());
 ok('官网改写攻略页结构完整：小节目录 / 要点 / 表格 / 本服版本口径 / 二维码', (() => {
@@ -1090,6 +1090,60 @@ ok('攻略条目徽标带完整游戏名（title + aria-label），技术 id 不
   const g = fsMod2.readFileSync('g/ejl/index.html', 'utf8');
   return home.includes('entry-tab" title="\' + esc(game.name)')
     && g.includes('class="entry-tab" title="贰点零江湖" aria-label="贰点零江湖"');
+})());
+
+/* ---------- 回归护栏：yysolos.com 官网「游戏特色」职业图 + 攻略改写 ---------- */
+ok('yxlc 官网职业图集：5 张 16:9 原图完整展示、三件套齐全、静态分站同步', (() => {
+  const g = fsMod2.readFileSync('g/yxlc/index.html', 'utf8');
+  const home = fsMod2.readFileSync('index.html', 'utf8');
+  const gal = (g.match(/<div class="luna-gal">[\s\S]*?<\/div>/) || [''])[0];
+  if ((gal.match(/<figure>/g) || []).length !== 5) return false;
+  const keys = ['warrior', 'mage', 'archer', 'blade', 'saint'];
+  return keys.every(k => ['jpg', 'webp', 'avif'].every(e => fsMod2.existsSync(`assets/yxlc-feat-${k}.${e}`)))
+    && keys.every(k => gal.includes(`yxlc-feat-${k}.avif`) && gal.includes(`yxlc-feat-${k}.webp`) && gal.includes(`yxlc-feat-${k}.jpg`))
+    && (gal.match(/<figcaption>/g) || []).length === 5
+    && (gal.match(/width="1264" height="711"/g) || []).length === 5
+    && /\.luna-gal img\{[^}]*object-fit:contain/.test(cssText)
+    && home.includes('游戏特色 · 官方职业图集') && home.includes('yysolos.com')
+    && home.includes('图片版权归原厂商所有');
+})());
+ok('yxlc 首屏轮播补齐官网职业图：5 张，剑士/魔法师有 960w 三件套', (() => {
+  const g = fsMod2.readFileSync('g/yxlc/index.html', 'utf8');
+  const car = (g.match(/<div class="art hero-carousel"[\s\S]*?<\/picture>\s*<\/div>/) || [''])[0];
+  if ((car.match(/<picture class="hc/g) || []).length !== 5) return false;
+  return ['warrior', 'mage'].every(k => ['jpg', 'webp', 'avif'].every(e => fsMod2.existsSync(`assets/yxlc-feat-${k}_960w.${e}`)))
+    && car.includes('yxlc-feat-warrior.avif') && car.includes('yxlc-feat-mage.avif')
+    && /heroCarousel/.test(uiJs);
+})());
+ok('官网攻略改写：yxlc 新增 6 篇，全站口径同步到 61 篇 / yxlc 14 篇', (() => {
+  const home = fsMod2.readFileSync('index.html', 'utf8');
+  const ids = ['yxlc-class-five', 'yxlc-pvp', 'yxlc-pet', 'yxlc-build', 'yxlc-f2p', 'yxlc-social'];
+  const sitemap = fsMod2.readFileSync('sitemap.xml', 'utf8');
+  return GUIDE_N === 61 && GP_COUNTS.yxlc === 14
+    && ids.every(id => DATA.GUIDES.some(g => g.id === id && g.game === 'yxlc'
+      && g.take.length === 4 && g.blocks.length >= 6 && g.blocks.some(b => b.t === 'table')))
+    && ids.every(id => fsMod2.existsSync(`a/${id}/index.html`) && fsMod2.existsSync(`a/${id}/qr.svg`))
+    && home.includes('<b id="statGuides">61</b>')
+    && home.includes('data-count="yxlc" data-count-fmt="{n} 篇">14 篇')
+    && home.includes('攻略目录（共 61 篇）')
+    && ids.every(id => sitemap.includes(`a/${id}/`));
+})());
+ok('官网改写攻略页结构完整：小节目录 / 表格 / 本服版本口径 / 二维码', (() => {
+  const ids = ['yxlc-class-five', 'yxlc-pvp', 'yxlc-pet', 'yxlc-build', 'yxlc-f2p', 'yxlc-social'];
+  return ids.every(id => {
+    const t = fsMod2.readFileSync(`a/${id}/index.html`, 'utf8');
+    return (t.match(/<h2 id="s\d+">/g) || []).length >= 3
+      && t.includes('class="toc') && t.includes('<table') && t.includes('class="note"')
+      && t.includes('以本服版本为准') && t.includes('qr.svg') && t.includes('</article>');
+  }) && fsMod2.readFileSync('assets/data.js', 'utf8').includes("id: 'yxlc-class-five'");
+})());
+ok('官网职业数据只取创建界面：五项初始属性与 220/250 级解锁写进正文', (() => {
+  const data = fsMod2.readFileSync('assets/data.js', 'utf8');
+  const t = fsMod2.readFileSync('a/yxlc-class-five/index.html', 'utf8');
+  return ['剑士', '魔法师', '弓箭手', '魔剑士', '圣导师'].every(n => data.includes(n))
+    && data.includes("'28', '20', '10', '25'") && data.includes("'18', '18', '30', '15'")
+    && data.includes('220 级') && data.includes('250 级')
+    && t.includes('初始属性') && t.includes('天鹰') && t.includes('黑王马');
 })());
 
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
