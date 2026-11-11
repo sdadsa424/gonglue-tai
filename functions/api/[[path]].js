@@ -21,12 +21,6 @@ const MAX_NAME = 16;
 const MAX_BODY = 300;
 const PAGE_MAX = 50;
 
-/* 只接受本站与镜像站的写请求；换域名时记得同步这里 */
-const ALLOW_HOSTS = ['wgame-bc7.pages.dev', 'sdadsa424.github.io', 'localhost', '127.0.0.1'];
-const LIKE_WINDOW = 60 * 1000;
-const LIKE_MAX = 20;
-const likeHits = new Map();
-
 const json = (data, status = 200) =>
   new Response(JSON.stringify(data), {
     status,
@@ -34,55 +28,8 @@ const json = (data, status = 200) =>
       'content-type': 'application/json; charset=utf-8',
       'cache-control': 'no-store',
       'x-content-type-options': 'nosniff',
-      'x-frame-options': 'DENY',
-      'referrer-policy': 'no-referrer',
     },
   });
-
-/* 来源校验：挡住别站脚本跨站调用写接口（刷点赞、灌留言）。
-   浏览器发起的请求一定带 Origin 或 Referer；两者都没有的客户端（命令行、
-   老客户端）交给频率限制兜底，不在这里误伤。 */
-function fromSite(request) {
-  const probe = request.headers.get('origin') || request.headers.get('referer');
-  if (probe) {
-    try {
-      return ALLOW_HOSTS.includes(new URL(probe).hostname);
-    } catch (e) {
-      return false;
-    }
-  }
-  const site = request.headers.get('sec-fetch-site');
-  if (site) return site === 'same-origin' || site === 'same-site' || site === 'none';
-  return true;
-}
-
-/* 管理密钥比较走定长循环：不按字符提前返回，避免用响应时间猜密钥 */
-function safeEqual(a, b) {
-  const x = String(a || '');
-  const y = String(b || '');
-  if (!x || x.length !== y.length) return false;
-  let diff = 0;
-  for (let i = 0; i < x.length; i += 1) diff |= x.charCodeAt(i) ^ y.charCodeAt(i);
-  return diff === 0;
-}
-
-/* 点赞频率：同一个来源每分钟最多 20 次。计数只放在 isolate 内存里，
-   挡的是脚本连发（正常手点远到不了这个量），不写库、不增加 D1 开销。 */
-function likeAllowed(ipHash) {
-  const now = Date.now();
-  const rec = likeHits.get(ipHash);
-  if (!rec || now - rec.t > LIKE_WINDOW) {
-    likeHits.set(ipHash, { n: 1, t: now });
-    if (likeHits.size > 4000) {
-      likeHits.forEach((v, k) => {
-        if (now - v.t > LIKE_WINDOW) likeHits.delete(k);
-      });
-    }
-    return true;
-  }
-  rec.n += 1;
-  return rec.n <= LIKE_MAX;
-}
 
 /* 只保留可见字符，去掉控制符与零宽字符，压掉连续空白 */
 const clean = (s, max) =>
@@ -126,7 +73,7 @@ export async function onRequest(context) {
          保留最近 3 条（新公告 + 前 2 条）供前端轮播展示 */
       if (method === 'POST') {
         const key = request.headers.get('x-admin-key') || '';
-        if (!env.ADMIN_KEY || !safeEqual(key, env.ADMIN_KEY)) return json({ error: 'forbidden' }, 403);
+        if (!env.ADMIN_KEY || key !== env.ADMIN_KEY) return json({ error: 'forbidden' }, 403);
         const body = await request.json().catch(() => ({}));
         const text = String(body.text || '').trim();
         const level = ['info', 'warn', 'hot'].includes(body.level) ? body.level : 'info';
@@ -142,7 +89,7 @@ export async function onRequest(context) {
       /* DELETE：删除公告（管理用，需 x-admin-key）；?id=3 删单条，?id=all 清空 */
       if (method === 'DELETE') {
         const key = request.headers.get('x-admin-key') || '';
-        if (!env.ADMIN_KEY || !safeEqual(key, env.ADMIN_KEY)) return json({ error: 'forbidden' }, 403);
+        if (!env.ADMIN_KEY || key !== env.ADMIN_KEY) return json({ error: 'forbidden' }, 403);
         const id = url.searchParams.get('id') || '';
         if (id === 'all') {
           const r = await DB.prepare('DELETE FROM notices').run();
@@ -168,11 +115,9 @@ export async function onRequest(context) {
         return json({ likes: out });
       }
       if (method === 'POST') {
-        if (!fromSite(request)) return json({ error: 'cross_site_blocked' }, 403);
         const body = await request.json().catch(() => ({}));
         const game = String(body.game || '');
         if (!GAMES.includes(game)) return json({ error: 'bad_game' }, 400);
-        if (!likeAllowed(await hashIp(request))) return json({ error: 'too_fast', max: LIKE_MAX }, 429);
         const row = await DB.prepare(
           'INSERT INTO likes (game, n, updated_at) VALUES (?, 1, ?) ' +
             'ON CONFLICT(game) DO UPDATE SET n = n + 1, updated_at = excluded.updated_at RETURNING n'
@@ -194,7 +139,6 @@ export async function onRequest(context) {
       }
 
       if (method === 'POST') {
-        if (!fromSite(request)) return json({ error: 'cross_site_blocked' }, 403);
         const raw = await request.json().catch(() => ({}));
         const name = clean(raw.name, MAX_NAME) || '匿名玩家';
         const body = clean(raw.body, MAX_BODY);
@@ -229,7 +173,7 @@ export async function onRequest(context) {
 
       if (method === 'DELETE') {
         const key = request.headers.get('x-admin-key') || '';
-        if (!env.ADMIN_KEY || !safeEqual(key, env.ADMIN_KEY)) return json({ error: 'forbidden' }, 403);
+        if (!env.ADMIN_KEY || key !== env.ADMIN_KEY) return json({ error: 'forbidden' }, 403);
         const raw = (url.searchParams.get('id') || '').trim();
         if (raw === 'hidden') {
           /* 历史版本删除只是标记 hidden=1，行仍留在库里；这里把它们彻底删掉 */

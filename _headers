@@ -7,10 +7,6 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(self), camera=(), microphone=(), payment=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains
-  X-Permitted-Cross-Domain-Policies: none
-  Cross-Origin-Opener-Policy: same-origin
-  Cross-Origin-Resource-Policy: same-origin
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com https://busuanzi.ibruce.info; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://ipwho.is https://ipapi.co https://geocoding-api.open-meteo.com https://api.open-meteo.com https://static.cloudflareinsights.com https://cloudflareinsights.com; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests
 
 /favicon.ico
   Cache-Control: public, max-age=604800
@@ -32,11 +28,8 @@
   Cache-Control: public, max-age=1800
   Content-Type: application/rss+xml; charset=utf-8
 
-# CSP 已启用：站内大量内联脚本，所以 script-src 保留 'unsafe-inline'；
-# 白名单只放 Cloudflare 统计与不蒜子，天气 / IP 接口走 connect-src。
-# 以后新增第三方脚本或接口必须同步这里，否则会被浏览器直接拦掉。
-# Cross-Origin-Resource-Policy: same-origin 同时充当图片与脚本的防盗链：
-# 别的站用 <img>/<script>/fetch 引用本站资源会被浏览器拒绝。
+# 显式的 CSP 暂不启用：站内大量内联脚本与 busuanzi/天气接口需要逐个放行，
+# 上线前需在预览环境逐页验证，避免白屏。需要时先加 Report-Only 观察。
 
 /assets/*.webp
   Cache-Control: public, max-age=604800
@@ -59,8 +52,3 @@
 
 /assets/*.js
   Cache-Control: public, max-age=0, must-revalidate
-
-# 接口禁止被搜索引擎收录（robots 里也 Disallow 了，双保险）
-/api/*
-  X-Robots-Tag: noindex, nofollow
-  Cache-Control: no-store

@@ -346,9 +346,6 @@ const VERIFY_META = (() => {
 
 function page({ title, desc, canonical, jsonld, body, ogImage, ogType = 'article', bodyClass = '', guideId = '', headExtra = '', noData = false }) {
   const dsc = clipDesc(desc || '');
-  /* 版权指纹：标题 + 地址 + 正文的哈希，写进 meta 不展示给读者。
-     整站被镜像后可据此逐个页面比对，确认复制来源与复制范围。 */
-  const sign = crypto.createHash('sha256').update(title + '|' + (canonical || '') + '|' + body).digest('hex').slice(0, 16);
   return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -363,8 +360,6 @@ function page({ title, desc, canonical, jsonld, body, ogImage, ogType = 'article
 ${/noindex/.test(headExtra) ? '' : '<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">\n'}${canonical ? `<link rel="canonical" href="${canonical}">` : ''}
 ${VERIFY_META ? VERIFY_META + '\n' : ''}<link rel="alternate" type="application/rss+xml" title="${SITE_NAME} · 最新更新" href="${SITE}feed.xml">
 <meta name="theme-color" content="#090A12">
-<meta name="x-content-id" content="${sign}">
-<meta name="copyright" content="游戏攻略大全 · 内容受版权保护，未经授权禁止整站镜像与批量抓取">
 <meta property="og:type" content="${ogType}">
 <meta property="og:site_name" content="${SITE_NAME}">
 <meta property="og:locale" content="zh_CN">
@@ -405,7 +400,6 @@ ${tabbar()}
 ${(guideId || noData) ? '' : '<script src="' + UP + 'assets/data.js"></script>'}
 <script src="${UP}assets/ui.js"></script>
 ${PAGE_SCRIPT}
-<script src="${UP}assets/guard.js"></script>
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </body>
 </html>
@@ -564,8 +558,6 @@ function homeHead() {
     ]
   });
   return `<meta name="theme-color" content="#090A12">
-<meta name="x-content-id" content="home-${crypto.createHash('sha256').update(HOME_TITLE + '|' + SITE).digest('hex').slice(0, 12)}">
-<meta name="copyright" content="游戏攻略大全 · 内容受版权保护，未经授权禁止整站镜像与批量抓取">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
 <link rel="canonical" href="${SITE}">
 ${VERIFY_META ? VERIFY_META + '\n' : ''}<link rel="alternate" type="application/rss+xml" title="${SITE_NAME} · 最新更新" href="${SITE}feed.xml">
@@ -885,8 +877,6 @@ const SW_TEMPLATE = fs.readFileSync(path.join(import.meta.dirname, 'sw.template.
 const swHash = crypto.createHash('sha1')
   .update(fs.readFileSync('assets/style.css'))
   .update(fs.readFileSync('assets/ui.js'))
-  .update(fs.readFileSync('assets/guard.js'))
-  .update(fs.readFileSync('assets/manifest.webmanifest'))
   .update(fs.readFileSync('assets/data.js'))
   .update(fs.readFileSync('assets/dates.js'))
   .update(fs.readFileSync('offline.html'))
