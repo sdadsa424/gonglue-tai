@@ -73,7 +73,7 @@ function seoDesc(gi) {
 }
 
 const HERO = { ejl: 'assets/hero-ejl.jpg', xxtl: 'assets/hero-xxtl.jpg', ty: 'assets/hero-ty.jpg', luna2: 'assets/luna2-hero.jpg', yxlc: 'assets/yxlc-hero.jpg' };
-const FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230B0D16'/%3E%3Crect x='5' y='5' width='5' height='22' fill='%23FF3D9A'/%3E%3Cg fill='%23ECEEEA'%3E%3Crect x='15' y='7' width='12' height='2'/%3E%3Crect x='15' y='14' width='12' height='2'/%3E%3Crect x='15' y='21' width='8' height='2'/%3E%3C/g%3E%3C/svg%3E";
+/* favicon 由 build/gen-icon.mjs 生成的 assets/favicon.svg / PNG 提供 */
 
 /* ---------- 工具 ---------- */
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -374,7 +374,9 @@ ${VERIFY_META ? VERIFY_META + '\n' : ''}<link rel="alternate" type="application/
 ${ogType === 'article' ? `<meta property="article:published_time" content="${GDATE(guideId)}T08:00:00+08:00">
 <meta property="article:modified_time" content="${GDATE(guideId)}T08:00:00+08:00">` : ''}
 ${PRECONNECT}
-<link rel="icon" href="${FAVICON}">
+<link rel="icon" type="image/svg+xml" href="${UP}assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="${UP}assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="${UP}assets/favicon-16.png">
 <link rel="manifest" href="${UP}assets/manifest.webmanifest">
 <link rel="apple-touch-icon" href="${UP}assets/apple-touch-icon.png">
 <meta name="color-scheme" content="dark">
@@ -879,6 +881,7 @@ const swHash = crypto.createHash('sha1')
   .update(fs.readFileSync('assets/ui.js'))
   .update(fs.readFileSync('assets/data.js'))
   .update(fs.readFileSync('assets/dates.js'))
+  .update(fs.readFileSync('assets/favicon.svg'))
   .update(fs.readFileSync('offline.html'))
   .update(SW_TEMPLATE)
   .digest('hex').slice(0, 10);

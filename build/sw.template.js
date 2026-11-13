@@ -22,6 +22,8 @@ const CORE = [
   'assets/data.js',
   'assets/dates.js',
   'assets/icon-192.png',
+  'assets/favicon.svg',
+  'assets/favicon-32.png',
   'assets/manifest.webmanifest',
   'favicon.ico',
   /* Cloudflare Pages 会把 /offline.html 308 到 /offline，两条都收，谁通用谁 */
