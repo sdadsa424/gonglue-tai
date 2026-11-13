@@ -461,7 +461,7 @@ function articlePage(gi) {
         articleSection: CATS[gi.cat],
         keywords: [game.name, CATS[gi.cat], gi.level, '游戏攻略'].join(','),
         author: { '@type': 'Organization', name: SITE_NAME },
-        publisher: { '@type': 'Organization', name: SITE_NAME, logo: { '@type': 'ImageObject', url: SITE + HERO.ejl } }
+        publisher: { '@type': 'Organization', name: SITE_NAME, logo: { '@type': 'ImageObject', url: SITE + 'assets/icon-512.png' } }
       },
       {
         '@type': 'BreadcrumbList',
@@ -548,7 +548,7 @@ function homeHead() {
     '@context': 'https://schema.org',
     '@graph': [
       { '@type': 'WebSite', name: SITE_NAME, alternateName: '游戏攻略总站', url: SITE, inLanguage: 'zh-CN' },
-      { '@type': 'Organization', name: SITE_NAME, url: SITE, logo: { '@type': 'ImageObject', url: SITE + HERO.ejl } },
+      { '@type': 'Organization', name: SITE_NAME, url: SITE, logo: { '@type': 'ImageObject', url: SITE + 'assets/icon-512.png' } },
       {
         '@type': 'ItemList',
         name: '游戏攻略目录',
