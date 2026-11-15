@@ -10,7 +10,7 @@ const BASE = process.env.BASE || 'http://127.0.0.1:8766/';
 const { createRequire } = await import('node:module');
 const DATA = createRequire(import.meta.url)('../assets/data.js');
 const GUIDE_N = DATA.GUIDES.length;
-const GP_COUNTS = { ejl: 0, xxtl: 0, ty: 0, luna2: 0, yxlc: 0 };
+const GP_COUNTS = { ejl: 0, xxtl: 0, ty: 0, luna2: 0, yxlc: 0, cq3d: 0 };
 for (const g of DATA.GUIDES) if (GP_COUNTS[g.game] !== undefined) GP_COUNTS[g.game] += 1;
 const errors = [];
 const vc = new VirtualConsole();
@@ -844,8 +844,8 @@ ok('分站页标题保留游戏短名规则', seoMeta.filter(r => r.f.startsWith
 console.log('\n[站内互动]');
 const fsSocial = (await import('node:fs'));
 const homeDoc = (await JSDOM.fromFile('index.html', { runScripts: 'outside-only' })).window.document;
-ok('首页有 votes 区块（5 个 data-like）', homeDoc.querySelectorAll('[data-like]').length === 5);
-ok('点赞数字带 data-like-n', homeDoc.querySelectorAll('[data-like-n]').length === 5);
+ok('首页有 votes 区块（6 个 data-like）', homeDoc.querySelectorAll('[data-like]').length === 6);
+ok('点赞数字带 data-like-n', homeDoc.querySelectorAll('[data-like-n]').length === 6);
 ok('ui.js 含公告/点赞/留言板三个模块', /gl_notice_v3/.test(uiJs) && /gl_like_v1/.test(uiJs) && /bdForm/.test(uiJs));
 ok('ui.js 社交模块在无 fetch 环境整体跳过', /typeof fetch !== 'function'\) return/.test(uiJs));
 const boardDoc = (await JSDOM.fromFile('board/index.html', { runScripts: 'outside-only' })).window.document;
@@ -902,7 +902,7 @@ ok('剑意：三段叠画（柔光/实心/白芯）+ 加法混合 + 剑尖径向
 ok('剑意：静止即停帧并清空画布（不常驻 RAF）', /raf = window\.requestAnimationFrame\(tick\)/.test(uiJs) && /else \{\s*ctx\.clearRect\(0, 0, W, H\);\s*lastT = 0;/.test(uiJs));
 ok('剑意样式：画布不拦点击、层级低于顶栏下拉、减弱动态下隐藏', /\.sword-veil\{[^}]*pointer-events:none[^}]*\}/.test(cssText) && /\.sword-veil\{[^}]*z-index:60/.test(cssText) && !/z-index:9\d\d/.test((cssText.split('.sword-veil{')[1]||'').split('}')[0]) && /prefers-reduced-motion:reduce\)\{\.sword-veil\{display:none !important\}/.test(cssText));
 
-ok('题图已撤除：61 篇文章头部不再有 .a-cover，样式与脚本零残留', (() => {
+ok('题图已撤除：67 篇文章头部不再有 .a-cover，样式与脚本零残留', (() => {
   const dirs = fsMod2.readdirSync('a');
   return dirs.length === GUIDE_N
     && dirs.every(d => !/a-cover/.test(fsMod2.readFileSync(`a/${d}/index.html`, 'utf8')))
@@ -928,14 +928,14 @@ ok('露娜2 进攻略库：GAMES.luna2 + 7 篇文章（a/luna2-*）+ 新分类�
   const dirs = fsMod2.readdirSync('a').filter(d => d.startsWith('luna2-'));
   return data.includes("id: 'luna2'") && dirs.length === 7 && data.includes("sys: '系统玩法'");
 })());
-ok('露娜2 首页集成：第 4 张 poster / game-card / 投票按钮，统计 5 款 61 篇 7 分类，旧横幅零残留', (() => {
+ok('露娜2 首页集成：第 4 张 poster / game-card / 投票按钮，统计 6 款 67 篇 7 分类，旧横幅零残留', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
-  return (home.match(/class="poster"/g) || []).length === 5
-    && (home.match(/class="game-card"/g) || []).length === 5
-    && home.includes('data-like="luna2"') && home.includes('data-like="yxlc"')
-    && home.includes('<b id="statGames">5</b>') && home.includes('<b id="statGuides">61</b>') && home.includes('<b id="statCats">7</b>')
-    && /const ORDER = \['ejl', 'xxtl', 'ty', 'luna2', 'yxlc'\];/.test(home)
-    && home.includes('五款游戏')
+  return (home.match(/class="poster"/g) || []).length === 6
+    && (home.match(/class="game-card"/g) || []).length === 6
+    && home.includes('data-like="luna2"') && home.includes('data-like="cq3d"')
+    && home.includes('<b id="statGames">6</b>') && home.includes('<b id="statGuides">67</b>') && home.includes('<b id="statCats">7</b>')
+    && /const ORDER = \['ejl', 'xxtl', 'ty', 'luna2', 'yxlc', 'cq3d'\];/.test(home)
+    && home.includes('六款游戏')
     && !/game-soon|gs-tag/.test(home);
 })());
 ok('倒计时模块：每秒刷新天/时/分/秒，到点换「已公测」并停掉定时器', /launchCd/.test(uiJs) && /window\.clearInterval\(iv\)/.test(uiJs) && /cd-over">已公测/.test(uiJs) && /Date\.parse\(box\.getAttribute\('data-launch'\)\)/.test(uiJs));
@@ -953,7 +953,7 @@ ok('露娜2 配图完整：4 篇攻略的 img 块都有 jpg/webp/avif 三件套'
   if (bases.size !== 10) return false;
   return Array.from(bases).every(b => ['jpg', 'webp', 'avif'].every(e => fsMod2.existsSync('assets/' + b + '.' + e)));
 })());
-ok('露娜2 样式：投票 5 列 + hero 倒计时缩小版 + 资质说明；预热页样式零残留', /\.vote-row\{display:grid;grid-template-columns:repeat\(5,minmax\(0,1fr\)\)/.test(cssText) && /\.game-hero \.launch-cd\{margin-top:4px\}/.test(cssText) && /\.luna-legal\{/.test(cssText) && !/game-soon|luna-hero|luna-list/.test(cssText));
+ok('露娜2 样式：投票 5 列 + hero 倒计时缩小版 + 资质说明；预热页样式零残留', /\.vote-row\{display:grid;grid-template-columns:repeat\(6,minmax\(0,1fr\)\)/.test(cssText) && /\.game-hero \.launch-cd\{margin-top:4px\}/.test(cssText) && /\.luna-legal\{/.test(cssText) && !/game-soon|luna-hero|luna-list/.test(cssText));
 ok('露娜2 官方图集：3 张三件套 + figure 结构', (() => {
   const gal = fsMod2.readFileSync('g/luna2/index.html', 'utf8');
   if (!/官方图集/.test(gal)) return false;
@@ -1042,16 +1042,16 @@ ok('xxtl 官方特色图集：5 张 4:3 原图完整展示、三件套齐全且�
 })());
 
 /* ---------- 回归护栏：贰点零江湖官网资讯改写的 4 篇攻略 ---------- */
-ok('官网资讯改写：ejl 新增 4 篇玩法攻略，全站口径同步到 61 篇 / ejl 13 篇', (() => {
+ok('官网资讯改写：ejl 新增 4 篇玩法攻略，全站口径同步到 67 篇 / ejl 13 篇', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   const ids = ['ejl-faction', 'ejl-qigong', 'ejl-guild', 'ejl-social'];
-  return GUIDE_N === 61 && GP_COUNTS.ejl === 13
+  return GUIDE_N === 67 && GP_COUNTS.ejl === 13
     && ids.every(id => DATA.GUIDES.some(g => g.id === id && g.game === 'ejl'
       && g.take.length === 4 && g.blocks.length >= 6 && g.blocks.some(b => b.t === 'table')))
     && ids.every(id => fsMod2.existsSync(`a/${id}/index.html`) && fsMod2.existsSync(`a/${id}/qr.svg`))
-    && home.includes('<b id="statGuides">61</b>')
+    && home.includes('<b id="statGuides">67</b>')
     && home.includes('data-count="ejl" data-count-fmt="{n} 篇">13 篇')
-    && home.includes('攻略目录（共 61 篇）')
+    && home.includes('攻略目录（共 67 篇）')
     && ids.every(id => fsMod2.readFileSync('sitemap.xml', 'utf8').includes(`a/${id}/`));
 })());
 ok('官网改写攻略页结构完整：小节目录 / 要点 / 表格 / 本服版本口径 / 二维码', (() => {
@@ -1081,7 +1081,7 @@ ok('名称统一：搜索标题仍 ≤30 字且只用正式名（避免搜索结
 ok('名称统一不动技术标识：URL slug / 文章 id / GAMES key / API 白名单保持原代号', (() => {
   const api = fsMod2.readFileSync('functions/api/[[path]].js', 'utf8');
   const data = fsMod2.readFileSync('assets/data.js', 'utf8');
-  return /const GAMES = \['ejl', 'xxtl', 'ty', 'luna2', 'yxlc'\]/.test(api)
+  return /const GAMES = \['ejl', 'xxtl', 'ty', 'luna2', 'yxlc', 'cq3d'\]/.test(api)
     && /ejl: \{ id: 'ejl'/.test(data)
     && ['g/ejl/index.html', 'a/ejl-faction/index.html', 'a/ty-pet-daily/index.html'].every(p => fsMod2.existsSync(p));
 })());
@@ -1115,17 +1115,17 @@ ok('yxlc 首屏轮播补齐官网职业图：5 张，剑士/魔法师有 960w �
     && car.includes('yxlc-feat-warrior.avif') && car.includes('yxlc-feat-mage.avif')
     && /heroCarousel/.test(uiJs);
 })());
-ok('官网攻略改写：yxlc 新增 6 篇，全站口径同步到 61 篇 / yxlc 14 篇', (() => {
+ok('官网攻略改写：yxlc 新增 6 篇，全站口径同步到 67 篇 / yxlc 14 篇', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   const ids = ['yxlc-class-five', 'yxlc-pvp', 'yxlc-pet', 'yxlc-build', 'yxlc-f2p', 'yxlc-social'];
   const sitemap = fsMod2.readFileSync('sitemap.xml', 'utf8');
-  return GUIDE_N === 61 && GP_COUNTS.yxlc === 14
+  return GUIDE_N === 67 && GP_COUNTS.yxlc === 14
     && ids.every(id => DATA.GUIDES.some(g => g.id === id && g.game === 'yxlc'
       && g.take.length === 4 && g.blocks.length >= 6 && g.blocks.some(b => b.t === 'table')))
     && ids.every(id => fsMod2.existsSync(`a/${id}/index.html`) && fsMod2.existsSync(`a/${id}/qr.svg`))
-    && home.includes('<b id="statGuides">61</b>')
+    && home.includes('<b id="statGuides">67</b>')
     && home.includes('data-count="yxlc" data-count-fmt="{n} 篇">14 篇')
-    && home.includes('攻略目录（共 61 篇）')
+    && home.includes('攻略目录（共 67 篇）')
     && ids.every(id => sitemap.includes(`a/${id}/`));
 })());
 ok('官网改写攻略页结构完整：小节目录 / 表格 / 本服版本口径 / 二维码', (() => {
@@ -1144,6 +1144,53 @@ ok('官网职业数据只取创建界面：五项初始属性与 220/250 级解�
     && data.includes("'28', '20', '10', '25'") && data.includes("'18', '18', '30', '15'")
     && data.includes('220 级') && data.includes('250 级')
     && t.includes('初始属性') && t.includes('天鹰') && t.includes('黑王马');
+})());
+
+/* ---------- 回归护栏：传奇3D点卡版（sqqyxz.com）接入 ---------- */
+ok('cq3d 全站接入：第 6 张 poster / game-card / 投票按钮 / 分站 / 图集', (() => {
+  const home = fsMod2.readFileSync('index.html', 'utf8');
+  const g = fsMod2.readFileSync('g/cq3d/index.html', 'utf8');
+  return home.includes('data-count="cq3d"') && home.includes('<span class="poster-tab">六</span>')
+    && home.includes('data-like="cq3d"') && home.includes('statGames">6')
+    && fsMod2.existsSync('g/cq3d/index.html')
+    && g.includes('传奇3D点卡版 · 全部') && g.includes('游戏特色 · 官方图集')
+    && g.includes('sqqyxz.com') && g.includes('图片版权归原厂商所有');
+})());
+ok('cq3d 官方图集：6 张 16:9 原图完整展示、三件套齐全、首屏轮播 3 张', (() => {
+  const g = fsMod2.readFileSync('g/cq3d/index.html', 'utf8');
+  const gal = (g.match(/<div class="luna-gal">[\s\S]*?<\/div>/) || [''])[0];
+  if ((gal.match(/<figure>/g) || []).length !== 6) return false;
+  const keys = ['class', 'mongjen', 'tomb', 'village', 'town', 'field'];
+  return keys.every(k => ['jpg', 'webp', 'avif'].every(e => fsMod2.existsSync(`assets/cq3d-${k}.${e}`)))
+    && keys.every(k => gal.includes(`cq3d-${k}.avif`) && gal.includes(`cq3d-${k}.jpg`))
+    && (gal.match(/<figcaption>/g) || []).length === 6
+    && ['class', 'mongjen', 'tomb'].every(k => ['jpg', 'webp', 'avif'].every(e => fsMod2.existsSync(`assets/cq3d-${k}_960w.${e}`)))
+    && (g.match(/<picture class="hc/g) || []).length === 3;
+})());
+ok('官网长文改写：cq3d 新增 6 篇，全站口径同步到 67 篇 / cq3d 6 篇 / 6 款游戏', (() => {
+  const home = fsMod2.readFileSync('index.html', 'utf8');
+  const ids = ['cq3d-start', 'cq3d-card', 'cq3d-market', 'cq3d-drop', 'cq3d-class', 'cq3d-level'];
+  const sitemap = fsMod2.readFileSync('sitemap.xml', 'utf8');
+  return GUIDE_N === 67 && GP_COUNTS.cq3d === 6
+    && ids.every(id => DATA.GUIDES.some(g => g.id === id && g.game === 'cq3d'
+      && g.take.length === 4 && g.blocks.length >= 7 && g.blocks.some(b => b.t === 'table')))
+    && ids.every(id => fsMod2.existsSync(`a/${id}/index.html`) && fsMod2.existsSync(`a/${id}/qr.svg`))
+    && home.includes('data-count="cq3d" data-count-fmt="{n} 篇">6 篇')
+    && home.includes('攻略目录（共 67 篇）')
+    && ids.every(id => sitemap.includes(`a/${id}/`));
+})());
+ok('官网事实只采信长文明示规则：点卡换算 / 5% 金币税 / 200 元门槛 / 世界等级-3', (() => {
+  const data = fsMod2.readFileSync('assets/data.js', 'utf8');
+  return data.includes('1 元兑换 10 点卡') || data.includes('1 元 = 10 点卡')
+    && data.includes('5% 金币税') && data.includes('累计充值 200 元')
+    && data.includes('世界等级 - 3') && data.includes('骷髅洞') && data.includes('15 级自动传送土城');
+})());
+ok('cq3d 互动与掉落池：点赞白名单、文章掉落装备池、投票列数 6', (() => {
+  const api = fsMod2.readFileSync('functions/api/[[path]].js', 'utf8');
+  const ui = uiJs;
+  const css = cssText;
+  return api.includes("'cq3d'") && ui.includes('cq3d: [') && ui.includes('/^cq3d-/.test(aid)')
+    && css.includes('.vote-row{display:grid;grid-template-columns:repeat(6');
 })());
 
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));

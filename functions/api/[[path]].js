@@ -16,7 +16,7 @@
  * 未绑定 DB 时统一返回 503 {error:"backend_not_configured"}，前端据此隐藏模块，不报错。
  */
 
-const GAMES = ['ejl', 'xxtl', 'ty', 'luna2', 'yxlc'];
+const GAMES = ['ejl', 'xxtl', 'ty', 'luna2', 'yxlc', 'cq3d'];
 const MAX_NAME = 16;
 const MAX_BODY = 300;
 const PAGE_MAX = 50;

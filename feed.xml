@@ -3,11 +3,59 @@
 <channel>
   <title>游戏攻略大全</title>
   <link>https://wgame-bc7.pages.dev/</link>
-  <description>露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙 · 冰雪传奇、英雄连城 · 奇迹MU的开荒路线、职业选择、魔附养成、打金交易与团战站位，都整理成能直接照着做的步骤，按游戏和分类就能查到。</description>
+  <description>露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙 · 冰雪传奇、英雄连城 · 奇迹MU、传奇3D点卡版的开荒路线、点卡计费、打金交易与团战站位，都整理成能直接照着做的步骤，按游戏和分类就能查到。</description>
   <language>zh-cn</language>
-  <lastBuildDate>Wed, 11 Nov 2026 00:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Sun, 15 Nov 2026 00:00:00 GMT</lastBuildDate>
   <generator>build.mjs</generator>
   <atom:link href="https://wgame-bc7.pages.dev/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>新手开荒六步走：15 级转土城</title>
+    <link>https://wgame-bc7.pages.dev/a/cq3d-start/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/cq3d-start/</guid>
+    <category>传奇3D点卡版</category>
+    <pubDate>Sun, 15 Nov 2026 00:00:00 GMT</pubDate>
+    <description>官网把开荒写成六步，核心是两件事：上线先看时长，别一上来把点卡烧光；15 级自动传送土城，转场前把新手区的活干完。</description>
+  </item>
+  <item>
+    <title>金币行交易门槛与 5% 金币税</title>
+    <link>https://wgame-bc7.pages.dev/a/cq3d-market/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/cq3d-market/</guid>
+    <category>传奇3D点卡版</category>
+    <pubDate>Sun, 15 Nov 2026 00:00:00 GMT</pubDate>
+    <description>金币价格由玩家挂单写出来，收币方承担 5% 金币税。两道交易门槛是为了过滤批量小号，不是拦你做生意。</description>
+  </item>
+  <item>
+    <title>后进服追赶：等级补领与世界等级</title>
+    <link>https://wgame-bc7.pages.dev/a/cq3d-level/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/cq3d-level/</guid>
+    <category>传奇3D点卡版</category>
+    <pubDate>Sun, 15 Nov 2026 00:00:00 GMT</pubDate>
+    <description>担心开服一个月后再进只能当观众？官网写了等级补领：满足条件的角色可以免费补到「世界等级 - 3」。</description>
+  </item>
+  <item>
+    <title>掉落全公开：装备会掉，材料才有用</title>
+    <link>https://wgame-bc7.pages.dev/a/cq3d-drop/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/cq3d-drop/</guid>
+    <category>传奇3D点卡版</category>
+    <pubDate>Sun, 15 Nov 2026 00:00:00 GMT</pubDate>
+    <description>非绑定装备遵循死亡掉落规则，书页、黑铁、兽皮、祝福油全有明确用途。所有地图与怪物的掉落明细与概率公开可查。</description>
+  </item>
+  <item>
+    <title>战法道三职业分工：前排、清场与续航</title>
+    <link>https://wgame-bc7.pages.dev/a/cq3d-class/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/cq3d-class/</guid>
+    <category>传奇3D点卡版</category>
+    <pubDate>Sun, 15 Nov 2026 00:00:00 GMT</pubDate>
+    <description>创建界面只有三个职业可选。官网口径：战士顶前排、法师清场、道士续航与控场，组队配合比充值额度重要。</description>
+  </item>
+  <item>
+    <title>点卡换算：1 元 = 60 分钟</title>
+    <link>https://wgame-bc7.pages.dev/a/cq3d-card/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/cq3d-card/</guid>
+    <category>传奇3D点卡版</category>
+    <pubDate>Sun, 15 Nov 2026 00:00:00 GMT</pubDate>
+    <description>这个服务器钱买的是「玩多久」，不是「有多强」。把换算和离线计费两条规则吃透，成本账就清楚了。</description>
+  </item>
   <item>
     <title>组队与战盟：固定队比临时队值钱在哪</title>
     <link>https://wgame-bc7.pages.dev/a/yxlc-social/</link>
@@ -199,54 +247,6 @@
     <category>露娜2：拾光之约</category>
     <pubDate>Mon, 09 Nov 2026 00:00:00 GMT</pubDate>
     <description>技能训练窗口里每一级都要真金白银的 SP 和金币。法师修士两系怎么点、2 转任务在哪接，这一篇说清。</description>
-  </item>
-  <item>
-    <title>魔附系统怎么玩：宝石数量决定成败</title>
-    <link>https://wgame-bc7.pages.dev/a/luna2-mofu/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/luna2-mofu/</guid>
-    <category>露娜2：拾光之约</category>
-    <pubDate>Mon, 09 Nov 2026 00:00:00 GMT</pubDate>
-    <description>魔附是露娜2 里装备成型的核心一环：选对材料、攒够宝石，比点十次手快更有用。</description>
-  </item>
-  <item>
-    <title>挂机辅助设置全拆解：两页选项各管什么</title>
-    <link>https://wgame-bc7.pages.dev/a/luna2-auto/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/luna2-auto/</guid>
-    <category>露娜2：拾光之约</category>
-    <pubDate>Mon, 09 Nov 2026 00:00:00 GMT</pubDate>
-    <description>挂机不是点个按钮就走。移动还是定点、复活回哪、技能什么顺序，这四项决定了你睡一觉起来涨了多少。</description>
-  </item>
-  <item>
-    <title>红名与死亡掉落：动手之前先算这笔账</title>
-    <link>https://wgame-bc7.pages.dev/a/xxtl-red/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/xxtl-red/</guid>
-    <category>小小屠龙 · 冰雪传奇</category>
-    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-    <description>传奇类玩法的 PK 从来不免费：杀人涨 PK 值，被人杀了掉东西。值不值得动手，取决于你算不算得清成本和收益。</description>
-  </item>
-  <item>
-    <title>幸运与爆率：到底哪一层在决定你出不出货</title>
-    <link>https://wgame-bc7.pages.dev/a/xxtl-luck/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/xxtl-luck/</guid>
-    <category>小小屠龙 · 冰雪传奇</category>
-    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-    <description>「爆率」不是一个数字。它由基础掉落表、幸运加成、归属权三层叠在一起，搞清楚哪一层在起作用，才知道该堆什么。</description>
-  </item>
-  <item>
-    <title>阵容模板：0 级成型队到 40 级毕业</title>
-    <link>https://wgame-bc7.pages.dev/a/ty-team/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-team/</guid>
-    <category>桃园：将帅录</category>
-    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-    <description>零氪微氪直接抄这套：刘关张加蔡文姬的经典模板，从 0 级开荒一路用到 40 级毕业调整，加点和技能优先级全部给全。</description>
-  </item>
-  <item>
-    <title>1-40 级怎么练：练级点与每日任务</title>
-    <link>https://wgame-bc7.pages.dev/a/ty-roadmap/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-roadmap/</guid>
-    <category>桃园：将帅录</category>
-    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-    <description>1 到 40 级是一条清晰的路线：跟任务走、按等级换练级地图、每日固定几件事做完。转职节点和每日清单都在这里。</description>
   </item>
 </channel>
 </rss>
