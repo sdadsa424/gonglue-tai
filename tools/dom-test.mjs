@@ -1156,15 +1156,17 @@ ok('cq3d 全站接入：第 6 张 poster / game-card / 投票按钮 / 分站 / �
     && g.includes('传奇3D点卡版 · 全部') && g.includes('<h2 class="sec-title">游戏特色</h2>')
     && !g.includes('取自《传奇3D点卡版》官网');
 })());
-ok('cq3d 官方图集：6 张 16:9 原图完整展示、三件套齐全、首屏轮播 3 张', (() => {
+ok('cq3d 官方图集：7 张三件套齐全、首屏轮播 3 张创建角色', (() => {
   const g = fsMod2.readFileSync('g/cq3d/index.html', 'utf8');
   const gal = (g.match(/<div class="luna-gal">[\s\S]*?<\/div>/) || [''])[0];
-  if ((gal.match(/<figure>/g) || []).length !== 6) return false;
-  const keys = ['class', 'mongjen', 'tomb', 'village', 'town', 'field'];
+  if ((gal.match(/<figure>/g) || []).length !== 7) return false;
+  const keys = ['key', 'stall', 'promo-trade', 'promo-siege', 'promo-sworn', 'promo-team', 'promo-skill'];
+  const slides = ['create-zs', 'create-fs', 'create-ds'];
   return keys.every(k => ['jpg', 'webp', 'avif'].every(e => fsMod2.existsSync(`assets/cq3d-${k}.${e}`)))
     && keys.every(k => gal.includes(`cq3d-${k}.avif`) && gal.includes(`cq3d-${k}.jpg`))
-    && (gal.match(/<figcaption>/g) || []).length === 6
-    && ['class', 'mongjen', 'tomb'].every(k => ['jpg', 'webp', 'avif'].every(e => fsMod2.existsSync(`assets/cq3d-${k}_960w.${e}`)))
+    && (gal.match(/<figcaption>/g) || []).length === 7
+    && slides.every(k => ['jpg', 'webp', 'avif'].every(e => fsMod2.existsSync(`assets/cq3d-${k}.${e}`) && fsMod2.existsSync(`assets/cq3d-${k}_960w.${e}`)))
+    && slides.every(k => g.includes(`assets/cq3d-${k}.avif 1125w`))
     && (g.match(/<picture class="hc/g) || []).length === 3;
 })());
 ok('官网长文改写：cq3d 新增 6 篇，全站口径同步到 67 篇 / cq3d 6 篇 / 6 款游戏', (() => {
