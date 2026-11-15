@@ -1437,6 +1437,29 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
   .poster:hover img{translate:0 0;scale:1}
 }
 
+/* ---------- 手机端海报跑马灯（≤760px，六张海报无缝横滚，触摸/悬停暂停） ---------- */
+@media (max-width:760px){
+  .hero-games.is-marquee{
+    display:block;overflow:hidden;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+  }
+  .hero-track{
+    display:flex;width:max-content;
+    animation:heroMarquee 28s linear infinite;
+    will-change:transform;
+  }
+  .hero-track .poster{flex:0 0 44vw;max-width:210px;margin-right:10px}
+  .hero-track .poster--dup{pointer-events:none}
+  .hero-games.is-marquee:hover .hero-track,
+  .hero-games.is-marquee:active .hero-track{animation-play-state:paused}
+}
+@keyframes heroMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){
+  .hero-track{animation:none}
+  .hero-games.is-marquee{overflow-x:auto;-webkit-mask-image:none;mask-image:none;-webkit-overflow-scrolling:touch}
+}
+
 /* ---------- 正文插图（图 + 图注） ---------- */
 .prose .fig{margin:28px 0 26px}
 .prose .fig picture{display:block}
