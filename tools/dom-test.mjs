@@ -970,7 +970,8 @@ ok('露娜2 hero 轮播：5 张特色图三件套 + ui.js 模块 + 圆点样式'
   if ((car.match(/<picture class="hc/g) || []).length !== 5) return false;
   const bases = ['social', 'job', 'cute', 'fun', 'faithful'];
   if (!bases.every(b => ['jpg', 'webp', 'avif'].every(e =>
-    fsMod2.existsSync('assets/luna2-slide-' + b + '.' + e) && fsMod2.existsSync('assets/luna2-slide-' + b + '_960w.' + e)))) return false;
+    fsMod2.existsSync('assets/luna2-slide-' + b + '.' + e))
+    && ['webp', 'avif'].every(e => fsMod2.existsSync('assets/luna2-slide-' + b + '_960w.' + e)))) return false;
   if (!bases.every(b => car.includes('luna2-slide-' + b + '.avif') && car.includes('luna2-slide-' + b + '.jpg'))) return false;
   return /heroCarousel/.test(uiJs) && /hc-dot/.test(uiJs) && /hc-count/.test(uiJs)
     && /tabindex', '0'/.test(uiJs) && /ArrowRight/.test(uiJs) && /pointerType === 'touch'/.test(uiJs)
@@ -995,8 +996,8 @@ ok('ejl 分站 hero 轮播：官网 3 张特色图（jpg/webp/avif + 960w）', (
   if ((car.match(/<picture class="hc/g) || []).length !== 3) return false;
   const bases = ['boss', 'pet', 'qi'];
   return bases.every(b => ['jpg', 'webp', 'avif'].every(e =>
-    fsMod2.existsSync('assets/ejl-feat-' + b + '.' + e)
-    && fsMod2.existsSync('assets/ejl-feat-' + b + '_960w.' + e)))
+    fsMod2.existsSync('assets/ejl-feat-' + b + '.' + e))
+    && ['webp', 'avif'].every(e => fsMod2.existsSync('assets/ejl-feat-' + b + '_960w.' + e)))
     && bases.every(b => car.includes('ejl-feat-' + b + '.avif') && car.includes('ejl-feat-' + b + '.jpg'))
     && /heroCarousel/.test(uiJs);
 })());
@@ -1020,8 +1021,8 @@ ok('xxtl 分站 hero 轮播：官网 3 张特色图（16:9 延展 + 960w 三件�
   if ((car.match(/<picture class="hc/g) || []).length !== 3) return false;
   const keys = ['ice', 'gold', 'siege'];
   return keys.every(k => ['jpg', 'webp', 'avif'].every(e =>
-    fsMod2.existsSync('assets/xxtl-hero-' + k + '.' + e)
-    && fsMod2.existsSync('assets/xxtl-hero-' + k + '_960w.' + e)))
+    fsMod2.existsSync('assets/xxtl-hero-' + k + '.' + e))
+    && ['webp', 'avif'].every(e => fsMod2.existsSync('assets/xxtl-hero-' + k + '_960w.' + e)))
     && keys.every(k => car.includes('xxtl-hero-' + k + '.avif') && car.includes('xxtl-hero-' + k + '.jpg'))
     && (car.match(/width="1264" height="711"/g) || []).length === 3
     && /heroCarousel/.test(uiJs);
@@ -1111,7 +1112,7 @@ ok('yxlc 首屏轮播补齐官网职业图：5 张，剑士/魔法师有 960w �
   const g = fsMod2.readFileSync('g/yxlc/index.html', 'utf8');
   const car = (g.match(/<div class="art hero-carousel"[\s\S]*?<\/picture>\s*<\/div>/) || [''])[0];
   if ((car.match(/<picture class="hc/g) || []).length !== 5) return false;
-  return ['warrior', 'mage'].every(k => ['jpg', 'webp', 'avif'].every(e => fsMod2.existsSync(`assets/yxlc-feat-${k}_960w.${e}`)))
+  return ['warrior', 'mage'].every(k => ['webp', 'avif'].every(e => fsMod2.existsSync(`assets/yxlc-feat-${k}_960w.${e}`)))
     && car.includes('yxlc-feat-warrior.avif') && car.includes('yxlc-feat-mage.avif')
     && /heroCarousel/.test(uiJs);
 })());
@@ -1165,7 +1166,8 @@ ok('cq3d 官方图集：7 张三件套齐全、首屏轮播 3 张创建角色', 
   return keys.every(k => ['jpg', 'webp', 'avif'].every(e => fsMod2.existsSync(`assets/cq3d-${k}.${e}`)))
     && keys.every(k => gal.includes(`cq3d-${k}.avif`) && gal.includes(`cq3d-${k}.jpg`))
     && (gal.match(/<figcaption>/g) || []).length === 7
-    && slides.every(k => ['jpg', 'webp', 'avif'].every(e => fsMod2.existsSync(`assets/cq3d-${k}.${e}`) && fsMod2.existsSync(`assets/cq3d-${k}_960w.${e}`)))
+    && slides.every(k => ['jpg', 'webp', 'avif'].every(e => fsMod2.existsSync(`assets/cq3d-${k}.${e}`))
+      && ['webp', 'avif'].every(e => fsMod2.existsSync(`assets/cq3d-${k}_960w.${e}`)))
     && slides.every(k => g.includes(`assets/cq3d-${k}.avif 1125w`))
     && (g.match(/<picture class="hc/g) || []).length === 3;
 })());

@@ -32,6 +32,11 @@ base_tree = base_commit['tree']['sha']
 print('base', base[:8])
 
 tree = []
+# 删除：DELETE_FILES 用逗号或换行分隔，tree 里给 sha=None 即可移出
+DELS = []
+for path in [p.strip() for p in re.split(r'[,\n]', os.environ.get('DELETE_FILES', '')) if p.strip()]:
+    DELS.append({'path': path, 'mode': '100644', 'type': 'blob', 'sha': None})
+    print('del', path)
 for path in FILES:
     raw = open(os.path.join(ROOT, path.replace('/', os.sep)), 'rb').read()
     sha = req('POST', API + '/git/blobs', {
@@ -41,7 +46,7 @@ for path in FILES:
     print('blob', path, sha[:8], len(raw), 'bytes')
     tree.append({'path': path, 'mode': '100644', 'type': 'blob', 'sha': sha})
 
-new_tree = req('POST', API + '/git/trees', {'base_tree': base_tree, 'tree': tree})['sha']
+new_tree = req('POST', API + '/git/trees', {'base_tree': base_tree, 'tree': tree + DELS})['sha']
 commit = req('POST', API + '/git/commits', {
     'message': MSG,
     'tree': new_tree,
