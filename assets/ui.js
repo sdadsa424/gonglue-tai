@@ -1006,52 +1006,6 @@
       pyUpdate();
     }
 
-    /* 3.6 手机端海报跑马灯：≤760px 时六张游戏海报横向无缝滚动，悬停/触摸暂停；桌面端恢复网格 */
-    (function () {
-      var mqM = window.matchMedia ? window.matchMedia('(max-width:760px)') : null;
-      var hgM = document.querySelector('.hero-games');
-      if (!mqM || !hgM || hgM.dataset.mqReady) return;
-      hgM.dataset.mqReady = '1';
-      var trackM = null;
-      function mqBuild() {
-        if (trackM) return;
-        trackM = document.createElement('div');
-        trackM.className = 'hero-track';
-        var kids = [].slice.call(hgM.children);
-        for (var i = 0; i < kids.length; i++) {
-          var el = kids[i];
-          trackM.appendChild(el);
-          var cl = el.cloneNode(true);
-          cl.classList.remove('reveal', 'in', 'c3d', 'c3d-in', 'tilt-on');
-          cl.classList.add('poster--dup');
-          cl.setAttribute('aria-hidden', 'true');
-          cl.setAttribute('tabindex', '-1');
-          trackM.appendChild(cl);
-        }
-        hgM.appendChild(trackM);
-        hgM.classList.add('is-marquee');
-      }
-      function mqRestore() {
-        if (!trackM) return;
-        var keep = [].slice.call(trackM.querySelectorAll('.poster:not(.poster--dup)'));
-        for (var i = 0; i < keep.length; i++) hgM.insertBefore(keep[i], trackM);
-        trackM.parentNode.removeChild(trackM);
-        trackM = null;
-        hgM.classList.remove('is-marquee');
-      }
-      var mqApply = function () { if (mqM.matches) mqBuild(); else mqRestore(); };
-      if (mqM.addEventListener) mqM.addEventListener('change', mqApply);
-      else if (mqM.addListener) mqM.addListener(mqApply);
-      mqApply();
-      /* 触摸时暂停滚动，松手继续 */
-      hgM.addEventListener('touchstart', function () {
-        if (trackM) trackM.style.animationPlayState = 'paused';
-      }, { passive: true });
-      hgM.addEventListener('touchend', function () {
-        if (trackM) trackM.style.animationPlayState = '';
-      }, { passive: true });
-    })();
-
     /* 4. 小节标题锚点：悬停出 #，点击复制本节直达链接 */
     var heads = [].slice.call(document.querySelectorAll('.prose h2[id]'));
     for (var j = 0; j < heads.length; j++) {
