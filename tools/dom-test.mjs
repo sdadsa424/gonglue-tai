@@ -1153,8 +1153,8 @@ ok('cq3d 全站接入：第 6 张 poster / game-card / 投票按钮 / 分站 / �
   return home.includes('data-count="cq3d"') && home.includes('<span class="poster-tab">六</span>')
     && home.includes('data-like="cq3d"') && home.includes('statGames">6')
     && fsMod2.existsSync('g/cq3d/index.html')
-    && g.includes('传奇3D点卡版 · 全部') && g.includes('游戏特色 · 官方图集')
-    && g.includes('sqqyxz.com') && g.includes('图片版权归原厂商所有');
+    && g.includes('传奇3D点卡版 · 全部') && g.includes('<h2 class="sec-title">游戏特色</h2>')
+    && !g.includes('取自《传奇3D点卡版》官网');
 })());
 ok('cq3d 官方图集：6 张 16:9 原图完整展示、三件套齐全、首屏轮播 3 张', (() => {
   const g = fsMod2.readFileSync('g/cq3d/index.html', 'utf8');
