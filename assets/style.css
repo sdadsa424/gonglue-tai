@@ -343,6 +343,26 @@ ul{margin:0;padding:0;list-style:none}
   transition:transform .28s cubic-bezier(.2,.6,.2,1),box-shadow .32s ease,border-color .28s ease;
 }
 .game-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.2);box-shadow:0 30px 60px -34px rgba(0,0,0,.95)}
+
+/* 霓虹流水灯边框：两段主题色光带沿边框旋转，卡色不同灯色不同 */
+@property --neonA{syntax:'<angle>';inherits:false;initial-value:0deg}
+.game-card{position:relative}
+.game-card::before{
+  content:"";position:absolute;inset:-1px;z-index:3;border-radius:16px;padding:1.6px;
+  background:conic-gradient(from var(--neonA),
+    transparent 0deg,var(--ac) 38deg,rgba(255,255,255,.85) 52deg,transparent 92deg,
+    transparent 180deg,var(--ac) 218deg,rgba(255,255,255,.85) 232deg,transparent 272deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;
+  animation:neonSpin 4.5s linear infinite;
+  pointer-events:none;
+  filter:drop-shadow(0 0 5px var(--ac)) drop-shadow(0 0 12px var(--ac));
+}
+.game-card:hover::before{animation-duration:1.8s}
+@keyframes neonSpin{to{--neonA:360deg}}
+@media (prefers-reduced-motion:reduce){
+  .game-card::before{animation:none;box-shadow:none}
+}
 .game-card .game-thumb{aspect-ratio:16/10;background:#1B1F33;position:relative;overflow:hidden;border-radius:0}
 .game-card .game-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .65s cubic-bezier(.2,.6,.2,1)}
 .game-card:hover .game-thumb img{transform:scale(1.05)}
