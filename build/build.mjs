@@ -401,7 +401,6 @@ ${tabbar()}
 <div class="u-toast" id="uToast" role="status" aria-live="polite"><span class="u-dot" aria-hidden="true"></span><span class="u-text"></span></div>
 ${(guideId || noData) ? '' : '<script src="' + UP + 'assets/data.js"></script>'}
 <script src="${UP}assets/ui.js"></script>
-<script src="${UP}assets/guard.js"></script>
 ${PAGE_SCRIPT}
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </body>
@@ -880,7 +879,6 @@ const SW_TEMPLATE = fs.readFileSync(path.join(import.meta.dirname, 'sw.template.
 const swHash = crypto.createHash('sha1')
   .update(fs.readFileSync('assets/style.css'))
   .update(fs.readFileSync('assets/ui.js'))
-  .update(fs.readFileSync('assets/guard.js'))
   .update(fs.readFileSync('assets/data.js'))
   .update(fs.readFileSync('assets/dates.js'))
   .update(fs.readFileSync('assets/favicon.svg'))
