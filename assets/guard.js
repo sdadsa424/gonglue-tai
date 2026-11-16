@@ -31,8 +31,31 @@
     '#ssShield span{display:block;color:#9AA1B8;font-weight:500;font-size:13px}' +
     '#ssShield i{display:block;margin:18px auto 0;width:44px;height:44px;border-radius:50%;' +
     'border:2px solid rgba(255,255,255,.14);border-top-color:#67B3FF;animation:ssSpin .9s linear infinite}' +
-    '@keyframes ssSpin{to{transform:rotate(360deg)}}';
+    '@keyframes ssSpin{to{transform:rotate(360deg)}}' +
+    /* 水印层：半透明平铺站名，截图必带，转载可溯源 */
+    '.ss-wm{position:fixed;inset:0;z-index:2147483000;pointer-events:none;opacity:.06;' +
+    'background-repeat:repeat;background-position:0 0;mix-blend-mode:screen}' +
+    '@media print{.ss-wm{display:none}}';
   (document.head || document.documentElement).appendChild(css);
+
+  /* ---------- 水印平铺层 ---------- */
+  (function () {
+    var host = location.hostname.replace(/^www\./, '');
+    var txt = host + ' · 攻略站';
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="170">' +
+      '<text x="0" y="100" transform="rotate(-24 0 100)" font-size="15" ' +
+      'font-family="system-ui,-apple-system,Segoe UI,Microsoft YaHei,sans-serif" ' +
+      'fill="#ffffff">' + txt + '</text></svg>';
+    var wm = document.createElement('div');
+    wm.className = 'ss-wm';
+    wm.setAttribute('aria-hidden', 'true');
+    wm.style.backgroundImage = 'url("data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg) + '")';
+    wm.style.backgroundSize = '300px 170px';
+    if (document.body) document.body.appendChild(wm);
+    else document.addEventListener('DOMContentLoaded', function () {
+      document.body.appendChild(wm);
+    });
+  })();
 
   /* ---------- 遮罩节点 ---------- */
   var shield = document.createElement('div');
