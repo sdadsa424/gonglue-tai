@@ -45,7 +45,7 @@ const gdate = gi => (DATES[gi.id] || {}).d || SEED_DATE;
 const GDATE = guideId => (DATES[guideId] || {}).d || SEED_DATE;
 /* 全站级 lastmod：取所有文章日期的最大值 */
 const SITE_LASTMOD = GUIDES.map(gdate).sort().pop();
-const ORDER = ['ejl', 'xxtl', 'ty', 'luna2', 'cq3d']; // yxlc 隐藏中
+const ORDER = ['ejl', 'xxtl', 'ty', 'luna2', 'cq3d', 'wlwz']; // yxlc 隐藏中
 const CS = 'ggboy6123';
 
 
@@ -594,7 +594,7 @@ ${ORDER.map(k => GUIDES.filter(x => x.game === k).map(gi => `          <li><a hr
 /* ---------- 分站静态页 ----------
    分站内容原本只在首页 #/g/<key> 里，靠前端渲染 —— 搜索引擎看不到，也没法单独分享。
    这里把首页那段真实标记原样抽出来（单一数据来源，不重复维护），落成 /g/<key>/ 静态页。 */
-const GAME_IMG = { ejl: 'assets/ejl-hero.jpg', xxtl: 'assets/xxtl-siege.jpg', ty: 'assets/ty-key.jpg', luna2: 'assets/luna2-hero.jpg', yxlc: 'assets/yxlc-hero.jpg', cq3d: 'assets/cq3d-class.jpg' };
+const GAME_IMG = { ejl: 'assets/ejl-hero.jpg', xxtl: 'assets/xxtl-siege.jpg', ty: 'assets/ty-key.jpg', luna2: 'assets/luna2-hero.jpg', yxlc: 'assets/yxlc-hero.jpg', cq3d: 'assets/cq3d-class.jpg', wlwz: 'assets/wlwz-feat-inn.jpg' };
 
 function gameBlock(key) {
   const html = fs.readFileSync('index.html', 'utf8');
