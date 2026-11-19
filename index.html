@@ -133,6 +133,7 @@
           <button class="hero-search-btn" type="button" id="heroSearchBtn">搜索攻略</button>
         </div>
         <div class="q-hist" id="qHist" hidden></div>
+        <p class="hero-dl-entry"><a class="back" href="#/dl"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v13"/><path d="m7 11 5 5 5-5"/></svg>游戏下载</a></p>
       </div>
       <div class="notice notice-hero notice-hold" aria-hidden="true"><div class="wrap notice-in"></div></div>
       <div class="hero-games">
@@ -866,6 +867,64 @@
 
 </div>
 
+<!-- ===== 视图：游戏下载 ===== -->
+<div class="view" id="view-dl" hidden>
+  <div class="wrap dl-wrap">
+    <nav class="dl-crumb" aria-label="面包屑"><a href="#/" data-goto="library">首页</a><span aria-hidden="true">/</span><b>游戏下载</b></nav>
+    <h2 class="dl-h">游戏下载</h2>
+    <p class="dl-sub">五款游戏下载与获取入口，点击直达</p>
+    <div class="dl-list">
+
+      <a class="dl-card" style="--ac:#FFB020" href="https://231518.youxin75.com/qudao.php?s=/Download/f/WzUyMjEsNTIyMCwyMzE1MThd" target="_blank" rel="noopener nofollow">
+        <span class="dl-banner"><img src="assets/cq3d-create-zs.jpg" alt="传奇盛世移动版-3D点卡 宣传画面" width="1125" height="632" loading="lazy" decoding="async"></span>
+        <span class="dl-row">
+          <img class="dl-ic" src="assets/hero-cq3d.jpg" alt="" width="88" height="88" loading="lazy" decoding="async">
+          <span class="dl-tt"><b>传奇盛世移动版-3D点卡</b><span>点卡计时 · 1.76 复古</span></span>
+          <span class="dl-btn">下载</span>
+        </span>
+      </a>
+
+      <a class="dl-card" style="--ac:#2DD4A7" href="g/ejl/">
+        <span class="dl-banner"><img src="assets/ejl-feat-boss.jpg" alt="贰点零江湖 游戏画面" width="1264" height="712" loading="lazy" decoding="async"></span>
+        <span class="dl-row">
+          <img class="dl-ic" src="assets/hero-ejl.jpg" alt="" width="88" height="88" loading="lazy" decoding="async">
+          <span class="dl-tt"><b>贰点零江湖</b><span>复古武侠 · 三端互通</span></span>
+          <span class="dl-btn">进入分站</span>
+        </span>
+      </a>
+
+      <a class="dl-card" style="--ac:#4C9AFF" href="g/xxtl/">
+        <span class="dl-banner"><img src="assets/xxtl-siege.jpg" alt="小小屠龙 · 冰雪传奇 攻沙画面" width="1264" height="712" loading="lazy" decoding="async"></span>
+        <span class="dl-row">
+          <img class="dl-ic" src="assets/hero-xxtl.jpg" alt="" width="88" height="88" loading="lazy" decoding="async">
+          <span class="dl-tt"><b>小小屠龙 · 冰雪传奇</b><span>冰雪复古 · 打宝攻沙</span></span>
+          <span class="dl-btn">进入分站</span>
+        </span>
+      </a>
+
+      <a class="dl-card" style="--ac:#FF6B8A" href="g/ty/">
+        <span class="dl-banner"><img src="assets/ty-key.jpg" alt="桃园：将帅录 游戏画面" width="1264" height="712" loading="lazy" decoding="async"></span>
+        <span class="dl-row">
+          <img class="dl-ic" src="assets/hero-ty.jpg" alt="" width="88" height="88" loading="lazy" decoding="async">
+          <span class="dl-tt"><b>桃园：将帅录</b><span>Q 版三国 · 回合策略</span></span>
+          <span class="dl-btn">进入分站</span>
+        </span>
+      </a>
+
+      <a class="dl-card" style="--ac:#A78BFA" href="g/luna2/">
+        <span class="dl-banner"><img src="assets/luna2-hero.jpg" alt="露娜2：拾光之约 宣传画面" width="750" height="1000" loading="lazy" decoding="async"></span>
+        <span class="dl-row">
+          <img class="dl-ic" src="assets/hero-luna2.jpg" alt="" width="88" height="88" loading="lazy" decoding="async">
+          <span class="dl-tt"><b>露娜2：拾光之约</b><span>奇幻冒险 · 自由转职</span></span>
+          <span class="dl-btn">进入分站</span>
+        </span>
+      </a>
+
+    </div>
+    <p class="dl-note">游戏客服：<button class="cs-pill dark" type="button" data-copy="ggboy6123"><b>ggboy6123</b><span class="cs-act">复制</span></button>　各游戏开服信息、下载问题都可咨询</p>
+  </div>
+</div>
+
 <!-- ===== 视图：文章 ===== -->
 <div class="view" id="view-article" hidden></div>
 </main>
@@ -889,6 +948,7 @@
         </div>
       </div>
       <nav class="foot-nav" aria-label="页脚导航">
+        <a href="#/dl">游戏下载</a>
         <a href="board/">留言板</a>
       </nav>
     </div>
@@ -1102,7 +1162,7 @@ function articleHTML(gi) {
 const viewGame = document.getElementById('view-game');
 
 /* ---------- 路由 ---------- */
-const views = { home: document.getElementById('view-home'), game: viewGame, article: viewArticle };
+const views = { home: document.getElementById('view-home'), game: viewGame, article: viewArticle, dl: document.getElementById('view-dl') };
 const mainEl = document.getElementById('main');
 const srLive = document.getElementById('srLive');
 let currentView = 'home';
@@ -1163,6 +1223,12 @@ function renderRoute() {
     document.querySelectorAll('.game-page').forEach(p => { p.hidden = p.dataset.game !== m[2]; });
     setView('game');
     document.title = GAMES[m[2]].name + ' · 游戏攻略大全';
+    window.scrollTo(0, 0);
+    return;
+  }
+  if (raw === '/dl' || raw === 'dl') {
+    setView('dl');
+    document.title = '游戏下载 · 游戏攻略大全';
     window.scrollTo(0, 0);
     return;
   }
