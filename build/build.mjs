@@ -157,7 +157,6 @@ function topbar(activeGame) {
       <span class="brand-sub">游戏 · 一处查完</span>
     </a>
     <nav class="nav" aria-label="主导航">
-      <a href="${UP}#games">攻略</a>
       <a href="${UP}#route">开荒路线</a>
       <a href="${UP}#games">游戏</a>
       <a href="${UP}#/dl">游戏下载</a>
@@ -247,10 +246,6 @@ function tabbar() {
     <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9.5 21v-6h5v6"/></svg>
     <span>首页</span>
   </a>
-  <a href="${UP}#games" class="tab" data-tab="guides">
-    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-    <span>攻略</span>
-  </a>
   <a href="${UP}#games" class="tab" data-tab="games">
     <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 12h4m-2-2v4m7-3h.01M18 10h.01"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
     <span>游戏</span>
@@ -274,7 +269,7 @@ const PAGE_SCRIPT = `<script>
   onScroll();
   var tabs = document.querySelectorAll('.tabbar .tab');
   function setActive(){
-    var i = 0; tabs.forEach(function(t, n){ if (t.dataset.tab === 'guides') i = n; });
+    var i = 0; tabs.forEach(function(t, n){ if (t.dataset.tab === 'games') i = n; });
     tabs.forEach(function(t){ t.classList.remove('active'); });
     if (tabs[i]) tabs[i].classList.add('active');
   }
@@ -793,8 +788,7 @@ function notFoundPage() {
     <p>链接可能已经失效，或者地址打错了一个字符。下面是站内全部 ${GUIDES.length} 篇攻略，按游戏分开列着；也可以用右上角的搜索（⌘K / Ctrl+K）直接搜标题。</p>
     <div class="nf-acts">
       <a class="nf-btn primary" href="/">回首页</a>
-      <a class="nf-btn" href="/#games">看攻略</a>
-      <a class="nf-btn" href="/#games">按游戏挑</a>
+      <a class="nf-btn" href="/#games">看全部攻略</a>
     </div>
     <div class="nf-list">
       <h2>全部攻略</h2>
