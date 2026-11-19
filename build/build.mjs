@@ -157,7 +157,7 @@ function topbar(activeGame) {
       <span class="brand-sub">游戏 · 一处查完</span>
     </a>
     <nav class="nav" aria-label="主导航">
-      <a href="${UP}#library">攻略库</a>
+      <a href="${UP}#games">攻略</a>
       <a href="${UP}#route">开荒路线</a>
       <a href="${UP}#games">游戏</a>
       <a href="${UP}#/dl">游戏下载</a>
@@ -247,7 +247,7 @@ function tabbar() {
     <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9.5 21v-6h5v6"/></svg>
     <span>首页</span>
   </a>
-  <a href="${UP}#library" class="tab" data-tab="guides">
+  <a href="${UP}#games" class="tab" data-tab="guides">
     <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
     <span>攻略</span>
   </a>
@@ -539,7 +539,7 @@ function articlePage(gi) {
     return `<nav class="more-g" aria-label="${esc(game.name)}其他攻略"><h2>${esc(game.name)} · 其他攻略</h2><ul>${moreSame.map(x => `<li><a href="../${x.id}/">${esc(x.title)}</a></li>`).join('')}</ul></nav>`;
   })()}
   <div class="a-end">
-    <a class="back" href="${UP}#library">← 返回攻略库</a>
+    <a class="back" href="${UP}#games">← 返回攻略列表</a>
     <a class="back" href="${UP}g/${game.id}/">看 ${esc(game.name)} 全部攻略</a>
   </div>
 </article>
@@ -647,7 +647,7 @@ function gamePage(key) {
   /* 站内 hash 路由换成真实地址 */
   body = body.replace(/href="#\/a\/([a-z-]+)"/g, 'href="../../a/$1/"');
   body = body.replace(/href="#\/g\/([a-z]+)"/g, 'href="../$1/"');
-  body = body.replace(/href="#\/" data-goto="library"/g, 'href="../../#library"');
+  body = body.replace(/href="#\/" data-goto="games"/g, 'href="../../#games"');
   body = body.replace(/href="#\/"/g, 'href="../../"');
   /* 图片原本相对站点根，搬到 /g/<key>/ 后要回两级 */
   body = body.replace(/"assets\//g, '"../../assets/').replace(/, assets\//g, ', ../../assets/');
@@ -793,7 +793,7 @@ function notFoundPage() {
     <p>链接可能已经失效，或者地址打错了一个字符。下面是站内全部 ${GUIDES.length} 篇攻略，按游戏分开列着；也可以用右上角的搜索（⌘K / Ctrl+K）直接搜标题。</p>
     <div class="nf-acts">
       <a class="nf-btn primary" href="/">回首页</a>
-      <a class="nf-btn" href="/#library">看攻略库</a>
+      <a class="nf-btn" href="/#games">看攻略</a>
       <a class="nf-btn" href="/#games">按游戏挑</a>
     </div>
     <div class="nf-list">
