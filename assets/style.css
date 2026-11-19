@@ -278,62 +278,6 @@ ul{margin:0;padding:0;list-style:none}
 .empty{padding:60px 0;color:var(--muted);font-size:14px;display:none}
 .empty.on{display:block}
 
-/* ---------- 开荒路线 ---------- */
-.route-sec{
-  max-width:var(--wrap);margin:64px auto 0;padding:44px 40px 48px;
-  border:1px solid var(--line);border-radius:18px;
-  background:
-    radial-gradient(560px 300px at 8% 0,rgba(255,61,154,.16),transparent 66%),
-    radial-gradient(520px 300px at 92% 6%,rgba(139,92,246,.18),transparent 68%),
-    linear-gradient(160deg,#14162B,#0D0F1C 70%);
-  box-shadow:0 30px 60px -40px rgba(0,0,0,.9);
-}
-.route-sec .wrap{max-width:none;width:auto;margin:0;padding:0}
-.route-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
-.route-head .sec-title{color:#fff}
-.route-sub{font-size:13px;color:#9AA1BA;margin-top:10px}
-.route-link{font-size:12.5px;color:#FF8FC4;border-bottom:1px solid rgba(255,143,196,.42);padding-bottom:2px}
-.route-link:hover{color:#FFB3D5;border-color:#FFB3D5}
-.route{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:44px}
-.step{position:relative;padding:40px 26px 0 0;min-width:0;transition:transform .25s cubic-bezier(.2,.6,.2,1)}
-.step::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.2),rgba(255,255,255,.04))}
-.step::after{
-  content:"";position:absolute;top:0;left:0;width:9px;height:9px;transform:translate(0,-50%);
-  border-radius:50%;background:var(--grad-2);box-shadow:0 0 0 4px rgba(255,61,154,.16);
-  transition:background .25s ease,box-shadow .25s ease,transform .25s ease;
-}
-.step-n{font-size:12px;letter-spacing:.16em;color:#797F9B;margin-bottom:8px}
-.step-name{font-size:17px;font-weight:700;color:#F2F4FF;line-height:1.4}
-.step-desc{font-size:12.5px;line-height:1.8;color:#9BA2BC;margin-top:8px}
-.step-stay{
-  display:inline-block;margin-top:12px;font-size:12px;color:#8A90A9;
-  border:1px solid rgba(255,255,255,.12);padding:2px 9px;border-radius:999px;
-}
-.step:hover .step-name{color:#fff}
-.step:hover .step-desc{color:#B7BDD2}
-.step:hover .step-stay{color:#C3C8DB;border-color:rgba(255,255,255,.24)}
-@media (min-width:561px){
-  .step:hover{transform:translateY(-3px)}
-  .step:hover::after{box-shadow:0 0 0 7px rgba(255,61,154,.22);transform:translate(0,-50%) scale(1.25)}
-}
-
-/* 分站内嵌开荒路线：配色跟随游戏主色 */
-.route-sec.gm{margin-top:34px;
-  background:
-    radial-gradient(560px 300px at 8% 0,var(--rglow,rgba(255,61,154,.16)),transparent 66%),
-    radial-gradient(520px 300px at 92% 6%,var(--rglow2,rgba(139,92,246,.18)),transparent 68%),
-    linear-gradient(160deg,#14162B,#0D0F1C 70%);
-}
-.route-sec.gm .step::after{background:linear-gradient(135deg,var(--rac,#FF3D9A),var(--rac2,#8B5CF6));box-shadow:0 0 0 4px var(--rglow,rgba(255,61,154,.16))}
-.route-sec.gm .route-link{color:var(--rlink,#FF8FC4);border-color:rgba(255,255,255,.24)}
-.route-sec.gm .route-link:hover{color:#fff;border-color:#fff}
-.game-route[data-game="ejl"]{--rac:#2DD4A7;--rac2:#1E9E7E;--rglow:rgba(45,212,167,.18);--rglow2:rgba(76,154,255,.14);--rlink:#7BE8C6}
-.game-route[data-game="xxtl"]{--rac:#4C9AFF;--rac2:#2E6FD8;--rglow:rgba(76,154,255,.20);--rglow2:rgba(45,212,167,.12);--rlink:#9CC7FF}
-.game-route[data-game="ty"]{--rac:#FF6B8A;--rac2:#C94B6E;--rglow:rgba(255,107,138,.20);--rglow2:rgba(139,92,246,.15);--rlink:#FFA3B6}
-@media (min-width:561px){
-  .route-sec.gm .step:hover::after{box-shadow:0 0 0 7px var(--rglow,rgba(255,61,154,.22))}
-}
-
 /* ---------- 三款游戏 ---------- */
 .game-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 .game-card{
@@ -688,13 +632,6 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
 /* 列表进场：错峰上升（backwards 保证动画结束后 hover 位移正常） */
 .entries .entry{animation:riseIn .5s cubic-bezier(.2,.7,.3,1) backwards}
 
-/* 开荒路线：四步依次浮现 */
-.route-sec.in .step{animation:riseIn .55s cubic-bezier(.2,.7,.3,1) backwards}
-.route-sec.in .step:nth-child(1){animation-delay:.04s}
-.route-sec.in .step:nth-child(2){animation-delay:.12s}
-.route-sec.in .step:nth-child(3){animation-delay:.2s}
-.route-sec.in .step:nth-child(4){animation-delay:.28s}
-
 /* 区块标题竖条生长 */
 .sec.reveal .sec-title::before{transform:scaleY(.15);transition:transform .55s cubic-bezier(.2,.8,.3,1) .08s}
 .sec.reveal.in .sec-title::before{transform:scaleY(1)}
@@ -718,7 +655,6 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
   100%{transform:scale(1.01) translate3d(-.4%,.4%,0)}
 }
 @keyframes tabGlow{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.0)}50%{box-shadow:0 0 10px 2px var(--ac)}}
-@keyframes nodePulse{0%,100%{box-shadow:0 0 0 0 rgba(143,208,177,.45)}60%{box-shadow:0 0 0 9px rgba(143,208,177,0)}}
 @keyframes arrowNudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
 @keyframes csGlow{0%,100%{box-shadow:0 6px 18px -8px rgba(255,61,154,.55)}50%{box-shadow:0 10px 26px -8px rgba(255,61,154,.85)}}
 @keyframes shineSweep{from{transform:translateX(-130%) skewX(-18deg)}to{transform:translateX(240%) skewX(-18deg)}}
@@ -740,11 +676,6 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
 .poster .poster-tab{animation:tabGlow 4.2s ease-in-out infinite}
 .poster:hover .poster-tab{animation-duration:1.6s}
 
-/* 开荒路线节点脉冲 */
-.route-sec.in .step::after{animation:nodePulse 2.6s ease-out infinite}
-.route-sec.in .step:nth-child(2)::after{animation-delay:.4s}
-.route-sec.in .step:nth-child(3)::after{animation-delay:.8s}
-.route-sec.in .step:nth-child(4)::after{animation-delay:1.2s}
 
 /* 客服胶囊呼吸辉光；复制成功态由 JS 内联样式覆盖 */
 .cs-pill{animation:csGlow 3.4s ease-in-out infinite}
@@ -773,8 +704,6 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
 }
 @media (max-width:860px){
   .sec{padding-top:52px}
-  .route-sec{padding:36px 24px 40px;margin:52px 16px 0}
-  .route{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:34px}
   .entries{grid-template-columns:1fr}
   .nav{gap:16px}
   .nav a{font-size:12.5px}
@@ -789,7 +718,6 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
   .brand-sub{display:none}
   .topbar-in{height:56px}
   .brand-name{font-size:17px;letter-spacing:0}
-  /* 手机端隐藏右上角导航链接（攻略库/开荒路线/三款游戏），电脑端不受影响 */
   .nav{display:none}
   .hero-in{padding:40px 16px 36px}
   .hero h1{font-size:clamp(30px,9vw,42px)}
@@ -821,14 +749,6 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
   .entry-tab{flex:0 0 38px;height:38px;border-radius:9px;font-size:12px}
   .entry-title{font-size:15.5px}
   .entry-dek{font-size:12.5px;-webkit-line-clamp:3}
-  .route-sec{padding:28px 18px 30px;margin:44px 10px 0;border-radius:14px}
-  .route{grid-template-columns:1fr;row-gap:0;margin-top:32px}
-  .step{padding:30px 0 22px 20px}
-  .step::before{top:0;left:0;right:auto;width:1px;height:100%;background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.04))}
-  .step::after{top:34px;left:0;transform:translate(-50%,-50%)}
-  .step:first-child{padding-top:24px}
-  .step:first-child::after{top:28px}
-  .game-card-body{padding:16px 16px 18px}
   .game-name{font-size:16.5px}
   .cs-pill{min-height:42px}
   .article{margin:18px 10px 0;padding:24px 18px 28px;border-radius:14px}

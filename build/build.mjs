@@ -156,8 +156,7 @@ function topbar(activeGame) {
       <span class="brand-name">${SITE_NAME}</span>
       <span class="brand-sub">游戏 · 一处查完</span>
     </a>
-    <nav class="nav" aria-label="主导航">
-      <a href="${UP}#route">开荒路线</a>
+    <nav class="nav" aria-label="主导航">
       <a href="${UP}#games">游戏</a>
       <a href="${UP}#/dl">游戏下载</a>
     </nav>
