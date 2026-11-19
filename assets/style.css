@@ -2399,3 +2399,13 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
   .q-drop{width:94vw}
   .q-item{flex-direction:column;gap:2px;align-items:flex-start}
 }
+
+/* 双端下载按钮（下载页 ty 卡） */
+.dl-btns{flex:none;display:flex;flex-direction:column;gap:6px}
+.dl-btns .dl-btn{min-width:78px;min-height:30px;padding:0 14px;font-size:12.5px;letter-spacing:1px;text-decoration:none}
+.dl-btns .dl-btn.alt{background:transparent;border:1px solid rgba(255,255,255,.3);color:#C4C9DA}
+.dl-btns .dl-btn.alt:hover{background:var(--ac);border-color:transparent;color:#fff}
+a.dl-banner{text-decoration:none}
+@media (max-width:760px){
+  .dl-btns .dl-btn{min-width:64px;min-height:28px;padding:0 11px;font-size:12px}
+}
