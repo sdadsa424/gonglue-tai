@@ -127,11 +127,16 @@ hd.querySelector('.foot-share [data-share-qr]').click();
 await wait(60);
 ok('页脚二维码可展开', !!footQr && !footQr.hidden);
 ok('页脚二维码指向站点版', /qr-site\.svg$/.test(footQr.querySelector('img')?.getAttribute('src') || ''));
-const cssText = (await import('node:fs')).readFileSync('assets/style.css', 'utf8');
 
 /* 视觉特效：图片骨架 + 分站切换过渡 */
 ok('非首屏图片挂了加载骨架', hd.querySelectorAll('picture.fx-holder').length > 0, String(hd.querySelectorAll('picture.fx-holder').length));
 
+/* 视觉特效：首屏海报视差 */
+const pyEl = hd.querySelector('.hero-games');
+const pyVal = pyEl ? pyEl.style.getPropertyValue('--py') : '';
+ok('首屏海报写入视差量', /^-?\d+(\.\d+)?%$/.test(pyVal) && Math.abs(parseFloat(pyVal)) <= 1.6, pyVal || '(空)');
+const cssText = (await import('node:fs')).readFileSync('assets/style.css', 'utf8');
+ok('视差样式作用在海报图上', /\.poster img\{[^}]*translate:0 var\(--py/.test(cssText));
 hd.location.hash = '#/g/ejl';
 await wait(260);
 ok('分站视图带入场过渡', !!hd.getElementById('view-game') && hd.getElementById('view-game').classList.contains('view-enter'));
@@ -406,7 +411,7 @@ const firstEntry = dd.querySelector('[data-entries] .entry') || dd.querySelector
 firstEntry.dispatchEvent(new desk.window.MouseEvent('mousemove', { bubbles: true, clientX: 40, clientY: 40 }));
 await wait(60);
 ok('桌面端卡片按需挂上光标高光', firstEntry.classList.contains('glow-host'));
-const posterEl = dd.querySelector('.game-card');
+const posterEl = dd.querySelector('.poster');
 posterEl.dispatchEvent(new desk.window.MouseEvent('pointermove', { bubbles: true, clientX: 120, clientY: 120 }));
 await wait(80);
 ok('桌面端卡片进入 3D 倾斜态', posterEl.classList.contains('tilt-on'));
@@ -755,7 +760,7 @@ for (const k of Object.keys(gpCounts)) {
   ok('分站页 ' + k + ' 计数为真实篇数', new RegExp('data-count="' + k + '">' + gpCounts[k] + '</span>').test(gpHtml));
 }
 const gpHome = gpFs('index.html', 'utf8');
-ok('首页海报指向真实分站地址', gpHome.includes('class="ps-fig" href="g/ejl/"') && !gpHome.includes('href="#/g/'));
+ok('首页海报指向真实分站地址', gpHome.includes('class="poster" href="g/ejl/"') && !gpHome.includes('class="poster" href="#/g/'));
 ok('文章页分站链接为真实地址', gpFs('a/ejl-start/index.html', 'utf8').includes('href="../../g/ejl/"'));
 ok('文章页面包屑用真实 URL', gpFs('a/ejl-start/index.html', 'utf8').includes('"item":"https://wgame-bc7.pages.dev/g/ejl/"'));
 ok('sitemap 收录三个分站', ['ejl', 'xxtl', 'ty'].every(k => gpFs('sitemap.xml', 'utf8').includes('g/' + k + '/')));
@@ -902,9 +907,9 @@ ok('露娜2 进攻略库：GAMES.luna2 + 7 篇文章（a/luna2-*）+ 新分类�
   const dirs = fsMod2.readdirSync('a').filter(d => d.startsWith('luna2-'));
   return data.includes("id: 'luna2'") && dirs.length === 7 && data.includes("sys: '系统玩法'");
 })());
-ok('露娜2 首页集成：海报轮播 5 张 / game-card，统计 5 款 53 篇 7 分类（yxlc 隐藏中），旧横幅零残留', (() => {
+ok('露娜2 首页集成：poster / game-card / 投票按钮，统计 5 款 53 篇 7 分类（yxlc 隐藏中），旧横幅零残留', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
-  return (home.match(/class="hc poster-slide/g) || []).length === 5 && home.includes('hero-posters')
+  return (home.match(/class="poster"/g) || []).length === 5
     && (home.match(/class="game-card"/g) || []).length === 5
     && home.includes('<b id="statGames">5</b>') && home.includes('<b id="statGuides">53</b>') && home.includes('<b id="statCats">7</b>')
     && /const ORDER = \['ejl', 'xxtl', 'ty', 'luna2', 'cq3d'\];/.test(home)
