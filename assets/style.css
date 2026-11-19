@@ -2338,8 +2338,6 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 .dl-card:hover .dl-btn{background:var(--ac);color:#fff}
 .dl-card:active .dl-btn{transform:scale(.96)}
 .dl-note{margin-top:22px;font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.hero-dl-entry{margin-top:14px}
-.hero-dl-entry .back{display:inline-flex}
 @media (max-width:760px){
   .dl-banner{height:150px}
   .dl-row{padding:10px 12px}
