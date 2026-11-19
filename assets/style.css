@@ -279,6 +279,82 @@ ul{margin:0;padding:0;list-style:none}
 .empty.on{display:block}
 
 /* ---------- 三款游戏 ---------- */
+.game-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.game-card{
+  display:flex;flex-direction:column;overflow:hidden;
+  background:linear-gradient(180deg,#151930,#111424);
+  border:1px solid var(--line);border-radius:16px;
+  transition:transform .28s cubic-bezier(.2,.6,.2,1),box-shadow .32s ease,border-color .28s ease;
+}
+.game-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.2);box-shadow:0 30px 60px -34px rgba(0,0,0,.95)}
+
+/* 霓虹流水灯边框：两段主题色光带沿边框旋转，卡色不同灯色不同
+   注意：卡片自身 overflow:hidden 会裁掉 ::before 伸出与外发光，
+   所以光环画在 inset:0（完整 2px 可见），辉光用元素自身 box-shadow（不受 overflow 影响） */
+@property --neonA{syntax:'<angle>';inherits:false;initial-value:0deg}
+.game-card{position:relative;box-shadow:0 0 16px -6px var(--ac)}
+.game-card::before{
+  content:"";position:absolute;inset:0;z-index:3;border-radius:16px;padding:2px;
+  background:conic-gradient(from var(--neonA),
+    transparent 0deg,var(--ac) 38deg,rgba(255,255,255,.85) 52deg,transparent 92deg,
+    transparent 180deg,var(--ac) 218deg,rgba(255,255,255,.85) 232deg,transparent 272deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;
+  animation:neonSpin 4.5s linear infinite;
+  pointer-events:none;
+}
+.game-card:hover{box-shadow:0 30px 60px -34px rgba(0,0,0,.95),0 0 20px -5px var(--ac)}
+.game-card:hover::before{animation-duration:1.8s}
+@keyframes neonSpin{to{--neonA:360deg}}
+@media (prefers-reduced-motion:reduce){
+  .game-card::before{animation:none}
+}
+/* 手机端保持原样：不显示霓虹边框 */
+@media (max-width:760px){
+  .game-card::before{display:none}
+  .game-card{box-shadow:none}
+}
+.game-card .game-thumb{aspect-ratio:16/10;background:#1B1F33;position:relative;overflow:hidden;border-radius:0}
+.game-card .game-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .65s cubic-bezier(.2,.6,.2,1)}
+.game-card:hover .game-thumb img{transform:scale(1.05)}
+.game-card .game-thumb::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,transparent 46%,rgba(8,9,16,.62));
+  opacity:.65;transition:opacity .4s ease;
+}
+.game-card:hover .game-thumb::after{opacity:.9}
+.game-card .game-thumb::before{
+  content:"";position:absolute;left:0;right:0;top:0;height:3px;z-index:2;background:var(--ac);
+}
+.game-card-body{padding:18px 20px 20px;display:flex;flex-direction:column;gap:10px;flex:1}
+.game-name{font-size:17.5px;font-weight:700;line-height:1.45;color:#fff}
+.game-name span{display:block;margin:5px 0 0;font-size:12px;font-weight:400;color:#8B91A9}
+.game-intro{font-size:12.5px;line-height:1.8;color:var(--muted)}
+.game-facts{display:grid;grid-template-columns:1fr;gap:4px}
+.game-facts div{display:flex;gap:10px;font-size:12px;min-width:0}
+.game-facts dt{flex:0 0 38px;color:#6E748E}
+.game-facts dd{margin:0;color:#C4C9DA;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.game-card .cs-line{margin-top:2px}
+.game-card-foot{
+  margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding-top:12px;border-top:1px solid var(--line);
+}
+
+/* ---------- 紧凑游戏卡：横幅 + 角标篇数 + 图标 + 名称 + 攻略按钮 ---------- */
+.gc-banner{position:relative;display:block;aspect-ratio:16/9;background:#1B1F33;overflow:hidden}
+.gc-banner img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .65s cubic-bezier(.2,.6,.2,1)}
+.game-card:hover .gc-banner img{transform:scale(1.05)}
+.gc-count{
+  position:absolute;top:10px;right:10px;z-index:2;padding:3px 10px;border-radius:999px;
+  font-size:12px;line-height:1.5;color:#fff;background:rgba(9,11,22,.66);backdrop-filter:blur(4px);
+}
+.gc-row{display:flex;align-items:center;gap:10px;padding:12px 14px}
+.gc-ic{flex:none;width:44px;height:44px;border-radius:10px;object-fit:cover;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+.gc-tt{
+  flex:1;min-width:0;margin:0;font-size:15px;font-weight:700;color:#fff;line-height:1.3;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.gc-tt span{display:block;margin-top:3px;font-size:12px;font-weight:400;color:#8B91A9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .gc-btn{
   flex:none;display:grid;place-items:center;min-width:56px;min-height:32px;padding:0 15px;border-radius:999px;
   background:var(--ac);color:#0B0E1A;font-size:13px;font-weight:600;letter-spacing:2px;text-decoration:none;
@@ -287,51 +363,18 @@ ul{margin:0;padding:0;list-style:none}
 .gc-btn:hover{filter:brightness(1.12)}
 .gc-btn:active{transform:scale(.95)}
 .gc-btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.28);color:#C4C9DA;letter-spacing:1px}
-
-/* ---------- 游戏海报轮播：整幅大图一张，底部信息条，复用 hero-carousel 翻页逻辑 ---------- */
-.poster-carousel{
-  position:relative;aspect-ratio:21/10;min-height:300px;max-height:480px;
-  border-radius:20px;overflow:hidden;border:1px solid var(--line);
-  background:#0D0F1C;
-  box-shadow:0 30px 60px -40px rgba(0,0,0,.9),0 0 24px -10px var(--ac,#FF3D9A);
-}
-.poster-carousel .hc{pointer-events:none}
-.poster-carousel .hc.is-on{pointer-events:auto}
-/* 左下计数与海报信息条重叠：隐藏计数，圆点移到右上角 */
-.poster-carousel .hc-count{display:none}
-.poster-carousel .hc-dots{bottom:auto;top:14px}
-.poster-carousel .hc picture{position:absolute;inset:0;display:block}
-.poster-carousel .hc img{width:100%;height:100%;object-fit:cover;display:block}
-.ps-cover{position:absolute;inset:0;z-index:1}
-.ps-info{
-  position:absolute;left:0;right:0;bottom:0;z-index:2;
-  display:flex;align-items:flex-end;justify-content:space-between;gap:14px;
-  padding:80px 28px 20px;
-  background:linear-gradient(180deg,rgba(7,9,18,0),rgba(7,9,18,.5) 42%,rgba(7,9,18,.92));
-}
-.ps-name{font-size:23px;font-weight:800;color:#fff;display:flex;align-items:center;gap:10px;line-height:1.3}
-.ps-count{
-  flex:none;font-size:12px;font-weight:600;color:var(--ac);white-space:nowrap;
-  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);
-  padding:2px 10px;border-radius:999px;
-}
-.ps-tag{margin-top:5px;font-size:12.5px;color:#A9B0C8;letter-spacing:.04em}
-.ps-btns{display:flex;gap:8px;flex:none}
-.ps-btns .gc-btn{min-width:64px;min-height:36px;padding:0 16px;font-size:13px}
 @media (max-width:760px){
-  .poster-carousel{aspect-ratio:4/3;min-height:0;max-height:none;border-radius:14px}
-  .ps-info{flex-direction:column;align-items:flex-start;gap:10px;padding:64px 16px 16px}
-  .ps-name{font-size:18px}
-  .ps-tag{font-size:12px}
-  .ps-btns{width:100%}
-  .ps-btns .gc-btn{flex:1;min-height:38px}
-}
-@media (prefers-reduced-motion:reduce){
-  .poster-carousel .hc{transition:none}
-}
-@media (max-width:760px){
+  .gc-row{padding:10px 12px;gap:8px}
+  .gc-ic{width:38px;height:38px;border-radius:9px}
   .gc-btn{min-width:48px;min-height:30px;padding:0 12px;font-size:12px;letter-spacing:1px}
 }
+.game-count{font-size:12px;color:var(--dim)}
+.game-enter{font-size:12.5px;color:#FF8FC4;display:inline-flex;align-items:center;gap:2px}
+.game-enter::after{content:"→";font-size:13px;line-height:1;opacity:.8;transition:transform .25s ease,opacity .25s ease}
+.game-card:hover .game-enter::after{transform:translateX(4px);opacity:1}
+.game-enter.dl{color:#2DD4A7;gap:4px}
+.game-enter.dl::before{content:"⬇";font-size:12px;line-height:1;opacity:.85}
+.game-enter.dl:hover{filter:brightness(1.15)}
 
 /* ---------- 客服按钮：渐变胶囊 ---------- */
 .cs-line{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--muted)}
@@ -639,6 +682,8 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
 .cs-pill.dark{animation-name:none}
 .cs-pill.dark:hover{box-shadow:0 10px 26px -10px rgba(255,61,154,.7)}
 /* 「进入分站」箭头待机浮动 */
+.game-card .game-enter::after{animation:arrowNudge 2.4s ease-in-out infinite}
+.game-card:hover .game-enter::after{animation:none;transform:translateX(4px)}
 
 /* 分站横幅大图 Ken Burns */
 .game-hero .art{overflow:hidden}
@@ -655,6 +700,7 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
   .game-hero .info{border-left:0;border-top:1px solid var(--line);padding:30px 24px}
 }
 @media (max-width:900px){
+  .game-cards{grid-template-columns:1fr}
 }
 @media (max-width:860px){
   .sec{padding-top:52px}
@@ -703,6 +749,7 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
   .entry-tab{flex:0 0 38px;height:38px;border-radius:9px;font-size:12px}
   .entry-title{font-size:15.5px}
   .entry-dek{font-size:12.5px;-webkit-line-clamp:3}
+  .game-name{font-size:16.5px}
   .cs-pill{min-height:42px}
   .article{margin:18px 10px 0;padding:24px 18px 28px;border-radius:14px}
   .a-title{font-size:23px}
@@ -1054,7 +1101,7 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 @media (max-width:560px){.fs-ctrl{margin-left:0}}
 
 /* ---------- 体验优化 二期：图片容器 / 阅读位置 / 浮层目录 ---------- */
-.poster picture,.game-hero .art picture{display:block;width:100%;height:100%}
+.poster picture,.game-card .game-thumb picture,.game-hero .art picture{display:block;width:100%;height:100%}
 
 .resume{
   position:fixed;left:24px;bottom:24px;z-index:56;

@@ -907,10 +907,10 @@ ok('露娜2 进攻略库：GAMES.luna2 + 7 篇文章（a/luna2-*）+ 新分类�
   const dirs = fsMod2.readdirSync('a').filter(d => d.startsWith('luna2-'));
   return data.includes("id: 'luna2'") && dirs.length === 7 && data.includes("sys: '系统玩法'");
 })());
-ok('露娜2 首页集成：poster / 海报轮播 5 张，统计 5 款 53 篇 7 分类（yxlc 隐藏中），旧横幅零残留', (() => {
+ok('露娜2 首页集成：poster / game-card / 投票按钮，统计 5 款 53 篇 7 分类（yxlc 隐藏中），旧横幅零残留', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   return (home.match(/class="poster"/g) || []).length === 5
-    && (home.match(/class="hc poster-slide/g) || []).length === 5 && home.includes('poster-carousel')
+    && (home.match(/class="game-card"/g) || []).length === 5
     && home.includes('<b id="statGames">5</b>') && home.includes('<b id="statGuides">53</b>') && home.includes('<b id="statCats">7</b>')
     && /const ORDER = \['ejl', 'xxtl', 'ty', 'luna2', 'cq3d'\];/.test(home)
     && home.includes('五款游戏')
