@@ -1720,71 +1720,6 @@
       }).catch(function () { dropHold(); });
     })();
 
-    /* 2. 点赞：一人一票（本机记录），数字来自服务端 */
-    (function votes() {
-      var btns = [].slice.call(document.querySelectorAll('[data-like]'));
-      if (!btns.length) return;
-      var KEY = 'gl_like_v1';
-      var mine = lsGet(KEY, {}) || {};
-      var row = document.getElementById('voteRow');
-
-      function paint(game, n) {
-        for (var i = 0; i < btns.length; i++) {
-          if (btns[i].getAttribute('data-like') !== game) continue;
-          var el = btns[i].querySelector('[data-like-n]');
-          if (el) el.textContent = n;
-        }
-      }
-      function off(msg) {
-        if (!row || row.getAttribute('data-off')) return;
-        row.setAttribute('data-off', '1');
-        var p = document.createElement('p');
-        p.className = 'sec-desc';
-        p.textContent = msg;
-        row.parentNode.insertBefore(p, row.nextSibling);
-      }
-
-      btns.forEach(function (b) { b.disabled = true; });
-
-      getJSON(API + '/like').then(function (res) {
-        if (!res.ok || !res.data || !res.data.likes) { off('点赞服务暂时不可用，稍后再来。'); return; }
-        Object.keys(res.data.likes).forEach(function (g) { paint(g, res.data.likes[g]); });
-        btns.forEach(function (b) {
-          if (mine[b.getAttribute('data-like')]) b.setAttribute('aria-pressed', 'true');
-          b.disabled = false;
-        });
-      }).catch(function () { off('点赞服务暂时不可用，稍后再来。'); });
-
-      btns.forEach(function (b) {
-        b.addEventListener('click', function () {
-          var g = b.getAttribute('data-like');
-          if (mine[g]) { toast('这一票你已经投过啦'); return; }
-          b.disabled = true;
-          getJSON(API + '/like', {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ game: g })
-          }).then(function (res) {
-            b.disabled = false;
-            if (!res.ok || !res.data || typeof res.data.n !== 'number') { toast('没投上，稍后再试'); return; }
-            mine[g] = 1;
-            lsSet(KEY, mine);
-            if (window.__achv) window.__achv.onLike();
-            paint(g, res.data.n);
-            b.setAttribute('aria-pressed', 'true');
-            b.classList.remove('is-pop');
-            void b.offsetWidth;
-            b.classList.add('is-pop');
-            var nm = b.querySelector('.vote-nm');
-            toast('已投给 ' + (nm ? nm.textContent : '这款游戏'));
-          }).catch(function () {
-            b.disabled = false;
-            toast('网络不通，稍后再试');
-          });
-        });
-      });
-    })();
-
     /* 3. 留言板（仅 /board/ 页） */
     (function board() {
       var form = document.getElementById('bdForm');
@@ -2112,8 +2047,6 @@
       { id: 'read_1', icon: '📖', name: '开卷有益', desc: '读完第一篇攻略' },
       { id: 'read_10', icon: '📚', name: '攻略迷', desc: '读满 10 篇攻略' },
       { id: 'read_all', icon: '👑', name: '全图鉴收藏家', desc: '读完全部攻略' },
-      { id: 'like_1', icon: '👍', name: '首赞见证', desc: '给喜欢的游戏投出第一票' },
-      { id: 'like_all', icon: '💜', name: '三位一体', desc: '任意 3 款游戏各投一票' },
       { id: 'luck_3', icon: '🎲', name: '命运赌徒', desc: '掷 3 次「手气不错」' },
       { id: 'comment_1', icon: '💬', name: '留言先锋', desc: '在留言板留下第一句话' },
       { id: 'visit_3', icon: '🌙', name: '老朋友', desc: '累计 3 天来访' },
@@ -2190,11 +2123,6 @@
         if (n >= 1) unlock('read_1');
         if (n >= 10) unlock('read_10');
         if (GUIDES_ && n >= GUIDES_.length) unlock('read_all');
-      },
-      onLike: function () {
-        var n = Object.keys(gL('gl_like_v1', {}) || {}).length;
-        if (n >= 1) unlock('like_1');
-        if (n >= 3) unlock('like_all');
       },
       onLuck: function () {
         if (this.stat('luck') >= 3) unlock('luck_3');

@@ -824,9 +824,8 @@ ok('分站页标题保留游戏短名规则', seoMeta.filter(r => r.f.startsWith
 console.log('\n[站内互动]');
 const fsSocial = (await import('node:fs'));
 const homeDoc = (await JSDOM.fromFile('index.html', { runScripts: 'outside-only' })).window.document;
-ok('首页有 votes 区块（5 个 data-like）', homeDoc.querySelectorAll('[data-like]').length === 5);
-ok('点赞数字带 data-like-n', homeDoc.querySelectorAll('[data-like-n]').length === 5);
-ok('ui.js 含公告/点赞/留言板三个模块', /gl_notice_v3/.test(uiJs) && /gl_like_v1/.test(uiJs) && /bdForm/.test(uiJs));
+ok('点赞区块已下线（data-like 零残留）', homeDoc.querySelectorAll('[data-like]').length === 0 && !homeDoc.getElementById('voteRow'));
+ok('ui.js 含公告/留言板两个模块（点赞已移除）', /gl_notice_v3/.test(uiJs) && !/gl_like_v1/.test(uiJs) && /bdForm/.test(uiJs));
 ok('ui.js 社交模块在无 fetch 环境整体跳过', /typeof fetch !== 'function'\) return/.test(uiJs));
 const boardDoc = (await JSDOM.fromFile('board/index.html', { runScripts: 'outside-only' })).window.document;
 ok('留言板页有标题与表单', boardDoc.querySelector('h1')?.textContent === '留言板' && !!boardDoc.getElementById('bdForm'));
@@ -912,7 +911,6 @@ ok('露娜2 首页集成：poster / game-card / 投票按钮，统计 5 款 53 �
   const home = fsMod2.readFileSync('index.html', 'utf8');
   return (home.match(/class="poster"/g) || []).length === 5
     && (home.match(/class="game-card"/g) || []).length === 5
-    && home.includes('data-like="luna2"') && home.includes('data-like="cq3d"')
     && home.includes('<b id="statGames">5</b>') && home.includes('<b id="statGuides">53</b>') && home.includes('<b id="statCats">7</b>')
     && /const ORDER = \['ejl', 'xxtl', 'ty', 'luna2', 'cq3d'\];/.test(home)
     && home.includes('五款游戏')
@@ -933,7 +931,7 @@ ok('露娜2 配图完整：4 篇攻略的 img 块都有 jpg/webp/avif 三件套'
   if (bases.size !== 10) return false;
   return Array.from(bases).every(b => ['jpg', 'webp', 'avif'].every(e => fsMod2.existsSync('assets/' + b + '.' + e)));
 })());
-ok('露娜2 样式：投票 5 列 + hero 倒计时缩小版 + 资质说明；预热页样式零残留', /\.vote-row\{display:grid;grid-template-columns:repeat\(5,minmax\(0,1fr\)\)/.test(cssText) && /\.game-hero \.launch-cd\{margin-top:4px\}/.test(cssText) && /\.luna-legal\{/.test(cssText) && !/game-soon|luna-hero|luna-list/.test(cssText));
+ok('露娜2 样式：hero 倒计时缩小版 + 资质说明；预热页样式零残留（vote 样式已清）', !/\.vote-row\{/.test(cssText) && /\.game-hero \.launch-cd\{margin-top:4px\}/.test(cssText) && /\.luna-legal\{/.test(cssText) && !/game-soon|luna-hero|luna-list/.test(cssText));
 ok('露娜2 官方图集：3 张三件套 + figure 结构', (() => {
   const gal = fsMod2.readFileSync('g/luna2/index.html', 'utf8');
   if (!/官方图集/.test(gal)) return false;
@@ -1072,11 +1070,11 @@ ok('攻略条目徽标带完整游戏名（title + aria-label），技术 id 不
 /* ---------- 回归护栏：yysolos.com 官网「游戏特色」职业图 + 攻略改写 ---------- */
 
 /* ---------- 回归护栏：传奇盛世移动版-3D点卡（sqqyxz.com）接入 ---------- */
-ok('cq3d 全站接入：第 5 张 poster / game-card / 投票按钮 / 分站 / 图集', (() => {
+ok('cq3d 全站接入：第 5 张 poster / game-card / 分站 / 图集', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   const g = fsMod2.readFileSync('g/cq3d/index.html', 'utf8');
   return home.includes('data-count="cq3d"') && home.includes('<span class="poster-tab">五</span>')
-    && home.includes('data-like="cq3d"') && home.includes('statGames">5')
+    && home.includes('statGames">5')
     && fsMod2.existsSync('g/cq3d/index.html')
     && g.includes('传奇盛世移动版-3D点卡 · 全部') && g.includes('<h2 class="sec-title">游戏特色</h2>')
     && !g.includes('取自《传奇盛世移动版-3D点卡》官网');
@@ -1118,7 +1116,7 @@ ok('cq3d 互动与掉落池：点赞白名单、文章掉落装备池、投票�
   const ui = uiJs;
   const css = cssText;
   return api.includes("'cq3d'") && ui.includes('cq3d: [') && ui.includes('/^cq3d-/.test(aid)')
-    && css.includes('.vote-row{display:grid;grid-template-columns:repeat(5');
+    && !css.includes('.vote-row{');
 })());
 
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
