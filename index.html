@@ -134,6 +134,7 @@
           <button class="hero-search-btn" type="button" id="heroSearchBtn">搜索攻略</button>
         </div>
         <div class="q-hist" id="qHist" hidden></div>
+        <div class="q-hist q-drop" id="qDrop" hidden></div>
       </div>
       <div class="notice notice-hero notice-hold" aria-hidden="true"><div class="wrap notice-in"></div></div>
       <div class="hero-games">
@@ -241,88 +242,6 @@
       </article>
     </div>
 
-    <div class="filters">
-      <div class="filter-group">
-        <div class="filter-row" id="filterGame" role="group" aria-label="按游戏筛选，可横向滚动" tabindex="0"><span class="row-label">游戏</span></div>
-        <div class="filter-row" id="filterCat" role="group" aria-label="按分类筛选，可横向滚动" tabindex="0"><span class="row-label">分类</span></div>
-      </div>
-    </div>
-
-    <div class="lib-bar">
-      <div class="lib-bar-l">
-        <span id="libCount" aria-live="polite">正在加载</span>
-        <button class="lib-book" id="onlyBook" type="button" aria-pressed="false" hidden>★ 收藏 <b id="bookCount">0</b></button>
-        <button class="lib-sort" id="onlyNew" type="button" aria-pressed="false" title="按更新时间从新到旧排列">↕ 最近更新</button>
-      </div>
-      <button class="lib-clear" id="clearFilter" type="button" hidden>清除筛选</button>
-    </div>
-
-    <div class="entries" id="entryList"></div>
-    <!-- BUILD:NOSCRIPT -->
-<noscript>
-      <div class="nojs-list">
-        <p class="nojs-title">攻略目录（共 53 篇）</p>
-        <ul>
-          <li><a href="a/ejl-start/">新手村别恋战：四层地图的推进顺序</a><span>贰点零江湖 · 开荒起步</span></li>
-          <li><a href="a/ejl-class/">五大职业怎么选：从操作强度倒推</a><span>贰点零江湖 · 职业与流派</span></li>
-          <li><a href="a/ejl-zero/">零氪的第一桶金：摆摊、材料与装备保值</a><span>贰点零江湖 · 打金交易</span></li>
-          <li><a href="a/ejl-boss/">恶魔广场与野外 BOSS：组队收益怎么分</a><span>贰点零江湖 · BOSS 与副本</span></li>
-          <li><a href="a/ejl-level/">挂机点位怎么挑：密度、掉落与回城距离</a><span>贰点零江湖 · 开荒起步</span></li>
-          <li><a href="a/ejl-gear/">强化材料先给谁：武器、防具与洗练的顺序</a><span>贰点零江湖 · 打金交易</span></li>
-          <li><a href="a/ejl-war/">阵营战与攻城：破门、夺旗、守点三段节奏</a><span>贰点零江湖 · 团战攻沙</span></li>
-          <li><a href="a/ejl-skill/">技能点不够用：刷怪一套、打架一套怎么分</a><span>贰点零江湖 · 职业与流派</span></li>
-          <li><a href="a/ejl-pk/">野外遭遇战：先手怎么拿，打不过怎么走</a><span>贰点零江湖 · 团战攻沙</span></li>
-          <li><a href="a/ejl-faction/">正邪双派怎么选：专属地图、阵营技能与野外开战</a><span>贰点零江湖 · 系统玩法</span></li>
-          <li><a href="a/ejl-qigong/">气功武学加点：端游老方案怎么平移</a><span>贰点零江湖 · 职业与流派</span></li>
-          <li><a href="a/ejl-guild/">门派从建到打：招人、抢地盘与门派战</a><span>贰点零江湖 · 团战攻沙</span></li>
-          <li><a href="a/ejl-social/">轻功、师徒与结拜：不花钱的三条捷径</a><span>贰点零江湖 · 系统玩法</span></li>
-          <li><a href="a/xxtl-start/">从起源冰城到冰雪之城：第一周的转生节奏</a><span>小小屠龙 · 冰雪传奇 · 开荒起步</span></li>
-          <li><a href="a/xxtl-class/">一人三职怎么切：战士、法师、道士的场景分工</a><span>小小屠龙 · 冰雪传奇 · 职业与流派</span></li>
-          <li><a href="a/xxtl-farm/">非绑定出货：散人打宝的定价与节奏</a><span>小小屠龙 · 冰雪传奇 · 打金交易</span></li>
-          <li><a href="a/xxtl-siege/">攻沙前 30 分钟：集结、卡点与复活点</a><span>小小屠龙 · 冰雪传奇 · 团战攻沙</span></li>
-          <li><a href="a/xxtl-boss/">BOSS 蹲点：记三个时间，站两个位置</a><span>小小屠龙 · 冰雪传奇 · BOSS 与副本</span></li>
-          <li><a href="a/xxtl-map/">二大陆选图：怪密度与回收距离的取舍</a><span>小小屠龙 · 冰雪传奇 · 开荒起步</span></li>
-          <li><a href="a/xxtl-guild/">选行会看三件事：在线人数、指挥、分配</a><span>小小屠龙 · 冰雪传奇 · 团战攻沙</span></li>
-          <li><a href="a/xxtl-luck/">幸运与爆率：到底哪一层在决定你出不出货</a><span>小小屠龙 · 冰雪传奇 · 打金交易</span></li>
-          <li><a href="a/xxtl-red/">红名与死亡掉落：动手之前先算这笔账</a><span>小小屠龙 · 冰雪传奇 · 团战攻沙</span></li>
-          <li><a href="a/ty-start/">前三天别乱花：开局的资源优先级</a><span>桃园：将帅录 · 开荒起步</span></li>
-          <li><a href="a/ty-lineup/">盾系、谋士、弓手、辅助：站位与出手顺序</a><span>桃园：将帅录 · 阵容搭配</span></li>
-          <li><a href="a/ty-pet/">战宠不是装饰：先练能上阵的那一只</a><span>桃园：将帅录 · 阵容搭配</span></li>
-          <li><a href="a/ty-pet-guide/">战宠从抓到毕业：五步把一只练到能上场</a><span>桃园：将帅录 · 阵容搭配</span></li>
-          <li><a href="a/ty-budget/">不卷数值怎么玩：慢节奏的资源账</a><span>桃园：将帅录 · 打金交易</span></li>
-          <li><a href="a/ty-grow/">武将培养的三条线：等级、星级、兵种</a><span>桃园：将帅录 · 职业与流派</span></li>
-          <li><a href="a/ty-attr/">五大属性与 12 条转职分支加点</a><span>桃园：将帅录 · 职业与流派</span></li>
-          <li><a href="a/ty-boss/">推图卡关排查：站不住、打不动，还是节奏慢</a><span>桃园：将帅录 · BOSS 与副本</span></li>
-          <li><a href="a/ty-war/">军团战：掠阵位与先手权的取舍</a><span>桃园：将帅录 · 团战攻沙</span></li>
-          <li><a href="a/ty-daily/">每日 20 分钟：固定动作清单与先后顺序</a><span>桃园：将帅录 · 开荒起步</span></li>
-          <li><a href="a/ty-gear/">装备词条与宝石：先堆哪一项，后堆哪一项</a><span>桃园：将帅录 · 职业与流派</span></li>
-          <li><a href="a/ty-account/">起号方案：五张、十六张、三十五张怎么选</a><span>桃园：将帅录 · 打金交易</span></li>
-          <li><a href="a/ty-combat/">站位定胜负：战斗规则完整拆解</a><span>桃园：将帅录 · 阵容搭配</span></li>
-          <li><a href="a/ty-roadmap/">1-40 级怎么练：练级点与每日任务</a><span>桃园：将帅录 · 开荒起步</span></li>
-          <li><a href="a/ty-catch/">抓宠物全指南：符箓、成功率与蹲点表</a><span>桃园：将帅录 · 阵容搭配</span></li>
-          <li><a href="a/ty-guanyu/">关羽全玩法：突骑爆发流与反击流</a><span>桃园：将帅录 · 职业与流派</span></li>
-          <li><a href="a/ty-team/">阵容模板：0 级成型队到 40 级毕业</a><span>桃园：将帅录 · 阵容搭配</span></li>
-          <li><a href="a/ty-pet-daily/">宠物养成日常：升级、资质与资源规划</a><span>桃园：将帅录 · 系统玩法</span></li>
-          <li><a href="a/luna2-mofu/">魔附系统怎么玩：宝石数量决定成败</a><span>露娜2：拾光之约 · 系统玩法</span></li>
-          <li><a href="a/luna2-stall/">摆摊开店全流程：贩卖与购入怎么选</a><span>露娜2：拾光之约 · 打金交易</span></li>
-          <li><a href="a/luna2-auto/">挂机辅助设置全拆解：两页选项各管什么</a><span>露娜2：拾光之约 · 开荒起步</span></li>
-          <li><a href="a/luna2-skill/">法师修士转职加点：1 转技能取舍与 2 转任务</a><span>露娜2：拾光之约 · 职业与流派</span></li>
-          <li><a href="a/luna2-class/">职业怎么选：战士游侠法师修士各有各的玩法</a><span>露娜2：拾光之约 · 职业与流派</span></li>
-          <li><a href="a/luna2-boss/">世界 BOSS 与稀有怪：刷新规律与捡漏技巧</a><span>露娜2：拾光之约 · BOSS 与副本</span></li>
-          <li><a href="a/luna2-social/">社交玩法盘点：好友组队与牵手结婚系统</a><span>露娜2：拾光之约 · 系统玩法</span></li>
-          <li><a href="a/cq3d-start/">新手开荒六步走：15 级转土城</a><span>传奇盛世移动版-3D点卡 · 开荒起步</span></li>
-          <li><a href="a/cq3d-card/">点卡换算：1 元 = 60 分钟</a><span>传奇盛世移动版-3D点卡 · 打金交易</span></li>
-          <li><a href="a/cq3d-market/">金币行交易门槛与 5% 金币税</a><span>传奇盛世移动版-3D点卡 · 打金交易</span></li>
-          <li><a href="a/cq3d-drop/">掉落全公开：装备会掉，材料才有用</a><span>传奇盛世移动版-3D点卡 · BOSS 与副本</span></li>
-          <li><a href="a/cq3d-class/">战法道三职业分工：前排、清场与续航</a><span>传奇盛世移动版-3D点卡 · 职业与流派</span></li>
-          <li><a href="a/cq3d-level/">后进服追赶：等级补领与世界等级</a><span>传奇盛世移动版-3D点卡 · 系统玩法</span></li>
-        </ul>
-      </div>
-    </noscript>
-<!-- /BUILD:NOSCRIPT -->
-    <div class="empty" id="emptyState">
-      <p>没有匹配的攻略。换个关键词，或点“清除筛选”看全部。</p>
-    </div>
   </section>
 
   <!-- ===== 点赞：给喜欢的游戏投一票 ===== -->
@@ -991,40 +910,9 @@ function blockHTML(b, up) {
 /* 首屏画面为静态 HTML，脚本不生成图片引用 */
 
 /* ---------- 攻略库 ---------- */
-const state = { game: 'all', cat: 'all', q: '', book: false, sortNew: false };
-const filterGame = document.getElementById('filterGame');
-const filterCat = document.getElementById('filterCat');
-const entryList = document.getElementById('entryList');
-const emptyState = document.getElementById('emptyState');
-const libCount = document.getElementById('libCount');
-const clearFilter = document.getElementById('clearFilter');
+const state = { q: '' };
 const searchInput = document.getElementById('searchInput');
-const onlyBook = document.getElementById('onlyBook');
-const onlyNew = document.getElementById('onlyNew');
-const bookCount = document.getElementById('bookCount');
-
-function countBy(kind, val) {
-  const pool = GUIDES.filter(gi => kind === 'game'
-    ? (state.cat === 'all' || gi.cat === state.cat)
-    : (state.game === 'all' || gi.game === state.game));
-  if (val === 'all') return pool.length;
-  return pool.filter(gi => (kind === 'game' ? gi.game : gi.cat) === val).length;
-}
-function chipHTML(kind, val, label, accent) {
-  const on = state[kind] === val;
-  const n = countBy(kind, val);
-  return '<button class="chip' + (accent ? ' accent' : '') + (n === 0 ? ' zero' : '') + '" type="button" data-kind="' + kind + '" data-value="' + val + '" aria-pressed="' + on + '"'
-    + (accent ? ' style="--ac:' + accent + '"' : '') + '>'
-    + '<span>' + esc(label) + '</span><span class="n">' + n + '</span></button>';
-}
-function renderFilters() {
-  filterGame.innerHTML = '<span class="row-label">游戏</span>'
-    + chipHTML('game', 'all', '全部')
-    + ORDER.map(k => chipHTML('game', k, GAMES[k].name, GAMES[k].accent)).join('');
-  filterCat.innerHTML = '<span class="row-label">分类</span>'
-    + chipHTML('cat', 'all', '全部')
-    + Object.keys(CATS).map(c => chipHTML('cat', c, CATS[c])).join('');
-}
+const qDrop = document.getElementById('qDrop');
 
 /* 搜索结果里把命中的关键词标出来（先转义再匹配，避免把 HTML 当代码） */
 function hl(text) {
@@ -1047,38 +935,6 @@ function entryHTML(gi) {
     + '<span class="entry-foot">阅读约 ' + readMin(gi) + ' 分钟 · ' + sectionsOf(gi) + ' 节 · 更新于 ' + ((window.GL_DATES && window.GL_DATES[gi.id]) || '') + (pct > 8 && pct < 100 ? '<span class="entry-prog">· 读到 ' + pct + '%</span>' : '') + '</span>'
     + '</span></a>';
 }
-function matches(gi) {
-  if (state.book && !(window.GL && GL.book && GL.book.has(gi.id))) return false;
-  if (state.game !== 'all' && gi.game !== state.game) return false;
-  if (state.cat !== 'all' && gi.cat !== state.cat) return false;
-  if (state.q) {
-    const hay = (gi.title + gi.dek + gi.take.join('') + guideText(gi)).toLowerCase();
-    if (!hay.includes(state.q.toLowerCase())) return false;
-  }
-  return true;
-}
-/* 收藏按钮的显隐与计数（没有收藏时整个入口收起，不占位） */
-function syncBookUI() {
-  const n = (window.GL && GL.book) ? GL.book.count() : 0;
-  bookCount.textContent = n;
-  onlyBook.hidden = n === 0 && !state.book;
-  onlyBook.setAttribute('aria-pressed', String(state.book));
-}
-function renderEntries() {
-  const list = GUIDES.filter(matches);
-  /* 「最近更新」：按构建期日期表倒序；同日按 id 稳定排序，避免每次渲染跳动 */
-  if (state.sortNew) {
-    const D = window.GL_DATES || {};
-    list.sort((a, b) => (String(D[b.id] || '').localeCompare(String(D[a.id] || ''))) || (a.id < b.id ? 1 : -1));
-  }
-  entryList.innerHTML = list.map(entryHTML).join('');
-  staggerEntries(entryList);
-  emptyState.classList.toggle('on', list.length === 0);
-  libCount.textContent = '显示 ' + list.length + ' / ' + GUIDES.length + ' 篇' + (state.sortNew ? ' · 最近更新在前' : '');
-  clearFilter.hidden = !(state.game !== 'all' || state.cat !== 'all' || state.q || state.book || state.sortNew);
-  syncBookUI();
-}
-
 /* 列表错峰进场：越靠前的条目延迟越小 */
 function staggerEntries(box) {
   if (PREFERS_REDUCE) return;
@@ -1211,38 +1067,44 @@ function renderRoute() {
 }
 
 /* ---------- 交互 ---------- */
-document.querySelector('.filters').addEventListener('click', e => {
-  const btn = e.target.closest('.chip');
-  if (!btn) return;
-  state[btn.dataset.kind] = btn.dataset.value;
-  renderFilters();
-  renderEntries();
-  announce('筛选结果 ' + entryList.children.length + ' 篇');
-});
+/* 首页不再铺全部文章列表：搜索匹配结果直接在搜索框下方下拉给出，文章进各游戏分站看 */
+function renderResults() {
+  if (!qDrop) return;
+  const q = state.q;
+  if (!q) { qDrop.hidden = true; qDrop.innerHTML = ''; return; }
+  const needle = q.toLowerCase();
+  const list = GUIDES.filter(gi => (gi.title + ' ' + gi.dek + ' ' + GAMES[gi.game].name + ' ' + (CATS[gi.cat] || '')).toLowerCase().includes(needle)).slice(0, 8);
+  qDrop.hidden = false;
+  qDrop.innerHTML = '<span class="q-lab">' + (list.length ? '匹配 ' + list.length + ' 篇' : '没有匹配') + '</span>'
+    + (list.length
+      ? list.map(gi => { const g = GAMES[gi.game]; return '<a class="q-item" href="a/' + gi.id + '/"><b>' + hl(gi.title) + '</b><span>' + esc(g.name) + ' · ' + esc(CATS[gi.cat]) + '</span></a>'; }).join('')
+      : '<p class="q-empty">没有匹配的攻略，换个关键词试试</p>');
+}
 searchInput.addEventListener('input', e => {
   state.q = e.target.value.trim();
-  renderEntries();
+  renderResults();
 });
 searchInput.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     e.target.value = '';
     state.q = '';
-    renderEntries();
+    renderResults();
   }
   if (e.key === 'Enter') {
     e.preventDefault();
-    jumpToLibrary();
+    if (state.q) saveHist(state.q);
+    renderResults();
   }
 });
-/* Banner 搜索按钮：滚动到攻略库并聚焦输入 */
-function jumpToLibrary() {
-  if (state.q) saveHist(state.q);
-  const lib = document.getElementById('games');
-  if (lib) lib.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  setTimeout(() => searchInput.focus({ preventScroll: true }), 420);
-}
+/* 点空白处收起下拉 */
+document.addEventListener('click', e => {
+  if (qDrop && !qDrop.hidden && !e.target.closest('.hero-search') && !e.target.closest('.q-drop')) qDrop.hidden = true;
+});
 const heroSearchBtn = document.getElementById('heroSearchBtn');
-if (heroSearchBtn) heroSearchBtn.addEventListener('click', jumpToLibrary);
+if (heroSearchBtn) heroSearchBtn.addEventListener('click', () => {
+  searchInput.focus();
+  if (state.q) { saveHist(state.q); renderResults(); }
+});
 
 /* ---------- 搜索历史（本地存最近 5 条） ---------- */
 const QKEY = 'gl_q_v1';
@@ -1281,8 +1143,7 @@ if (qHist) {
     if (!chip) return;
     state.q = chip.dataset.q;
     searchInput.value = chip.dataset.q;
-    renderEntries();
-    jumpToLibrary();
+    renderResults();
   });
   renderHist();
 }
@@ -1298,37 +1159,7 @@ document.addEventListener('keydown', e => {
   searchInput.focus();
   searchInput.select();
 });
-clearFilter.addEventListener('click', () => {
-  state.game = 'all';
-  state.cat = 'all';
-  state.q = '';
-  state.book = false;
-  state.sortNew = false;
-  onlyNew.setAttribute('aria-pressed', 'false');
-  onlyNew.classList.remove('on');
-  searchInput.value = '';
-  renderFilters();
-  renderEntries();
-});
-
-/* ---------- 最近更新排序 ---------- */
-onlyNew.addEventListener('click', () => {
-  state.sortNew = !state.sortNew;
-  onlyNew.setAttribute('aria-pressed', String(state.sortNew));
-  onlyNew.classList.toggle('on', state.sortNew);
-  renderEntries();
-});
-
-/* ---------- 收藏筛选 ---------- */
-onlyBook.addEventListener('click', () => {
-  state.book = !state.book;
-  renderEntries();
-  if (state.book && !entryList.children.length) {
-    document.getElementById('games').scrollIntoView({ behavior: PREFERS_REDUCE ? 'auto' : 'smooth', block: 'start' });
-  }
-});
 document.addEventListener('gl:bookchange', () => {
-  renderEntries();
   renderGamePages();
 });
 
@@ -1456,8 +1287,7 @@ function countUp(el, to) {
 countUp(document.getElementById('statGames'), ORDER.length);
 countUp(document.getElementById('statGuides'), GUIDES.length);
 countUp(document.getElementById('statCats'), Object.keys(CATS).length);
-renderFilters();
-renderEntries();
+renderGamePages();
 renderGamePages();
 fillCounts();
 renderRoute();

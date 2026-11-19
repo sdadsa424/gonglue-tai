@@ -815,7 +815,7 @@ function inject(file, marker, content) {
 }
 
 inject('index.html', 'BUILD:HEAD', homeHead());
-inject('index.html', 'BUILD:NOSCRIPT', homeNoScript());
+/* 首页不再铺全量文章目录（noscript 目录随攻略库下线；无 JS 用户经游戏卡进分站看到静态列表） */
 
 
 const files = [];

@@ -94,43 +94,23 @@ await wait(700);
 const hd = home.window.document;
 const w = home.window;
 
-ok('列表渲染 ' + GUIDE_N + ' 篇', hd.querySelectorAll('#entryList .entry').length === GUIDE_N, String(hd.querySelectorAll('#entryList .entry').length));
-ok('卡片指向真 URL', (hd.querySelector('#entryList .entry')?.getAttribute('href') || '').startsWith('a/'));
 ok('注入了回到顶部按钮', !!hd.querySelector('.to-top'));
 ok('图片走 picture + WebP', hd.querySelectorAll('picture source[type="image/webp"]').length >= 6, String(hd.querySelectorAll('picture source[type="image/webp"]').length));
 ok('图片带宽度级 srcset', hd.querySelectorAll('picture source[srcset*="480w"], picture source[srcset*="960w"]').length >= 6,
   String(hd.querySelectorAll('picture source[srcset*="480w"], picture source[srcset*="960w"]').length));
+ok('首页不再铺文章列表', !hd.getElementById('entryList') && !hd.getElementById('filterGame'));
 
 const input = hd.getElementById('searchInput');
 input.value = '转生';
 input.dispatchEvent(new w.Event('input', { bubbles: true }));
 await wait(80);
-ok('搜索关键词高亮', hd.querySelectorAll('#entryList mark.hl').length > 0);
-ok('搜索过滤生效', hd.querySelectorAll('#entryList .entry').length < 23);
+ok('搜索下拉给出结果', hd.querySelectorAll('#qDrop .q-item').length > 0, String(hd.querySelectorAll('#qDrop .q-item').length));
+ok('下拉结果带关键词高亮', hd.querySelectorAll('#qDrop mark.hl').length > 0);
 
 input.dispatchEvent(new w.KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
 await wait(60);
 ok('搜索历史写入', (JSON.parse(w.localStorage.getItem('gl_q_v1') || '[]'))[0] === '转生');
 ok('历史胶囊渲染', hd.querySelectorAll('#qHist .q-chip').length === 1);
-
-hd.getElementById('clearFilter').click();
-await wait(80);
-const readEntry = [...hd.querySelectorAll('#entryList .entry')].find(a => a.getAttribute('href') === 'a/ejl-start/');
-ok('已读条目带 is-read', !!readEntry?.classList.contains('is-read'));
-ok('已读徽标可见', !!readEntry?.querySelector('.entry-read'));
-ok('卡片显示读到进度', /读到 60%/.test(readEntry?.textContent || ''), readEntry?.querySelector('.entry-foot')?.textContent);
-ok('卡片显示收藏星标', !!readEntry?.querySelector('.entry-star'));
-
-const onlyBook = hd.getElementById('onlyBook');
-ok('收藏筛选入口可见且计数正确', !onlyBook.hidden && hd.getElementById('bookCount').textContent === '2',
-  onlyBook.hidden + '/' + hd.getElementById('bookCount')?.textContent);
-onlyBook.click();
-await wait(80);
-ok('只看收藏只剩 2 篇', hd.querySelectorAll('#entryList .entry').length === 2, String(hd.querySelectorAll('#entryList .entry').length));
-ok('收藏筛选按钮为按下态', onlyBook.getAttribute('aria-pressed') === 'true');
-hd.getElementById('clearFilter').click();
-await wait(80);
-ok('清除筛选恢复 ' + GUIDE_N + ' 篇', hd.querySelectorAll('#entryList .entry').length === GUIDE_N);
 
 /* 搜索面板（首页由 ⌘K 呼出） */
 ok('搜索面板已注入', !!hd.querySelector('.pal') && !!hd.querySelector('.pal-input'));
@@ -427,7 +407,7 @@ ok('静态页插图懒加载 + 带宽高', /<img src="\.\.\/\.\.\/assets\/xxtl-s
 const desk = await make(BASE, {}, { pointerFine: true });
 await wait(700);
 const dd = desk.window.document;
-const firstEntry = dd.querySelector('#entryList .entry');
+const firstEntry = dd.querySelector('[data-entries] .entry') || dd.querySelector('.game-card');
 firstEntry.dispatchEvent(new desk.window.MouseEvent('mousemove', { bubbles: true, clientX: 40, clientY: 40 }));
 await wait(60);
 ok('桌面端卡片按需挂上光标高光', firstEntry.classList.contains('glow-host'));
@@ -983,11 +963,7 @@ console.log('\n[回归护栏]');
 ok('链接检查工具按站点根解析 / 绝对路径（Windows 不再误报死链）', /clean\.startsWith\('\/\'\)/.test(fsSocial.readFileSync('tools/check.mjs', 'utf8')));
 ok('API 的 HEAD 探测按 GET 处理（监控/爬虫不再拿到 405）', /request\.method === 'HEAD' \? 'GET' : request\.method/.test(apiJs));
 ok('robots 屏蔽 /api/ 互动接口', /Disallow: \/api\//.test(fsSocial.readFileSync('robots.txt', 'utf8')));
-ok('移动端横向筛选行可键盘聚焦且有分组标签', (() => {
-  const h = fsSocial.readFileSync('index.html', 'utf8');
-  return /id="filterGame"[^>]*role="group"[^>]*aria-label="[^"]*"[^>]*tabindex="0"/.test(h)
-    && /id="filterCat"[^>]*role="group"[^>]*aria-label="[^"]*"[^>]*tabindex="0"/.test(h);
-})());
+ok('移动端搜索下拉可键盘触达的输入框存在', /id="searchInput"/.test(fsSocial.readFileSync('index.html', 'utf8')));
 
 /* ---------- 回归护栏：贰点零江湖官网「游戏特色」图 ---------- */
 ok('ejl 分站 hero 轮播：官网 3 张特色图（jpg/webp/avif + 960w）', (() => {
@@ -1052,7 +1028,7 @@ ok('官网资讯改写：ejl 新增 4 篇玩法攻略，全站口径同步到 53
     && ids.every(id => fsMod2.existsSync(`a/${id}/index.html`) && fsMod2.existsSync(`a/${id}/qr.svg`))
     && home.includes('<b id="statGuides">53</b>')
     && home.includes('data-count="ejl" data-count-fmt="{n} 篇">13 篇')
-    && home.includes('攻略目录（共 53 篇）')
+    && fsMod2.existsSync('g/ejl/index.html')
     && ids.every(id => fsMod2.readFileSync('sitemap.xml', 'utf8').includes(`a/${id}/`));
 })());
 ok('官网改写攻略页结构完整：小节目录 / 要点 / 表格 / 本服版本口径 / 二维码', (() => {
@@ -1128,7 +1104,7 @@ ok('官网长文改写：cq3d 新增 6 篇，全站口径同步到 53 篇 / cq3d
       && g.take.length === 4 && g.blocks.length >= 7 && g.blocks.some(b => b.t === 'table')))
     && ids.every(id => fsMod2.existsSync(`a/${id}/index.html`) && fsMod2.existsSync(`a/${id}/qr.svg`))
     && home.includes('data-count="cq3d" data-count-fmt="{n} 篇">6 篇')
-    && home.includes('攻略目录（共 53 篇）')
+    && fsMod2.existsSync('g/cq3d/index.html')
     && ids.every(id => sitemap.includes(`a/${id}/`));
 })());
 ok('官网事实只采信长文明示规则：点卡换算 / 5% 金币税 / 200 元门槛 / 世界等级-3', (() => {
