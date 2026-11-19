@@ -1067,7 +1067,7 @@ ok('官网改写攻略页结构完整：小节目录 / 要点 / 表格 / 本服�
 
 /* ---------- 回归护栏：全站统一使用正式完整游戏名 ---------- */
 ok('名称统一：社交标题/描述/海报/投票/分站文案均为完整游戏名，旧简称已清除（yxlc 隐藏中）', (() => {
-  const NAMES = ['贰点零江湖', '小小屠龙 · 冰雪传奇', '桃园：将帅录', '露娜2：拾光之约', '传奇3D点卡版'];
+  const NAMES = ['贰点零江湖', '小小屠龙 · 冰雪传奇', '桃园：将帅录', '露娜2：拾光之约', '传奇盛世移动版-3D点卡'];
   const home = fsMod2.readFileSync('index.html', 'utf8');
   const head = (home.match(/<!-- BUILD:HEAD -->[\s\S]*?<!-- \/BUILD:HEAD -->/) || [''])[0];
   const legacy = /露娜2 \/ 将帅录 \/ 屠龙 \/ 奇迹MU|<span class="poster-name">小小屠龙<\/span>|<span class="vote-nm">(小小屠龙|英雄连城)<\/span>|，露娜2 看重转职|，奇迹MU 看重打宝/.test(home);
@@ -1095,15 +1095,15 @@ ok('攻略条目徽标带完整游戏名（title + aria-label），技术 id 不
 
 /* ---------- 回归护栏：yysolos.com 官网「游戏特色」职业图 + 攻略改写 ---------- */
 
-/* ---------- 回归护栏：传奇3D点卡版（sqqyxz.com）接入 ---------- */
+/* ---------- 回归护栏：传奇盛世移动版-3D点卡（sqqyxz.com）接入 ---------- */
 ok('cq3d 全站接入：第 5 张 poster / game-card / 投票按钮 / 分站 / 图集', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   const g = fsMod2.readFileSync('g/cq3d/index.html', 'utf8');
   return home.includes('data-count="cq3d"') && home.includes('<span class="poster-tab">五</span>')
     && home.includes('data-like="cq3d"') && home.includes('statGames">5')
     && fsMod2.existsSync('g/cq3d/index.html')
-    && g.includes('传奇3D点卡版 · 全部') && g.includes('<h2 class="sec-title">游戏特色</h2>')
-    && !g.includes('取自《传奇3D点卡版》官网');
+    && g.includes('传奇盛世移动版-3D点卡 · 全部') && g.includes('<h2 class="sec-title">游戏特色</h2>')
+    && !g.includes('取自《传奇盛世移动版-3D点卡》官网');
 })());
 ok('cq3d 官方图集：7 张三件套齐全、首屏轮播 3 张创建角色', (() => {
   const g = fsMod2.readFileSync('g/cq3d/index.html', 'utf8');

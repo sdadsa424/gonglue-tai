@@ -3,7 +3,7 @@
 <channel>
   <title>游戏攻略大全</title>
   <link>https://wgame-bc7.pages.dev/</link>
-  <description>露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙 · 冰雪传奇、传奇3D点卡版的开荒路线、点卡计费、打金交易与团战站位，都整理成能直接照着做的步骤，按游戏和分类就能查到。</description>
+  <description>露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙 · 冰雪传奇、传奇盛世移动版-3D点卡的开荒路线、点卡计费、打金交易与团战站位，都整理成能直接照着做的步骤，按游戏和分类就能查到。</description>
   <language>zh-cn</language>
   <lastBuildDate>Sun, 15 Nov 2026 00:00:00 GMT</lastBuildDate>
   <generator>build.mjs</generator>
@@ -12,7 +12,7 @@
     <title>新手开荒六步走：15 级转土城</title>
     <link>https://wgame-bc7.pages.dev/a/cq3d-start/</link>
     <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/cq3d-start/</guid>
-    <category>传奇3D点卡版</category>
+    <category>传奇盛世移动版-3D点卡</category>
     <pubDate>Sun, 15 Nov 2026 00:00:00 GMT</pubDate>
     <description>官网把开荒写成六步，核心是两件事：上线先看时长，别一上来把点卡烧光；15 级自动传送土城，转场前把新手区的活干完。</description>
   </item>
@@ -20,7 +20,7 @@
     <title>金币行交易门槛与 5% 金币税</title>
     <link>https://wgame-bc7.pages.dev/a/cq3d-market/</link>
     <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/cq3d-market/</guid>
-    <category>传奇3D点卡版</category>
+    <category>传奇盛世移动版-3D点卡</category>
     <pubDate>Sun, 15 Nov 2026 00:00:00 GMT</pubDate>
     <description>金币价格由玩家挂单写出来，收币方承担 5% 金币税。两道交易门槛是为了过滤批量小号，不是拦你做生意。</description>
   </item>
@@ -28,7 +28,7 @@
     <title>后进服追赶：等级补领与世界等级</title>
     <link>https://wgame-bc7.pages.dev/a/cq3d-level/</link>
     <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/cq3d-level/</guid>
-    <category>传奇3D点卡版</category>
+    <category>传奇盛世移动版-3D点卡</category>
     <pubDate>Sun, 15 Nov 2026 00:00:00 GMT</pubDate>
     <description>担心开服一个月后再进只能当观众？官网写了等级补领：满足条件的角色可以免费补到「世界等级 - 3」。</description>
   </item>
@@ -36,7 +36,7 @@
     <title>掉落全公开：装备会掉，材料才有用</title>
     <link>https://wgame-bc7.pages.dev/a/cq3d-drop/</link>
     <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/cq3d-drop/</guid>
-    <category>传奇3D点卡版</category>
+    <category>传奇盛世移动版-3D点卡</category>
     <pubDate>Sun, 15 Nov 2026 00:00:00 GMT</pubDate>
     <description>非绑定装备遵循死亡掉落规则，书页、黑铁、兽皮、祝福油全有明确用途。所有地图与怪物的掉落明细与概率公开可查。</description>
   </item>
@@ -44,7 +44,7 @@
     <title>战法道三职业分工：前排、清场与续航</title>
     <link>https://wgame-bc7.pages.dev/a/cq3d-class/</link>
     <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/cq3d-class/</guid>
-    <category>传奇3D点卡版</category>
+    <category>传奇盛世移动版-3D点卡</category>
     <pubDate>Sun, 15 Nov 2026 00:00:00 GMT</pubDate>
     <description>创建界面只有三个职业可选。官网口径：战士顶前排、法师清场、道士续航与控场，组队配合比充值额度重要。</description>
   </item>
@@ -52,7 +52,7 @@
     <title>点卡换算：1 元 = 60 分钟</title>
     <link>https://wgame-bc7.pages.dev/a/cq3d-card/</link>
     <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/cq3d-card/</guid>
-    <category>传奇3D点卡版</category>
+    <category>传奇盛世移动版-3D点卡</category>
     <pubDate>Sun, 15 Nov 2026 00:00:00 GMT</pubDate>
     <description>这个服务器钱买的是「玩多久」，不是「有多强」。把换算和离线计费两条规则吃透，成本账就清楚了。</description>
   </item>

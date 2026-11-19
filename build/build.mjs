@@ -50,11 +50,13 @@ const CS = 'ggboy6123';
 
 
 /* 搜索结果标题里用的游戏短名：只用于 title，页面显示仍用完整游戏名 */
-const SEO_NAME = { ejl: '贰点零江湖', xxtl: '小小屠龙', ty: '桃园将帅录', luna2: '露娜2', yxlc: '英雄连城', cq3d: '传奇3D点卡版' };
+const SEO_NAME = { ejl: '贰点零江湖', xxtl: '小小屠龙', ty: '桃园将帅录', luna2: '露娜2', yxlc: '英雄连城', cq3d: '传奇盛世移动版-3D点卡' };
+/* SEO 标题超长时再降级的更短游戏名 */
+const SEO_SHORT = { cq3d: '传奇盛世3D' };
 
 /* 标题最多约 30 个汉字才会完整显示，超了就把游戏名换成短名、再去掉「攻略」两个字 */
 function seoTitle(head, gameKey) {
-  const short = SEO_NAME[gameKey] || head;
+  const short = SEO_SHORT[gameKey] || SEO_NAME[gameKey] || head;
   const full = head + ' · ' + short + '攻略';
   if (full.length <= 30) return full;
   const lite = head + ' · ' + short;
@@ -542,8 +544,8 @@ function articlePage(gi) {
 }
 
 /* ---------- 首页注入：社交卡片 / 结构化数据 / 无脚本目录 ---------- */
-const HOME_DESC = '露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙 · 冰雪传奇、传奇3D点卡版的开荒路线、点卡计费、打金交易与团战站位，都整理成能直接照着做的步骤，按游戏和分类就能查到。';
-const HOME_TITLE = '游戏攻略大全 · 贰点零江湖 / 小小屠龙 · 冰雪传奇 / 桃园：将帅录 / 露娜2 / 传奇3D点卡版';
+const HOME_DESC = '露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙 · 冰雪传奇、传奇盛世移动版-3D点卡的开荒路线、点卡计费、打金交易与团战站位，都整理成能直接照着做的步骤，按游戏和分类就能查到。';
+const HOME_TITLE = '游戏攻略大全 · 贰点零江湖 / 小小屠龙 · 冰雪传奇 / 桃园：将帅录 / 露娜2 / 传奇盛世移动版-3D点卡';
 
 function homeHead() {
   const jsonld = escJson({
@@ -679,8 +681,9 @@ function gamePage(key) {
 
   /* /g/<key>/ 与攻略页同样深两层，资产回根目录用 ../../ */
   UP = '../../';
+  const gpTitle = game.name + '攻略 · ' + game.tag;
   const html = page({
-    title: game.name + '攻略 · ' + game.tag,
+    title: gpTitle.length <= 30 ? gpTitle : game.name + '攻略 · ' + game.tag.split(' · ')[0],
     desc: game.name + '（' + game.tag + '）的 ' + list.length + ' 篇攻略：开荒路线、职业选择、打金交易、团战攻沙，都写成可以直接照着做的步骤。',
     canonical,
     jsonld,

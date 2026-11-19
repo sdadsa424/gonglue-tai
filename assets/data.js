@@ -5,7 +5,7 @@ const GAMES = {
   ty: { id: 'ty', short: '桃', name: '桃园：将帅录', tag: 'Q 版三国 · 回合策略', accent: '#FF6B8A' },
   luna2: { id: 'luna2', short: '月', name: '露娜2：拾光之约', tag: '奇幻冒险 · 自由转职', accent: '#A78BFA' },
   yxlc: { id: 'yxlc', short: 'MU', name: '英雄连城 · 奇迹MU', tag: '奇迹MU · 怀旧打宝', accent: '#E5484D' },
-  cq3d: { id: 'cq3d', short: '传', name: '传奇3D点卡版', tag: '点卡计时 · 1.76 复古', accent: '#FFB020' }
+  cq3d: { id: 'cq3d', short: '传', name: '传奇盛世移动版-3D点卡', tag: '点卡计时 · 1.76 复古', accent: '#FFB020' }
 };
 
 const CATS = {
