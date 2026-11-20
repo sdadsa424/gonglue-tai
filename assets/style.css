@@ -7,7 +7,7 @@
   --line:rgba(255,255,255,.07);
   --line-2:rgba(255,255,255,.14);
   --text:#ECEEF8;
-  --muted:#8B91A9;
+  --muted:#949AB3;
   --dim:#666C85;
   --pink:#FF3D9A;
   --purple:#8B5CF6;
@@ -2332,3 +2332,27 @@ a.dl-banner{text-decoration:none}
 .cs-card .cs-pill{margin-top:16px}
 .cs-card .cs-pill.dark{background:#1f2329;color:#fff}
 body.modal-lock{overflow:hidden}
+
+/* ---------- 画面优化一期：渐显加载 / 卡片质感统一 / 首屏氛围 ---------- */
+/* 1) lazy 图加载前模糊占位，加载后渐显（ui.js 配合，落定后自动摘除类，不干扰 hover 缩放） */
+img.img-fade{opacity:.35;filter:blur(14px);transform:scale(1.03);transition:opacity .55s ease,filter .55s ease,transform .55s ease}
+img.img-fade.is-loaded{opacity:1;filter:blur(0);transform:none}
+
+/* 2) 卡片质感统一：下载卡/大游戏卡与攻略条同节奏（深色底阴影、-3px 悬浮） */
+.dl-card{border:1px solid var(--line);box-shadow:0 18px 40px -24px rgba(0,0,0,.85),0 1px 3px rgba(0,0,0,.3)}
+.dl-card:hover{transform:translateY(-3px);box-shadow:0 26px 54px -28px rgba(0,0,0,.95)}
+.game-card:hover{transform:translateY(-3px);box-shadow:0 26px 54px -28px rgba(0,0,0,.95)}
+
+/* 3) 首屏氛围：hero 轮播呼吸光晕、分站主视觉微光、海报 hover 与移动端霓虹一致 */
+@keyframes haloBreath{
+  0%,100%{box-shadow:0 0 0 1px var(--line),0 18px 50px -30px rgba(255,61,154,.30)}
+  50%{box-shadow:0 0 0 1px var(--line-2),0 24px 64px -26px rgba(255,61,154,.48)}
+}
+.hero-carousel{animation:haloBreath 6s ease-in-out infinite}
+.game-hero .art{border-radius:16px;box-shadow:0 0 0 1px var(--line),0 22px 60px -32px rgba(255,61,154,.35)}
+.poster:hover{box-shadow:0 30px 60px -30px rgba(0,0,0,.95),0 0 18px -5px var(--ac)}
+
+/* 4) 可读性：移动端正文行距放宽一档 */
+@media (max-width:760px){
+  .prose p{line-height:2.05}
+}

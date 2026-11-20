@@ -2608,3 +2608,23 @@
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
 })();
+
+/* ---------- 图片加载渐显：lazy 图未就绪时模糊占位，onload 渐显后自动摘除类 ---------- */
+(function () {
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var list = document.querySelectorAll('img[loading="lazy"]');
+  for (var i = 0; i < list.length; i++) {
+    (function (img) {
+      if (img.complete) return; /* 缓存已就绪：不做动画 */
+      img.classList.add('img-fade');
+      var done = function () {
+        img.classList.add('is-loaded');
+        img.removeEventListener('load', done);
+        img.removeEventListener('error', done);
+        setTimeout(function () { img.classList.remove('img-fade', 'is-loaded'); }, 750);
+      };
+      img.addEventListener('load', done);
+      img.addEventListener('error', done); /* 加载失败也解除模糊，保证 alt 可读 */
+    })(list[i]);
+  }
+})();
