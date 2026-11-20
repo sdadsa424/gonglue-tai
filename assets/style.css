@@ -86,11 +86,18 @@ ul{margin:0;padding:0;list-style:none}
 .nav{display:flex;align-items:center;gap:26px;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
 .nav a{font-size:13.5px;color:var(--muted);position:relative;padding:4px 0;transition:color .2s ease}
 .nav a:hover{color:#fff}
-.nav a::after{
+.nav .nav-cs{
+  background:none;border:0;padding:4px 0;cursor:pointer;position:relative;
+  font:inherit;font-size:13.5px;letter-spacing:inherit;color:var(--muted);transition:color .2s ease;
+}
+.nav .nav-cs:hover{color:#fff}
+.nav a::after,
+.nav .nav-cs::after{
   content:"";position:absolute;left:0;right:100%;bottom:-1px;height:2px;border-radius:2px;
   background:var(--grad);transition:right .25s ease;
 }
-.nav a:hover::after{right:0}
+.nav a:hover::after,
+.nav .nav-cs:hover::after{right:0}
 
 /* ---------- 首屏 Banner ---------- */
 .hero{
@@ -707,6 +714,7 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
   .entries{grid-template-columns:1fr}
   .nav{gap:16px}
   .nav a{font-size:12.5px}
+  .nav .nav-cs{font-size:12.5px}
   .foot-in{grid-template-columns:1fr}
   .foot-nav{justify-content:flex-start}
   .hero-in{padding:52px 18px 44px}
@@ -817,7 +825,7 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
   }
   .tab{
     flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
-    padding:7px 0 6px;border-radius:12px;
+    padding:7px 0 6px;border-radius:12px;background:none;border:0;font:inherit;cursor:pointer;
     color:#8A90A9;font-size:12px;font-weight:600;letter-spacing:.02em;text-decoration:none;
     transition:color .2s ease,background .2s ease;
   }

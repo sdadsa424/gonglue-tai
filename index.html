@@ -67,6 +67,7 @@
     <nav class="nav" aria-label="主导航">
       <a href="#/" data-goto="games">游戏</a>
       <a href="#/dl">游戏下载</a>
+      <button type="button" class="nav-cs" data-copy="ggboy6123" title="点击复制客服，咨询开服与下载问题">客服</button>
     </nav>
     <div class="tb-right">
     <button class="luck-btn" id="luckBtn" type="button" title="手气不错：随机去一篇攻略" aria-label="手气不错，随机跳转一篇攻略"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><circle cx="8.2" cy="8.2" r="1.4" fill="currentColor" stroke="none"/><circle cx="15.8" cy="8.2" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="8.2" cy="15.8" r="1.4" fill="currentColor" stroke="none"/><circle cx="15.8" cy="15.8" r="1.4" fill="currentColor" stroke="none"/></svg></button>
@@ -1170,14 +1171,13 @@ document.addEventListener('click', function (e) {
   const btn = e.target.closest ? e.target.closest('[data-copy]') : null;
   if (!btn) return;
   const act = btn.querySelector('.cs-act');
-  if (!act) return;
-  const original = act.textContent;
+  const original = act ? act.textContent : '';
   const code = btn.getAttribute('data-copy');
   copyText(code).then(function (ok) {
-    act.textContent = ok ? '已复制' : '请手动复制';
+    if (act) act.textContent = ok ? '已复制' : '请手动复制';
     btn.classList.toggle('ok', !!ok);
     showToast(ok ? '已复制：游戏客服 ' + code : '复制被浏览器拦下，请手动选中 ' + code, !ok);
-    setTimeout(function () { act.textContent = original; btn.classList.remove('ok'); }, 1800);
+    setTimeout(function () { if (act) act.textContent = original; btn.classList.remove('ok'); }, 1800);
   });
 });
 
@@ -1453,6 +1453,10 @@ window.addEventListener('resize', onScroll);
     <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
     <span>下载</span>
   </a>
+  <button type="button" class="tab tab-cs" data-copy="ggboy6123" aria-label="复制游戏客服联系方式">
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13a8 8 0 0 1 16 0"/><rect x="2.5" y="13" width="4.5" height="6.5" rx="2"/><rect x="17" y="13" width="4.5" height="6.5" rx="2"/><path d="M20.5 19.5v.5a2 2 0 0 1-2 2H14"/></svg>
+    <span>客服</span>
+  </button>
 </nav>
 
 <div class="u-toast" id="uToast" role="status" aria-live="polite"><span class="u-dot" aria-hidden="true"></span><span class="u-text"></span></div>
