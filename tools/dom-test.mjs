@@ -907,11 +907,11 @@ ok('露娜2 进攻略库：GAMES.luna2 + 7 篇文章（a/luna2-*）+ 新分类�
   const dirs = fsMod2.readdirSync('a').filter(d => d.startsWith('luna2-'));
   return data.includes("id: 'luna2'") && dirs.length === 7 && data.includes("sys: '系统玩法'");
 })());
-ok('露娜2 首页集成：poster / game-card / 投票按钮，统计 6 款 53 篇 7 分类（yxlc 隐藏中），旧横幅零残留', (() => {
+ok('露娜2 首页集成：poster / game-card / 投票按钮，统计 6 款 71 篇（含 18 篇官方外链）7 分类（yxlc 隐藏中），旧横幅零残留', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   return (home.match(/class="poster"/g) || []).length === 6
     && (home.match(/class="game-card"/g) || []).length === 6
-    && home.includes('<b id="statGames">6</b>') && home.includes('<b id="statGuides">53</b>') && home.includes('<b id="statCats">7</b>')
+    && home.includes('<b id="statGames">6</b>') && home.includes('<b id="statGuides">71</b>') && home.includes('<b id="statCats">7</b>')
     && /const ORDER = \['ejl', 'xxtl', 'ty', 'luna2', 'cq3d', 'wlwz'\];/.test(home)
     && home.includes('六款游戏')
     && !/game-soon|gs-tag/.test(home);
@@ -1017,14 +1017,14 @@ ok('xxtl 官方特色图集：5 张 4:3 原图完整展示、三件套齐全且�
 })());
 
 /* ---------- 回归护栏：贰点零江湖官网资讯改写的 4 篇攻略 ---------- */
-ok('官网资讯改写：ejl 新增 4 篇玩法攻略，全站口径同步到 53 篇 / ejl 13 篇', (() => {
+ok('官网资讯改写：ejl 新增 4 篇玩法攻略，全站口径同步到 71 篇（含官方外链）/ ejl 13 篇', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   const ids = ['ejl-faction', 'ejl-qigong', 'ejl-guild', 'ejl-social'];
   return GUIDE_N === 53 && GP_COUNTS.ejl === 13
     && ids.every(id => DATA.GUIDES.some(g => g.id === id && g.game === 'ejl'
       && g.take.length === 4 && g.blocks.length >= 6 && g.blocks.some(b => b.t === 'table')))
     && ids.every(id => fsMod2.existsSync(`a/${id}/index.html`) && fsMod2.existsSync(`a/${id}/qr.svg`))
-    && home.includes('<b id="statGuides">53</b>')
+    && home.includes('<b id="statGuides">71</b>')
     && home.includes('data-count="ejl" data-count-fmt="{n} 篇">13 篇')
     && fsMod2.existsSync('g/ejl/index.html')
     && ids.every(id => fsMod2.readFileSync('sitemap.xml', 'utf8').includes(`a/${id}/`));

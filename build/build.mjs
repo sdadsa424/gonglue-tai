@@ -636,7 +636,8 @@ function gamePage(key) {
   body = body.replace(/<h2 class="game-h">([\s\S]*?)<\/h2>/, '<h1 class="game-h">$1</h1>');
   /* 静态页没有前端脚本填内容，这里直接铺好 */
   body = body.replace(' data-game="' + key + '" hidden>', ' data-game="' + key + '">');
-  body = body.replace(new RegExp('<span data-count="' + key + '" data-count-fmt="\\{n\\}">\\d+</span>', 'g'), '<span data-count="' + key + '">' + list.length + '</span>');
+  var officialN = (key === 'wlwz') ? 18 : 0; /* 官网精选攻略外链篇数 */
+  body = body.replace(new RegExp('<span data-count="' + key + '" data-count-fmt="\\{n\\}">\\d+</span>', 'g'), '<span data-count="' + key + '">' + (list.length + officialN) + '</span>');
   body = body.replace('<div class="entries" data-entries="' + key + '"></div>', '<div class="entries">' + list.map(gameEntry).join('') + '</div>');
   /* 站内 hash 路由换成真实地址 */
   body = body.replace(/href="#\/a\/([a-z-]+)"/g, 'href="../../a/$1/"');

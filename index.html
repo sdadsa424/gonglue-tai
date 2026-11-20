@@ -170,12 +170,12 @@
           <picture><source srcset="assets/hero-wlwz_480w.avif 480w, assets/hero-wlwz.avif 750w" sizes="(max-width:760px) 46vw, 220px" type="image/avif"><source srcset="assets/hero-wlwz_480w.webp 480w, assets/hero-wlwz.webp 750w" sizes="(max-width:760px) 46vw, 220px" type="image/webp"><img src="assets/hero-wlwz.jpg" alt="武林外传：十年之约 主视觉" width="750" height="962" loading="lazy" decoding="async"></picture>
           <span class="poster-tab">六</span>
           <span class="poster-label"><span class="poster-name">武林外传：十年之约</span><span class="poster-tag">同福客栈 · 武林情怀</span></span>
-          <span class="poster-count" data-count="wlwz" data-count-fmt="{n} 篇">0 篇</span>
+          <span class="poster-count" data-count="wlwz" data-count-fmt="{n} 篇">18 篇</span>
         </a>
       </div>
       <ul class="hero-stats">
         <li><b id="statGames">6</b>款游戏</li>
-        <li><b id="statGuides">53</b>篇攻略</li>
+        <li><b id="statGuides">71</b>篇攻略</li>
         <li><b id="statCats">7</b>个分类</li>
       </ul>
     </div>
@@ -247,7 +247,7 @@
       <article class="game-card" style="--ac:#FF7A45">
         <a class="gc-banner" href="g/wlwz/" aria-label="武林外传：十年之约 攻略">
           <picture><source srcset="assets/wlwz-feat-inn.avif 750w" sizes="(max-width:760px) 92vw, 31vw" type="image/avif"><source srcset="assets/wlwz-feat-inn.webp 750w" sizes="(max-width:760px) 92vw, 31vw" type="image/webp"><img src="assets/wlwz-feat-inn.jpg" alt="武林外传：十年之约 主视觉" width="750" height="422" loading="lazy" decoding="async"></picture>
-          <span class="gc-count" data-count="wlwz" data-count-fmt="{n} 篇">0 篇</span>
+          <span class="gc-count" data-count="wlwz" data-count-fmt="{n} 篇">18 篇</span>
         </a>
         <div class="gc-row">
           <img class="gc-ic" src="assets/wlwz-icon.jpg" alt="" width="88" height="88" loading="lazy" decoding="async">
@@ -607,7 +607,7 @@
       <div class="backline"><a class="back" href="#/" data-goto="games"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 12H5"/><path d="M11 18l-6-6 6-6"/></svg>返回总站攻略库</a></div>
       <section class="sec" style="margin-top:26px">
         <div class="sec-head"><div>
-          <h2 class="sec-title">武林外传：十年之约 · 全部 <span data-count="wlwz" data-count-fmt="{n}">0</span> 篇</h2>
+          <h2 class="sec-title">武林外传：十年之约 · 全部 <span data-count="wlwz" data-count-fmt="{n}">18</span> 篇</h2>
           <p class="sec-desc">站内图文攻略陆续整理中。先看下面从官网精选的官方攻略，开荒不迷路。</p>
         </div></div>
         <div class="entries" data-entries="wlwz"></div>
@@ -1183,10 +1183,16 @@ document.addEventListener('click', function (e) {
 
 /* ---------- 启动 ---------- */
 var PREFERS_REDUCE = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+var OFFICIAL_COUNTS = { wlwz: 18 }; /* 官网精选攻略外链篇数，与分站「官方攻略精选」板块保持一致 */
+function officialTotal() {
+  var t = 0;
+  for (var k in OFFICIAL_COUNTS) t += OFFICIAL_COUNTS[k];
+  return t;
+}
 function fillCounts() {
   document.querySelectorAll('[data-count]').forEach(function (el) {
     var k = el.dataset.count;
-    var n = k === 'all' ? GUIDES.length : GUIDES.filter(function (g) { return g.game === k; }).length;
+    var n = k === 'all' ? GUIDES.length + officialTotal() : GUIDES.filter(function (g) { return g.game === k; }).length + (OFFICIAL_COUNTS[k] || 0);
     el.textContent = (el.dataset.countFmt || '{n}').replace('{n}', n);
   });
 }
@@ -1207,7 +1213,7 @@ function countUp(el, to) {
   requestAnimationFrame(step);
 }
 countUp(document.getElementById('statGames'), ORDER.length);
-countUp(document.getElementById('statGuides'), GUIDES.length);
+countUp(document.getElementById('statGuides'), GUIDES.length + officialTotal());
 countUp(document.getElementById('statCats'), Object.keys(CATS).length);
 renderGamePages();
 renderGamePages();
