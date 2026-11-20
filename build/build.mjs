@@ -543,8 +543,8 @@ function articlePage(gi) {
 }
 
 /* ---------- 首页注入：社交卡片 / 结构化数据 / 无脚本目录 ---------- */
-const HOME_DESC = '露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙 · 冰雪传奇、传奇盛世移动版-3D点卡的开荒路线、点卡计费、打金交易与团战站位，都整理成能直接照着做的步骤，按游戏和分类就能查到。';
-const HOME_TITLE = '游戏攻略大全 · 贰点零江湖 / 小小屠龙 · 冰雪传奇 / 桃园：将帅录 / 露娜2 / 传奇盛世移动版-3D点卡';
+const HOME_DESC = '露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙 · 冰雪传奇、传奇盛世移动版-3D点卡、武林外传：十年之约的开荒路线、点卡计费、打金交易与团战站位，都整理成能直接照着做的步骤，按游戏和分类就能查到。';
+const HOME_TITLE = '游戏攻略大全 · 贰点零江湖 / 小小屠龙 · 冰雪传奇 / 桃园：将帅录 / 露娜2 / 传奇盛世移动版-3D点卡 / 武林外传：十年之约';
 
 function homeHead() {
   const jsonld = escJson({
@@ -759,9 +759,12 @@ function boardPage() {
 function notFoundPage() {
   const groups = ORDER.map(k => {
     const items = GUIDES.filter(g => g.game === k);
+    const list = items.length
+      ? items.map(gi => `<li><a href="/a/${gi.id}/">${esc(gi.title)}</a></li>`).join('')
+      : `<li><a href="/g/${k}/">站内攻略整理中，先去分站看官方攻略精选 →</a></li>`;
     return `      <div class="nf-g">
         <p class="nf-g-name">${esc(GAMES[k].name)}</p>
-        <ul>${items.map(gi => `<li><a href="/a/${gi.id}/">${esc(gi.title)}</a></li>`).join('')}</ul>
+        <ul>${list}</ul>
       </div>`;
   }).join('\n');
 

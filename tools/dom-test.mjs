@@ -740,7 +740,8 @@ const nfPage = await make(BASE + '404.html');
 const nfDoc = nfPage.window.document;
 ok('404 页有主标题与说明', !!nfDoc.querySelector('.nf h1') && /页面不存在/.test(nfDoc.title));
 ok('404 页不可被收录', nfDoc.querySelector('meta[name="robots"]')?.content === 'noindex, follow');
-ok('404 页列出全部攻略链接', nfDoc.querySelectorAll('.nf-g li a').length === GUIDE_N, String(nfDoc.querySelectorAll('.nf-g li a').length));
+ok('404 页列出全部攻略链接', nfDoc.querySelectorAll('.nf-g li a[href^="/a/"]').length === GUIDE_N, String(nfDoc.querySelectorAll('.nf-g li a[href^="/a/"]').length));
+ok('404 页无攻略的游戏组指向分站', [...nfDoc.querySelectorAll('.nf-g')].every(g => g.querySelector('ul li a')), '空组需有分站链接');
 ok('404 页资源路径指向站点根', [...nfDoc.querySelectorAll('link[rel="stylesheet"],script[src]')]
   .map(el => el.getAttribute('href') || el.getAttribute('src'))
   .filter(u => !/^https?:/.test(u))
