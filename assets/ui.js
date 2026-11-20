@@ -1284,13 +1284,14 @@
               function (e) { if (timer) clearTimeout(timer); throw e; });
     }
     /* IP 定位：两个源并行竞速，谁先返回有效坐标就用谁，另一个立刻中止。
+       ipapi.co 在大陆侧 CORS 不稳定已移除，备用源换成 freeipapi.com（允许跨域、自带经纬度）。
        旧版串行 fallback 要等首选失败/超时才试备用（最坏 12s）。 */
     function locateByIP() {
       return new Promise(function (resolve, reject) {
         var C = window.AbortController;
         var urls = [
           'https://ipwho.is/?fields=success,latitude,longitude,city',
-          'https://ipapi.co/json/'
+          'https://freeipapi.com/api/json'
         ];
         var acs = urls.map(function () { return C ? new C() : null; });
         var done = false, failed = 0;
@@ -1302,7 +1303,7 @@
               : (j && j.latitude);
             if (!ok) throw new Error('geo' + idx);
             done = true;
-            ipCity = j.city || '';
+            ipCity = j.city || j.cityName || '';
             acs.forEach(function (ac, k) {
               if (k !== idx && ac) { try { ac.abort(); } catch (e) {} }
             });

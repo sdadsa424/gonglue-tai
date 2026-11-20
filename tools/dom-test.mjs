@@ -36,8 +36,9 @@ function make(url, seed, opts) {
         window.__fetchCalls = [];
         window.fetch = url => {
           const u = String(url);
-          /* 站内互动接口（api/notice 等）在测试里视为「后端未配置」，静默降级且不计数 */
-          if (/(^|\/)api\//.test(u)) {
+          /* 站内互动接口（api/notice 等）在测试里视为「后端未配置」，静默降级且不计数；
+             freeipapi.com/api/json 是天气备用定位源，路径含 /api/ 但属于外部服务，要放行 */
+          if (/(^|\/)api\//.test(u) && !/freeipapi\.com/.test(u)) {
             return Promise.resolve({ ok: false, status: 503, json: () => Promise.resolve({ error: 'backend_not_configured' }) });
           }
           window.__fetchCalls.push(u);
@@ -471,7 +472,7 @@ ok('晴天出太阳图标', !!wtd.querySelector('.wt-ico .wi-sun'));
 ok('悬停文案带城市与天气', /合肥/.test(wtWx.getAttribute('title') || '') && /晴/.test(wtWx.getAttribute('title') || ''), wtWx.getAttribute('title'));
 ok('两个 IP 源并行竞速，取到坐标后再查天气', wtPage.window.__fetchCalls.length === 3 &&
   /ipwho\.is/.test(wtPage.window.__fetchCalls[0]) &&
-  /ipapi\.co/.test(wtPage.window.__fetchCalls[1]) &&
+  /freeipapi\.com/.test(wtPage.window.__fetchCalls[1]) &&
   /open-meteo/.test(wtPage.window.__fetchCalls[2]),
   wtPage.window.__fetchCalls.join(' | '));
 wtPage.window.close();
@@ -722,7 +723,7 @@ console.log('\n[加载速度与 404]');
 const nfHomeDoc = (await import('node:fs')).readFileSync('index.html', 'utf8');
 /* preconnect：天气链路两跳 + 第三方统计 */
 ok('首页预连接天气接口', /<link rel="preconnect" href="https:\/\/ipwho\.is" crossorigin>/.test(nfHomeDoc) && /<link rel="preconnect" href="https:\/\/api\.open-meteo\.com" crossorigin>/.test(nfHomeDoc));
-ok('备用 IP 定位源已预连接', /preconnect" href="https:\/\/ipapi\.co"/.test(nfHomeDoc) && /ipapi\.co/.test(axStatic));
+ok('备用 IP 定位源已预连接', /preconnect" href="https:\/\/freeipapi\.com"/.test(nfHomeDoc) && /freeipapi\.com/.test(axStatic));
 ok('文章页预连接天气接口', /preconnect" href="https:\/\/api\.open-meteo\.com/.test(axStatic));
 ok('统计域名有 dns-prefetch', /<link rel="dns-prefetch" href="https:\/\/busuanzi\.ibruce\.info">/.test(axStatic));
 /* 图片异步解码 */
@@ -896,23 +897,23 @@ ok('掉落装备池：五个栏目（ejl/xxtl/ty/luna2/yxlc）合计 50 件以�
 ok('掉落联动成就：拾荒者 + 欧皇附体（传说掉落解锁）', /unlock\('loot_1'\)/.test(uiJs) && /unlock\('loot_legend'\)/.test(uiJs) && /loot_legend', icon: '🌟'/.test(uiJs));
 ok('掉落卡样式：稀有度配色变量 + 传说金光 + 移动端贴底', /\.loot\.r5\{--lr:#FFB020\}/.test(cssText) && /rgba\(255,176,32,\.55\)/.test(cssText) && /@media \(max-width:760px\)\{\.loot\{/.test(cssText));
 
-ok('露娜2 转正式分站：g/luna2/ 由 gamePage 生成，7 篇 entries 铺好 + 资质名 + 倒计时', (() => {
+ok('露娜2 转正式分站：g/luna2/ 由 gamePage 生成，8 篇 entries 铺好 + 资质名 + 倒计时', (() => {
   const luna = fsMod2.readFileSync('g/luna2/index.html', 'utf8');
   return luna.includes('露娜2：拾光之约') && luna.includes('资质名称：露娜2') && luna.includes('PC 端游')
     && /data-launch="2026-12-10T00:00:00\+08:00"/.test(luna)
-    && (luna.match(/class="entry"/g) || []).length === 7
+    && (luna.match(/class="entry"/g) || []).length === 8
     && luna.includes('assets/luna2-hero.jpg') && luna.includes('"@type":"CollectionPage"');
 })());
-ok('露娜2 进攻略库：GAMES.luna2 + 7 篇文章（a/luna2-*）+ 新分类「系统玩法」', (() => {
+ok('露娜2 进攻略库：GAMES.luna2 + 8 篇文章（a/luna2-*，含魔族攻略）+ 新分类「系统玩法」', (() => {
   const data = fsMod2.readFileSync('assets/data.js', 'utf8');
   const dirs = fsMod2.readdirSync('a').filter(d => d.startsWith('luna2-'));
-  return data.includes("id: 'luna2'") && dirs.length === 7 && data.includes("sys: '系统玩法'");
+  return data.includes("id: 'luna2'") && dirs.length === 8 && data.includes("sys: '系统玩法'") && data.includes("id: 'luna2-mo'");
 })());
-ok('露娜2 首页集成：poster / game-card / 投票按钮，统计 6 款 71 篇（含 18 篇官方外链）7 分类（yxlc 隐藏中），旧横幅零残留', (() => {
+ok('露娜2 首页集成：poster / game-card / 投票按钮，统计 6 款 72 篇（含 18 篇官方外链）7 分类（yxlc 隐藏中），旧横幅零残留', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   return (home.match(/class="poster"/g) || []).length === 6
     && (home.match(/class="game-card"/g) || []).length === 6
-    && home.includes('<b id="statGames">6</b>') && home.includes('<b id="statGuides">71</b>') && home.includes('<b id="statCats">7</b>')
+    && home.includes('<b id="statGames">6</b>') && home.includes('<b id="statGuides">72</b>') && home.includes('<b id="statCats">7</b>')
     && /const ORDER = \['ejl', 'xxtl', 'ty', 'luna2', 'cq3d', 'wlwz'\];/.test(home)
     && home.includes('六款游戏')
     && !/game-soon|gs-tag/.test(home);
@@ -1018,14 +1019,14 @@ ok('xxtl 官方特色图集：5 张 4:3 原图完整展示、三件套齐全且�
 })());
 
 /* ---------- 回归护栏：贰点零江湖官网资讯改写的 4 篇攻略 ---------- */
-ok('官网资讯改写：ejl 新增 4 篇玩法攻略，全站口径同步到 71 篇（含官方外链）/ ejl 13 篇', (() => {
+ok('官网资讯改写：ejl 新增 4 篇玩法攻略，全站口径同步到 72 篇（含官方外链）/ ejl 13 篇', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   const ids = ['ejl-faction', 'ejl-qigong', 'ejl-guild', 'ejl-social'];
-  return GUIDE_N === 53 && GP_COUNTS.ejl === 13
+  return GUIDE_N === 54 && GP_COUNTS.ejl === 13
     && ids.every(id => DATA.GUIDES.some(g => g.id === id && g.game === 'ejl'
       && g.take.length === 4 && g.blocks.length >= 6 && g.blocks.some(b => b.t === 'table')))
     && ids.every(id => fsMod2.existsSync(`a/${id}/index.html`) && fsMod2.existsSync(`a/${id}/qr.svg`))
-    && home.includes('<b id="statGuides">71</b>')
+    && home.includes('<b id="statGuides">72</b>')
     && home.includes('data-count="ejl" data-count-fmt="{n} 篇">13 篇')
     && fsMod2.existsSync('g/ejl/index.html')
     && ids.every(id => fsMod2.readFileSync('sitemap.xml', 'utf8').includes(`a/${id}/`));
@@ -1094,11 +1095,11 @@ ok('cq3d 官方图集：7 张三件套齐全、首屏轮播 3 张创建角色', 
     && slides.every(k => g.includes(`assets/cq3d-${k}.avif 1125w`))
     && (g.match(/<picture class="hc/g) || []).length === 3;
 })());
-ok('官网长文改写：cq3d 新增 6 篇，全站口径同步到 53 篇 / cq3d 6 篇 / 6 款游戏', (() => {
+ok('官网长文改写：cq3d 新增 6 篇，全站口径同步到 54 篇 / cq3d 6 篇 / 6 款游戏', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   const ids = ['cq3d-start', 'cq3d-card', 'cq3d-market', 'cq3d-drop', 'cq3d-class', 'cq3d-level'];
   const sitemap = fsMod2.readFileSync('sitemap.xml', 'utf8');
-  return GUIDE_N === 53 && GP_COUNTS.cq3d === 6
+  return GUIDE_N === 54 && GP_COUNTS.cq3d === 6
     && ids.every(id => DATA.GUIDES.some(g => g.id === id && g.game === 'cq3d'
       && g.take.length === 4 && g.blocks.length >= 7 && g.blocks.some(b => b.t === 'table')))
     && ids.every(id => fsMod2.existsSync(`a/${id}/index.html`) && fsMod2.existsSync(`a/${id}/qr.svg`))
