@@ -2310,3 +2310,25 @@ a.dl-banner{text-decoration:none}
 @media (max-width:760px){
   .dl-btns .dl-btn{min-width:64px;min-height:28px;padding:0 11px;font-size:12px}
 }
+
+/* ---------- 人工客服中心弹窗 ---------- */
+.cs-modal{position:fixed;inset:0;z-index:1200;display:grid;place-items:center;padding:20px}
+.cs-modal[hidden]{display:none}
+.cs-mask{position:absolute;inset:0;background:rgba(5,6,12,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.cs-card{
+  position:relative;width:min(340px,92vw);max-height:88vh;overflow:auto;text-align:center;
+  background:#fff;border-radius:18px;padding:26px 22px 24px;
+  box-shadow:0 30px 70px -20px rgba(0,0,0,.6);
+}
+.cs-x{
+  position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;border:0;cursor:pointer;
+  background:#F0F2F7;color:#5B6172;display:grid;place-items:center;transition:background .2s ease;
+}
+.cs-x:hover{background:#E3E7EF}
+.cs-m-title{font-size:21px;font-weight:800;color:#3E8ED0;letter-spacing:1px}
+.cs-m-qr{display:block;width:min(224px,64vw);height:auto;margin:16px auto 12px;border-radius:12px;box-shadow:0 8px 26px -10px rgba(30,80,180,.45)}
+.cs-m-scan{font-size:14.5px;font-weight:600;color:#7CB342}
+.cs-m-time{margin-top:14px;font-size:13.5px;font-weight:600;color:#E53935}
+.cs-card .cs-pill{margin-top:16px}
+.cs-card .cs-pill.dark{background:#1f2329;color:#fff}
+body.modal-lock{overflow:hidden}

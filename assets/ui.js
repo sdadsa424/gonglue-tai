@@ -2586,3 +2586,25 @@
   })();
 
 })();
+
+/* ---------- 人工客服中心弹窗（客服入口点按打开，扫码/复制皆可） ---------- */
+(function () {
+  function modal() { return document.getElementById('csModal'); }
+  function open() {
+    var m = modal(); if (!m) return;
+    m.hidden = false;
+    document.body.classList.add('modal-lock');
+    var x = m.querySelector('.cs-x'); if (x) x.focus();
+  }
+  function close() {
+    var m = modal(); if (!m || m.hidden) return;
+    m.hidden = true;
+    document.body.classList.remove('modal-lock');
+  }
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest) return;
+    if (e.target.closest('[data-cs-open]')) { e.preventDefault(); open(); return; }
+    if (e.target.closest('[data-cs-close]')) close();
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
