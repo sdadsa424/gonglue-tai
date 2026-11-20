@@ -5,9 +5,17 @@
   <link>https://wgame-bc7.pages.dev/</link>
   <description>露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙 · 冰雪传奇、传奇盛世移动版-3D点卡、武林外传：十年之约的开荒路线、点卡计费、打金交易与团战站位，都整理成能直接照着做的步骤，按游戏和分类就能查到。</description>
   <language>zh-cn</language>
-  <lastBuildDate>Sun, 15 Nov 2026 00:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Fri, 20 Nov 2026 00:00:00 GMT</lastBuildDate>
   <generator>build.mjs</generator>
   <atom:link href="https://wgame-bc7.pages.dev/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>魔族玩法全解：解锁、加点路线与养成规划</title>
+    <link>https://wgame-bc7.pages.dev/a/luna2-mo/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/luna2-mo/</guid>
+    <category>露娜2：拾光之约</category>
+    <pubDate>Fri, 20 Nov 2026 00:00:00 GMT</pubDate>
+    <description>无固定职业、40 级起步、SP 富裕——露娜2 自由度最高的种族怎么玩：解锁条件、三套加点、装备与升级路线一次讲清。</description>
+  </item>
   <item>
     <title>新手开荒六步走：15 级转土城</title>
     <link>https://wgame-bc7.pages.dev/a/cq3d-start/</link>
@@ -239,14 +247,6 @@
     <category>贰点零江湖</category>
     <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
     <description>技能点永远点不满全部技能。取舍的标准不是「哪个强」，而是「你一天里在哪个场景待得最久」。</description>
-  </item>
-  <item>
-    <title>野外遭遇战：先手怎么拿，打不过怎么走</title>
-    <link>https://wgame-bc7.pages.dev/a/ejl-pk/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ejl-pk/</guid>
-    <category>贰点零江湖</category>
-    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-    <description>野外打架输赢很少取决于装备差多少，多数时候是「谁先动手」和「谁先撤」这两件事决定的。</description>
   </item>
 </channel>
 </rss>
