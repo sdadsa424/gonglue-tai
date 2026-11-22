@@ -4,12 +4,14 @@
  *
  * 策略：
  *   导航请求（HTML）  network-first —— 有网永远拿最新的，断网退回缓存，再退回离线页
- *   静态资源          network-first —— 同样网络优先：部署后第一次刷新就是新版，
+ *   CSS/JS/数据       network-first —— 同样网络优先：部署后第一次刷新就是新版，
  *                     不会出现「先给旧缓存、要刷两次才更新」；断网退回缓存保离线可用
+ *   图片（jpg/webp/…） cache-first —— 回访秒出不等网络；内容一变 swHash 就变、
+ *                     activate 清整仓旧缓存，不会看旧图
  *   接口 /api/*       完全不拦——点赞、留言必须实时，不能被缓存糊住
  *   跨域请求（天气/IP/统计）不拦——交给浏览器
  */
-const VERSION = '32fa16951c';
+const VERSION = '8fbbead320';
 const CACHE = 'gl-' + VERSION;
 /* 部署在子路径（如 GitHub Pages 的 /gonglue-tai/）时，scope 就是子路径根 */
 const ROOT = self.registration.scope;
@@ -60,6 +62,10 @@ self.addEventListener('fetch', event => {
 
   if (req.mode === 'navigate') {
     event.respondWith(navFirst(req));
+  } else if (/\.(jpg|jpeg|png|webp|avif|gif|svg|ico)$/i.test(url.pathname)) {
+    /* 图片：缓存优先。内容一变 swHash 就变 → activate 清掉整仓旧缓存，
+       不会看旧图；回访时图片秒出，不再等网络（回访提速的大头）。 */
+    event.respondWith(imgFirst(req));
   } else {
     event.respondWith(netFirst(req));
   }
@@ -86,6 +92,19 @@ async function navFirst(req) {
       status: 503,
       headers: { 'Content-Type': 'text/plain; charset=utf-8' }
     });
+  }
+}
+
+async function imgFirst(req) {
+  const cache = await caches.open(CACHE);
+  const hit = await cache.match(req);
+  if (hit) return hit;
+  try {
+    const res = await fetch(req);
+    if (res && res.ok) cache.put(req, res.clone()).catch(() => {});
+    return res;
+  } catch (e) {
+    return new Response('', { status: 504, statusText: 'offline' });
   }
 }
 
