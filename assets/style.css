@@ -2356,3 +2356,36 @@ img.img-fade.is-loaded{opacity:1;filter:blur(0);transform:none}
 @media (max-width:760px){
   .prose p{line-height:2.05}
 }
+
+/* ---------- 模拟器专区（下载页区块 + 分站入口 pill） ---------- */
+.emu-sec{margin-top:34px;padding:22px 20px 20px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(160deg,rgba(255,255,255,.03),rgba(255,255,255,0) 55%)}
+.emu-h{margin:0;font-size:19px;font-weight:800;letter-spacing:.02em}
+.emu-sub{margin:6px 0 0;font-size:13.5px;color:var(--muted)}
+.emu-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.emu-card{
+  display:flex;align-items:center;gap:12px;padding:13px 14px;text-decoration:none;
+  border:1px solid var(--line);border-radius:13px;background:var(--card,rgba(255,255,255,.02));
+  transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;
+}
+.emu-card:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--ac) 55%,transparent);box-shadow:0 16px 34px -22px color-mix(in srgb,var(--ac) 70%,transparent)}
+.emu-ic{width:52px;height:52px;border-radius:12px;flex:none;background:#fff;padding:4px;object-fit:contain}
+.emu-tt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.emu-tt b{font-size:14.5px;color:#fff}
+.emu-tt i{font-style:normal;font-size:12px;color:var(--muted)}
+.emu-go{margin-left:auto;flex:none;font-size:12.5px;font-weight:700;color:var(--ac);white-space:nowrap}
+.emu-steps{margin:16px 0 0;padding:0 0 0 0;list-style:none;counter-reset:es;display:grid;gap:8px}
+.emu-steps li{counter-increment:es;position:relative;padding-left:34px;font-size:13.5px;line-height:1.8;color:#C9CEDF}
+.emu-steps li::before{
+  content:counter(es);position:absolute;left:0;top:3px;width:22px;height:22px;border-radius:50%;
+  display:grid;place-items:center;font-size:12px;font-weight:800;color:#fff;
+  background:linear-gradient(135deg,#FF3D9A,#8B5CF6);
+}
+.emu-tip{margin:14px 0 0;padding:12px 14px;border-radius:11px;font-size:13px;line-height:1.9;color:var(--muted);background:rgba(255,255,255,.03);border:1px solid var(--line)}
+.emu-tip b{color:#E8EAF2}
+.emu-tip a{color:var(--link,#8AB4FF)}
+.cs-pill.emu{border-color:rgba(255,122,69,.45)}
+.cs-pill.emu:hover{border-color:#FF7A45}
+@media (max-width:560px){
+  .emu-grid{grid-template-columns:1fr}
+  .emu-sec{padding:18px 14px 16px}
+}

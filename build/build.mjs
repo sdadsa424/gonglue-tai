@@ -659,6 +659,7 @@ function gamePage(key) {
   /* 站内 hash 路由换成真实地址 */
   body = body.replace(/href="#\/a\/([a-z-]+)"/g, 'href="../../a/$1/"');
   body = body.replace(/href="#\/g\/([a-z]+)"/g, 'href="../$1/"');
+  body = body.replace(/href="#\/dl"/g, 'href="../../#/dl"');
   body = body.replace(/href="#\/" data-goto="games"/g, 'href="../../#games"');
   body = body.replace(/href="#\/"/g, 'href="../../"');
   /* 图片原本相对站点根，搬到 /g/<key>/ 后要回两级 */
