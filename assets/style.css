@@ -2286,7 +2286,8 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
   .emu-tt b{font-size:13px;white-space:nowrap}
   .emu-go{font-size:12px}
   /* 手机端两列窄卡：图标在上、文字在下，不再横向挤 */
-  .emu-card{flex-direction:column;align-items:flex-start;gap:8px;padding:12px}
+  .emu-card{flex-direction:column;align-items:center;text-align:center;gap:8px;padding:12px}
+  .emu-tt{align-items:center}
   .emu-go{margin-left:0}
 }
 
