@@ -45,14 +45,14 @@ const gdate = gi => (DATES[gi.id] || {}).d || SEED_DATE;
 const GDATE = guideId => (DATES[guideId] || {}).d || SEED_DATE;
 /* 全站级 lastmod：取所有文章日期的最大值 */
 const SITE_LASTMOD = GUIDES.map(gdate).sort().pop();
-const ORDER = ['ejl', 'xxtl', 'ty', 'luna2', 'cq3d', 'wlwz']; // yxlc 隐藏中
+const ORDER = ['ejl', 'xxtl', 'ty', 'luna2', 'cq3d', 'wlwz', 'xxjz']; // yxlc 隐藏中
 const CS = 'ggboy6123';
 
 
 /* 搜索结果标题里用的游戏短名：只用于 title，页面显示仍用完整游戏名 */
-const SEO_NAME = { ejl: '贰点零江湖', xxtl: '小小屠龙', ty: '桃园将帅录', luna2: '露娜2', yxlc: '英雄连城', cq3d: '传奇盛世移动版-3D点卡' };
+const SEO_NAME = { ejl: '贰点零江湖', xxtl: '小小屠龙', ty: '桃园将帅录', luna2: '露娜2', yxlc: '英雄连城', cq3d: '传奇盛世移动版-3D点卡', xxjz: '修仙家族模拟器2' };
 /* SEO 标题超长时再降级的更短游戏名 */
-const SEO_SHORT = { cq3d: '传奇盛世3D' };
+const SEO_SHORT = { cq3d: '传奇盛世3D', xxjz: '修仙家族2' };
 
 /* 标题最多约 30 个汉字才会完整显示，超了就把游戏名换成短名、再去掉「攻略」两个字 */
 function seoTitle(head, gameKey) {
@@ -212,7 +212,7 @@ function footer(activeGame) {
     <div class="foot-in">
       <div>
         <p class="foot-name">${SITE_NAME}</p>
-        <p>一个玩家整理的攻略站，把六款游戏里真正会用到的判断写成条目：什么时候走、什么时候留、什么该卖、什么该留。站内文章按游戏与阶段索引，持续补充。</p>
+        <p>一个玩家整理的攻略站，把七款游戏里真正会用到的判断写成条目：什么时候走、什么时候留、什么该卖、什么该留。站内文章按游戏与阶段索引，持续补充。</p>
         <p class="foot-cs">获取游戏与开服信息：<button class="cs-pill dark" type="button" data-copy="${CS}"><b>游戏客服 ${CS}</b><span class="cs-act">复制</span></button></p>
         <div class="foot-share">
           <button class="share-btn sm" type="button" data-share-copy>复制本站链接</button>
@@ -560,8 +560,8 @@ function articlePage(gi) {
 }
 
 /* ---------- 首页注入：社交卡片 / 结构化数据 / 无脚本目录 ---------- */
-const HOME_DESC = '露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙 · 冰雪传奇、传奇盛世移动版-3D点卡、武林外传：十年之约的开荒路线、点卡计费、打金交易与团战站位，都整理成能直接照着做的步骤，按游戏和分类就能查到。';
-const HOME_TITLE = '游戏攻略大全 · 贰点零江湖 / 小小屠龙 · 冰雪传奇 / 桃园：将帅录 / 露娜2 / 传奇盛世移动版-3D点卡 / 武林外传：十年之约';
+const HOME_DESC = '露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙 · 冰雪传奇、传奇盛世移动版-3D点卡、武林外传：十年之约、修仙家族模拟器2的开荒路线、点卡计费、打金交易与团战站位，都整理成能直接照着做的步骤，按游戏和分类就能查到。';
+const HOME_TITLE = '游戏攻略大全 · 贰点零江湖 / 小小屠龙 · 冰雪传奇 / 桃园：将帅录 / 露娜2 / 传奇盛世移动版-3D点卡 / 武林外传：十年之约 / 修仙家族模拟器2';
 
 function homeHead() {
   const jsonld = escJson({
@@ -611,7 +611,7 @@ ${ORDER.map(k => GUIDES.filter(x => x.game === k).map(gi => `          <li><a hr
 /* ---------- 分站静态页 ----------
    分站内容原本只在首页 #/g/<key> 里，靠前端渲染 —— 搜索引擎看不到，也没法单独分享。
    这里把首页那段真实标记原样抽出来（单一数据来源，不重复维护），落成 /g/<key>/ 静态页。 */
-const GAME_IMG = { ejl: 'assets/ejl-hero.jpg', xxtl: 'assets/xxtl-siege.jpg', ty: 'assets/ty-key.jpg', luna2: 'assets/luna2-hero.jpg', yxlc: 'assets/yxlc-hero.jpg', cq3d: 'assets/cq3d-class.jpg', wlwz: 'assets/wlwz-feat-inn.jpg' };
+const GAME_IMG = { ejl: 'assets/ejl-hero.jpg', xxtl: 'assets/xxtl-siege.jpg', ty: 'assets/ty-key.jpg', luna2: 'assets/luna2-hero.jpg', yxlc: 'assets/yxlc-hero.jpg', cq3d: 'assets/cq3d-class.jpg', wlwz: 'assets/wlwz-feat-inn.jpg', xxjz: 'assets/xxjz-feat-sect.jpg' };
 
 function gameBlock(key) {
   const html = fs.readFileSync('index.html', 'utf8');

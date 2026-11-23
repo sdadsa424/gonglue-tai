@@ -909,13 +909,13 @@ ok('露娜2 进攻略库：GAMES.luna2 + 8 篇文章（a/luna2-*，含魔族攻�
   const dirs = fsMod2.readdirSync('a').filter(d => d.startsWith('luna2-'));
   return data.includes("id: 'luna2'") && dirs.length === 8 && data.includes("sys: '系统玩法'") && data.includes("id: 'luna2-mo'");
 })());
-ok('露娜2 首页集成：poster / game-card / 投票按钮，统计 6 款 72 篇（含 18 篇官方外链）7 分类（yxlc 隐藏中），旧横幅零残留', (() => {
+ok('露娜2 首页集成：poster / game-card / 投票按钮，统计 7 款 79 篇（含 18 篇官方外链）7 分类（yxlc 隐藏中），旧横幅零残留', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
-  return (home.match(/class="poster"/g) || []).length === 6
-    && (home.match(/class="game-card"/g) || []).length === 6
-    && home.includes('<b id="statGames">6</b>') && home.includes('<b id="statGuides">72</b>') && home.includes('<b id="statCats">7</b>')
-    && /const ORDER = \['ejl', 'xxtl', 'ty', 'luna2', 'cq3d', 'wlwz'\];/.test(home)
-    && home.includes('六款游戏')
+  return (home.match(/class="poster"/g) || []).length === 7
+    && (home.match(/class="game-card"/g) || []).length === 7
+    && home.includes('<b id="statGames">7</b>') && home.includes('<b id="statGuides">79</b>') && home.includes('<b id="statCats">7</b>')
+    && /const ORDER = \['ejl', 'xxtl', 'ty', 'luna2', 'cq3d', 'wlwz', 'xxjz'\];/.test(home)
+    && home.includes('七款游戏')
     && !/game-soon|gs-tag/.test(home);
 })());
 ok('倒计时模块：每秒刷新天/时/分/秒，到点换「已公测」并停掉定时器', /launchCd/.test(uiJs) && /window\.clearInterval\(iv\)/.test(uiJs) && /cd-over">已公测/.test(uiJs) && /Date\.parse\(box\.getAttribute\('data-launch'\)\)/.test(uiJs));
@@ -1019,14 +1019,14 @@ ok('xxtl 官方特色图集：5 张 4:3 原图完整展示、三件套齐全且�
 })());
 
 /* ---------- 回归护栏：贰点零江湖官网资讯改写的 4 篇攻略 ---------- */
-ok('官网资讯改写：ejl 新增 4 篇玩法攻略，全站口径同步到 72 篇（含官方外链）/ ejl 13 篇', (() => {
+ok('官网资讯改写：ejl 新增 4 篇玩法攻略，全站口径同步到 79 篇（含官方外链）/ ejl 13 篇', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   const ids = ['ejl-faction', 'ejl-qigong', 'ejl-guild', 'ejl-social'];
-  return GUIDE_N === 54 && GP_COUNTS.ejl === 13
+  return GUIDE_N === 61 && GP_COUNTS.ejl === 13
     && ids.every(id => DATA.GUIDES.some(g => g.id === id && g.game === 'ejl'
       && g.take.length === 4 && g.blocks.length >= 6 && g.blocks.some(b => b.t === 'table')))
     && ids.every(id => fsMod2.existsSync(`a/${id}/index.html`) && fsMod2.existsSync(`a/${id}/qr.svg`))
-    && home.includes('<b id="statGuides">72</b>')
+    && home.includes('<b id="statGuides">79</b>')
     && home.includes('data-count="ejl" data-count-fmt="{n} 篇">13 篇')
     && fsMod2.existsSync('g/ejl/index.html')
     && ids.every(id => fsMod2.readFileSync('sitemap.xml', 'utf8').includes(`a/${id}/`));
@@ -1072,11 +1072,22 @@ ok('攻略条目徽标带完整游戏名（title + aria-label），技术 id 不
 /* ---------- 回归护栏：yysolos.com 官网「游戏特色」职业图 + 攻略改写 ---------- */
 
 /* ---------- 回归护栏：传奇盛世移动版-3D点卡（sqqyxz.com）接入 ---------- */
+ok('修仙家族模拟器2 全站接入：第 7 张 poster / game-card / 分站 / 7 篇攻略 / 无下载链接', (() => {
+  const home = fsMod2.readFileSync('index.html', 'utf8');
+  const sub = fsMod2.readFileSync('g/xxjz/index.html', 'utf8');
+  const data = fsMod2.readFileSync('assets/data.js', 'utf8');
+  const dirs = fsMod2.readdirSync('a').filter(d => d.startsWith('xxjz-'));
+  return home.includes('data-game="xxjz"') && home.includes('<span class="poster-tab">七</span>')
+    && sub.includes('修仙家族模拟器2 · 全部') && (sub.match(/class="entry"/g) || []).length === 7
+    && dirs.length === 7 && data.includes("id: 'xxjz'")
+    && fsMod2.readFileSync('sitemap.xml', 'utf8').includes('<loc>https://wgame-bc7.pages.dev/g/xxjz/</loc>')
+    && !/31rj\.com|youxin75|zhangyu39/.test(sub.split('<div class="wrap">')[0]);
+})());
 ok('cq3d 全站接入：第 5 张 poster / game-card / 分站 / 图集', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   const g = fsMod2.readFileSync('g/cq3d/index.html', 'utf8');
   return home.includes('data-count="cq3d"') && home.includes('<span class="poster-tab">五</span>')
-    && home.includes('statGames">6')
+    && home.includes('statGames">7')
     && fsMod2.existsSync('g/cq3d/index.html')
     && g.includes('传奇盛世移动版-3D点卡 · 全部') && g.includes('<h2 class="sec-title">游戏特色</h2>')
     && !g.includes('取自《传奇盛世移动版-3D点卡》官网');
@@ -1095,11 +1106,11 @@ ok('cq3d 官方图集：7 张三件套齐全、首屏轮播 3 张创建角色', 
     && slides.every(k => g.includes(`assets/cq3d-${k}.avif 1125w`))
     && (g.match(/<picture class="hc/g) || []).length === 3;
 })());
-ok('官网长文改写：cq3d 新增 6 篇，全站口径同步到 54 篇 / cq3d 6 篇 / 6 款游戏', (() => {
+ok('官网长文改写：cq3d 新增 6 篇，全站口径同步到 61 篇 / cq3d 6 篇 / 7 款游戏', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   const ids = ['cq3d-start', 'cq3d-card', 'cq3d-market', 'cq3d-drop', 'cq3d-class', 'cq3d-level'];
   const sitemap = fsMod2.readFileSync('sitemap.xml', 'utf8');
-  return GUIDE_N === 54 && GP_COUNTS.cq3d === 6
+  return GUIDE_N === 61 && GP_COUNTS.cq3d === 6
     && ids.every(id => DATA.GUIDES.some(g => g.id === id && g.game === 'cq3d'
       && g.take.length === 4 && g.blocks.length >= 7 && g.blocks.some(b => b.t === 'table')))
     && ids.every(id => fsMod2.existsSync(`a/${id}/index.html`) && fsMod2.existsSync(`a/${id}/qr.svg`))
@@ -1119,6 +1130,23 @@ ok('cq3d 互动与掉落池：点赞白名单、文章掉落装备池、投票�
   const css = cssText;
   return api.includes("'cq3d'") && ui.includes('cq3d: [') && ui.includes('/^cq3d-/.test(aid)')
     && !css.includes('.vote-row{');
+})());
+
+/* ---------- 回归护栏：模拟器专区（下载页区块 + 分站入口） ---------- */
+ok('下载页模拟器专区：雷电/MuMu 官网卡、三步教程、闪退提示与露娜2 PC 端游说明', (() => {
+  const home = fsMod2.readFileSync('index.html', 'utf8');
+  const sec = (home.match(/<section class="emu-sec"[\s\S]*?<\/section>/) || [''])[0];
+  return sec.includes('https://www.ldmnq.com/') && sec.includes('https://mumu.163.com/')
+    && (sec.match(/<li>/g) || []).length === 3 && sec.includes('wgame-bc7.pages.dev')
+    && sec.includes('安卓版本调到 9') && sec.includes('PC 端游') && sec.includes('href="g/luna2/"')
+    && fsMod2.existsSync('assets/emu-ld.webp') && fsMod2.existsSync('assets/emu-mumu.webp');
+})());
+ok('分站同步模拟器入口：6 个区块带 cs-pill emu，静态页 #/dl 已改写为 ../../#/dl', ['ejl', 'xxtl', 'ty', 'luna2', 'cq3d', 'wlwz'].every(k => {
+  const g = fsMod2.readFileSync('g/' + k + '/index.html', 'utf8');
+  return g.includes('cs-pill emu') && g.includes('href="../../#/dl"');
+}) && (() => {
+  const home = fsMod2.readFileSync('index.html', 'utf8');
+  return (home.match(/class="cs-pill emu"/g) || []).length === 6;
 })());
 
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));

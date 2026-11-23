@@ -5,7 +5,7 @@
  *   GET    /api/notice              公告列表（active=1，最多 3 条）
  *   POST   /api/notice  {text}      发布新公告，顶替旧公告（需 header: x-admin-key）
  *   DELETE /api/notice?id=5         删除单条公告；id=all 清空（需 header: x-admin-key）
- *   GET    /api/like                六款游戏的点赞数
+ *   GET    /api/like                七款游戏的点赞数
  *   POST   /api/like    {game}      点赞 +1
  *   GET    /api/comment?limit=30    留言列表（新→旧，最多 50）
  *   POST   /api/comment {name,body} 发留言
