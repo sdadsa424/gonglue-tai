@@ -436,17 +436,6 @@ a.cs-pill{text-decoration:none}
 .foot-hits{display:inline-flex;align-items:center;gap:6px;color:#8A90A9}
 .foot-hits b{color:#FF6BB3;font-weight:700;font-variant-numeric:tabular-nums}
 
-/* ---------- 页脚友情链接 ---------- */
-.flinks{margin-top:22px;padding-top:14px;border-top:1px solid var(--line);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.flinks-t{font-size:12px;color:#5F657E;letter-spacing:3px}
-.flink{display:inline-flex;align-items:center;gap:10px;padding:7px 16px 7px 8px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.03);text-decoration:none;transition:border-color .2s ease,transform .15s ease,background .2s ease}
-.flink:hover{border-color:rgba(255,214,70,.65);background:rgba(255,214,70,.07);transform:translateY(-2px)}
-.flink img,.flink svg{width:38px;height:38px;border-radius:10px;display:block;flex:none}
-.flink-b{display:flex;flex-direction:column;gap:1px;min-width:0}
-.flink-b b{font-size:13.5px;color:#ECEEF8;line-height:1.3}
-.flink-b>span{font-size:12px;color:#8A90A9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.flink-b .flink-d{font-size:12px;color:#FFD646;opacity:.9;letter-spacing:.5px}
-
 /* ---------- 分站 ---------- */
 .view{padding-bottom:20px}
 .game-page[hidden]{display:none}
