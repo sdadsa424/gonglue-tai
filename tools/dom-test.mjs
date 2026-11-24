@@ -417,11 +417,6 @@ cardEl.dispatchEvent(new desk.window.MouseEvent('pointermove', { bubbles: true, 
 await wait(80);
 ok('桌面端卡片进入 3D 倾斜态', cardEl.classList.contains('tilt-on'));
 ok('首页最新更新流渲染 6 张卡片', dd.querySelectorAll('#latestGrid .lcard').length === 6);
-ok('首页按游戏找攻略默认渲染列表 + 侧栏 8 款', dd.querySelectorAll('#swMain .sw-row').length === 8 && dd.querySelectorAll('.sw-g').length === 8);
-const swBtn = dd.querySelector('.sw-g[data-g="lzgsy"]');
-swBtn.dispatchEvent(new desk.window.MouseEvent('click', { bubbles: true }));
-await wait(60);
-ok('切换到龙之谷启程：苹果/安卓下载直链就位', dd.querySelector('#swMain').innerHTML.includes('app_id=7484') && dd.querySelector('#swMain').innerHTML.includes('app_id=7485'));
 /* 3D 相关样式：倾斜变换、触屏入场、与 hover 变换的兼容 */
 const css3d = (await import('node:fs')).readFileSync('assets/style.css', 'utf8');
 ok('倾斜用 perspective + rotateX/rotateY', /\.poster,\.entry,\.game-card,\.related a\{[^}]*perspective\(900px\) rotateX\(var\(--rx[^}]*rotateY\(var\(--ry/.test(css3d));
@@ -769,7 +764,7 @@ for (const k of Object.keys(gpCounts)) {
   ok('分站页 ' + k + ' 计数为真实篇数', new RegExp('data-count="' + k + '">' + gpCounts[k] + '</span>').test(gpHtml));
 }
 const gpHome = gpFs('index.html', 'utf8');
-ok('首页轮播/切换器指向真实地址', gpHome.includes('class="fc-slide is-on" href="a/lzgsy-start/"') && gpHome.includes('data-g="ejl"') && !gpHome.includes('class="poster"'));
+ok('首页轮播指向真实攻略地址', gpHome.includes('class="fc-slide is-on" href="a/lzgsy-start/"') && !gpHome.includes('class="poster"') && !gpHome.includes('sw-g'));
 ok('文章页分站链接为真实地址', gpFs('a/ejl-start/index.html', 'utf8').includes('href="../../g/ejl/"'));
 ok('文章页面包屑用真实 URL', gpFs('a/ejl-start/index.html', 'utf8').includes('"item":"https://wgame-bc7.pages.dev/g/ejl/"'));
 ok('sitemap 收录三个分站', ['ejl', 'xxtl', 'ty'].every(k => gpFs('sitemap.xml', 'utf8').includes('g/' + k + '/')));
@@ -919,7 +914,6 @@ ok('露娜2 进攻略库：GAMES.luna2 + 8 篇文章（a/luna2-*，含魔族攻�
 ok('露娜2 首页集成：轮播 4 张 / 侧栏 8 款 / game-card / 统计 8 款 96 篇（含 18 篇官方外链）7 分类（yxlc 隐藏中），旧横幅零残留', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   return (home.match(/class="fc-slide/g) || []).length === 4
-    && (home.match(/class="sw-g[ "]/g) || []).length === 8
     && (home.match(/class="game-card"/g) || []).length === 8
     && home.includes('<b id="statGames">8</b>') && home.includes('<b id="statGuides">96</b>') && home.includes('<b id="statCats">7</b>')
     && /const ORDER = \['ejl', 'xxtl', 'ty', 'luna2', 'cq3d', 'wlwz', 'xxjz', 'lzgsy'\];/.test(home)
@@ -1111,7 +1105,7 @@ ok('修仙家族模拟器2 全站接入：第 7 张 poster / game-card / 分站 
   const sub = fsMod2.readFileSync('g/xxjz/index.html', 'utf8');
   const data = fsMod2.readFileSync('assets/data.js', 'utf8');
   const dirs = fsMod2.readdirSync('a').filter(d => d.startsWith('xxjz-'));
-  return home.includes('data-game="xxjz"') && home.includes('data-g="xxjz"')
+  return home.includes('data-game="xxjz"')
     && sub.includes('修仙家族模拟器2 · 全部') && (sub.match(/class="entry"/g) || []).length === 7
     && dirs.length === 7 && data.includes("id: 'xxjz'")
     && fsMod2.readFileSync('sitemap.xml', 'utf8').includes('<loc>https://wgame-bc7.pages.dev/g/xxjz/</loc>')
@@ -1120,7 +1114,7 @@ ok('修仙家族模拟器2 全站接入：第 7 张 poster / game-card / 分站 
 ok('cq3d 全站接入：第 5 张 poster / game-card / 分站 / 图集', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   const g = fsMod2.readFileSync('g/cq3d/index.html', 'utf8');
-  return home.includes('data-count="cq3d"') && home.includes('data-g="cq3d"')
+  return home.includes('data-count="cq3d"')
     && home.includes('statGames">8')
     && fsMod2.existsSync('g/cq3d/index.html')
     && g.includes('传奇盛世移动版-3D点卡 · 全部') && g.includes('<h2 class="sec-title">游戏特色</h2>')
