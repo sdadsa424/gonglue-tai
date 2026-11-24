@@ -24,15 +24,23 @@
   <!-- 底板内描边 -->
   <rect x="30" y="30" width="340" height="340" rx="76" fill="none" stroke="#FFFFFF" stroke-opacity="0.55" stroke-width="6"/>
 
-  <!-- 花茎 -->
-  <path d="M200 210 C 195 234, 205 250, 200 274" fill="none" stroke="#4CA84A" stroke-width="15" stroke-linecap="round"/>
+  <!-- 花茎（顶端微伸入花盘，避免花浮动时露缝） -->
+  <path d="M200 196 C 195 228, 205 250, 200 274" fill="none" stroke="#4CA84A" stroke-width="15" stroke-linecap="round"/>
 
-  <!-- 左叶 -->
-  <path d="M198 244 C 168 242, 144 228, 132 206 C 160 202, 186 216, 198 238 Z"
-        fill="url(#leaf)" stroke="#3B8A3C" stroke-width="5" stroke-linejoin="round"/>
-  <!-- 右叶 -->
-  <path d="M202 256 C 232 254, 258 240, 270 218 C 242 214, 216 228, 202 250 Z"
-        fill="url(#leaf)" stroke="#3B8A3C" stroke-width="5" stroke-linejoin="round"/>
+  <!-- 左叶（轻摆） -->
+  <g>
+    <animateTransform attributeName="transform" type="rotate"
+      values="-3 200 246; 4 200 246; -3 200 246" dur="4.4s" repeatCount="indefinite"/>
+    <path d="M198 244 C 168 242, 144 228, 132 206 C 160 202, 186 216, 198 238 Z"
+          fill="url(#leaf)" stroke="#3B8A3C" stroke-width="5" stroke-linejoin="round"/>
+  </g>
+  <!-- 右叶（反相轻摆） -->
+  <g>
+    <animateTransform attributeName="transform" type="rotate"
+      values="3 200 256; -4 200 256; 3 200 256" dur="4.9s" repeatCount="indefinite"/>
+    <path d="M202 256 C 232 254, 258 240, 270 218 C 242 214, 216 228, 202 250 Z"
+          fill="url(#leaf)" stroke="#3B8A3C" stroke-width="5" stroke-linejoin="round"/>
+  </g>
 
   <!-- 小窝：奶油色半圆小屋顶 -->
   <path d="M116 340 A 88 74 0 0 1 284 340 Z" fill="#FFF4DC" stroke="#E8A24C" stroke-width="7" stroke-linejoin="round"/>
@@ -40,53 +48,102 @@
   <path d="M178 340 A 22 26 0 0 1 222 340 Z" fill="#B97B3E" stroke="#8A5626" stroke-width="5"/>
   <circle cx="213" cy="324" r="4" fill="#FFD766"/>
 
-  <!-- 花瓣：两圈错位，卡通感 -->
-  <g fill="#FFC53D" stroke="#E8952E" stroke-width="5" stroke-linejoin="round">
-    <g id="ring1">
+  <!-- ===== 花朵整体（上下浮动） ===== -->
+  <g>
+    <animateTransform attributeName="transform" type="translate"
+      values="0 0; 0 -8; 0 0" dur="3.6s" repeatCount="indefinite"
+      calcMode="spline" keyTimes="0;0.5;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1"/>
+
+    <!-- 花瓣：两圈错位 + 整体轻轻摇摆 -->
+    <g fill="#FFC53D" stroke="#E8952E" stroke-width="5" stroke-linejoin="round">
+      <animateTransform attributeName="transform" type="rotate"
+        values="-3.5 200 136; 3.5 200 136; -3.5 200 136" dur="6s" repeatCount="indefinite"/>
       <ellipse cx="200" cy="96"  rx="26" ry="40"/>
       <ellipse cx="200" cy="176" rx="26" ry="40"/>
       <ellipse cx="120" cy="136" rx="40" ry="26"/>
       <ellipse cx="280" cy="136" rx="40" ry="26"/>
+      <g transform="rotate(45 200 136)">
+        <ellipse cx="200" cy="98"  rx="24" ry="38"/>
+        <ellipse cx="200" cy="174" rx="24" ry="38"/>
+        <ellipse cx="122" cy="136" rx="38" ry="24"/>
+        <ellipse cx="278" cy="136" rx="38" ry="24"/>
+      </g>
     </g>
-    <g transform="rotate(45 200 136)">
-      <ellipse cx="200" cy="98"  rx="24" ry="38"/>
-      <ellipse cx="200" cy="174" rx="24" ry="38"/>
-      <ellipse cx="122" cy="136" rx="38" ry="24"/>
-      <ellipse cx="278" cy="136" rx="38" ry="24"/>
+
+    <!-- 花盘 -->
+    <circle cx="200" cy="136" r="58" fill="url(#core)" stroke="#B26E1F" stroke-width="6"/>
+    <!-- 花盘网点 -->
+    <g fill="#B26E1F" opacity="0.35">
+      <circle cx="178" cy="116" r="4"/><circle cx="222" cy="116" r="4"/>
+      <circle cx="166" cy="146" r="4"/><circle cx="200" cy="156" r="4"/><circle cx="234" cy="146" r="4"/>
+      <circle cx="184" cy="132" r="4"/><circle cx="216" cy="132" r="4"/>
     </g>
+
+    <!-- 笑脸：笑眼会眨 -->
+    <g stroke="#5A3A10" stroke-width="7" stroke-linecap="round" fill="none">
+      <path d="M172 128 Q 182 116 192 128">
+        <animate attributeName="d" dur="5.2s" repeatCount="indefinite"
+          keyTimes="0;0.86;0.90;0.94;1"
+          values="M172 128 Q 182 116 192 128;
+                  M172 128 Q 182 116 192 128;
+                  M172 126 Q 182 124 192 126;
+                  M172 128 Q 182 116 192 128;
+                  M172 128 Q 182 116 192 128"/>
+      </path>
+      <path d="M208 128 Q 218 116 228 128">
+        <animate attributeName="d" dur="5.2s" repeatCount="indefinite"
+          keyTimes="0;0.86;0.90;0.94;1"
+          values="M208 128 Q 218 116 228 128;
+                  M208 128 Q 218 116 228 128;
+                  M208 126 Q 218 124 228 126;
+                  M208 128 Q 218 116 228 128;
+                  M208 128 Q 218 116 228 128"/>
+      </path>
+    </g>
+    <!-- 腮红（呼吸） -->
+    <ellipse cx="166" cy="146" rx="12" ry="8" fill="#FF8A65" opacity="0.75">
+      <animate attributeName="opacity" values="0.55;0.9;0.55" dur="2.6s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="234" cy="146" rx="12" ry="8" fill="#FF8A65" opacity="0.75">
+      <animate attributeName="opacity" values="0.9;0.55;0.9" dur="2.6s" repeatCount="indefinite"/>
+    </ellipse>
+    <!-- 微笑嘴 -->
+    <path d="M186 152 Q 200 166 214 152" fill="none" stroke="#5A3A10" stroke-width="7" stroke-linecap="round"/>
   </g>
 
-  <!-- 花盘 -->
-  <circle cx="200" cy="136" r="58" fill="url(#core)" stroke="#B26E1F" stroke-width="6"/>
-  <!-- 花盘网点 -->
-  <g fill="#B26E1F" opacity="0.35">
-    <circle cx="178" cy="116" r="4"/><circle cx="222" cy="116" r="4"/>
-    <circle cx="166" cy="146" r="4"/><circle cx="200" cy="156" r="4"/><circle cx="234" cy="146" r="4"/>
-    <circle cx="184" cy="132" r="4"/><circle cx="216" cy="132" r="4"/>
+  <!-- 光点装饰（轮流闪） -->
+  <g fill="#FFFFFF">
+    <circle cx="88" cy="90" r="8" opacity="0.85">
+      <animate attributeName="opacity" values="0.2;0.9;0.2" dur="3.2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="322" cy="84" r="6" opacity="0.85">
+      <animate attributeName="opacity" values="0.85;0.15;0.85" dur="2.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="314" cy="196" r="7" opacity="0.85">
+      <animate attributeName="opacity" values="0.3;0.95;0.3" dur="3.6s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="76" cy="200" r="5" opacity="0.85">
+      <animate attributeName="opacity" values="0.9;0.2;0.9" dur="2.4s" repeatCount="indefinite"/>
+    </circle>
   </g>
 
-  <!-- 笑脸 -->
-  <g stroke="#5A3A10" stroke-width="7" stroke-linecap="round" fill="none">
-    <!-- 眼睛（弯月笑眼） -->
-    <path d="M172 128 Q 182 116 192 128"/>
-    <path d="M208 128 Q 218 116 228 128"/>
-    <!-- 腮红 -->
-  </g>
-  <ellipse cx="166" cy="146" rx="12" ry="8" fill="#FF8A65" opacity="0.75"/>
-  <ellipse cx="234" cy="146" rx="12" ry="8" fill="#FF8A65" opacity="0.75"/>
-  <!-- 微笑嘴 -->
-  <path d="M186 152 Q 200 166 214 152" fill="none" stroke="#5A3A10" stroke-width="7" stroke-linecap="round"/>
-
-  <!-- 光点装饰 -->
-  <g fill="#FFFFFF" opacity="0.85">
-    <circle cx="88" cy="90" r="8"/>
-    <circle cx="322" cy="84" r="6"/>
-    <circle cx="314" cy="196" r="7"/>
-    <circle cx="76" cy="200" r="5"/>
-  </g>
-  <!-- 小星星 -->
-  <g fill="#FFF3B0" stroke="#F0B429" stroke-width="3" stroke-linejoin="round">
-    <path d="M318 120 l5 10 11 2 -8 8 2 11 -10 -5 -10 5 2 -11 -8 -8 11 -2 Z"/>
-    <path d="M84 148 l4 8 9 2 -6 7 1 9 -8 -4 -8 4 1 -9 -6 -7 9 -2 Z"/>
+  <!-- 小星星（闪烁 + 缩放，绕自身中心） -->
+  <g stroke="#F0B429" stroke-width="3" stroke-linejoin="round" fill="#FFF3B0">
+    <g transform="translate(318 120)">
+      <g>
+        <animateTransform attributeName="transform" type="scale"
+          values="1;1.16;1" dur="2.2s" repeatCount="indefinite" calcMode="spline"
+          keyTimes="0;0.5;1" keySplines="0.4 0 0.6 1;0.4 0 0.6 1"/>
+        <path d="M0 0 l5 10 11 2 -8 8 2 11 -10 -5 -10 5 2 -11 -8 -8 11 -2 Z"/>
+      </g>
+    </g>
+    <g transform="translate(84 148)">
+      <g>
+        <animateTransform attributeName="transform" type="scale"
+          values="1.14;0.94;1.14" dur="2.7s" repeatCount="indefinite" calcMode="spline"
+          keyTimes="0;0.5;1" keySplines="0.4 0 0.6 1;0.4 0 0.6 1"/>
+        <path d="M0 0 l4 8 9 2 -6 7 1 9 -8 -4 -8 4 1 -9 -6 -7 9 -2 Z"/>
+      </g>
+    </g>
   </g>
 </svg>
