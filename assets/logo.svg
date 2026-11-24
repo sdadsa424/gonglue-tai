@@ -1,13 +1,92 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="1114游戏官网">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="96" y2="96" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#FF3D9A"/>
-      <stop offset=".52" stop-color="#B44BF0"/>
-      <stop offset="1" stop-color="#8B5CF6"/>
+    <!-- 天空暖色渐变底 -->
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFE9A8"/>
+      <stop offset="0.55" stop-color="#FFC978"/>
+      <stop offset="1" stop-color="#FF9E7A"/>
+    </linearGradient>
+    <!-- 花盘径向渐变 -->
+    <radialGradient id="core" cx="0.5" cy="0.42" r="0.65">
+      <stop offset="0" stop-color="#FFE29A"/>
+      <stop offset="0.55" stop-color="#F5B942"/>
+      <stop offset="1" stop-color="#D98A2B"/>
+    </radialGradient>
+    <!-- 叶子渐变 -->
+    <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7ED26B"/>
+      <stop offset="1" stop-color="#4CA84A"/>
     </linearGradient>
   </defs>
-  <rect width="96" height="96" rx="24" fill="url(#g)"/>
-  <rect x="10" y="27" width="76" height="42" rx="21" fill="#fff"/>
-  <text x="48" y="56" font-family="'Segoe UI',system-ui,-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="21" font-weight="800" fill="#7C3AED" text-anchor="middle" letter-spacing="2">1114</text>
-  <path d="M30 80c5 5 11 7 18 7s13-2 18-7" stroke="#fff" stroke-width="3.6" stroke-linecap="round" fill="none" opacity=".9"/>
+
+  <!-- 圆角底板 -->
+  <rect x="16" y="16" width="368" height="368" rx="88" fill="url(#bg)"/>
+  <!-- 底板内描边 -->
+  <rect x="30" y="30" width="340" height="340" rx="76" fill="none" stroke="#FFFFFF" stroke-opacity="0.55" stroke-width="6"/>
+
+  <!-- 花茎 -->
+  <path d="M200 210 C 195 234, 205 250, 200 274" fill="none" stroke="#4CA84A" stroke-width="15" stroke-linecap="round"/>
+
+  <!-- 左叶 -->
+  <path d="M198 244 C 168 242, 144 228, 132 206 C 160 202, 186 216, 198 238 Z"
+        fill="url(#leaf)" stroke="#3B8A3C" stroke-width="5" stroke-linejoin="round"/>
+  <!-- 右叶 -->
+  <path d="M202 256 C 232 254, 258 240, 270 218 C 242 214, 216 228, 202 250 Z"
+        fill="url(#leaf)" stroke="#3B8A3C" stroke-width="5" stroke-linejoin="round"/>
+
+  <!-- 小窝：奶油色半圆小屋顶 -->
+  <path d="M116 340 A 88 74 0 0 1 284 340 Z" fill="#FFF4DC" stroke="#E8A24C" stroke-width="7" stroke-linejoin="round"/>
+  <!-- 小窝门 -->
+  <path d="M178 340 A 22 26 0 0 1 222 340 Z" fill="#B97B3E" stroke="#8A5626" stroke-width="5"/>
+  <circle cx="213" cy="324" r="4" fill="#FFD766"/>
+
+  <!-- 花瓣：两圈错位，卡通感 -->
+  <g fill="#FFC53D" stroke="#E8952E" stroke-width="5" stroke-linejoin="round">
+    <g id="ring1">
+      <ellipse cx="200" cy="96"  rx="26" ry="40"/>
+      <ellipse cx="200" cy="176" rx="26" ry="40"/>
+      <ellipse cx="120" cy="136" rx="40" ry="26"/>
+      <ellipse cx="280" cy="136" rx="40" ry="26"/>
+    </g>
+    <g transform="rotate(45 200 136)">
+      <ellipse cx="200" cy="98"  rx="24" ry="38"/>
+      <ellipse cx="200" cy="174" rx="24" ry="38"/>
+      <ellipse cx="122" cy="136" rx="38" ry="24"/>
+      <ellipse cx="278" cy="136" rx="38" ry="24"/>
+    </g>
+  </g>
+
+  <!-- 花盘 -->
+  <circle cx="200" cy="136" r="58" fill="url(#core)" stroke="#B26E1F" stroke-width="6"/>
+  <!-- 花盘网点 -->
+  <g fill="#B26E1F" opacity="0.35">
+    <circle cx="178" cy="116" r="4"/><circle cx="222" cy="116" r="4"/>
+    <circle cx="166" cy="146" r="4"/><circle cx="200" cy="156" r="4"/><circle cx="234" cy="146" r="4"/>
+    <circle cx="184" cy="132" r="4"/><circle cx="216" cy="132" r="4"/>
+  </g>
+
+  <!-- 笑脸 -->
+  <g stroke="#5A3A10" stroke-width="7" stroke-linecap="round" fill="none">
+    <!-- 眼睛（弯月笑眼） -->
+    <path d="M172 128 Q 182 116 192 128"/>
+    <path d="M208 128 Q 218 116 228 128"/>
+    <!-- 腮红 -->
+  </g>
+  <ellipse cx="166" cy="146" rx="12" ry="8" fill="#FF8A65" opacity="0.75"/>
+  <ellipse cx="234" cy="146" rx="12" ry="8" fill="#FF8A65" opacity="0.75"/>
+  <!-- 微笑嘴 -->
+  <path d="M186 152 Q 200 166 214 152" fill="none" stroke="#5A3A10" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- 光点装饰 -->
+  <g fill="#FFFFFF" opacity="0.85">
+    <circle cx="88" cy="90" r="8"/>
+    <circle cx="322" cy="84" r="6"/>
+    <circle cx="314" cy="196" r="7"/>
+    <circle cx="76" cy="200" r="5"/>
+  </g>
+  <!-- 小星星 -->
+  <g fill="#FFF3B0" stroke="#F0B429" stroke-width="3" stroke-linejoin="round">
+    <path d="M318 120 l5 10 11 2 -8 8 2 11 -10 -5 -10 5 2 -11 -8 -8 11 -2 Z"/>
+    <path d="M84 148 l4 8 9 2 -6 7 1 9 -8 -4 -8 4 1 -9 -6 -7 9 -2 Z"/>
+  </g>
 </svg>

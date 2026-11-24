@@ -1,35 +1,75 @@
 /* 站点图标生成器：从同一份 SVG 直出各尺寸 PNG（Edge headless 精确渲染，非位图缩放）
+   当前设计：向日葵小窝 —— 暖色渐变底 + 笑脸向日葵 + 叶子 + 奶油小窝
    用法：node build/gen-icon.mjs
    产物：assets/favicon.svg、favicon-16/32.png、apple-touch-icon.png、
-        icon-192/512.png、icon-maskable-512.png（favicon.ico 由 build/gen-ico.py 合成）*/
+        icon-192/512.png、icon-maskable-512.png（favicon.ico 由 PIL 从 PNG 合成）*/
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import { spawn } from 'node:child_process';
 
-const GOLD = `<linearGradient id="gold" x1="0" y1="0" x2="0.25" y2="1">
-<stop offset="0" stop-color="#FFF6D6"/><stop offset="0.42" stop-color="#FFD45E"/><stop offset="1" stop-color="#CE8802"/></linearGradient>`;
-const BG = `<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-<stop offset="0" stop-color="#1C1338"/><stop offset="1" stop-color="#090A12"/></linearGradient>`;
+const BGW = `<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#FFE9A8"/><stop offset="0.55" stop-color="#FFC978"/><stop offset="1" stop-color="#FF9E7A"/></linearGradient>`;
+const CORE = `<radialGradient id="core" cx="0.5" cy="0.42" r="0.65">
+<stop offset="0" stop-color="#FFE29A"/><stop offset="0.55" stop-color="#F5B942"/><stop offset="1" stop-color="#D98A2B"/></radialGradient>`;
+const LEAF = `<linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#7ED26B"/><stop offset="1" stop-color="#4CA84A"/></linearGradient>`;
+
+const SCENE = `
+  <path d="M200 210 C 195 234, 205 250, 200 274" fill="none" stroke="#4CA84A" stroke-width="15" stroke-linecap="round"/>
+  <path d="M198 244 C 168 242, 144 228, 132 206 C 160 202, 186 216, 198 238 Z" fill="url(#leaf)" stroke="#3B8A3C" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M202 256 C 232 254, 258 240, 270 218 C 242 214, 216 228, 202 250 Z" fill="url(#leaf)" stroke="#3B8A3C" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M116 340 A 88 74 0 0 1 284 340 Z" fill="#FFF4DC" stroke="#E8A24C" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M178 340 A 22 26 0 0 1 222 340 Z" fill="#B97B3E" stroke="#8A5626" stroke-width="5"/>
+  <circle cx="213" cy="324" r="4" fill="#FFD766"/>
+  <g fill="#FFC53D" stroke="#E8952E" stroke-width="5" stroke-linejoin="round">
+    <ellipse cx="200" cy="96"  rx="26" ry="40"/>
+    <ellipse cx="200" cy="176" rx="26" ry="40"/>
+    <ellipse cx="120" cy="136" rx="40" ry="26"/>
+    <ellipse cx="280" cy="136" rx="40" ry="26"/>
+    <g transform="rotate(45 200 136)">
+      <ellipse cx="200" cy="98"  rx="24" ry="38"/>
+      <ellipse cx="200" cy="174" rx="24" ry="38"/>
+      <ellipse cx="122" cy="136" rx="38" ry="24"/>
+      <ellipse cx="278" cy="136" rx="38" ry="24"/>
+    </g>
+  </g>
+  <circle cx="200" cy="136" r="58" fill="url(#core)" stroke="#B26E1F" stroke-width="6"/>
+  <g fill="#B26E1F" opacity="0.35">
+    <circle cx="178" cy="116" r="4"/><circle cx="222" cy="116" r="4"/>
+    <circle cx="166" cy="146" r="4"/><circle cx="200" cy="156" r="4"/><circle cx="234" cy="146" r="4"/>
+    <circle cx="184" cy="132" r="4"/><circle cx="216" cy="132" r="4"/>
+  </g>
+  <g stroke="#5A3A10" stroke-width="7" stroke-linecap="round" fill="none">
+    <path d="M172 128 Q 182 116 192 128"/>
+    <path d="M208 128 Q 218 116 228 128"/>
+  </g>
+  <ellipse cx="166" cy="146" rx="12" ry="8" fill="#FF8A65" opacity="0.75"/>
+  <ellipse cx="234" cy="146" rx="12" ry="8" fill="#FF8A65" opacity="0.75"/>
+  <path d="M186 152 Q 200 166 214 152" fill="none" stroke="#5A3A10" stroke-width="7" stroke-linecap="round"/>
+  <g fill="#FFFFFF" opacity="0.85">
+    <circle cx="88" cy="90" r="8"/><circle cx="322" cy="84" r="6"/>
+    <circle cx="314" cy="196" r="7"/><circle cx="76" cy="200" r="5"/>
+  </g>
+  <g fill="#FFF3B0" stroke="#F0B429" stroke-width="3" stroke-linejoin="round">
+    <path d="M318 120 l5 10 11 2 -8 8 2 11 -10 -5 -10 5 2 -11 -8 -8 11 -2 Z"/>
+    <path d="M84 148 l4 8 9 2 -6 7 1 9 -8 -4 -8 4 1 -9 -6 -7 9 -2 Z"/>
+  </g>`;
 
 function art({ rx = 0, scale = 1, w = 512 }) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="${w}" height="${w}">
-<defs>${BG}${GOLD}</defs>
-<rect width="512" height="512" rx="${rx}" fill="url(#bg)"/>
-<g transform="translate(256 256) scale(${scale}) translate(-256 -256)">
-  <path d="M104 366 L104 176 L176 238 L256 122 L336 238 L408 176 L408 366 Z" fill="url(#gold)"/>
-  <circle cx="104" cy="160" r="19" fill="#FFF6D6"/>
-  <circle cx="256" cy="106" r="23" fill="#FFF6D6"/>
-  <circle cx="408" cy="160" r="19" fill="#FFF6D6"/>
-  <rect x="96" y="354" width="320" height="82" rx="26" fill="url(#gold)"/>
-  <rect x="96" y="354" width="320" height="82" rx="26" fill="none" stroke="#A86E00" stroke-opacity="0.32" stroke-width="3"/>
-  <circle cx="256" cy="395" r="20" fill="#FF3D9A"/>
-  <circle cx="249" cy="388" r="6" fill="#FFFFFF" fill-opacity="0.5"/>
+  const inner = rx
+    ? `<rect x="10" y="10" width="380" height="380" rx="${rx - 14}" fill="none" stroke="#FFFFFF" stroke-opacity="0.5" stroke-width="5"/>`
+    : '';
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="${w}" height="${w}">
+<defs>${BGW}${CORE}${LEAF}</defs>
+<rect width="400" height="400" rx="${rx}" fill="url(#bg)"/>
+${inner}
+<g transform="translate(200 200) scale(${scale}) translate(-200 -200)">${SCENE}
 </g>
 </svg>`;
 }
 
-const ROUND = art({ rx: 112 });
+const ROUND = art({ rx: 96 });
 const SQUARE = art({ rx: 0 });
 const MASKABLE = art({ rx: 0, scale: 0.78 });
 
