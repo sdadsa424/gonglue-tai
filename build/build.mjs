@@ -14,7 +14,7 @@ const { GAMES, CATS, GUIDES } = require('../assets/data.js');
 /* 站点根地址：默认新域名，可用 SITE_URL 覆盖，换域名时只改这一处 */
 const SITE = (process.env.SITE_URL || 'https://wgame-bc7.pages.dev/').replace(/\/+$/, '') + '/';
 const SITE_ORIGIN = SITE.replace(/\/$/, '');
-const SITE_NAME = '游戏攻略大全';
+const SITE_NAME = '1114游戏官网';
 /* ---------- 文章日期自动管理 ----------
  * build/dates.json 记录每篇的内容指纹 + 日期：
  *   新文章或内容变化 → 自动标构建当天；内容没变 → 保持原日期
@@ -152,7 +152,7 @@ function topbar(activeGame) {
   return `<header class="topbar">
   <div class="wrap topbar-in">
     <a class="brand" href="${UP}" aria-label="${SITE_NAME}首页">
-      <span class="brand-mark" aria-hidden="true"></span>
+      <img class="brand-logo" src="${UP}assets/logo.svg" alt="" aria-hidden="true" width="30" height="30" decoding="async">
       <span class="brand-name">${SITE_NAME}</span>
       <span class="brand-sub">游戏 · 一处查完</span>
     </a>
@@ -561,7 +561,7 @@ function articlePage(gi) {
 
 /* ---------- 首页注入：社交卡片 / 结构化数据 / 无脚本目录 ---------- */
 const HOME_DESC = '露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙 · 冰雪传奇、传奇盛世移动版-3D点卡、武林外传：十年之约、修仙家族模拟器2的开荒路线、点卡计费、打金交易与团战站位，都整理成能直接照着做的步骤，按游戏和分类就能查到。';
-const HOME_TITLE = '游戏攻略大全 · 贰点零江湖 / 小小屠龙 · 冰雪传奇 / 桃园：将帅录 / 露娜2 / 传奇盛世移动版-3D点卡 / 武林外传：十年之约 / 修仙家族模拟器2';
+const HOME_TITLE = '1114游戏官网 · 贰点零江湖 / 小小屠龙 · 冰雪传奇 / 桃园：将帅录 / 露娜2 / 传奇盛世移动版-3D点卡 / 武林外传：十年之约 / 修仙家族模拟器2';
 
 function homeHead() {
   const jsonld = escJson({
