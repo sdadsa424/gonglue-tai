@@ -267,5 +267,49 @@
     "h": "bf3535b2218a",
     "d": "2026-10-11"
   },
+  "lzgsy-start": {
+    "h": "48e475e686c4",
+    "d": "2026-08-24"
+  },
+  "lzgsy-level": {
+    "h": "ed79f7710d68",
+    "d": "2026-07-17"
+  },
+  "lzgsy-cls-war": {
+    "h": "ffc0c0574b50",
+    "d": "2026-07-06"
+  },
+  "lzgsy-cls-mage": {
+    "h": "9bc3ab670d5f",
+    "d": "2026-07-17"
+  },
+  "lzgsy-cls-archer": {
+    "h": "a2fa6dd6a0f0",
+    "d": "2026-07-17"
+  },
+  "lzgsy-talent": {
+    "h": "10e76e83a8fb",
+    "d": "2026-07-17"
+  },
+  "lzgsy-emblem": {
+    "h": "8b592edbfe03",
+    "d": "2026-07-17"
+  },
+  "lzgsy-enhance": {
+    "h": "ee11b61f556f",
+    "d": "2026-07-17"
+  },
+  "lzgsy-potential": {
+    "h": "da68c84b4337",
+    "d": "2026-07-17"
+  },
+  "lzgsy-fashion": {
+    "h": "8e45702b17a2",
+    "d": "2026-07-17"
+  },
+  "lzgsy-scorpion": {
+    "h": "8282508a74bd",
+    "d": "2026-09-09"
+  },
   "__seeded": true
 }
