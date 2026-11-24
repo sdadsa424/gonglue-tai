@@ -983,8 +983,8 @@
       })(imgs[k]);
     }
 
-    /* 3.5 首屏海报视差：滚动时海报图轻微滞后（±1.6%，手机端同样生效） */
-    var hg = document.querySelector('.hero-games');
+    /* 3.5 首屏轮播视差：滚动时轮播图轻微滞后（±1.6%，手机端同样生效） */
+    var hg = document.querySelector('.hero-games, .fc');
     if (hg) {
       var pyTick = false;
       var pyUpdate = function () {
