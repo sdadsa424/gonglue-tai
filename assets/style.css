@@ -2454,3 +2454,9 @@ img.img-fade.is-loaded{opacity:1;filter:blur(0);transform:none}
   .fc-cap p{display:none}
   .latest-grid{grid-template-columns:1fr}
 }
+
+/* ---------- 官方视频攻略：内嵌视频 ---------- */
+.prose .fig-video video{
+  display:block;width:100%;height:auto;aspect-ratio:16/9;
+  border-radius:12px;border:1px solid var(--line-2);background:#000;
+}

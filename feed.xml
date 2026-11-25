@@ -3,11 +3,19 @@
 <channel>
   <title>向日葵游戏盒</title>
   <link>https://wgame-bc7.pages.dev/</link>
-  <description>露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙 · 冰雪传奇、传奇盛世移动版-3D点卡、武林外传：十年之约、修仙家族模拟器2、龙之谷启程的开荒路线、点卡计费、打金交易与团战站位，都整理成能直接照着做的步骤。</description>
+  <description>露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙 · 冰雪传奇、传奇盛世移动版-3D点卡、武林外传：十年之约、修仙家族模拟器2、龙之谷启程、代号：永恒的开荒路线、点卡计费、打金交易与团战站位，都整理成能直接照着做的步骤。</description>
   <language>zh-cn</language>
-  <lastBuildDate>Fri, 20 Nov 2026 00:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Sun, 22 Nov 2026 00:00:00 GMT</lastBuildDate>
   <generator>build.mjs</generator>
   <atom:link href="https://wgame-bc7.pages.dev/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>装备成长指南：强化路线与资源规划</title>
+    <link>https://wgame-bc7.pages.dev/a/gc-gearup/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gc-gearup/</guid>
+    <category>代号：永恒</category>
+    <pubDate>Sun, 22 Nov 2026 00:00:00 GMT</pubDate>
+    <description>从新手装到毕业装的长期路线：强化节点、材料囤法与资源不浪费的节奏，官方视频演示。</description>
+  </item>
   <item>
     <title>魔族玩法全解：解锁、加点路线与养成规划</title>
     <link>https://wgame-bc7.pages.dev/a/luna2-mo/</link>
@@ -15,6 +23,38 @@
     <category>露娜2：拾光之约</category>
     <pubDate>Fri, 20 Nov 2026 00:00:00 GMT</pubDate>
     <description>无固定职业、40 级起步、SP 富裕——露娜2 自由度最高的种族怎么玩：解锁条件、三套加点、装备与升级路线一次讲清。</description>
+  </item>
+  <item>
+    <title>英雄收藏指南：角色获得与养成思路</title>
+    <link>https://wgame-bc7.pages.dev/a/gc-hero/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gc-hero/</guid>
+    <category>代号：永恒</category>
+    <pubDate>Fri, 20 Nov 2026 00:00:00 GMT</pubDate>
+    <description>海量角色是《代号：永恒》的招牌。官方视频演示英雄的获取渠道与收藏养成思路。</description>
+  </item>
+  <item>
+    <title>新手装备提升：前期战力的关键几步</title>
+    <link>https://wgame-bc7.pages.dev/a/gc-equip/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gc-equip/</guid>
+    <category>代号：永恒</category>
+    <pubDate>Wed, 18 Nov 2026 00:00:00 GMT</pubDate>
+    <description>装备决定前期战力天花板。官方视频演示新手阶段的装备获取与提升路径。</description>
+  </item>
+  <item>
+    <title>觉醒系统入门：条件、材料与培养顺序</title>
+    <link>https://wgame-bc7.pages.dev/a/gc-awaken/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gc-awaken/</guid>
+    <category>代号：永恒</category>
+    <pubDate>Mon, 16 Nov 2026 00:00:00 GMT</pubDate>
+    <description>觉醒是角色养成的分水岭。官方视频演示觉醒的解锁条件、材料准备与培养优先级。</description>
+  </item>
+  <item>
+    <title>怪物卡牌入门：收集与搭配的思路</title>
+    <link>https://wgame-bc7.pages.dev/a/gc-card/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gc-card/</guid>
+    <category>代号：永恒</category>
+    <pubDate>Sun, 15 Nov 2026 00:00:00 GMT</pubDate>
+    <description>打过的怪都能变成卡牌。官方视频演示卡牌的收集渠道、图鉴玩法与搭配收益。</description>
   </item>
   <item>
     <title>新手开荒六步走：15 级转土城</title>
@@ -63,6 +103,30 @@
     <category>传奇盛世移动版-3D点卡</category>
     <pubDate>Sun, 15 Nov 2026 00:00:00 GMT</pubDate>
     <description>这个服务器钱买的是「玩多久」，不是「有多强」。把换算和离线计费两条规则吃透，成本账就清楚了。</description>
+  </item>
+  <item>
+    <title>冲级路线参考：1 级到 85 级怎么走</title>
+    <link>https://wgame-bc7.pages.dev/a/gc-level/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gc-level/</guid>
+    <category>代号：永恒</category>
+    <pubDate>Sat, 14 Nov 2026 00:00:00 GMT</pubDate>
+    <description>从新手村到 85 级的完整升级路线，官方视频逐步演示：哪里练级快、什么等级去哪张图。</description>
+  </item>
+  <item>
+    <title>升级之后先做什么：优先级盘点（下）</title>
+    <link>https://wgame-bc7.pages.dev/a/gc-up2/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gc-up2/</guid>
+    <category>代号：永恒</category>
+    <pubDate>Fri, 13 Nov 2026 00:00:00 GMT</pubDate>
+    <description>上篇管解锁，下篇管分配：升级攒下的资源往哪投、错过的活动怎么补，官方视频一次讲完。</description>
+  </item>
+  <item>
+    <title>升级之后先做什么：优先级盘点（上）</title>
+    <link>https://wgame-bc7.pages.dev/a/gc-up1/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gc-up1/</guid>
+    <category>代号：永恒</category>
+    <pubDate>Thu, 12 Nov 2026 00:00:00 GMT</pubDate>
+    <description>升了级别急着刷怪：先看清这一级解锁了什么。官方视频攻略（上篇），本页可直接播放。</description>
   </item>
   <item>
     <title>宠物养成日常：升级、资质与资源规划</title>
@@ -183,70 +247,6 @@
     <category>桃园：将帅录</category>
     <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
     <description>零氪微氪直接抄这套：刘关张加蔡文姬的经典模板，从 0 级开荒一路用到 40 级毕业调整，加点和技能优先级全部给全。</description>
-  </item>
-  <item>
-    <title>1-40 级怎么练：练级点与每日任务</title>
-    <link>https://wgame-bc7.pages.dev/a/ty-roadmap/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-roadmap/</guid>
-    <category>桃园：将帅录</category>
-    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-    <description>1 到 40 级是一条清晰的路线：跟任务走、按等级换练级地图、每日固定几件事做完。转职节点和每日清单都在这里。</description>
-  </item>
-  <item>
-    <title>关羽全玩法：突骑爆发流与反击流</title>
-    <link>https://wgame-bc7.pages.dev/a/ty-guanyu/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-guanyu/</guid>
-    <category>桃园：将帅录</category>
-    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-    <description>关羽是物理爆发收割型核心，核心机制是群体 AOE 加斩杀终结，不是站桩持续输出。前期养成到后期毕业配队，两条分支一次讲清。</description>
-  </item>
-  <item>
-    <title>装备词条与宝石：先堆哪一项，后堆哪一项</title>
-    <link>https://wgame-bc7.pages.dev/a/ty-gear/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-gear/</guid>
-    <category>桃园：将帅录</category>
-    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-    <description>同样是紫装，词条错位就差一档。顺序应该是：先定武将定位，再决定堆攻击、暴击还是速度。</description>
-  </item>
-  <item>
-    <title>每日 20 分钟：固定动作清单与先后顺序</title>
-    <link>https://wgame-bc7.pages.dev/a/ty-daily/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-daily/</guid>
-    <category>桃园：将帅录</category>
-    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-    <description>回合制最容易犯的错，是把时间花在「看起来有收益」的事上。每天固定做完这五件事，剩下的时间再谈养成。</description>
-  </item>
-  <item>
-    <title>站位定胜负：战斗规则完整拆解</title>
-    <link>https://wgame-bc7.pages.dev/a/ty-combat/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-combat/</guid>
-    <category>桃园：将帅录</category>
-    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-    <description>回合对战不止比输出高低。站位、位移、连击击飞和 PVP 数值修正共同构成整套战斗体系，熟悉规则才能把阵容打出上限。</description>
-  </item>
-  <item>
-    <title>抓宠物全指南：符箓、成功率与蹲点表</title>
-    <link>https://wgame-bc7.pages.dev/a/ty-catch/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-catch/</guid>
-    <category>桃园：将帅录</category>
-    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-    <description>抓宠物的流程很简单：把野怪血量压低，扔降魔符箓。难的是按稀有度选对符箓、按刷新时间蹲对点位，这份指南一次说清。</description>
-  </item>
-  <item>
-    <title>起号方案：五张、十六张、三十五张怎么选</title>
-    <link>https://wgame-bc7.pages.dev/a/ty-account/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-account/</guid>
-    <category>桃园：将帅录</category>
-    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-    <description>起号的核心不是充得越多越好，而是每一档的资源能不能接上你的养成节奏。三档方案各管一段进度，先看清每档给什么。</description>
-  </item>
-  <item>
-    <title>技能点不够用：刷怪一套、打架一套怎么分</title>
-    <link>https://wgame-bc7.pages.dev/a/ejl-skill/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ejl-skill/</guid>
-    <category>贰点零江湖</category>
-    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-    <description>技能点永远点不满全部技能。取舍的标准不是「哪个强」，而是「你一天里在哪个场景待得最久」。</description>
   </item>
 </channel>
 </rss>

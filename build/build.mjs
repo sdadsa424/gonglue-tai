@@ -45,12 +45,12 @@ const gdate = gi => (DATES[gi.id] || {}).d || SEED_DATE;
 const GDATE = guideId => (DATES[guideId] || {}).d || SEED_DATE;
 /* 全站级 lastmod：取所有文章日期的最大值 */
 const SITE_LASTMOD = GUIDES.map(gdate).sort().pop();
-const ORDER = ['ejl', 'xxtl', 'ty', 'luna2', 'cq3d', 'wlwz', 'xxjz', 'lzgsy']; // yxlc 隐藏中
+const ORDER = ['ejl', 'xxtl', 'ty', 'luna2', 'cq3d', 'wlwz', 'xxjz', 'lzgsy', 'gc']; // yxlc 隐藏中
 const CS = 'ggboy6123';
 
 
 /* 搜索结果标题里用的游戏短名：只用于 title，页面显示仍用完整游戏名 */
-const SEO_NAME = { ejl: '贰点零江湖', xxtl: '小小屠龙', ty: '桃园将帅录', luna2: '露娜2', yxlc: '英雄连城', cq3d: '传奇盛世移动版-3D点卡', xxjz: '修仙家族模拟器2', lzgsy: '龙之谷启程' };
+const SEO_NAME = { ejl: '贰点零江湖', xxtl: '小小屠龙', ty: '桃园将帅录', luna2: '露娜2', yxlc: '英雄连城', cq3d: '传奇盛世移动版-3D点卡', xxjz: '修仙家族模拟器2', lzgsy: '龙之谷启程', gc: '代号永恒' };
 /* SEO 标题超长时再降级的更短游戏名 */
 const SEO_SHORT = { cq3d: '传奇盛世3D', xxjz: '修仙家族2' };
 
@@ -124,6 +124,11 @@ function blockHTML(b, up) {
       + '<source srcset="' + base + '.webp" type="image/webp">'
       + '<img src="' + base + '.jpg" alt="' + esc(b.alt || '') + '" width="' + w + '" height="' + h + '" loading="lazy" decoding="async">'
       + '</picture>'
+      + (b.cap ? '<figcaption>' + esc(b.cap) + '</figcaption>' : '')
+      + '</figure>';
+  }
+  if (b.t === 'video') {
+    return '<figure class="fig fig-video"><video controls preload="none" playsinline poster="' + up + 'assets/' + b.poster + '" width="' + (b.w || 1280) + '" height="' + (b.h || 720) + '"><source src="' + esc(b.src) + '" type="video/mp4">你的浏览器不支持视频播放，可前往官方攻略页观看。</video>'
       + (b.cap ? '<figcaption>' + esc(b.cap) + '</figcaption>' : '')
       + '</figure>';
   }
@@ -560,8 +565,8 @@ function articlePage(gi) {
 }
 
 /* ---------- 首页注入：社交卡片 / 结构化数据 / 无脚本目录 ---------- */
-const HOME_DESC = '露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙 · 冰雪传奇、传奇盛世移动版-3D点卡、武林外传：十年之约、修仙家族模拟器2、龙之谷启程的开荒路线、点卡计费、打金交易与团战站位，都整理成能直接照着做的步骤。';
-const HOME_TITLE = '向日葵游戏盒 · 贰点零江湖 / 小小屠龙 · 冰雪传奇 / 桃园：将帅录 / 露娜2 / 传奇盛世移动版-3D点卡 / 武林外传：十年之约 / 修仙家族模拟器2';
+const HOME_DESC = '露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙 · 冰雪传奇、传奇盛世移动版-3D点卡、武林外传：十年之约、修仙家族模拟器2、龙之谷启程、代号：永恒的开荒路线、点卡计费、打金交易与团战站位，都整理成能直接照着做的步骤。';
+const HOME_TITLE = '向日葵游戏盒 · 贰点零江湖 / 小小屠龙 · 冰雪传奇 / 桃园：将帅录 / 露娜2 / 传奇盛世移动版-3D点卡 / 武林外传：十年之约 / 修仙家族模拟器2 / 代号：永恒';
 
 function homeHead() {
   const jsonld = escJson({
@@ -611,7 +616,7 @@ ${ORDER.map(k => GUIDES.filter(x => x.game === k).map(gi => `          <li><a hr
 /* ---------- 分站静态页 ----------
    分站内容原本只在首页 #/g/<key> 里，靠前端渲染 —— 搜索引擎看不到，也没法单独分享。
    这里把首页那段真实标记原样抽出来（单一数据来源，不重复维护），落成 /g/<key>/ 静态页。 */
-const GAME_IMG = { ejl: 'assets/ejl-hero.jpg', xxtl: 'assets/xxtl-siege.jpg', ty: 'assets/ty-key.jpg', luna2: 'assets/luna2-hero.jpg', yxlc: 'assets/yxlc-hero.jpg', cq3d: 'assets/cq3d-class.jpg', wlwz: 'assets/wlwz-feat-inn.jpg', xxjz: 'assets/xxjz-feat-sect.jpg', lzgsy: 'assets/lzgsy-hero.jpg' };
+const GAME_IMG = { ejl: 'assets/ejl-hero.jpg', xxtl: 'assets/xxtl-siege.jpg', ty: 'assets/ty-key.jpg', luna2: 'assets/luna2-hero.jpg', yxlc: 'assets/yxlc-hero.jpg', cq3d: 'assets/cq3d-class.jpg', wlwz: 'assets/wlwz-feat-inn.jpg', xxjz: 'assets/xxjz-feat-sect.jpg', lzgsy: 'assets/lzgsy-hero.jpg', gc: 'assets/gc-hero.jpg' };
 
 function gameBlock(key) {
   const html = fs.readFileSync('index.html', 'utf8');
