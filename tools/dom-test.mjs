@@ -899,23 +899,24 @@ ok('掉落装备池：五个栏目（ejl/xxtl/ty/luna2/yxlc）合计 50 件以�
 ok('掉落联动成就：拾荒者 + 欧皇附体（传说掉落解锁）', /unlock\('loot_1'\)/.test(uiJs) && /unlock\('loot_legend'\)/.test(uiJs) && /loot_legend', icon: '🌟'/.test(uiJs));
 ok('掉落卡样式：稀有度配色变量 + 传说金光 + 移动端贴底', /\.loot\.r5\{--lr:#FFB020\}/.test(cssText) && /rgba\(255,176,32,\.55\)/.test(cssText) && /@media \(max-width:760px\)\{\.loot\{/.test(cssText));
 
-ok('露娜2 转正式分站：g/luna2/ 由 gamePage 生成，8 篇 entries 铺好 + 资质名 + 倒计时', (() => {
+ok('露娜2 转正式分站：g/luna2/ 由 gamePage 生成，10 篇 entries 铺好 + 资质名 + 倒计时', (() => {
   const luna = fsMod2.readFileSync('g/luna2/index.html', 'utf8');
   return luna.includes('露娜2：拾光之约') && luna.includes('资质名称：露娜2') && luna.includes('PC 端游')
     && /data-launch="2026-12-10T00:00:00\+08:00"/.test(luna)
-    && (luna.match(/class="entry"/g) || []).length === 8
+    && (luna.match(/class="entry"/g) || []).length === 10
     && luna.includes('assets/luna2-hero.jpg') && luna.includes('"@type":"CollectionPage"');
 })());
-ok('露娜2 进攻略库：GAMES.luna2 + 8 篇文章（a/luna2-*，含魔族攻略）+ 新分类「系统玩法」', (() => {
+ok('露娜2 进攻略库：GAMES.luna2 + 10 篇文章（a/luna2-*，含魔族攻略与官网抓取两篇）+ 新分类「系统玩法」', (() => {
   const data = fsMod2.readFileSync('assets/data.js', 'utf8');
   const dirs = fsMod2.readdirSync('a').filter(d => d.startsWith('luna2-'));
-  return data.includes("id: 'luna2'") && dirs.length === 8 && data.includes("sys: '系统玩法'") && data.includes("id: 'luna2-mo'");
+  return data.includes("id: 'luna2'") && dirs.length === 10 && data.includes("sys: '系统玩法'") && data.includes("id: 'luna2-mo'")
+    && data.includes("id: 'luna2-jobtree'") && data.includes("id: 'luna2-pre'");
 })());
 ok('露娜2 首页集成：轮播 4 张 / 侧栏 8 款 / game-card / 统计 8 款 96 篇（含 18 篇官方外链）7 分类（yxlc 隐藏中），旧横幅零残留', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   return (home.match(/class="fc-slide/g) || []).length === 4
     && (home.match(/class="game-card"/g) || []).length === 11
-    && home.includes('<b id="statGames">11</b>') && home.includes('<b id="statGuides">110</b>') && home.includes('<b id="statCats">7</b>')
+    && home.includes('<b id="statGames">11</b>') && home.includes('<b id="statGuides">112</b>') && home.includes('<b id="statCats">7</b>')
     && /const ORDER = \['ejl', 'xxtl', 'ty', 'luna2', 'cq3d', 'wlwz', 'xxjz', 'lzgsy', 'gc', 'dbwl', 'chd'\];/.test(home)
     && home.includes('十一款游戏')
     && !/game-soon|gs-tag/.test(home);
@@ -926,13 +927,13 @@ ok('露娜2 文章页 SEO：四篇标题都不超 30 字，游戏短名正确', 
   const t = (fsMod2.readFileSync('a/' + id + '/index.html', 'utf8').match(/<title>([^<]*)<\/title>/) || [])[1] || '';
   return t.length <= 30 && t.includes('露娜2');
 }));
-ok('露娜2 配图完整：4 篇攻略的 img 块都有 jpg/webp/avif 三件套', (() => {
+ok('露娜2 配图完整：6 篇攻略的 img 块都有 jpg/webp/avif 三件套', (() => {
   const data = fsMod2.readFileSync('assets/data.js', 'utf8');
   const bases = new Set();
   const re = /\{ t: 'img', v: '(luna2-[^']+)'/g;
   let m;
   while ((m = re.exec(data))) bases.add(m[1]);
-  if (bases.size !== 10) return false;
+  if (bases.size !== 13) return false;
   return Array.from(bases).every(b => ['jpg', 'webp', 'avif'].every(e => fsMod2.existsSync('assets/' + b + '.' + e)));
 })());
 ok('露娜2 样式：hero 倒计时缩小版 + 资质说明；预热页样式零残留（vote 样式已清）', !/\.vote-row\{/.test(cssText) && /\.game-hero \.launch-cd\{margin-top:4px\}/.test(cssText) && /\.luna-legal\{/.test(cssText) && !/game-soon|luna-hero|luna-list/.test(cssText));
@@ -1050,11 +1051,11 @@ ok('站名 向日葵游戏盒：顶栏 logo 图 + 渐变站名，旧名零残留
 ok('官网资讯改写：ejl 新增 4 篇玩法攻略，全站口径同步到 96 篇（含官方外链）/ ejl 13 篇', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   const ids = ['ejl-faction', 'ejl-qigong', 'ejl-guild', 'ejl-social'];
-  return GUIDE_N === 92 && GP_COUNTS.ejl === 13
+  return GUIDE_N === 94 && GP_COUNTS.ejl === 13
     && ids.every(id => DATA.GUIDES.some(g => g.id === id && g.game === 'ejl'
       && g.take.length === 4 && g.blocks.length >= 6 && g.blocks.some(b => b.t === 'table')))
     && ids.every(id => fsMod2.existsSync(`a/${id}/index.html`) && fsMod2.existsSync(`a/${id}/qr.svg`))
-    && home.includes('<b id="statGuides">110</b>')
+    && home.includes('<b id="statGuides">112</b>')
     && home.includes('data-count="ejl" data-count-fmt="{n} 篇">13 篇')
     && fsMod2.existsSync('g/ejl/index.html')
     && ids.every(id => fsMod2.readFileSync('sitemap.xml', 'utf8').includes(`a/${id}/`));
@@ -1169,7 +1170,7 @@ ok('官网长文改写：cq3d 新增 6 篇，全站口径同步到 78 篇 / cq3d
   const home = fsMod2.readFileSync('index.html', 'utf8');
   const ids = ['cq3d-start', 'cq3d-card', 'cq3d-market', 'cq3d-drop', 'cq3d-class', 'cq3d-level'];
   const sitemap = fsMod2.readFileSync('sitemap.xml', 'utf8');
-  return GUIDE_N === 92 && GP_COUNTS.cq3d === 6
+  return GUIDE_N === 94 && GP_COUNTS.cq3d === 6
     && ids.every(id => DATA.GUIDES.some(g => g.id === id && g.game === 'cq3d'
       && g.take.length === 4 && g.blocks.length >= 7 && g.blocks.some(b => b.t === 'table')))
     && ids.every(id => fsMod2.existsSync(`a/${id}/index.html`) && fsMod2.existsSync(`a/${id}/qr.svg`))

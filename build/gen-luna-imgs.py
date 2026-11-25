@@ -95,4 +95,13 @@ for rel, base in SLIDES:
     save3(im, base, q_avif=52)
     save3(im.resize((960, 540), Image.LANCZOS), base + '_960w', q_avif=52)
 
+# ---------- 2026-11-25 官网 banner：预约 / 集结（670x354 整图转格式，不放大） ----------
+BANNERS = [
+    ('banner3.jpg', 'luna2-pre-banner'),     # 预约开启 · 享多重福利
+    ('banner5.jpg', 'luna2-gather-banner'),  # 冒险家大集结 · 参与活动得超多好礼
+]
+for rel, base in BANNERS:
+    im = Image.open(os.path.join('_luna_img', rel)).convert('RGB')
+    save3(im, base, q_avif=58)
+
 print('DONE')
