@@ -131,7 +131,9 @@ try {
 
   await nav(`http://127.0.0.1:${PORT}/`);
   const homeName = await evalJs(`(document.querySelector('.brand-name') || {}).textContent || ''`);
-  ok('断网刷新首页仍可打开（走缓存）', /攻略/.test(String(homeName)), String(homeName));
+  /* 品牌名以首页为准，避免改站名后断言失效 */
+  const brandName = ((await readFile(path.join(ROOT, 'index.html'), 'utf8')).match(/<span class="brand-name">([^<]+)<\/span>/) || [, ''])[1].trim();
+  ok('断网刷新首页仍可打开（走缓存）', String(homeName).trim() === brandName && brandName.length > 0, String(homeName) + ' / 期望 ' + brandName);
   const cards = await evalJs(`document.querySelectorAll('.entry').length`);
   ok('断网首页攻略卡片仍在', Number(cards) > 0, String(cards));
 

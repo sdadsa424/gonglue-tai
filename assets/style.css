@@ -2422,6 +2422,7 @@ img.img-fade.is-loaded{opacity:1;filter:blur(0);transform:none}
 .fc{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:16/9;box-shadow:0 10px 34px rgba(0,0,0,.4);isolation:isolate}
 .fc-slide{position:absolute;inset:0;display:block;opacity:0;transition:opacity .7s ease;pointer-events:none}
 .fc-slide.is-on{opacity:1;pointer-events:auto}
+.fc-slide picture{position:absolute;inset:0;display:block}
 .fc-slide img{width:100%;height:100%;object-fit:cover;display:block;translate:0 var(--py,0)}
 .fc-shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(13,10,21,.72) 0%,rgba(13,10,21,.18) 38%,rgba(13,10,21,0) 58%)}
 .fc-cap{position:absolute;left:34px;top:50%;transform:translateY(-50%);max-width:46%}
@@ -2438,6 +2439,7 @@ img.img-fade.is-loaded{opacity:1;filter:blur(0);transform:none}
 .lcard{display:flex;flex-direction:column;background:linear-gradient(180deg,#151930,#111424);border:1px solid var(--line,rgba(255,255,255,.09));border-radius:13px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .25s ease,border-color .25s ease}
 .lcard:hover{transform:translateY(-3px);border-color:var(--ac)}
 .lcard-th{display:block;aspect-ratio:2/1;overflow:hidden}
+.lcard-th picture{display:block;height:100%}
 .lcard-th img{width:100%;height:100%;object-fit:cover;display:block}
 .lcard-bd{display:flex;flex-direction:column;gap:8px;padding:12px 14px 14px;min-width:0}
 .lcard-tag{align-self:flex-start;font-size:12px;font-weight:600;color:#fff;background:var(--ac);border-radius:999px;padding:2.5px 10px}
