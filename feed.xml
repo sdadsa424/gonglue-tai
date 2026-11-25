@@ -9,6 +9,38 @@
   <generator>build.mjs</generator>
   <atom:link href="https://wgame-bc7.pages.dev/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
+    <title>攻城战规则与行会配合：从竞标到死战</title>
+    <link>https://wgame-bc7.pages.dev/a/sbk-siege/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/sbk-siege/</guid>
+    <category>沙巴克传奇：再战沙巴克</category>
+    <pubDate>Wed, 25 Nov 2026 00:00:00 GMT</pubDate>
+    <description>竞标前四才能上场，晚九点开战、九点四十死战——把沙巴克攻城战的时间线与三职业分工一次讲清。</description>
+  </item>
+  <item>
+    <title>散人打宝路线：从矿洞到赤月的升级地图表</title>
+    <link>https://wgame-bc7.pages.dev/a/sbk-route/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/sbk-route/</guid>
+    <category>沙巴克传奇：再战沙巴克</category>
+    <pubDate>Wed, 25 Nov 2026 00:00:00 GMT</pubDate>
+    <description>1-38 矿洞蜈蚣洞、38-55 祖玛沃玛、55+ 赤月外围——按等级选图，散人也能一步不绕地攒出家底。</description>
+  </item>
+  <item>
+    <title>沙巴克传奇是什么：正版IP、攻沙与三端互通</title>
+    <link>https://wgame-bc7.pages.dev/a/sbk-intro/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/sbk-intro/</guid>
+    <category>沙巴克传奇：再战沙巴克</category>
+    <pubDate>Wed, 25 Nov 2026 00:00:00 GMT</pubDate>
+    <description>独家运营正版《屠龙世界之再战沙巴克》：经典战法道、每周攻沙、行会与打宝，一篇看懂这款传奇手游怎么玩。</description>
+  </item>
+  <item>
+    <title>沃玛祖玛圣战天尊：经典套装获取途径汇总</title>
+    <link>https://wgame-bc7.pages.dev/a/sbk-gear/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/sbk-gear/</guid>
+    <category>沙巴克传奇：再战沙巴克</category>
+    <pubDate>Wed, 25 Nov 2026 00:00:00 GMT</pubDate>
+    <description>BOSS 掉成品、碎片走锻造，两条路径各有讲究——把四套经典装备的产出地图与打造节奏一次捋清。</description>
+  </item>
+  <item>
     <title>公测定档 12月10日：预约与时装领取指南</title>
     <link>https://wgame-bc7.pages.dev/a/luna2-pre/</link>
     <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/luna2-pre/</guid>
@@ -215,38 +247,6 @@
     <category>贰点零江湖</category>
     <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
     <description>门派不只是多个聊天频道。官网把建帮、抢地盘、门派战放在同一条线里，缺人、缺统一上线时间，哪一步都推不动。</description>
-  </item>
-  <item>
-    <title>正邪双派怎么选：专属地图、阵营技能与野外开战</title>
-    <link>https://wgame-bc7.pages.dev/a/ejl-faction/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ejl-faction/</guid>
-    <category>贰点零江湖</category>
-    <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
-    <description>开局那一选不是换个称号：两派各有独立地图、阵营技能和剧情线，还决定了你以后在野外被谁追、跟谁组队。</description>
-  </item>
-  <item>
-    <title>摆摊开店全流程：贩卖与购入怎么选</title>
-    <link>https://wgame-bc7.pages.dev/a/luna2-stall/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/luna2-stall/</guid>
-    <category>露娜2：拾光之约</category>
-    <pubDate>Mon, 09 Nov 2026 00:00:00 GMT</pubDate>
-    <description>从技能栏到定价确认一共四步。开店容易，把东西卖出去靠的是定价对照。</description>
-  </item>
-  <item>
-    <title>法师修士转职加点：1 转技能取舍与 2 转任务</title>
-    <link>https://wgame-bc7.pages.dev/a/luna2-skill/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/luna2-skill/</guid>
-    <category>露娜2：拾光之约</category>
-    <pubDate>Mon, 09 Nov 2026 00:00:00 GMT</pubDate>
-    <description>技能训练窗口里每一级都要真金白银的 SP 和金币。法师修士两系怎么点、2 转任务在哪接，这一篇说清。</description>
-  </item>
-  <item>
-    <title>魔附系统怎么玩：宝石数量决定成败</title>
-    <link>https://wgame-bc7.pages.dev/a/luna2-mofu/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/luna2-mofu/</guid>
-    <category>露娜2：拾光之约</category>
-    <pubDate>Mon, 09 Nov 2026 00:00:00 GMT</pubDate>
-    <description>魔附是露娜2 里装备成型的核心一环：选对材料、攒够宝石，比点十次手快更有用。</description>
   </item>
 </channel>
 </rss>

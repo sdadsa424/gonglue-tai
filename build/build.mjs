@@ -45,12 +45,12 @@ const gdate = gi => (DATES[gi.id] || {}).d || SEED_DATE;
 const GDATE = guideId => (DATES[guideId] || {}).d || SEED_DATE;
 /* 全站级 lastmod：取所有文章日期的最大值 */
 const SITE_LASTMOD = GUIDES.map(gdate).sort().pop();
-const ORDER = ['ejl', 'xxtl', 'ty', 'luna2', 'cq3d', 'wlwz', 'xxjz', 'lzgsy', 'gc', 'dbwl', 'chd']; // yxlc 隐藏中
+const ORDER = ['ejl', 'xxtl', 'ty', 'luna2', 'cq3d', 'wlwz', 'xxjz', 'lzgsy', 'gc', 'dbwl', 'chd', 'sbk']; // yxlc 隐藏中
 const CS = 'ggboy6123';
 
 
 /* 搜索结果标题里用的游戏短名：只用于 title，页面显示仍用完整游戏名 */
-const SEO_NAME = { ejl: '贰点零江湖', xxtl: '小小屠龙', ty: '桃园将帅录', luna2: '露娜2', yxlc: '英雄连城', cq3d: '传奇盛世移动版-3D点卡', xxjz: '修仙家族模拟器2', lzgsy: '龙之谷启程', gc: '代号永恒', dbwl: '独步武林', chd: '永恒岛' };
+const SEO_NAME = { ejl: '贰点零江湖', xxtl: '小小屠龙', ty: '桃园将帅录', luna2: '露娜2', yxlc: '英雄连城', cq3d: '传奇盛世移动版-3D点卡', xxjz: '修仙家族模拟器2', lzgsy: '龙之谷启程', gc: '代号永恒', dbwl: '独步武林', chd: '永恒岛', sbk: '沙巴克传奇' };
 /* SEO 标题超长时再降级的更短游戏名 */
 const SEO_SHORT = { cq3d: '传奇盛世3D', xxjz: '修仙家族2' };
 
@@ -616,7 +616,7 @@ ${ORDER.map(k => GUIDES.filter(x => x.game === k).map(gi => `          <li><a hr
 /* ---------- 分站静态页 ----------
    分站内容原本只在首页 #/g/<key> 里，靠前端渲染 —— 搜索引擎看不到，也没法单独分享。
    这里把首页那段真实标记原样抽出来（单一数据来源，不重复维护），落成 /g/<key>/ 静态页。 */
-const GAME_IMG = { ejl: 'assets/ejl-hero.jpg', xxtl: 'assets/xxtl-siege.jpg', ty: 'assets/ty-key.jpg', luna2: 'assets/luna2-hero.jpg', yxlc: 'assets/yxlc-hero.jpg', cq3d: 'assets/cq3d-class.jpg', wlwz: 'assets/wlwz-feat-inn.jpg', xxjz: 'assets/xxjz-feat-sect.jpg', lzgsy: 'assets/lzgsy-hero.jpg', gc: 'assets/gc-hero.jpg', dbwl: 'assets/dbwl-hero.jpg', chd: 'assets/chd-hero.jpg' };
+const GAME_IMG = { ejl: 'assets/ejl-hero.jpg', xxtl: 'assets/xxtl-siege.jpg', ty: 'assets/ty-key.jpg', luna2: 'assets/luna2-hero.jpg', yxlc: 'assets/yxlc-hero.jpg', cq3d: 'assets/cq3d-class.jpg', wlwz: 'assets/wlwz-feat-inn.jpg', xxjz: 'assets/xxjz-feat-sect.jpg', lzgsy: 'assets/lzgsy-hero.jpg', gc: 'assets/gc-hero.jpg', dbwl: 'assets/dbwl-hero.jpg', chd: 'assets/chd-hero.jpg', sbk: 'assets/sbk-hero.jpg' };
 
 function gameBlock(key) {
   const html = fs.readFileSync('index.html', 'utf8');
