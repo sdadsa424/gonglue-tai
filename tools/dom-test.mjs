@@ -1112,18 +1112,20 @@ ok('修仙家族模拟器2 全站接入：game-card / 分站 / 7 篇攻略 / 渠
     && dirs.length === 7 && data.includes("id: 'xxjz'")
     && fsMod2.readFileSync('sitemap.xml', 'utf8').includes('<loc>https://wgame-bc7.pages.dev/g/xxjz/</loc>');
 })());
-ok('独步武林：天卡服 全站接入：game-card / 分站 / 4 篇攻略 / 全站零下载链接', (() => {
+ok('独步武林：天卡服 全站接入：game-card / 分站 / 4 篇攻略 / 天卡服下载直链', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   const sub = fsMod2.readFileSync('g/dbwl/index.html', 'utf8');
   const data = fsMod2.readFileSync('assets/data.js', 'utf8');
   const arts = ['dbwl-intro', 'dbwl-install', 'dbwl-cls', 'dbwl-pvp'];
+  const dlLink = 'youxin75.com/qudao.php?s=/Download/f/WzUxNTIsNTE1MSwyMzE1MThd';
   const noDl = f => !/jh\.yxhjsy\.com|sdkn-ldy|youxin75|zhangyu39|downGamePc/.test(fsMod2.readFileSync(f, 'utf8'));
   return home.includes('data-game="dbwl"') && home.includes('g/dbwl/')
+    && home.includes(dlLink) && sub.includes(dlLink)
     && sub.includes('独步武林：天卡服 · 全部') && (sub.match(/class="entry"/g) || []).length === 4
     && arts.every(id => fsMod2.existsSync(`a/${id}/index.html`) && fsMod2.existsSync(`a/${id}/qr.svg`))
     && data.includes("id: 'dbwl'")
     && fsMod2.readFileSync('sitemap.xml', 'utf8').includes('<loc>https://wgame-bc7.pages.dev/g/dbwl/</loc>')
-    && noDl('g/dbwl/index.html') && arts.every(id => noDl(`a/${id}/index.html`));
+    && arts.every(id => noDl(`a/${id}/index.html`));
 })());
 ok('cq3d 全站接入：第 5 张 poster / game-card / 分站 / 图集', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
