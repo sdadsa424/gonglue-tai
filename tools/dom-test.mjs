@@ -917,7 +917,7 @@ ok('露娜2 首页集成：轮播 4 张 / 侧栏 8 款 / game-card / 统计 8 �
     && (home.match(/class="game-card"/g) || []).length === 9
     && home.includes('<b id="statGames">9</b>') && home.includes('<b id="statGuides">104</b>') && home.includes('<b id="statCats">7</b>')
     && /const ORDER = \['ejl', 'xxtl', 'ty', 'luna2', 'cq3d', 'wlwz', 'xxjz', 'lzgsy', 'gc'\];/.test(home)
-    && home.includes('八款游戏')
+    && home.includes('九款游戏')
     && !/game-soon|gs-tag/.test(home);
 })());
 ok('倒计时模块：每秒刷新天/时/分/秒，到点换「已公测」并停掉定时器', /launchCd/.test(uiJs) && /window\.clearInterval\(iv\)/.test(uiJs) && /cd-over">已公测/.test(uiJs) && /Date\.parse\(box\.getAttribute\('data-launch'\)\)/.test(uiJs));
@@ -1100,16 +1100,17 @@ ok('攻略条目徽标带完整游戏名（title + aria-label），技术 id 不
 /* ---------- 回归护栏：yysolos.com 官网「游戏特色」职业图 + 攻略改写 ---------- */
 
 /* ---------- 回归护栏：传奇盛世移动版-3D点卡（sqqyxz.com）接入 ---------- */
-ok('修仙家族模拟器2 全站接入：第 7 张 poster / game-card / 分站 / 7 篇攻略 / 无下载链接', (() => {
+ok('修仙家族模拟器2 全站接入：game-card / 分站 / 7 篇攻略 / 渠道下载直链', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   const sub = fsMod2.readFileSync('g/xxjz/index.html', 'utf8');
   const data = fsMod2.readFileSync('assets/data.js', 'utf8');
   const dirs = fsMod2.readdirSync('a').filter(d => d.startsWith('xxjz-'));
   return home.includes('data-game="xxjz"')
+    && home.includes('youxin75.com/qudao.php?s=/Download/f/WzMzODAsMzM3OSwyMzE1MThd')
+    && sub.includes('youxin75.com/qudao.php?s=/Download/f/WzMzODAsMzM3OSwyMzE1MThd')
     && sub.includes('修仙家族模拟器2 · 全部') && (sub.match(/class="entry"/g) || []).length === 7
     && dirs.length === 7 && data.includes("id: 'xxjz'")
-    && fsMod2.readFileSync('sitemap.xml', 'utf8').includes('<loc>https://wgame-bc7.pages.dev/g/xxjz/</loc>')
-    && !/31rj\.com|youxin75|zhangyu39/.test(sub.split('<div class="wrap">')[0]);
+    && fsMod2.readFileSync('sitemap.xml', 'utf8').includes('<loc>https://wgame-bc7.pages.dev/g/xxjz/</loc>');
 })());
 ok('cq3d 全站接入：第 5 张 poster / game-card / 分站 / 图集', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
