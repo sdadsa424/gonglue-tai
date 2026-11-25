@@ -3,11 +3,27 @@
 <channel>
   <title>向日葵游戏盒</title>
   <link>https://wgame-bc7.pages.dev/</link>
-  <description>露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙 · 冰雪传奇、传奇盛世移动版-3D点卡、武林外传：十年之约、修仙家族模拟器2、龙之谷启程、代号：永恒、独步武林：天卡服的开荒路线、点卡计费、打金交易与团战站位，都整理成能直接照着做的步骤。</description>
+  <description>露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙 · 冰雪传奇、传奇盛世移动版-3D点卡、武林外传：十年之约、修仙家族模拟器2、龙之谷启程、代号：永恒、独步武林：天卡服、永恒岛之彩虹世界的开荒路线、点卡计费、打金交易与团战站位，都整理成能直接照着做的步骤。</description>
   <language>zh-cn</language>
-  <lastBuildDate>Sun, 22 Nov 2026 00:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Wed, 25 Nov 2026 00:00:00 GMT</lastBuildDate>
   <generator>build.mjs</generator>
   <atom:link href="https://wgame-bc7.pages.dev/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>永恒岛之彩虹世界：四大职业与玩法总览</title>
+    <link>https://wgame-bc7.pages.dev/a/chd-intro/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/chd-intro/</guid>
+    <category>永恒岛之彩虹世界</category>
+    <pubDate>Wed, 25 Nov 2026 00:00:00 GMT</pubDate>
+    <description>萌系横版冒险回来了：四大职业按六维雷达选人，武器与定位各不相同，先看清「这是什么游戏」再决定主练谁。</description>
+  </item>
+  <item>
+    <title>外观衣橱与社交玩法：冒险的另一半</title>
+    <link>https://wgame-bc7.pages.dev/a/chd-fashion/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/chd-fashion/</guid>
+    <category>永恒岛之彩虹世界</category>
+    <pubDate>Wed, 25 Nov 2026 00:00:00 GMT</pubDate>
+    <description>衣橱按部位分栏、同款自由染色；城市广场摆摊喊人，副本靠组队开荒——横版冒险的乐趣有一半在画面之外。</description>
+  </item>
   <item>
     <title>装备成长指南：强化路线与资源规划</title>
     <link>https://wgame-bc7.pages.dev/a/gc-gearup/</link>
@@ -231,22 +247,6 @@
     <category>小小屠龙 · 冰雪传奇</category>
     <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
     <description>传奇类玩法的 PK 从来不免费：杀人涨 PK 值，被人杀了掉东西。值不值得动手，取决于你算不算得清成本和收益。</description>
-  </item>
-  <item>
-    <title>幸运与爆率：到底哪一层在决定你出不出货</title>
-    <link>https://wgame-bc7.pages.dev/a/xxtl-luck/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/xxtl-luck/</guid>
-    <category>小小屠龙 · 冰雪传奇</category>
-    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-    <description>「爆率」不是一个数字。它由基础掉落表、幸运加成、归属权三层叠在一起，搞清楚哪一层在起作用，才知道该堆什么。</description>
-  </item>
-  <item>
-    <title>阵容模板：0 级成型队到 40 级毕业</title>
-    <link>https://wgame-bc7.pages.dev/a/ty-team/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-team/</guid>
-    <category>桃园：将帅录</category>
-    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
-    <description>零氪微氪直接抄这套：刘关张加蔡文姬的经典模板，从 0 级开荒一路用到 40 级毕业调整，加点和技能优先级全部给全。</description>
   </item>
 </channel>
 </rss>

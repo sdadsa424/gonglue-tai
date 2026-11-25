@@ -10,7 +10,7 @@ const BASE = process.env.BASE || 'http://127.0.0.1:8766/';
 const { createRequire } = await import('node:module');
 const DATA = createRequire(import.meta.url)('../assets/data.js');
 const GUIDE_N = DATA.GUIDES.length;
-const GP_COUNTS = { ejl: 0, xxtl: 0, ty: 0, luna2: 0, cq3d: 0 };
+const GP_COUNTS = { ejl: 0, xxtl: 0, ty: 0, luna2: 0, cq3d: 0, chd: 0 };
 for (const g of DATA.GUIDES) if (GP_COUNTS[g.game] !== undefined) GP_COUNTS[g.game] += 1;
 const errors = [];
 const vc = new VirtualConsole();
@@ -914,10 +914,10 @@ ok('露娜2 进攻略库：GAMES.luna2 + 8 篇文章（a/luna2-*，含魔族攻�
 ok('露娜2 首页集成：轮播 4 张 / 侧栏 8 款 / game-card / 统计 8 款 96 篇（含 18 篇官方外链）7 分类（yxlc 隐藏中），旧横幅零残留', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   return (home.match(/class="fc-slide/g) || []).length === 4
-    && (home.match(/class="game-card"/g) || []).length === 10
-    && home.includes('<b id="statGames">10</b>') && home.includes('<b id="statGuides">108</b>') && home.includes('<b id="statCats">7</b>')
-    && /const ORDER = \['ejl', 'xxtl', 'ty', 'luna2', 'cq3d', 'wlwz', 'xxjz', 'lzgsy', 'gc', 'dbwl'\];/.test(home)
-    && home.includes('十款游戏')
+    && (home.match(/class="game-card"/g) || []).length === 11
+    && home.includes('<b id="statGames">11</b>') && home.includes('<b id="statGuides">110</b>') && home.includes('<b id="statCats">7</b>')
+    && /const ORDER = \['ejl', 'xxtl', 'ty', 'luna2', 'cq3d', 'wlwz', 'xxjz', 'lzgsy', 'gc', 'dbwl', 'chd'\];/.test(home)
+    && home.includes('十一款游戏')
     && !/game-soon|gs-tag/.test(home);
 })());
 ok('倒计时模块：每秒刷新天/时/分/秒，到点换「已公测」并停掉定时器', /launchCd/.test(uiJs) && /window\.clearInterval\(iv\)/.test(uiJs) && /cd-over">已公测/.test(uiJs) && /Date\.parse\(box\.getAttribute\('data-launch'\)\)/.test(uiJs));
@@ -1050,11 +1050,11 @@ ok('站名 向日葵游戏盒：顶栏 logo 图 + 渐变站名，旧名零残留
 ok('官网资讯改写：ejl 新增 4 篇玩法攻略，全站口径同步到 96 篇（含官方外链）/ ejl 13 篇', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   const ids = ['ejl-faction', 'ejl-qigong', 'ejl-guild', 'ejl-social'];
-  return GUIDE_N === 90 && GP_COUNTS.ejl === 13
+  return GUIDE_N === 92 && GP_COUNTS.ejl === 13
     && ids.every(id => DATA.GUIDES.some(g => g.id === id && g.game === 'ejl'
       && g.take.length === 4 && g.blocks.length >= 6 && g.blocks.some(b => b.t === 'table')))
     && ids.every(id => fsMod2.existsSync(`a/${id}/index.html`) && fsMod2.existsSync(`a/${id}/qr.svg`))
-    && home.includes('<b id="statGuides">108</b>')
+    && home.includes('<b id="statGuides">110</b>')
     && home.includes('data-count="ejl" data-count-fmt="{n} 篇">13 篇')
     && fsMod2.existsSync('g/ejl/index.html')
     && ids.every(id => fsMod2.readFileSync('sitemap.xml', 'utf8').includes(`a/${id}/`));
@@ -1127,11 +1127,26 @@ ok('独步武林：天卡服 全站接入：game-card / 分站 / 4 篇攻略 / �
     && fsMod2.readFileSync('sitemap.xml', 'utf8').includes('<loc>https://wgame-bc7.pages.dev/g/dbwl/</loc>')
     && arts.every(id => noDl(`a/${id}/index.html`));
 })());
+ok('永恒岛之彩虹世界 全站接入：game-card / 分站 / 2 篇攻略 / 渠道下载直链 / 图集', (() => {
+  const home = fsMod2.readFileSync('index.html', 'utf8');
+  const sub = fsMod2.readFileSync('g/chd/index.html', 'utf8');
+  const data = fsMod2.readFileSync('assets/data.js', 'utf8');
+  const arts = ['chd-intro', 'chd-fashion'];
+  const dlLink = 'youxin75.com/qudao.php?s=/Download/f/WzM0MjEsMzM5NiwyMzE1MThd';
+  return home.includes('data-game="chd"') && home.includes('g/chd/')
+    && home.includes(dlLink) && sub.includes(dlLink)
+    && sub.includes('永恒岛之彩虹世界 · 全部') && (sub.match(/class="entry"/g) || []).length === 2
+    && arts.every(id => fsMod2.existsSync(`a/${id}/index.html`) && fsMod2.existsSync(`a/${id}/qr.svg`))
+    && data.includes("id: 'chd'")
+    && home.includes('assets/chd-hero.jpg') && home.includes('assets/chd-icon.jpg')
+    && (sub.match(/class="luna-gal"[\s\S]*?<\/section>/)?.[0].match(/<figure>/g) || []).length === 5
+    && fsMod2.readFileSync('sitemap.xml', 'utf8').includes('<loc>https://wgame-bc7.pages.dev/g/chd/</loc>');
+})());
 ok('cq3d 全站接入：第 5 张 poster / game-card / 分站 / 图集', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   const g = fsMod2.readFileSync('g/cq3d/index.html', 'utf8');
   return home.includes('data-count="cq3d"')
-    && home.includes('statGames">10')
+    && home.includes('statGames">11')
     && fsMod2.existsSync('g/cq3d/index.html')
     && g.includes('传奇盛世移动版-3D点卡 · 全部') && g.includes('<h2 class="sec-title">游戏特色</h2>')
     && !g.includes('取自《传奇盛世移动版-3D点卡》官网');
@@ -1154,7 +1169,7 @@ ok('官网长文改写：cq3d 新增 6 篇，全站口径同步到 78 篇 / cq3d
   const home = fsMod2.readFileSync('index.html', 'utf8');
   const ids = ['cq3d-start', 'cq3d-card', 'cq3d-market', 'cq3d-drop', 'cq3d-class', 'cq3d-level'];
   const sitemap = fsMod2.readFileSync('sitemap.xml', 'utf8');
-  return GUIDE_N === 90 && GP_COUNTS.cq3d === 6
+  return GUIDE_N === 92 && GP_COUNTS.cq3d === 6
     && ids.every(id => DATA.GUIDES.some(g => g.id === id && g.game === 'cq3d'
       && g.take.length === 4 && g.blocks.length >= 7 && g.blocks.some(b => b.t === 'table')))
     && ids.every(id => fsMod2.existsSync(`a/${id}/index.html`) && fsMod2.existsSync(`a/${id}/qr.svg`))
@@ -1185,12 +1200,12 @@ ok('下载页模拟器专区：雷电/MuMu 官网卡、三步教程、闪退提�
     && sec.includes('安卓版本调到 9') && sec.includes('PC 端游') && sec.includes('href="g/luna2/"')
     && fsMod2.existsSync('assets/emu-ld.webp') && fsMod2.existsSync('assets/emu-mumu.webp');
 })());
-ok('分站同步模拟器入口：9 个区块带 cs-pill emu，静态页 #/dl 已改写为 ../../#/dl', ['ejl', 'xxtl', 'ty', 'luna2', 'cq3d', 'wlwz', 'lzgsy', 'gc', 'dbwl'].every(k => {
+ok('分站同步模拟器入口：10 个区块带 cs-pill emu，静态页 #/dl 已改写为 ../../#/dl', ['ejl', 'xxtl', 'ty', 'luna2', 'cq3d', 'wlwz', 'lzgsy', 'gc', 'dbwl', 'chd'].every(k => {
   const g = fsMod2.readFileSync('g/' + k + '/index.html', 'utf8');
   return g.includes('cs-pill emu') && g.includes('href="../../#/dl"');
 }) && (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
-  return (home.match(/class="cs-pill emu"/g) || []).length === 9;
+  return (home.match(/class="cs-pill emu"/g) || []).length === 10;
 })());
 
 console.log('\n运行期报错：' + (errors.length ? '\n  ' + errors.slice(0, 6).join('\n  ') : '无'));
