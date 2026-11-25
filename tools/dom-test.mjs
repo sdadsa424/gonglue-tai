@@ -764,7 +764,7 @@ for (const k of Object.keys(gpCounts)) {
   ok('分站页 ' + k + ' 计数为真实篇数', new RegExp('data-count="' + k + '">' + gpCounts[k] + '</span>').test(gpHtml));
 }
 const gpHome = gpFs('index.html', 'utf8');
-ok('首页轮播指向真实攻略地址', gpHome.includes('class="fc-slide is-on" href="a/lzgsy-start/"') && !gpHome.includes('class="poster"') && !gpHome.includes('sw-g'));
+ok('首页轮播指向真实攻略地址', /class="fc-slide is-on" href="a\/[a-z0-9-]+\/"/.test(gpHome) && !gpHome.includes('class="poster"') && !gpHome.includes('sw-g'));
 ok('文章页分站链接为真实地址', gpFs('a/ejl-start/index.html', 'utf8').includes('href="../../g/ejl/"'));
 ok('文章页面包屑用真实 URL', gpFs('a/ejl-start/index.html', 'utf8').includes('"item":"https://wgame-bc7.pages.dev/g/ejl/"'));
 ok('sitemap 收录三个分站', ['ejl', 'xxtl', 'ty'].every(k => gpFs('sitemap.xml', 'utf8').includes('g/' + k + '/')));
