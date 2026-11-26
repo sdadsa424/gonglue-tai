@@ -1151,7 +1151,7 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 .toc-float a:last-child{border-bottom:0}
 .toc-float a:hover{color:#EDEFF8}
 .toc-float a.on{color:#FF9ACB}
-@media (min-width:1400px){
+@media (min-width:1200px){
   .toc-float{display:block}
   .article>.toc{display:none}
 }
@@ -2524,7 +2524,7 @@ img.img-fade.is-loaded{opacity:1;filter:blur(0);transform:none}
 /* ===== 两侧剑光动画（宽屏装饰，#latest 左右空白带） ===== */
 #latest{position:relative}
 #latest .fx{display:none}
-@media (min-width:1400px){
+@media (min-width:1200px){
   #latest .fx{display:block;position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:100vw;pointer-events:none}
   .fxb{position:absolute;top:0;bottom:0;overflow:hidden;background:rgba(12,14,18,.35)}
   .fxb.fx-l{left:0;width:calc((100vw - 1180px)/2)}
@@ -2544,7 +2544,7 @@ img.img-fade.is-loaded{opacity:1;filter:blur(0);transform:none}
   .fx-c3{bottom:14px;left:14px;border-right:0;border-top:0}
   .fx-c4{bottom:14px;right:14px;border-left:0;border-top:0}
 }
-@media (min-width:1400px) and (prefers-reduced-motion:reduce){
+@media (min-width:1200px) and (prefers-reduced-motion:reduce){
   .fx-slash{opacity:.18;animation:none}
   .fx-spk{display:none}
 }
