@@ -2528,13 +2528,13 @@ img.img-fade.is-loaded{opacity:1;filter:blur(0);transform:none}
   .fxb{position:absolute;top:0;bottom:0;overflow:hidden}
   .fxb.fx-l{left:0;width:calc((100vw - 1240px)/2)}
   .fxb.fx-r{right:0;width:calc((100vw - 1240px)/2)}
-  .fx-star{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;animation:ftw 3.4s ease-in-out infinite}
-  @keyframes ftw{0%,100%{opacity:.12}50%{opacity:.85}}
-  .fx-met{position:absolute;width:150px;height:2px;border-radius:2px;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(205,195,255,.9));opacity:0;animation:fmet 5.5s linear infinite}
-  .fx-met::after{content:"";position:absolute;right:-2px;top:-2px;width:5px;height:5px;border-radius:50%;background:#fff;box-shadow:0 0 8px 2px rgba(205,195,255,.9)}
-  @keyframes fmet{0%{transform:translate(50px,-90px) rotate(14deg);opacity:0}10%{opacity:1}62%{opacity:1}100%{transform:translate(-190px,170px) rotate(14deg);opacity:0}}
+  .fx-star{position:absolute;border-radius:50%;background:#fff;box-shadow:0 0 6px 1px rgba(255,255,255,.6);animation:ftw 3s ease-in-out infinite}
+  @keyframes ftw{0%,100%{opacity:.2}50%{opacity:1}}
+  .fx-met{position:absolute;width:180px;height:2.5px;border-radius:2px;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(215,205,255,.95));opacity:0;animation:fmet 4s linear infinite}
+  .fx-met::after{content:"";position:absolute;right:-3px;top:-2.5px;width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 12px 3px rgba(215,205,255,.95)}
+  @keyframes fmet{0%{transform:translate(60px,-110px) rotate(14deg);opacity:0}6%{opacity:1}78%{opacity:1}100%{transform:translate(-210px,190px) rotate(14deg);opacity:0}}
 }
 @media (min-width:1200px) and (prefers-reduced-motion:reduce){
-  .fx-star{animation:none;opacity:.4}
-  .fx-met{display:none}
+  .fx-star{animation:none;opacity:.5}
+  .fx-met{animation:none;opacity:.3}
 }
