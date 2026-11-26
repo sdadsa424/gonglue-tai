@@ -3,11 +3,43 @@
 <channel>
   <title>向日葵游戏盒</title>
   <link>https://wgame-bc7.pages.dev/</link>
-  <description>露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙 · 冰雪传奇、传奇盛世移动版-3D点卡、武林外传：十年之约、修仙家族模拟器2、龙之谷启程、代号：永恒、独步武林：天卡服、永恒岛之彩虹世界的开荒路线、点卡计费、打金交易与团战站位，都整理成能直接照着做的步骤。</description>
+  <description>露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙 · 冰雪传奇、传奇盛世移动版-3D点卡、武林外传：十年之约、修仙家族模拟器2、龙之谷启程、代号：永恒、独步武林：天卡服、永恒岛之彩虹世界、屠龙决战沙城的开荒路线、点卡计费、打金交易与团战站位，都整理成能直接照着做的步骤。</description>
   <language>zh-cn</language>
-  <lastBuildDate>Wed, 25 Nov 2026 00:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Thu, 26 Nov 2026 00:00:00 GMT</lastBuildDate>
   <generator>build.mjs</generator>
   <atom:link href="https://wgame-bc7.pages.dev/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>升级、打宝与提升实力：每日节奏与副本产出表</title>
+    <link>https://wgame-bc7.pages.dev/a/tljsc-level/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/tljsc-level/</guid>
+    <category>屠龙决战沙城</category>
+    <pubDate>Thu, 26 Nov 2026 00:00:00 GMT</pubDate>
+    <description>主线卡点怎么破、除魔镇妖塔怎么排、转生神殿进哪层——升级打宝的优先级一次理清。</description>
+  </item>
+  <item>
+    <title>屠龙决战沙城是什么：复古传奇玩法总览</title>
+    <link>https://wgame-bc7.pages.dev/a/tljsc-intro/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/tljsc-intro/</guid>
+    <category>屠龙决战沙城</category>
+    <pubDate>Thu, 26 Nov 2026 00:00:00 GMT</pubDate>
+    <description>传承 1.76 经典版本：沙巴克千人攻城、祖玛沃玛经典地图、战法道三职业与七大元素，一篇看懂这款复古传奇怎么玩。</description>
+  </item>
+  <item>
+    <title>七大元素系统全拆解：属性克制与搭配</title>
+    <link>https://wgame-bc7.pages.dev/a/tljsc-element/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/tljsc-element/</guid>
+    <category>屠龙决战沙城</category>
+    <pubDate>Thu, 26 Nov 2026 00:00:00 GMT</pubDate>
+    <description>火冰雷风神圣暗黑幻影七大元素：攻击元素加伤、强元素减伤、弱元素致命，看懂属性克制再打 BOSS。</description>
+  </item>
+  <item>
+    <title>战法道三职业怎么选：定位、技能与培养</title>
+    <link>https://wgame-bc7.pages.dev/a/tljsc-cls/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/tljsc-cls/</guid>
+    <category>屠龙决战沙城</category>
+    <pubDate>Thu, 26 Nov 2026 00:00:00 GMT</pubDate>
+    <description>战士近战霸主、法师远程制霸、道士召唤辅助——三职业各自的技能优先级和团战定位，照着选不踩坑。</description>
+  </item>
   <item>
     <title>攻城战规则与行会配合：从竞标到死战</title>
     <link>https://wgame-bc7.pages.dev/a/sbk-siege/</link>
@@ -215,38 +247,6 @@
     <category>露娜2：拾光之约</category>
     <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
     <description>四个基础职业对应四种完全不同的节奏。选职业不是选强度，是选你每天愿意重复的那套操作。</description>
-  </item>
-  <item>
-    <title>世界 BOSS 与稀有怪：刷新规律与捡漏技巧</title>
-    <link>https://wgame-bc7.pages.dev/a/luna2-boss/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/luna2-boss/</guid>
-    <category>露娜2：拾光之约</category>
-    <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
-    <description>BOSS 掉的不只是装备，还有全服关注的稀有材料。摸清刷新节奏，散人也能从大佬嘴里分一口。</description>
-  </item>
-  <item>
-    <title>轻功、师徒与结拜：不花钱的三条捷径</title>
-    <link>https://wgame-bc7.pages.dev/a/ejl-social/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ejl-social/</guid>
-    <category>贰点零江湖</category>
-    <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
-    <description>不用坐骑的轻功、能带开荒的师傅、一起刷装备的结拜兄弟——官网明说这三套系统都原样开放，而且都不靠充值。</description>
-  </item>
-  <item>
-    <title>气功武学加点：端游老方案怎么平移</title>
-    <link>https://wgame-bc7.pages.dev/a/ejl-qigong/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ejl-qigong/</guid>
-    <category>贰点零江湖</category>
-    <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
-    <description>官网明确气功加点逻辑和端游对齐，没有另起一套天赋树。老玩家照着当年点，新人则要先分清刷怪和打架是两套需求。</description>
-  </item>
-  <item>
-    <title>门派从建到打：招人、抢地盘与门派战</title>
-    <link>https://wgame-bc7.pages.dev/a/ejl-guild/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ejl-guild/</guid>
-    <category>贰点零江湖</category>
-    <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
-    <description>门派不只是多个聊天频道。官网把建帮、抢地盘、门派战放在同一条线里，缺人、缺统一上线时间，哪一步都推不动。</description>
   </item>
 </channel>
 </rss>
