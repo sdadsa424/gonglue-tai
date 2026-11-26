@@ -2562,12 +2562,19 @@ img.img-fade.is-loaded{opacity:1;filter:blur(0);transform:none}
   .hx-spark{opacity:.5}
 }
 
-/* ===== 游戏列表卡流水灯边框 ===== */
+/* ===== 游戏列表卡流水灯边框（沿边匀速巡游） ===== */
 @property --fxa{syntax:"<angle>";initial-value:0deg;inherits:false}
 .lrow::after{content:"";position:absolute;inset:0;border-radius:12px;padding:1.5px;background:conic-gradient(from var(--fxa),transparent 0 72%,var(--ac) 82%,#fff 88%,transparent 96%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;animation:fxflow 1.8s linear infinite;pointer-events:none}
 .lrow:nth-child(2n)::after{animation-delay:-0.9s}
 .lrow:nth-child(3n)::after{animation-delay:-0.6s}
 @keyframes fxflow{to{--fxa:360deg}}
+@supports (offset-path: rect(0 0 100% 100% round 12px)){
+  .lrow::after{inset:auto;left:0;top:0;width:52px;height:2.5px;padding:0;border-radius:2px;background:linear-gradient(90deg,transparent,var(--ac) 58%,#fff);box-shadow:0 0 10px 1px var(--ac);-webkit-mask:none;mask:none;offset-path:rect(0 100% 100% 0 round 12px);offset-rotate:auto;animation:fxtravel 1.8s linear infinite}
+  @keyframes fxtravel{from{offset-distance:0%}to{offset-distance:100%}}
+  @media (prefers-reduced-motion:reduce){
+    .lrow::after{animation:none;opacity:.55;offset-distance:35%}
+  }
+}
 @media (prefers-reduced-motion:reduce){
   .lrow::after{animation:none;opacity:.45;background:conic-gradient(from 140deg,transparent 0 70%,var(--ac) 82%,transparent 92%)}
 }
