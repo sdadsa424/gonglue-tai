@@ -2520,3 +2520,31 @@ img.img-fade.is-loaded{opacity:1;filter:blur(0);transform:none}
   .lst{grid-template-columns:1fr}
   .hot{grid-auto-columns:82%}
 }
+
+/* ===== 两侧剑光动画（宽屏装饰，#latest 左右空白带） ===== */
+#latest{position:relative}
+#latest .fx{display:none}
+@media (min-width:1400px){
+  #latest .fx{display:block;position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:100vw;pointer-events:none}
+  .fxb{position:absolute;top:0;bottom:0;overflow:hidden;background:rgba(12,14,18,.35)}
+  .fxb.fx-l{left:0;width:calc((100vw - 1180px)/2)}
+  .fxb.fx-r{right:0;width:calc((100vw - 1180px)/2)}
+  .fx-slash{position:absolute;left:-10%;width:120%;height:6px;border-radius:3px;opacity:0;transform:rotate(-34deg)}
+  .fx-s1{top:22%;background:#FAC775;animation:fsl 2.8s ease-out infinite}
+  .fx-s2{top:44%;background:#B5D4F4;animation:fsl 2.8s ease-out -1.4s infinite}
+  .fx-s3{top:66%;background:#FAC775;height:4px;animation:fsl 2.8s ease-out -.9s infinite}
+  .fx-s4{top:84%;background:#ED93B1;height:4px;animation:fsl 2.8s ease-out -2.1s infinite}
+  @keyframes fsl{0%,50%{opacity:0;transform:rotate(-34deg) scaleX(.5)}56%{opacity:.95;transform:rotate(-34deg) scaleX(1)}68%{opacity:.7}76%,100%{opacity:0;transform:rotate(-34deg) scaleX(1.15)}}
+  .fx-spk{position:absolute;width:5px;height:5px;border-radius:50%;background:#FAC775;opacity:0;animation:fsk 2.8s steps(1,end) infinite}
+  .fx-spk.b{background:#B5D4F4;animation-delay:-1.4s}
+  @keyframes fsk{0%,52%{opacity:0}56%,70%{opacity:.9}78%,100%{opacity:0}}
+  .fx-corner{position:absolute;width:18px;height:18px;border:2px solid rgba(95,225,203,.35)}
+  .fx-c1{top:14px;left:14px;border-right:0;border-bottom:0}
+  .fx-c2{top:14px;right:14px;border-left:0;border-bottom:0}
+  .fx-c3{bottom:14px;left:14px;border-right:0;border-top:0}
+  .fx-c4{bottom:14px;right:14px;border-left:0;border-top:0}
+}
+@media (min-width:1400px) and (prefers-reduced-motion:reduce){
+  .fx-slash{opacity:.18;animation:none}
+  .fx-spk{display:none}
+}
