@@ -1931,38 +1931,7 @@ window.addEventListener('resize', onScroll);
       + 's;animation-delay:-' + (Math.random() * 8).toFixed(2) + 's';
     frag.appendChild(s);
   }
-  var VARIANTS = ['', 'v-pink', 'v-violet', 'v-blue', 'v-gold'];
-  var TRAILS = ['meteorFall', 'meteorFall2', 'meteorFall3'];
-  function makeMeteor(opt) {
-    var m = document.createElement('b');
-    m.className = 'meteor' + (opt.big ? ' big' : '') + ' ' + opt.color;
-    m.style.cssText = 'top:' + opt.top + '%;right:-' + opt.off + 'px;width:' + opt.w
-      + 'px;--mdur:' + opt.dur + 's;animation-name:' + opt.trail
-      + ';animation-duration:' + opt.dur + 's;animation-delay:' + opt.delay + 's';
-    return m;
-  }
-  for (var j = 0; j < 12; j++) {
-    var big = Math.random() < .3;
-    var top = (Math.random() * 55).toFixed(1);
-    var off = (60 + Math.random() * 280).toFixed(0);
-    var w = (big ? 140 + Math.random() * 160 : 70 + Math.random() * 120).toFixed(0);
-    var trail = TRAILS[Math.floor(Math.random() * TRAILS.length)];
-    var dur = (6 + Math.random() * 9).toFixed(2);
-    var delay = '-' + (Math.random() * 14).toFixed(2);
-    var color = VARIANTS[Math.floor(Math.random() * VARIANTS.length)];
-    frag.appendChild(makeMeteor({ big: big, color: color, top: top, off: off, w: w, trail: trail, dur: dur, delay: delay }));
-    // 成对双流星：约 1/3 概率生成一颗跟随者，同轨迹同色，稍偏后错开
-    if (Math.random() < .34) {
-      frag.appendChild(makeMeteor({
-        big: false, color: color,
-        top: (parseFloat(top) + 3 + Math.random() * 5).toFixed(1),
-        off: (parseFloat(off) + 50 + Math.random() * 110).toFixed(0),
-        w: Math.max(60, Math.round(parseFloat(w) * .65)),
-        trail: trail, dur: dur,
-        delay: (parseFloat(delay) - .45).toFixed(2)
-      }));
-    }
-  }
+  /* 流星已按需求移除，仅保留星点闪烁 */
   stars.appendChild(frag);
   hero.appendChild(stars);
   // 缓慢斜向光带
