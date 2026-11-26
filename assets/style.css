@@ -2561,3 +2561,13 @@ img.img-fade.is-loaded{opacity:1;filter:blur(0);transform:none}
   .hero h1,.hero h1 em,.hx-spark{animation:none}
   .hx-spark{opacity:.5}
 }
+
+/* ===== 游戏列表卡流水灯边框 ===== */
+@property --fxa{syntax:"<angle>";initial-value:0deg;inherits:false}
+.lrow::after{content:"";position:absolute;inset:0;border-radius:12px;padding:1.5px;background:conic-gradient(from var(--fxa),transparent 0 72%,var(--ac) 82%,#fff 88%,transparent 96%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;animation:fxflow 4.2s linear infinite;pointer-events:none}
+.lrow:nth-child(2n)::after{animation-delay:-2.1s}
+.lrow:nth-child(3n)::after{animation-delay:-1.3s}
+@keyframes fxflow{to{--fxa:360deg}}
+@media (prefers-reduced-motion:reduce){
+  .lrow::after{animation:none;opacity:.45;background:conic-gradient(from 140deg,transparent 0 70%,var(--ac) 82%,transparent 92%)}
+}
