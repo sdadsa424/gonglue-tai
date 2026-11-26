@@ -2520,3 +2520,33 @@ img.img-fade.is-loaded{opacity:1;filter:blur(0);transform:none}
   .lst{grid-template-columns:1fr}
   .hot{grid-auto-columns:82%}
 }
+
+/* ===== 游戏列表卡流水灯边框（沿边匀速巡游） ===== */
+@property --fxa{syntax:"<angle>";initial-value:0deg;inherits:false}
+.lrow::after{content:"";position:absolute;inset:0;border-radius:12px;padding:1.5px;background:conic-gradient(from var(--fxa),transparent 0 72%,var(--ac) 82%,#fff 88%,transparent 96%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;animation:fxflow 1.8s linear infinite;pointer-events:none}
+.lrow:nth-child(2n)::after{animation-delay:-0.9s}
+.lrow:nth-child(3n)::after{animation-delay:-0.6s}
+@keyframes fxflow{to{--fxa:360deg}}
+@supports (offset-path: rect(0 0 100% 100% round 12px)){
+  .lrow::after{inset:auto;left:0;top:0;width:52px;height:2.5px;padding:0;border-radius:2px;background:linear-gradient(90deg,transparent,var(--ac) 58%,#fff);box-shadow:0 0 10px 1px var(--ac);-webkit-mask:none;mask:none;offset-path:rect(0 100% 100% 0 round 12px);offset-rotate:auto;animation:fxtravel 1.8s linear infinite}
+  @keyframes fxtravel{from{offset-distance:0%}to{offset-distance:100%}}
+  @media (prefers-reduced-motion:reduce){
+    .lrow::after{animation:none;opacity:.55;offset-distance:35%}
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .lrow::after{animation:none;opacity:.45;background:conic-gradient(from 140deg,transparent 0 70%,var(--ac) 82%,transparent 92%)}
+}
+
+/* ===== 其他卡片同款匀速流水灯（热游卡/图标墙/下载卡） ===== */
+@supports (offset-path: rect(0 0 100% 100% round 12px)){
+  .hot-card::after,.wcell::after,.dl-card::after{content:"";position:absolute;left:0;top:0;width:52px;height:2.5px;border-radius:2px;background:linear-gradient(90deg,transparent,var(--ac) 58%,#fff);box-shadow:0 0 10px 1px var(--ac);pointer-events:none;offset-rotate:auto;animation:fxtravel 1.8s linear infinite}
+  .hot-card::after{offset-path:rect(0 100% 100% 0 round 14px)}
+  .wcell::after{offset-path:rect(0 100% 100% 0 round 12px)}
+  .dl-card::after{offset-path:rect(0 100% 100% 0 round 16px)}
+  .hot-card:nth-child(2n)::after,.wcell:nth-child(2n)::after,.dl-card:nth-child(2n)::after{animation-delay:-.6s}
+  .hot-card:nth-child(3n)::after,.wcell:nth-child(3n)::after,.dl-card:nth-child(3n)::after{animation-delay:-1.2s}
+  @media (prefers-reduced-motion:reduce){
+    .hot-card::after,.wcell::after,.dl-card::after{animation:none;opacity:.55;offset-distance:35%}
+  }
+}
