@@ -2474,6 +2474,9 @@ img.img-fade.is-loaded{opacity:1;filter:blur(0);transform:none}
 .mini-btn:hover{transform:translateY(-1px)}
 .mini-btn.dl{color:#241500;background:linear-gradient(160deg,#FFD34D,#FF9C2E);box-shadow:0 4px 12px -6px rgba(255,170,50,.7)}
 .mini-btn.gd{color:#E7EAF6;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14)}
+.mini-btns{display:flex;flex-direction:column;gap:4px;flex:none;min-width:0}
+.mini-btns .mini-btn{text-align:center;padding:4px 12px}
+.wcell .mini-btns .mini-btn{padding:3px 10px}
 .hot-wrap{position:relative}
 .hot{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 36px)/3.3);gap:16px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;padding:4px 4px 14px;scrollbar-width:none;scroll-behavior:smooth}
 .hot::-webkit-scrollbar{display:none}
