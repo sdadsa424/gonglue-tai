@@ -2561,3 +2561,12 @@ img.img-fade.is-loaded{opacity:1;filter:blur(0);transform:none}
   .hero h1,.hero h1 em,.hx-spark{animation:none}
   .hx-spark{opacity:.5}
 }
+
+/* ===== 标题顶部双聚光灯 ===== */
+.hx-beam{position:absolute;top:-40px;width:150px;height:430px;pointer-events:none;mix-blend-mode:screen;background:linear-gradient(to bottom,rgba(195,165,255,.36),rgba(195,165,255,0) 76%);clip-path:polygon(38% 0,62% 0,100% 100%,0 100%);filter:blur(2px);transform-origin:50% 0;opacity:.5}
+.hx-bl{left:33%;animation:bswL 6s ease-in-out infinite}
+.hx-br{right:33%;animation:bswR 6s ease-in-out -3s infinite}
+@keyframes bswL{0%,100%{transform:rotate(-19deg);opacity:.38}50%{transform:rotate(-13deg);opacity:.66}}
+@keyframes bswR{0%,100%{transform:rotate(19deg);opacity:.38}50%{transform:rotate(13deg);opacity:.66}}
+@media (max-width:900px){.hx-beam{display:none}}
+@media (prefers-reduced-motion:reduce){.hx-beam{animation:none;opacity:.4;transform:rotate(-16deg)}.hx-br{transform:rotate(16deg)}}
