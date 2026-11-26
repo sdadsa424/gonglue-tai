@@ -408,11 +408,11 @@ ok('静态页插图懒加载 + 带宽高', /<img src="\.\.\/\.\.\/assets\/xxtl-s
 const desk = await make(BASE, {}, { pointerFine: true });
 await wait(700);
 const dd = desk.window.document;
-const firstEntry = dd.querySelector('[data-entries] .entry') || dd.querySelector('.game-card');
+const firstEntry = dd.querySelector('[data-entries] .entry') || dd.querySelector('.hot-card');
 firstEntry.dispatchEvent(new desk.window.MouseEvent('mousemove', { bubbles: true, clientX: 40, clientY: 40 }));
 await wait(60);
 ok('桌面端卡片按需挂上光标高光', firstEntry.classList.contains('glow-host'));
-const cardEl = dd.querySelector('.game-card');
+const cardEl = dd.querySelector('.hot-card');
 cardEl.dispatchEvent(new desk.window.MouseEvent('pointermove', { bubbles: true, clientX: 120, clientY: 120 }));
 await wait(80);
 ok('桌面端卡片进入 3D 倾斜态', cardEl.classList.contains('tilt-on'));
@@ -915,7 +915,7 @@ ok('露娜2 进攻略库：GAMES.luna2 + 10 篇文章（a/luna2-*，含魔族攻
 ok('露娜2 首页集成：轮播 4 张 / 侧栏 8 款 / game-card / 统计 8 款 96 篇（含 18 篇官方外链）7 分类（yxlc 隐藏中），旧横幅零残留', (() => {
   const home = fsMod2.readFileSync('index.html', 'utf8');
   return (home.match(/class="fc-slide/g) || []).length === 4
-    && (home.match(/class="game-card"/g) || []).length === 12
+    && (home.match(/class="hot-card"/g) || []).length === 6 && (home.match(/class="wcell"/g) || []).length === 12 && (home.match(/class="lrow"/g) || []).length === 12
     && home.includes('<b id="statGames">12</b>') && home.includes('<b id="statGuides">116</b>') && home.includes('<b id="statCats">7</b>')
     && /const ORDER = \['ejl', 'xxtl', 'ty', 'luna2', 'cq3d', 'wlwz', 'xxjz', 'lzgsy', 'gc', 'dbwl', 'chd', 'sbk'\];/.test(home)
     && home.includes('十二款游戏')

@@ -825,7 +825,7 @@
 
     /* 2. 卡片光标跟随高光（仅精确指针设备；卡片多为 JS 后渲染，按需挂类） */
     if (window.matchMedia && window.matchMedia('(pointer:fine)').matches) {
-      var GLOW_SEL = '.entry, .game-card, .poster, .related a';
+      var GLOW_SEL = '.entry, .hot-card, .lrow, .poster, .related a';
       var raf = 0, target = null, px = 0, py = 0;
       document.addEventListener('mousemove', function (e) {
         var host = e.target && e.target.closest ? e.target.closest(GLOW_SEL) : null;
@@ -849,7 +849,7 @@
        transform 过渡，避免"每帧重启 transition"造成的抖动/追赶感 */
     if (window.matchMedia && window.matchMedia('(pointer:fine)').matches
         && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      var TILT_SEL = '.poster, .entry, .game-card, .related a';
+      var TILT_SEL = '.poster, .entry, .hot-card, .lrow, .related a';
       var MAX_TILT = 7;          /* 单边最大角度 */
       var LERP = 0.18;           /* 每帧向目标逼近的比例，越小越"跟手柔" */
       var EPS = 0.03;            /* 归位判定阈值（度/像素） */
