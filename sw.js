@@ -11,7 +11,7 @@
  *   接口 /api/*       完全不拦——点赞、留言必须实时，不能被缓存糊住
  *   跨域请求（天气/IP/统计）不拦——交给浏览器
  */
-const VERSION = '58aa7241fb';
+const VERSION = '9e1659201d';
 const CACHE = 'gl-' + VERSION;
 /* 部署在子路径（如 GitHub Pages 的 /gonglue-tai/）时，scope 就是子路径根 */
 const ROOT = self.registration.scope;
