@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GTA6 工具箱 · 秘籍速查 / 密码大全 / 特殊地点 - 向日葵游戏盒</title>
+<meta name="description" content="GTA6 站内工具箱：61 条秘籍手柄按键速查（PS/Xbox 双拼）、22 个门锁保险箱密码、特殊地点分类速查，全部站内直用不出站。">
+<meta property="og:title" content="GTA6 工具箱 · 秘籍 / 密码 / 地点速查">
+<meta property="og:description" content="61 条秘籍按键速查、22 个密码、特殊地点分类，站内直用不出站。">
+<link rel="canonical" href="https://wgame-bc7.pages.dev/g/gta6/tools/">
+<style>
+:root{--bg:#090A12;--card:#141728;--card2:#191D33;--line:rgba(255,255,255,.07);--line2:rgba(255,255,255,.14);--text:#ECEEF8;--muted:#949AB3;--dim:#666C85;--ac:#F06D3B}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font:14px/1.6 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+.top{display:flex;align-items:center;gap:12px;padding:16px 0 4px}
+.top a{color:var(--muted);text-decoration:none;font-size:13px}
+.top a:hover{color:var(--text)}
+h1{font-size:22px;font-weight:800;margin:10px 0 4px}
+h1 i{font-style:normal;color:var(--ac)}
+.sub{color:var(--dim);font-size:12.5px;margin-bottom:18px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tab{padding:9px 16px;border-radius:10px;border:1px solid var(--line2);background:var(--card);color:var(--muted);font-size:13.5px;font-weight:700;cursor:pointer;transition:.18s}
+.tab:hover{color:var(--text);border-color:rgba(240,109,59,.5)}
+.tab.on{background:linear-gradient(160deg,rgba(240,109,59,.22),rgba(240,109,59,.08));border-color:rgba(240,109,59,.65);color:#FFD9C4}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.search{flex:1;min-width:200px;padding:9px 13px;border-radius:10px;border:1px solid var(--line2);background:var(--card);color:var(--text);font-size:13.5px;outline:none}
+.search:focus{border-color:rgba(240,109,59,.6)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--muted);font-size:12px;cursor:pointer;transition:.15s}
+.chip.on{background:rgba(240,109,59,.16);border-color:rgba(240,109,59,.55);color:#FFC9AC}
+.plat{display:flex;border:1px solid var(--line2);border-radius:10px;overflow:hidden}
+.plat button{padding:8px 14px;background:var(--card);border:0;color:var(--muted);font-size:12.5px;font-weight:700;cursor:pointer}
+.plat button.on{background:rgba(240,109,59,.2);color:#FFD9C4}
+.cnt{color:var(--dim);font-size:12px;margin:0 0 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.cheat{background:linear-gradient(180deg,#151930,#121527);border:1px solid var(--line);border-radius:12px;padding:14px 15px;position:relative;transition:border-color .18s}
+.cheat:hover{border-color:rgba(240,109,59,.45)}
+.cheat .cat{display:inline-block;font-size:11px;color:#FFC9AC;background:rgba(240,109,59,.14);border:1px solid rgba(240,109,59,.3);border-radius:6px;padding:1px 7px;margin-bottom:7px}
+.cheat b{display:block;font-size:14px;font-weight:700;margin-bottom:6px}
+.keys{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:7px;min-height:24px}
+kbd{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:24px;padding:0 6px;border-radius:6px;background:#232848;border:1px solid rgba(255,255,255,.14);border-bottom-width:2.5px;font:600 12px/1 Consolas,monospace;color:#E7EAF6}
+.none{color:var(--dim);font-size:12px}
+.unlock{font-size:12px;color:var(--muted)}
+.unlock em{font-style:normal;color:var(--dim)}
+.fav{position:absolute;top:10px;right:11px;background:none;border:0;font-size:17px;color:var(--dim);cursor:pointer;line-height:1}
+.fav.on{color:#FFB020}
+h2.sect{font-size:16px;font-weight:800;margin:26px 0 4px;padding-left:10px;border-left:3px solid var(--ac)}
+.sectnote{color:var(--dim);font-size:12.5px;margin-bottom:12px}
+.tbl{width:100%;border-collapse:collapse;background:var(--card);border-radius:12px;overflow:hidden;font-size:13px;margin-bottom:20px}
+.tbl th{background:#1B2039;text-align:left;padding:10px 12px;font-size:12px;color:var(--muted);font-weight:600;border-bottom:1px solid var(--line2)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl tr:last-child td{border-bottom:0}
+.tbl td:first-child{white-space:nowrap;font:700 13px Consolas,monospace;color:#FFD9C4;cursor:pointer}
+.tbl td:first-child:hover{color:#fff}
+.tbl .r{color:var(--dim)}
+.plwrap{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:10px}
+.place{background:linear-gradient(180deg,#151930,#121527);border:1px solid var(--line);border-radius:12px;padding:14px 15px}
+.place .pc{font-size:11px;color:#FFC9AC;background:rgba(240,109,59,.14);border:1px solid rgba(240,109,59,.3);border-radius:6px;padding:1px 7px;display:inline-block;margin-bottom:7px}
+.place b{display:block;font-size:14px;margin-bottom:5px}
+.place p{font-size:12.5px;color:var(--muted)}
+.place .rel{margin-top:7px;font-size:11.5px;color:var(--dim)}
+.src{margin:30px 0 40px;padding-top:14px;border-top:1px solid var(--line);color:var(--dim);font-size:11.5px;line-height:1.7}
+@media(max-width:640px){.grid{grid-template-columns:1fr}.plwrap{grid-template-columns:1fr}.tbl{font-size:12px}.tbl td,.tbl th{padding:8px 9px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="top"><a href="../../">← 返回总站</a><span style="color:var(--dim)">/</span><a href="../">GTA6 攻略</a></nav>
+  <h1>GTA6 工具箱 <i>·</i> 站内直用</h1>
+  <p class="sub">秘籍按键、门锁保险箱密码、特殊地点速查——全部在本页使用，不出站。数据整理自 GTA6 中文网社区实测，单源信息已标注。</p>
+
+  <div class="tabs" role="tablist">
+    <button class="tab on" data-t="cheats" role="tab">秘籍速查 · 61 条</button>
+    <button class="tab" data-t="codes" role="tab">密码大全 · 22 个</button>
+    <button class="tab" data-t="places" role="tab">特殊地点 · 10 处</button>
+  </div>
+
+  <!-- 秘籍 -->
+  <section id="pane-cheats">
+    <div class="bar">
+      <input class="search" id="q-cheats" type="search" placeholder="搜秘籍名称 / 效果…">
+      <div class="chips" id="cheat-chips"></div>
+      <div class="plat" id="plat"><button class="on" data-p="ps">PlayStation</button><button data-p="xbox">Xbox</button></div>
+    </div>
+    <p class="cnt" id="cheat-cnt"></p>
+    <div class="grid" id="cheat-grid"></div>
+  </section>
+
+  <!-- 密码 -->
+  <section id="pane-codes" hidden>
+    <p class="sectnote">任务密码全玩家一致；据点与探索密码可能因存档而异，现场找线索优先。点密码可复制。带 <b>*</b> 为单源条目，照抄前留意。</p>
+    <div id="codes-box"></div>
+  </section>
+
+  <!-- 地点 -->
+  <section id="pane-places" hidden>
+    <div class="chips" id="place-chips" style="margin-bottom:14px"></div>
+    <div class="plwrap" id="place-grid"></div>
+  </section>
+
+  <p class="src">来源：数据整理自 GTA6 中文网（gta6.talkn.cn）社区实测内容，按键为手柄输入；秘籍需满足对应解锁条件才会生效。效率与数值可能随官方补丁变化，以游戏内为准。</p>
+</div>
+
+<script>
+/* ===== 数据（整理自 GTA6 中文网，2026-11 抓取） ===== */
+var CHEATS=[{"cat": "玩家", "name": "获得 $250,000", "ps": "↑ → ↓ ← ↑ ← ↓ →", "unlock": "完成主线剧情"}, {"cat": "玩家", "name": "醉酒（你和搭档喝醉）", "ps": "↑ ← → ↑ ↑ ← → ↑ ← →", "unlock": "累计花费 $2,500 购买酒类"}, {"cat": "玩家", "name": "提高搜捕关注等级（Heat Level）", "ps": "← ↓ → ↓ ↑ ↓ ↑", "unlock": "甩掉 3 星通缉 25 次"}, {"cat": "玩家", "name": "提升通缉等级", "ps": "← ↓ → ↓ ↑ → ↑", "unlock": "甩掉 3 星通缉 50 次"}, {"cat": "玩家", "name": "无限专注力", "ps": "↓ ↑ ↑ ↓ ↑ ↓ ↑ ↓ ↑ →", "unlock": "完成主线剧情"}, {"cat": "玩家", "name": "免疫坠落伤害", "ps": null, "unlock": "从 12 米高处自由坠落并存活 20 次"}, {"cat": "玩家", "name": "降落伞（加入装备配置）", "ps": null, "unlock": "在 91.5 米以上高度完成 50 次高空跳伞或低空跳伞"}, {"cat": "玩家", "name": "防弹衣（加入装备配置）", "ps": "↓ ↑ ← ↑ ↑ ↑ ↑ ↑ ↓ ↓", "unlock": "完成 100 次健身训练"}, {"cat": "玩家", "name": "修理载具", "ps": null, "unlock": "在盖尔霍恩赛道、冒险佬泥地俱乐部、布恩赛道累计获得 10 次第一名"}, {"cat": "玩家", "name": "无限氮气加速", "ps": null, "unlock": "完成 50 次飞车特技跳跃"}, {"cat": "战斗", "name": "弹药全满", "ps": "↓ ↑ → ↓ ← ← ↑ ↑ ↓ ←", "unlock": "靶场获得 25 枚铜牌或更高"}, {"cat": "战斗", "name": "无限弹药", "ps": "↓ ↑ → ↓ ← ← ↑ ↓ ↓ ↓", "unlock": "靶场获得 25 枚银牌或更高"}, {"cat": "战斗", "name": "无需装填", "ps": "↓ ↑ → ↓ ← ← ↑ ↓ ↓ ↑", "unlock": "靶场获得 25 枚金牌"}, {"cat": "战斗", "name": "全部爆炸性武器（满弹药）", "ps": null, "unlock": "投掷 100 枚手榴弹"}, {"cat": "战斗", "name": "燃烧弹药", "ps": null, "unlock": "使用火焰伤害烧伤 100 名敌人"}, {"cat": "战斗", "name": "爆炸瓶（所有瓶子受击爆炸）", "ps": null, "unlock": "投掷 100 瓶燃烧瓶"}, {"cat": "战斗", "name": "爆破霰弹枪（梅森基恩锐眼短管枪）", "ps": null, "unlock": "使用爆炸伤害击中 100 名敌人"}, {"cat": "战斗", "name": "豪纳斯 H-AT（加入装备配置）", "ps": null, "unlock": "炸毁 100 辆载具"}, {"cat": "战斗", "name": "强力攻击（子弹近战击飞目标）", "ps": "↓ ↑ ← ← → ↓ ↓ ↑ ↓", "unlock": "完成主线剧情"}, {"cat": "战斗", "name": "爆炸球（运动球受击爆炸）", "ps": "↓ ↑ ← ← → ↓ ↓ ↑ →", "unlock": "使用爆炸伤害击中 20 名敌人"}, {"cat": "战斗", "name": "载具撞击强化（碰撞击飞目标）", "ps": "↓ ↑ ← ← → ↓ ← ↑ ↓", "unlock": "使用载具击杀 25 名敌人或平民"}, {"cat": "时间天气", "name": "快进时间", "ps": null, "unlock": "找到 10 只收藏手表"}, {"cat": "时间天气", "name": "暂停时间", "ps": null, "unlock": "找到 20 只收藏手表"}, {"cat": "时间天气", "name": "切换天气", "ps": "↓ → ↑ ↓ → ↑ →", "unlock": "完成主线剧情（一说需揭开整张地图，两源口径不同）"}, {"cat": "载具", "name": "召唤洲际救护车", "ps": null, "unlock": "Progress 菜单中发现洲际救护车"}, {"cat": "载具", "name": "召唤风扇艇 09", "ps": null, "unlock": "完成 5 项生存挑战"}, {"cat": "载具", "name": "召唤冒险家女妖", "ps": null, "unlock": "完成所有战斗挑战"}, {"cat": "载具", "name": "召唤特浮 BMX", "ps": null, "unlock": "完成 5 项健身挑战"}, {"cat": "载具", "name": "召唤麦霸子步轮速（Boomazoom）", "ps": "← ↑ → ↓ ← ← ↑ ←", "unlock": "完成 5 项购物挑战"}, {"cat": "载具", "name": "召唤长崎碳纤 RS", "ps": null, "unlock": "完成所有探索挑战"}, {"cat": "载具", "name": "召唤 1965 款威皮公路霸者", "ps": null, "unlock": "完成所有健身挑战"}, {"cat": "载具", "name": "召唤培罗艾默瑞斯", "ps": null, "unlock": "完成所有载具挑战"}, {"cat": "载具", "name": "召唤充气红鹤", "ps": null, "unlock": "摧毁 50 只古柯碱红鹤"}, {"cat": "载具", "name": "召唤 MTL 磅浦者", "ps": "← ↑ → ↓ ← → → ↑", "unlock": "Progress 菜单中发现 MTL 磅浦者"}, {"cat": "载具", "name": "召唤威皮使塔尼亚 G2 计程车", "ps": null, "unlock": "完成 5 项运动挑战"}, {"cat": "载具", "name": "召唤豪纳斯 P-996 天煞（战斗机）", "ps": null, "unlock": "完成所有挑战"}, {"cat": "载具", "name": "召唤 HVY 推土机", "ps": "← ↑ → ↓ ← → → ↓", "unlock": "Progress 菜单中发现 HVY 推土机"}, {"cat": "载具", "name": "召唤鸬鹚绿头鸭（特技飞机）", "ps": null, "unlock": "完成 5 项载具挑战"}, {"cat": "载具", "name": "召唤磺火高球车", "ps": null, "unlock": "完成所有运动挑战"}, {"cat": "载具", "name": "召唤豪纳斯犀式坦克", "ps": null, "unlock": "完成所有生存挑战"}, {"cat": "载具", "name": "召唤麦霸子桑切斯", "ps": null, "unlock": "完成 5 项犯罪挑战"}, {"cat": "载具", "name": "召唤长崎海雀（水上直升机）", "ps": null, "unlock": "完成 5 项探索挑战"}, {"cat": "载具", "name": "召唤飙速号 700GT（快艇）", "ps": null, "unlock": "完成 5 项战斗挑战"}, {"cat": "载具", "name": "召唤特卢菲瑟雷斯", "ps": null, "unlock": "完成所有购物挑战"}, {"cat": "载具", "name": "召唤西部锤尸者", "ps": null, "unlock": "完成所有犯罪挑战"}, {"cat": "滤镜", "name": "黄金时刻（金色滤镜 · 宽屏）", "ps": null, "unlock": "累计与搭档牵手 4 小时"}, {"cat": "滤镜", "name": "糖粉（全白世界 · 闪烁光泽）", "ps": null, "unlock": "使用望尻扫描所有太空碎片"}, {"cat": "滤镜", "name": "针孔（针孔相机滤镜）", "ps": null, "unlock": "与搭档完成 25 次帮派清剿"}, {"cat": "滤镜", "name": "霓虹丛林（霓虹光影）", "ps": null, "unlock": "找到全部 16 辆少女风格载具"}, {"cat": "滤镜", "name": "往日时光（黑白 CRT 电视滤镜）", "ps": null, "unlock": "发现里奇威"}, {"cat": "滤镜", "name": "灾变（全屏浑浊烟雾）", "ps": "↓ ↓ ↑ → → ↑ ← ← → →", "unlock": "Progress 菜单中发现玛莎的巴默恩"}, {"cat": "滤镜", "name": "录像带（录像带风格滤镜）", "ps": null, "unlock": "与搭档完成 50 项活动"}, {"cat": "滤镜", "name": "暗镜（世界上下颠倒 · 黑暗）", "ps": null, "unlock": "出售载具累计赚取 $500,000"}, {"cat": "滤镜", "name": "偏头痛（模糊扭曲滤镜）", "ps": null, "unlock": "在 6 星通缉下存活 6 分钟"}, {"cat": "滤镜", "name": "玩偶屋（高饱和 · 窄画幅）", "ps": "↓ ↓ ↑ → → ↑ ← ← ↓ →", "unlock": "与搭档累计相处 8 小时"}, {"cat": "滤镜", "name": "泡泡糖（紫黄世界 · 闪烁）", "ps": null, "unlock": "找齐 24 张罪恶都市火烈鸟收藏卡"}, {"cat": "滤镜", "name": "快进（动态模糊 · 云加速）", "ps": null, "unlock": "完成 50 次冥想"}, {"cat": "滤镜", "name": "鱼眼（鱼眼镜头滤镜）", "ps": null, "unlock": "捕获 100 条鱼"}, {"cat": "滤镜", "name": "褪色荣光（彩色 CRT 电视滤镜）", "ps": "↓ ↓ ↑ → → ↑ ← ← ← →", "unlock": "与搭档一起抢劫 50 家商店"}, {"cat": "滤镜", "name": "像素艺术（像素化滤镜）", "ps": null, "unlock": "出售收藏品累计赚取 $250,000"}, {"cat": "滤镜", "name": "地狱景象（红橙世界 · 热浪扭曲）", "ps": null, "unlock": "偷走 100 辆警用载具"}];
+var PLACES=[{"n": "银行金库", "c": "任务地点", "d": "资料提到地图上有银行金库相关活动，具体触发与开放阶段以游戏内地图标记为准。", "h": "guide-launch-intel.html", "l": "攻略汇总"}, {"n": "抢劫任务点", "c": "任务地点", "d": "资料显示地图提供 Robberies 筛选，可在地图上按类别查看抢劫相关活动。", "h": "map.html", "l": "互动地图"}, {"n": "商店抢劫 / Smash & Grab", "c": "任务地点", "d": "珠宝店、当铺类活动计入单独清单，随主线推进解锁；以游戏内地图筛选为准。", "h": "guide-launch-intel.html", "l": "攻略汇总"}, {"n": "保龄球馆等娱乐", "c": "休闲设施", "d": "发售前有关于部分小游戏取舍的讨论，实际能否进入、开放条件以游戏内为准。", "h": "news-cut-minigames.html", "l": "相关资讯"}, {"n": "车辆扣押场（取回被扣车）", "c": "设施", "d": "资料提到被扣押车辆需要取回，具体位置与流程以游戏内地图与提示为准。", "h": "map.html", "l": "互动地图"}, {"n": "改车王 / 改装铺", "c": "设施", "d": "用于改装与车辆管理，站点互动地图提供改车王等设施分类筛选。", "h": "map.html", "l": "互动地图"}, {"n": "安全屋 / 车库", "c": "设施", "d": "存档、换装与车辆存放点，本站有房产与车库专文整理。", "h": "guide-safehouse-garage.html", "l": "详细攻略"}, {"n": "潜水点 / 水下探索", "c": "活动", "d": "资料把潜水列为上升的活动搜索，具体点位游戏内探索为准；本站互动地图标注地标与设施。", "h": "map.html", "l": "互动地图"}, {"n": "武器店 Ammu-Nation", "c": "商店", "d": "购买武器与装备，防弹衣在 Equipment 分类购买。", "h": "guide-armor.html", "l": "详细攻略"}, {"n": "机场 / 飞行", "c": "交通", "d": "资料建议飞往机场开飞机可快速清地图迷雾，机场位置见互动地图交通分类。", "h": "guide-unfog.html", "l": "开雾攻略"}];
+var CODES=[{"head": "任务密码（6 个，全玩家一致）", "cols": ["密码", "开启对象与地点", "关联任务", "备注"], "rows": [["0420", "实验室门 · Moonstone Boutique", "Lab Fees（第 1 章）", "店员会告诉你密码"], ["7700", "门 · Brian's Lockup", "Lab Fees（第 1 章）", "—"], ["2008*", "办公室保险箱 · Delights", "Afternoon Delight（第 2 章）", "单源来源，未经证实"], ["1680", "保险箱 · Casa de Empeño", "Yasmani's Jewelry Jobs", "之后再抢这家店可能需要其他密码"], ["6815", "保险箱 · Richardson Jewelry", "Yasmani's Jewelry Jobs", "同上"], ["0104", "保险箱 · Donovan Banks & Co.", "Yasmani's Jewelry Jobs", "同上"]]}, {"head": "非法据点保险箱密码（9 个）", "cols": ["密码", "开启对象与地点", "备注"], "rows": [["6823", "保险箱 · Brooks Boatworks", "非法据点：Kolt & Associates"], ["6969", "保险箱 · La Cascara Motel", "非法据点：Kolt & Associates"], ["0300", "保险箱 · Kingpin Bowling（Port Gellhorn）", "密码写在 Brooks Boatworks，不在保龄球馆"], ["6769", "码头建筑保险箱 · Sunrise RV Park", "非法据点：Kingfishers"], ["7777", "保险箱 · Nova Auto Junkyard", "—"], ["2121", "保险箱 · Farm Fix Meth Lab", "—"], ["4124", "保险箱 · Illegal Sneaker Trade", "非法据点：San4San"], ["1965", "保险箱 · Casa Guardia", "非法据点：The Guardia Brothers"], ["8046", "保险箱 · Saber Shipping Yard", "非法据点：The Guardia Brothers"]]}, {"head": "自由探索密码（7 个）", "cols": ["密码", "开启对象与地点", "线索位置"], "rows": [["CLEAVES", "电脑密码 · 螃蟹研究站（Pelican Valley）", "密码写在屋内某房间的地板上"], ["0072", "保险箱 · 螃蟹研究站（Pelican Valley）", "电脑提示：成功试验编号 0036 × 2"], ["44017", "拖车屋保险箱 · Cottonmouth Lake", "密码写在墙上照片之间"], ["092319", "车库门 · 派对屋（Key Lento）", "—"], ["2727", "车库门 · 停着 '74 Vamos 的车库", "—"], ["62412*", "墙内保险箱 · 废弃洗衣店（Belville）", "单源来源，未经证实"], ["2341*", "门 · South Point Airfield", "单源来源，未经证实"]]}];
+var XMAP={"R1":"RB","R2":"RT","L1":"LB","L2":"LT","△":"Y","○":"B","×":"A","□":"X"};
+</script>
+<script>
+(function(){
+"use strict";
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+
+/* ===== Tab 切换（支持 #hash 直达） ===== */
+var tabs=document.querySelectorAll('.tab');
+function show(t){
+  tabs.forEach(function(b){b.classList.toggle('on',b.dataset.t===t);});
+  ['cheats','codes','places'].forEach(function(k){document.getElementById('pane-'+k).hidden=(k!==t);});
+}
+tabs.forEach(function(b){b.addEventListener('click',function(){location.hash=b.dataset.t;show(b.dataset.t);});});
+var h=(location.hash||'').replace('#','');
+if(['cheats','codes','places'].indexOf(h)>=0) show(h);
+window.addEventListener('hashchange',function(){var h=location.hash.replace('#','');if(['cheats','codes','places'].indexOf(h)>=0)show(h);});
+
+/* ===== 秘籍 ===== */
+var plat='ps',cat='全部',q='',favs={};
+try{favs=JSON.parse(localStorage.getItem('sngz-cheat-favs')||'{}');}catch(e){}
+var cats=['全部'];CHEATS.forEach(function(c){if(cats.indexOf(c.cat)<0)cats.push(c.cat);});
+var chipBox=document.getElementById('cheat-chips');
+chipBox.innerHTML=cats.map(function(c){return '<button class="chip'+(c==='全部'?' on':'')+'" data-c="'+esc(c)+'">'+esc(c)+'</button>';}).join('');
+chipBox.addEventListener('click',function(e){
+  var b=e.target.closest('.chip');if(!b)return;
+  cat=b.dataset.c;
+  chipBox.querySelectorAll('.chip').forEach(function(x){x.classList.toggle('on',x===b);});
+  render();
+});
+document.getElementById('plat').addEventListener('click',function(e){
+  var b=e.target.closest('button');if(!b)return;
+  plat=b.dataset.p;
+  document.querySelectorAll('#plat button').forEach(function(x){x.classList.toggle('on',x===b);});
+  render();
+});
+document.getElementById('q-cheats').addEventListener('input',function(){q=this.value.trim();render();});
+function keysHtml(seq){
+  if(!seq)return '<span class="none">无按键组合 · 靠解锁条件触发 ↓</span>';
+  return seq.split(' ').map(function(k){return '<kbd>'+esc(plat==='xbox'?(XMAP[k]||k):k)+'</kbd>';}).join('');
+}
+function render(){
+  var list=CHEATS.filter(function(c){
+    return (cat==='全部'||c.cat===cat)&&(!q||c.name.indexOf(q)>=0||(c.unlock||'').indexOf(q)>=0);
+  });
+  document.getElementById('cheat-cnt').textContent='显示 '+list.length+' / '+CHEATS.length+' 条 · 已收藏 '+Object.keys(favs).length+' 条';
+  document.getElementById('cheat-grid').innerHTML=list.map(function(c,i){
+    var id=esc(c.name);
+    return '<article class="cheat"><button class="fav'+(favs[id]?' on':'')+'" data-f="'+esc(c.name)+'" aria-label="收藏">'+(favs[id]?'★':'☆')+'</button>'+
+      '<span class="cat">'+esc(c.cat)+'</span><b>'+esc(c.name)+'</b>'+
+      '<div class="keys">'+keysHtml(c.ps)+'</div>'+
+      '<p class="unlock"><em>解锁：</em>'+esc(c.unlock||'—')+'</p></article>';
+  }).join('');
+}
+document.getElementById('cheat-grid').addEventListener('click',function(e){
+  var b=e.target.closest('.fav');if(!b)return;
+  var id=b.dataset.f;
+  if(favs[id])delete favs[id];else favs[id]=1;
+  try{localStorage.setItem('sngz-cheat-favs',JSON.stringify(favs));}catch(err){}
+  render();
+});
+
+render();
+
+/* ===== 密码 ===== */
+var box=document.getElementById('codes-box');
+var NOTE={0:'剧情任务里遇到的密码固定不变，可以直接照抄。',1:'抢劫非法据点时的保险箱密码，可能因人而异。',2:'散落在世界里的保险箱、电脑与车库门，部分带解谜线索。'};
+box.innerHTML=CODES.map(function(tb,ti){
+  var head=tb.head,rows=tb.rows;
+  return '<h2 class="sect">'+esc(head)+'</h2><p class="sectnote">'+esc(NOTE[ti]||'')+'</p>'+
+  '<table class="tbl"><thead><tr>'+tb.cols.map(function(c){return '<th>'+esc(c)+'</th>';}).join('')+'</tr></thead><tbody>'+
+  rows.map(function(r){
+    return '<tr>'+r.map(function(cell,ci){
+      var star=cell.indexOf('*')>=0;
+      return '<td'+(ci===0?' class="cp" title="点击复制"':'')+(star?' style="color:#FFB020"':'')+'>'+esc(cell)+'</td>';
+    }).join('')+'</tr>';
+  }).join('')+'</tbody></table>';
+}).join('');
+box.addEventListener('click',function(e){
+  var td=e.target.closest('td.cp');if(!td)return;
+  var code=td.textContent.replace(/\*$/,'');
+  function done(){var o=td.textContent;td.textContent='✓ 已复制';setTimeout(function(){td.textContent=o;},900);}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(code).then(done,function(){prompt('手动复制：',code);});}
+  else prompt('手动复制：',code);
+});
+
+/* ===== 地点 ===== */
+var pcs=['全部'];PLACES.forEach(function(p){if(pcs.indexOf(p.c)<0)pcs.push(p.c);});
+var pcBox=document.getElementById('place-chips');
+pcBox.innerHTML=pcs.map(function(c){return '<button class="chip'+(c==='全部'?' on':'')+'" data-c="'+esc(c)+'">'+esc(c)+'</button>';}).join('');
+function pr(){
+  var cur=pcBox.querySelector('.chip.on').dataset.c;
+  var list=PLACES.filter(function(p){return cur==='全部'||p.c===cur;});
+  document.getElementById('place-grid').innerHTML=list.map(function(p){
+    return '<article class="place"><span class="pc">'+esc(p.c)+'</span><b>'+esc(p.n)+'</b><p>'+esc(p.d)+'</p>'+
+      (p.l?'<p class="rel">关联阅读：'+esc(p.l)+'</p>':'')+'</article>';
+  }).join('');
+}
+pcBox.addEventListener('click',function(e){
+  var b=e.target.closest('.chip');if(!b)return;
+  pcBox.querySelectorAll('.chip').forEach(function(x){x.classList.toggle('on',x===b);});
+  pr();
+});
+pr();
+})();
+</script>
+</body>
+</html>
