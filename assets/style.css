@@ -2207,7 +2207,7 @@ mark.hl{background:rgba(255,61,154,.22);color:#FFD9EC;border-radius:3px;padding:
 .dl-sub{margin-top:6px;font-size:13px;color:var(--muted)}
 .dl-list{margin-top:20px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .dl-card{
-  position:relative;display:block;background:var(--card);border-radius:16px;overflow:hidden;text-decoration:none;color:inherit;
+  display:block;background:var(--card);border-radius:16px;overflow:hidden;text-decoration:none;color:inherit;
   box-shadow:0 14px 34px -22px rgba(31,35,41,.4),0 1px 3px rgba(31,35,41,.08);
   transition:transform .2s ease,box-shadow .25s ease;
 }
@@ -2443,7 +2443,7 @@ img.img-fade.is-loaded{opacity:1;filter:blur(0);transform:none}
 .hot-sub .cnt{display:inline;color:#C9A227;font-weight:700}
 .hot-btns{flex:none;display:flex;gap:7px}
 .wall{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:12px 10px}
-.wcell{position:relative;display:flex;flex-direction:column;align-items:center;gap:7px;padding:12px 6px 11px;border-radius:12px;border:1px solid transparent;transition:all .2s ease}
+.wcell{display:flex;flex-direction:column;align-items:center;gap:7px;padding:12px 6px 11px;border-radius:12px;border:1px solid transparent;transition:all .2s ease}
 .wcell:hover{background:#151930;border-color:var(--line);transform:translateY(-2px)}
 .w-main{display:flex;flex-direction:column;align-items:center;gap:7px;text-decoration:none;min-width:0;width:100%}
 .w-main img{width:64px;height:64px;border-radius:14px;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,.45)}
@@ -2466,20 +2466,3 @@ img.img-fade.is-loaded{opacity:1;filter:blur(0);transform:none}
   .hot{grid-auto-columns:82%}
 }
 
-/* 流水灯：热游大卡/图标墙/下载卡 */
-@supports (offset-path: rect(0 0 100% 100% round 12px)){
-  .hot-card::after,.wcell::after,.dl-card::after{content:"";position:absolute;left:0;top:0;width:52px;height:2.5px;border-radius:2px;background:linear-gradient(90deg,transparent,var(--ac) 58%,#fff);box-shadow:0 0 10px 1px var(--ac);pointer-events:none;offset-rotate:auto;animation:fxtravel 1.8s linear infinite;z-index:3}
-  .hot-card::after{offset-path:rect(0 100% 100% 0 round 14px)}
-  .wcell::after{offset-path:rect(0 100% 100% 0 round 12px)}
-  .dl-card::after{offset-path:rect(0 100% 100% 0 round 16px)}
-  .hot-card:nth-child(2n)::after{animation-delay:-.6s}
-  .hot-card:nth-child(3n)::after{animation-delay:-1.2s}
-  .wcell:nth-child(2n)::after{animation-delay:-.6s}
-  .wcell:nth-child(3n)::after{animation-delay:-1.2s}
-  .dl-card:nth-child(2n)::after{animation-delay:-.6s}
-  .dl-card:nth-child(3n)::after{animation-delay:-1.2s}
-  @media (prefers-reduced-motion:reduce){
-    .hot-card::after,.wcell::after,.dl-card::after{animation:none;opacity:.55;offset-distance:35%}
-  }
-}
-@keyframes fxtravel{from{offset-distance:0%}to{offset-distance:100%}}
