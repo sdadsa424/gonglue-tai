@@ -24,7 +24,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="攻略大全">
-<link rel="stylesheet" href="assets/style.css?v=fx6">
+<link rel="stylesheet" href="assets/style.css?v=fx5">
 <link rel="preload" as="image" href="assets/hero-ejl.webp" imagesrcset="assets/hero-ejl_480w.avif 480w, assets/hero-ejl.avif 750w" imagesizes="(max-width:760px) 46vw, 220px" type="image/avif" fetchpriority="high">
 <!-- BUILD:HEAD -->
 <meta name="theme-color" content="#090A12">
@@ -1967,6 +1967,50 @@ window.addEventListener('resize', onScroll);
   }
 })();
 
+/* ---------- 交互特效：鼠标点击爆裂 + 触屏滑动拖尾 ---------- */
+(function () {
+  if (PREFERS_REDUCE) return;
+  var layer = document.createElement('div');
+  layer.className = 'fx-fx';
+  layer.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(layer);
+  var SPARK_COLORS = ['', 'v2', 'v3'];
+  function burst(x, y) {
+    if (layer.childElementCount > 60) return; // 性能保护
+    var ring = document.createElement('i');
+    ring.className = 'fx-ring' + (Math.random() < .5 ? ' v2' : '');
+    ring.style.left = x + 'px'; ring.style.top = y + 'px';
+    ring.addEventListener('animationend', function () { if (ring.parentNode) ring.parentNode.removeChild(ring); });
+    layer.appendChild(ring);
+    for (var i = 0; i < 7; i++) {
+      var sp = document.createElement('i');
+      sp.className = 'fx-spark ' + SPARK_COLORS[i % 3];
+      sp.style.left = x + 'px'; sp.style.top = y + 'px';
+      var ang = Math.random() * Math.PI * 2, dist = 26 + Math.random() * 34;
+      sp.style.setProperty('--dx', (Math.cos(ang) * dist).toFixed(1) + 'px');
+      sp.style.setProperty('--dy', (Math.sin(ang) * dist).toFixed(1) + 'px');
+      sp.addEventListener('animationend', function (ev) { if (ev.target.parentNode) ev.target.parentNode.removeChild(ev.target); });
+      layer.appendChild(sp);
+    }
+  }
+  function trail(x, y) {
+    if (layer.childElementCount > 60) return;
+    var t = document.createElement('i');
+    t.className = 'fx-trail' + (Math.random() < .45 ? ' v2' : '');
+    t.style.left = x + 'px'; t.style.top = y + 'px';
+    layer.appendChild(t);
+    setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 750);
+  }
+  document.addEventListener('click', function (e) { burst(e.clientX, e.clientY); }, { passive: true });
+  var last = 0;
+  document.addEventListener('touchmove', function (e) {
+    var now = Date.now();
+    if (now - last < 45) return; // 节流
+    last = now;
+    var t = e.touches[0];
+    if (t) trail(t.clientX, t.clientY);
+  }, { passive: true });
+})();
 (function () {
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var els = document.querySelectorAll('.sec, .hot-card, .wcell, .lrow, .poster');

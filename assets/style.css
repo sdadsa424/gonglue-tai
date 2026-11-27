@@ -984,6 +984,30 @@ table.tbl td:first-child,table.tbl th:first-child{padding-left:0}
   100%{opacity:0;transform:scale(4)}
 }
 
+/* 点击爆裂 + 触屏拖尾特效层（JS 注入，reduce 时跳过） */
+.fx-fx{position:fixed;inset:0;z-index:99999;pointer-events:none;overflow:hidden}
+.fx-ring{
+  position:absolute;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;
+  border:1.5px solid rgba(255,107,179,.85);box-shadow:0 0 12px rgba(255,61,154,.45);
+  animation:fxRing .55s ease-out forwards;
+}
+.fx-ring.v2{border-color:rgba(167,139,250,.85);box-shadow:0 0 12px rgba(139,92,246,.45)}
+.fx-spark{
+  position:absolute;width:5px;height:5px;margin:-2.5px 0 0 -2.5px;border-radius:50%;
+  background:#FFB3D4;box-shadow:0 0 6px 1px rgba(255,107,179,.8);
+  animation:fxSpark .62s ease-out forwards;
+}
+.fx-spark.v2{background:#C4B5FD;box-shadow:0 0 6px 1px rgba(139,92,246,.8)}
+.fx-spark.v3{background:#fff;box-shadow:0 0 6px 1px rgba(255,255,255,.8)}
+.fx-trail{
+  position:absolute;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;
+  background:radial-gradient(circle,#FFD1E8 0%,rgba(255,61,154,.55) 55%,transparent 75%);
+  animation:fxTrail .7s ease-out forwards;
+}
+.fx-trail.v2{background:radial-gradient(circle,#E4DBFF 0%,rgba(139,92,246,.55) 55%,transparent 75%)}
+@keyframes fxRing{0%{transform:scale(.25);opacity:.95}100%{transform:scale(2.8);opacity:0}}
+@keyframes fxSpark{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(.25);opacity:0}}
+@keyframes fxTrail{0%{transform:scale(1);opacity:.9}100%{transform:scale(.15) translateY(-16px);opacity:0}}
 
 /* 首屏缓慢斜向光带 */
 .fx-band{
