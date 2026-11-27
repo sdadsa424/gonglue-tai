@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GTA6 工具箱 · 秘籍速查 / 密码大全 / 特殊地点 - 向日葵游戏盒</title>
-<meta name="description" content="GTA6 站内工具箱：61 条秘籍手柄按键速查（PS/Xbox 双拼）、22 个门锁保险箱密码、特殊地点分类速查，全部站内直用不出站。">
-<meta property="og:title" content="GTA6 工具箱 · 秘籍 / 密码 / 地点速查">
-<meta property="og:description" content="61 条秘籍按键速查、22 个密码、特殊地点分类，站内直用不出站。">
+<title>GTA6 工具箱 · 秘籍 / 密码 / 载具武器 / 收集 / 进度 / 计算器 - 向日葵游戏盒</title>
+<meta name="description" content="GTA6 站内工具箱：61 条秘籍按键速查、22 个密码、载具武器库、全收集追踪、剧情与第一章进度、通缉等级预览、属性规划、资金安全、旅行与赚钱计算器、存档管理、防骗自查，全部站内直用不出站。">
+<meta property="og:title" content="GTA6 工具箱 · 站内直用">
+<meta property="og:description" content="秘籍、密码、载具武器、收集、进度、计算器、防骗自查——GTA6 实用工具全在这里，不出站。">
 <link rel="canonical" href="https://wgame-bc7.pages.dev/g/gta6/tools/">
 <style>
-:root{--bg:#090A12;--card:#141728;--card2:#191D33;--line:rgba(255,255,255,.07);--line2:rgba(255,255,255,.14);--text:#ECEEF8;--muted:#949AB3;--dim:#666C85;--ac:#F06D3B}
+:root{--bg:#090A12;--card:#141728;--card2:#191D33;--line:rgba(255,255,255,.07);--line2:rgba(255,255,255,.14);--text:#ECEEF8;--muted:#949AB3;--dim:#666C85;--ac:#F06D3B;--ok:#2DD4A7;--warn:#FFB020;--bad:#FF4059}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--text);font:14px/1.6 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
 .wrap{max-width:1080px;margin:0 auto;padding:0 16px}
@@ -19,8 +19,8 @@ body{background:var(--bg);color:var(--text);font:14px/1.6 -apple-system,BlinkMac
 h1{font-size:22px;font-weight:800;margin:10px 0 4px}
 h1 i{font-style:normal;color:var(--ac)}
 .sub{color:var(--dim);font-size:12.5px;margin-bottom:18px}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
-.tab{padding:9px 16px;border-radius:10px;border:1px solid var(--line2);background:var(--card);color:var(--muted);font-size:13.5px;font-weight:700;cursor:pointer;transition:.18s}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
+.tab{padding:8px 13px;border-radius:10px;border:1px solid var(--line2);background:var(--card);color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;transition:.18s}
 .tab:hover{color:var(--text);border-color:rgba(240,109,59,.5)}
 .tab.on{background:linear-gradient(160deg,rgba(240,109,59,.22),rgba(240,109,59,.08));border-color:rgba(240,109,59,.65);color:#FFD9C4}
 .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
@@ -37,7 +37,7 @@ h1 i{font-style:normal;color:var(--ac)}
 .cheat{background:linear-gradient(180deg,#151930,#121527);border:1px solid var(--line);border-radius:12px;padding:14px 15px;position:relative;transition:border-color .18s}
 .cheat:hover{border-color:rgba(240,109,59,.45)}
 .cheat .cat{display:inline-block;font-size:11px;color:#FFC9AC;background:rgba(240,109,59,.14);border:1px solid rgba(240,109,59,.3);border-radius:6px;padding:1px 7px;margin-bottom:7px}
-.cheat b{display:block;font-size:14px;font-weight:700;margin-bottom:6px}
+.cheat b{display:block;font-size:14px;font-weight:700;margin-bottom:6px;padding-right:22px}
 .keys{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:7px;min-height:24px}
 kbd{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:24px;padding:0 6px;border-radius:6px;background:#232848;border:1px solid rgba(255,255,255,.14);border-bottom-width:2.5px;font:600 12px/1 Consolas,monospace;color:#E7EAF6}
 .none{color:var(--dim);font-size:12px}
@@ -59,24 +59,80 @@ h2.sect{font-size:16px;font-weight:800;margin:26px 0 4px;padding-left:10px;borde
 .place .pc{font-size:11px;color:#FFC9AC;background:rgba(240,109,59,.14);border:1px solid rgba(240,109,59,.3);border-radius:6px;padding:1px 7px;display:inline-block;margin-bottom:7px}
 .place b{display:block;font-size:14px;margin-bottom:5px}
 .place p{font-size:12.5px;color:var(--muted)}
-.place .rel{margin-top:7px;font-size:11.5px;color:var(--dim)}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px}
+.tool-input,.tool-sel{width:100%;padding:9px 12px;border-radius:10px;border:1px solid var(--line2);background:var(--card);color:var(--text);font-size:13.5px;outline:none}
+.tool-input:focus,.tool-sel:focus{border-color:rgba(240,109,59,.6)}
+.out{background:linear-gradient(180deg,#151930,#121527);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+.out .big{font-size:24px;font-weight:800;color:#FFD9C4;font-family:Consolas,monospace}
+.out .cap{font-size:12.5px;color:var(--muted);margin-top:6px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:720px){.two{grid-template-columns:1fr}}
+.ck{display:flex;align-items:flex-start;gap:9px;padding:9px 11px;background:var(--card);border:1px solid var(--line);border-radius:10px;margin-bottom:7px;cursor:pointer;font-size:13px}
+.ck input{margin-top:3px;accent-color:var(--ac);width:15px;height:15px;flex:none}
+.ck.done span{color:var(--dim);text-decoration:line-through}
+.prog{height:8px;border-radius:99px;background:#1B2039;overflow:hidden;margin:8px 0 14px}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,#F06D3B,#FF3D9A);border-radius:99px;transition:width .3s}
+.gname{font-size:13px;font-weight:700;color:#FFC9AC;margin:14px 0 8px}
+.meter{margin-bottom:10px}
+.meter .mt{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px}
+.meter .mb{height:9px;border-radius:99px;background:#1B2039;overflow:hidden}
+.meter .mb i{display:block;height:100%;border-radius:99px;transition:width .45s ease}
+.stars{display:flex;gap:5px;margin-bottom:14px}
+.stars button{font-size:22px;background:none;border:0;cursor:pointer;color:#3A4060;filter:grayscale(1);transition:.15s;padding:2px}
+.stars button.on{color:#FFB020;filter:none}
+.units{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.unit{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:7px 11px;font-size:12.5px}
+.tip{background:rgba(240,109,59,.09);border:1px solid rgba(240,109,59,.3);border-radius:10px;padding:10px 13px;font-size:12.5px;color:#FFC9AC;margin-top:10px}
+.unconf{display:inline-block;font-size:11px;color:#FFB020;border:1px solid rgba(255,176,32,.4);border-radius:6px;padding:1px 7px;margin-left:6px}
+.rank-row{display:flex;gap:10px;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
+.rank-row:last-child{border-bottom:0}
+.rank-row .mname{flex:1;color:var(--text)}
+.rank-row .mval{font-family:Consolas,monospace;color:var(--muted);font-size:12.5px}
+.risk-out{border-radius:12px;padding:16px;border:1px solid var(--line);background:var(--card);margin-bottom:12px}
+.risk-out .lv{font-size:17px;font-weight:800}
+.risk-out.high{border-color:rgba(255,64,89,.55);background:rgba(255,64,89,.08)}
+.risk-out.high .lv{color:#FF6B7E}
+.risk-out.mid{border-color:rgba(255,176,32,.5);background:rgba(255,176,32,.07)}
+.risk-out.mid .lv{color:#FFB020}
+.risk-out.low{border-color:rgba(45,212,167,.5);background:rgba(45,212,167,.07)}
+.risk-out.low .lv{color:#2DD4A7}
+.risk-out .cap{font-size:12.5px;color:var(--muted);margin-top:6px}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-top:10px}
+.slot{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 11px}
+.slot b{font-size:12px;color:#FFC9AC;display:block;margin-bottom:4px}
+.slot input{width:100%;background:var(--bg);border:1px solid var(--line2);border-radius:7px;color:var(--text);font-size:12.5px;padding:6px 8px;outline:none}
+.roletab{display:flex;gap:6px;margin-bottom:12px}
+.addrow{display:flex;gap:8px;margin:10px 0}
+.addrow input{flex:1}
 .src{margin:30px 0 40px;padding-top:14px;border-top:1px solid var(--line);color:var(--dim);font-size:11.5px;line-height:1.7}
-@media(max-width:640px){.grid{grid-template-columns:1fr}.plwrap{grid-template-columns:1fr}.tbl{font-size:12px}.tbl td,.tbl th{padding:8px 9px}}
+button.mini{padding:8px 14px;border-radius:10px;border:1px solid var(--line2);background:var(--card2);color:var(--text);font-size:12.5px;font-weight:700;cursor:pointer}
+button.mini:hover{border-color:rgba(240,109,59,.55)}
+@media(max-width:640px){.grid{grid-template-columns:1fr}.plwrap{grid-template-columns:1fr}.tbl{font-size:12px}.tbl td,.tbl th{padding:8px 9px}.slots{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <nav class="top"><a href="../../">← 返回总站</a><span style="color:var(--dim)">/</span><a href="../">GTA6 攻略</a></nav>
   <h1>GTA6 工具箱 <i>·</i> 站内直用</h1>
-  <p class="sub">秘籍按键、门锁保险箱密码、特殊地点速查——全部在本页使用，不出站。数据整理自 GTA6 中文网社区实测，单源信息已标注。</p>
+  <p class="sub">秘籍、密码、载具武器、收集、进度、计算器、防骗自查——全部在本页使用，不出站。数据整理自 GTA6 中文网社区实测与公开攻略资料，单源/未证实信息均已标注，数值以游戏内为准。</p>
 
-  <div class="tabs" role="tablist">
-    <button class="tab on" data-t="cheats" role="tab">秘籍速查 · 61 条</button>
-    <button class="tab" data-t="codes" role="tab">密码大全 · 22 个</button>
-    <button class="tab" data-t="places" role="tab">特殊地点 · 10 处</button>
+  <div class="tabs" role="tablist" id="tabs">
+    <button class="tab on" data-t="cheats">秘籍 · 61</button>
+    <button class="tab" data-t="codes">密码 · 22</button>
+    <button class="tab" data-t="garage">载具武器库</button>
+    <button class="tab" data-t="places">特殊地点 · 10</button>
+    <button class="tab" data-t="collect">全收集 · 27</button>
+    <button class="tab" data-t="story">剧情进度</button>
+    <button class="tab" data-t="wanted">通缉预览</button>
+    <button class="tab" data-t="stats">属性规划</button>
+    <button class="tab" data-t="funds">资金安全</button>
+    <button class="tab" data-t="travel">旅行计算</button>
+    <button class="tab" data-t="money">赚钱计算</button>
+    <button class="tab" data-t="save">存档管理</button>
+    <button class="tab" data-t="scam">防骗自查</button>
   </div>
 
-  <!-- 秘籍 -->
   <section id="pane-cheats">
     <div class="bar">
       <input class="search" id="q-cheats" type="search" placeholder="搜秘籍名称 / 效果…">
@@ -87,130 +143,456 @@ h2.sect{font-size:16px;font-weight:800;margin:26px 0 4px;padding-left:10px;borde
     <div class="grid" id="cheat-grid"></div>
   </section>
 
-  <!-- 密码 -->
   <section id="pane-codes" hidden>
     <p class="sectnote">任务密码全玩家一致；据点与探索密码可能因存档而异，现场找线索优先。点密码可复制。带 <b>*</b> 为单源条目，照抄前留意。</p>
     <div id="codes-box"></div>
   </section>
 
-  <!-- 地点 -->
+  <section id="pane-garage" hidden>
+    <p class="sectnote">社区整理的载具解锁与武器/商品价格，未官方确认的条目以游戏内为准。</p>
+    <div id="garage-box"></div>
+  </section>
+
   <section id="pane-places" hidden>
     <div class="chips" id="place-chips" style="margin-bottom:14px"></div>
     <div class="plwrap" id="place-grid"></div>
   </section>
 
-  <p class="src">来源：数据整理自 GTA6 中文网（gta6.talkn.cn）社区实测内容，按键为手柄输入；秘籍需满足对应解锁条件才会生效。效率与数值可能随官方补丁变化，以游戏内为准。</p>
+  <section id="pane-collect" hidden>
+    <p class="cnt" id="collect-cnt"></p>
+    <div class="prog"><i id="collect-prog" style="width:0"></i></div>
+    <div id="collect-box"></div>
+  </section>
+
+  <section id="pane-story" hidden>
+    <h2 class="sect" style="margin-top:6px">第一章 · 进 Tourist Trap 前必做</h2>
+    <p class="cnt" id="ch1-cnt"></p>
+    <div id="ch1-box"></div>
+    <h2 class="sect">我的进度清单</h2>
+    <p class="sectnote">章节清单没有可核实的官方定论，按你自己的进度录入更可靠；只保存在你的浏览器里。</p>
+    <div class="addrow"><input class="tool-input" id="story-new" maxlength="60" placeholder="添加一条进度，例如：主线通关第一章"><button class="mini" id="story-add">添加</button></div>
+    <p class="cnt" id="story-cnt"></p>
+    <div id="story-box"></div>
+  </section>
+
+  <section id="pane-wanted" hidden>
+    <p class="sectnote">点击星级查看对应警力配置；1~5 星为前作机制推演口径，6 星来自泄露情报、未获官方确认。</p>
+    <div class="stars" id="wl-stars"></div>
+    <div id="wl-body"></div>
+  </section>
+
+  <section id="pane-stats" hidden>
+    <p class="sectnote">按游戏内训练项手动勾记与估算，本工具只是记录器，具体成长数值以游戏内为准。</p>
+    <div class="roletab" id="role-tab"></div>
+    <div class="out">
+      <div class="field"><label>生命 <span id="v-h"></span></label><input type="range" id="s-h" min="0" max="100" style="width:100%;accent-color:var(--ac)"></div>
+      <div class="field"><label>体力 <span id="v-s"></span></label><input type="range" id="s-s" min="0" max="100" style="width:100%;accent-color:var(--ac)"></div>
+      <div class="field"><label>专注 <span id="v-f"></span></label><input type="range" id="s-f" min="0" max="100" style="width:100%;accent-color:var(--ac)"></div>
+    </div>
+    <h2 class="sect">训练记录</h2>
+    <div id="acts-box"></div>
+  </section>
+
+  <section id="pane-funds" hidden>
+    <p class="sectnote">死亡/被捕会掉口袋现金，章节切换清空口袋现金与普通银行余额；BuckMe 普通账户公开资料提到 $15,000 上限。均为社区口径，以游戏内为准。</p>
+    <div class="two">
+      <div class="out">
+        <div class="field"><label>口袋现金（Wasted 会掉）$</label><input class="tool-input" id="f-pocket" type="number" min="0" value="0"></div>
+        <div class="field"><label>BuckMe 普通账户余额 $</label><input class="tool-input" id="f-bank" type="number" min="0" value="0"></div>
+        <div class="field"><label>家庭储蓄（跨章节保留）$</label><input class="tool-input" id="f-family" type="number" min="0" value="0"></div>
+        <div class="field"><label>计划藏进地板下的金额 $</label><input class="tool-input" id="f-hide" type="number" min="0" value="0"></div>
+        <div class="field"><label>当前进度</label><select class="tool-sel" id="f-chapter"><option value="1">第一章（切换前）</option><option value="2">第二章及以后</option></select></div>
+      </div>
+      <div class="out" id="f-out"></div>
+    </div>
+  </section>
+
+  <section id="pane-travel" hidden>
+    <h2 class="sect" style="margin-top:6px">出租车费用</h2>
+    <p class="sectnote">填入你游戏内看到的数字，算总成本；预填值来自社区资料，以游戏内为准。</p>
+    <div class="two">
+      <div class="out">
+        <div class="field"><label>基础车费 $</label><input class="tool-input" id="tv-fare" type="number" min="0" inputmode="numeric" placeholder="按游戏内显示填写"></div>
+        <div class="field"><label>跳过路程附加费 $（资料提到 $100）</label><input class="tool-input" id="tv-skip" type="number" min="0" value="100"></div>
+        <div class="field"><label>催司机加速次数（每次约 $5）</label><input class="tool-input" id="tv-hurry" type="number" min="0" value="0"></div>
+      </div>
+      <div class="out"><div class="big" id="tv-big">—</div><div class="cap" id="tv-cap">填入基础车费后自动计算</div></div>
+    </div>
+    <h2 class="sect">出行方式对比</h2>
+    <p class="sectnote">填每种方式的费用与耗时，按「每省 1 分钟花多少钱」排序。</p>
+    <div class="out">
+      <div class="two">
+        <div><label class="sectnote" style="margin:0">叫车跳过 $ / 分钟</label><div style="display:flex;gap:8px;margin-top:5px"><input class="tool-input" id="w1-m" type="number" min="0" placeholder="$"><input class="tool-input" id="w1-t" type="number" min="0" placeholder="分"></div></div>
+        <div><label class="sectnote" style="margin:0">公交/火车 $ / 分钟</label><div style="display:flex;gap:8px;margin-top:5px"><input class="tool-input" id="w2-m" type="number" min="0" placeholder="$"><input class="tool-input" id="w2-t" type="number" min="0" placeholder="分"></div></div>
+      </div>
+      <div style="margin-top:10px"><label class="sectnote" style="margin:0">自己开车 $ / 分钟</label><div style="display:flex;gap:8px;margin-top:5px"><input class="tool-input" id="w3-m" type="number" min="0" placeholder="$"><input class="tool-input" id="w3-t" type="number" min="0" placeholder="分"></div></div>
+      <div id="way-out" style="margin-top:12px"><div class="cap">填好后自动按总耗时排序</div></div>
+    </div>
+  </section>
+
+  <section id="pane-money" hidden>
+    <h2 class="sect" style="margin-top:6px">① 卡关差额计算</h2>
+    <p class="sectnote">剧情要求一笔现金时，算还差多少、按当前效率要打多久。</p>
+    <div class="two">
+      <div class="out">
+        <div class="field"><label>任务要求现金 $</label><input class="tool-input" id="m-need" type="number" min="0"></div>
+        <div class="field"><label>当前持有现金 $</label><input class="tool-input" id="m-have" type="number" min="0" value="0"></div>
+        <div class="field"><label>赚钱效率 $/小时（可留空）</label><input class="tool-input" id="m-rate" type="number" min="0" placeholder="例如 60000"></div>
+      </div>
+      <div class="out"><div class="big" id="m-big">—</div><div class="cap" id="m-cap">填入金额后自动计算</div></div>
+    </div>
+    <h2 class="sect">② 赚钱效率对比</h2>
+    <p class="sectnote">把几个来钱路子的「单次收入 ÷ 耗时」放一起比，找出当前最高时薪。</p>
+    <div class="out" id="m-ways">
+      <div class="field"><label>路子 A — 名称 / 单次收入 $ / 耗时(分)</label><div style="display:flex;gap:8px"><input class="tool-input mw-n" placeholder="名称" style="flex:2"><input class="tool-input mw-m" type="number" min="0" placeholder="$" style="flex:1"><input class="tool-input mw-t" type="number" min="0" placeholder="分" style="flex:1"></div></div>
+      <div class="field"><label>路子 B</label><div style="display:flex;gap:8px"><input class="tool-input mw-n" placeholder="名称" style="flex:2"><input class="tool-input mw-m" type="number" min="0" placeholder="$" style="flex:1"><input class="tool-input mw-t" type="number" min="0" placeholder="分" style="flex:1"></div></div>
+      <div class="field"><label>路子 C（可选）</label><div style="display:flex;gap:8px"><input class="tool-input mw-n" placeholder="名称" style="flex:2"><input class="tool-input mw-m" type="number" min="0" placeholder="$" style="flex:1"><input class="tool-input mw-t" type="number" min="0" placeholder="分" style="flex:1"></div></div>
+      <div id="mw-out"><div class="cap">填入收入与耗时后按小时换算对比</div></div>
+    </div>
+  </section>
+
+  <section id="pane-save" hidden>
+    <h2 class="sect" style="margin-top:6px">自动保存是怎么回事</h2>
+    <div class="out"><p style="font-size:13px;color:var(--muted)">资料显示游戏有自动保存，但也有手动存档槽位；两者是否分开、自动保存触发时机，以你游戏内实际为准。<b style="color:#FFC9AC">做高风险操作（进重要任务前、试验作弊码前、买高价物品前）建议先手动存一份</b>，别只依赖自动保存。</p></div>
+    <h2 class="sect">手动存档怎么存</h2>
+    <div class="out"><p style="font-size:13px;color:var(--muted)">1. 在自由探索（非任务过场）时打开暂停菜单<br>2. 进入 Game（游戏）→ Save Game（保存游戏）<br>3. 选取一个手动槽位覆盖保存<br><span style="color:var(--dim);font-size:12px">具体菜单名称与按键以你平台的游戏内提示为准；公开资料提到 15 个手动槽位，未实机验证。</span></p></div>
+    <h2 class="sect">我的槽位记录</h2>
+    <p class="sectnote">标注每个槽位存了什么进度，覆盖前先看一眼；只保存在你的浏览器里。</p>
+    <p class="cnt"><button class="mini" id="save-clear">清空记录</button></p>
+    <div class="slots" id="save-slots"></div>
+  </section>
+
+  <section id="pane-scam" hidden>
+    <p class="sectnote">勾选你遇到的情况，自动给出风险分级。发售季骗术集中：假 PC 版、假 APK、假内测。</p>
+    <div id="scam-box"></div>
+    <div class="risk-out" id="scam-out" style="margin-top:14px"><div class="lv" id="scam-level">未作答</div><div class="cap" id="scam-cap">勾选后自动评估。</div></div>
+  </section>
+
+  <p class="src">来源：数据整理自 GTA6 中文网（gta6.talkn.cn）社区实测内容与公开攻略资料；秘籍需满足解锁条件才生效；金额、槽位数等未实机验证项以游戏内当前版本提示为准。</p>
 </div>
 
 <script>
-/* ===== 数据（整理自 GTA6 中文网，2026-11 抓取） ===== */
 var CHEATS=[{"cat": "玩家", "name": "获得 $250,000", "ps": "↑ → ↓ ← ↑ ← ↓ →", "unlock": "完成主线剧情"}, {"cat": "玩家", "name": "醉酒（你和搭档喝醉）", "ps": "↑ ← → ↑ ↑ ← → ↑ ← →", "unlock": "累计花费 $2,500 购买酒类"}, {"cat": "玩家", "name": "提高搜捕关注等级（Heat Level）", "ps": "← ↓ → ↓ ↑ ↓ ↑", "unlock": "甩掉 3 星通缉 25 次"}, {"cat": "玩家", "name": "提升通缉等级", "ps": "← ↓ → ↓ ↑ → ↑", "unlock": "甩掉 3 星通缉 50 次"}, {"cat": "玩家", "name": "无限专注力", "ps": "↓ ↑ ↑ ↓ ↑ ↓ ↑ ↓ ↑ →", "unlock": "完成主线剧情"}, {"cat": "玩家", "name": "免疫坠落伤害", "ps": null, "unlock": "从 12 米高处自由坠落并存活 20 次"}, {"cat": "玩家", "name": "降落伞（加入装备配置）", "ps": null, "unlock": "在 91.5 米以上高度完成 50 次高空跳伞或低空跳伞"}, {"cat": "玩家", "name": "防弹衣（加入装备配置）", "ps": "↓ ↑ ← ↑ ↑ ↑ ↑ ↑ ↓ ↓", "unlock": "完成 100 次健身训练"}, {"cat": "玩家", "name": "修理载具", "ps": null, "unlock": "在盖尔霍恩赛道、冒险佬泥地俱乐部、布恩赛道累计获得 10 次第一名"}, {"cat": "玩家", "name": "无限氮气加速", "ps": null, "unlock": "完成 50 次飞车特技跳跃"}, {"cat": "战斗", "name": "弹药全满", "ps": "↓ ↑ → ↓ ← ← ↑ ↑ ↓ ←", "unlock": "靶场获得 25 枚铜牌或更高"}, {"cat": "战斗", "name": "无限弹药", "ps": "↓ ↑ → ↓ ← ← ↑ ↓ ↓ ↓", "unlock": "靶场获得 25 枚银牌或更高"}, {"cat": "战斗", "name": "无需装填", "ps": "↓ ↑ → ↓ ← ← ↑ ↓ ↓ ↑", "unlock": "靶场获得 25 枚金牌"}, {"cat": "战斗", "name": "全部爆炸性武器（满弹药）", "ps": null, "unlock": "投掷 100 枚手榴弹"}, {"cat": "战斗", "name": "燃烧弹药", "ps": null, "unlock": "使用火焰伤害烧伤 100 名敌人"}, {"cat": "战斗", "name": "爆炸瓶（所有瓶子受击爆炸）", "ps": null, "unlock": "投掷 100 瓶燃烧瓶"}, {"cat": "战斗", "name": "爆破霰弹枪（梅森基恩锐眼短管枪）", "ps": null, "unlock": "使用爆炸伤害击中 100 名敌人"}, {"cat": "战斗", "name": "豪纳斯 H-AT（加入装备配置）", "ps": null, "unlock": "炸毁 100 辆载具"}, {"cat": "战斗", "name": "强力攻击（子弹近战击飞目标）", "ps": "↓ ↑ ← ← → ↓ ↓ ↑ ↓", "unlock": "完成主线剧情"}, {"cat": "战斗", "name": "爆炸球（运动球受击爆炸）", "ps": "↓ ↑ ← ← → ↓ ↓ ↑ →", "unlock": "使用爆炸伤害击中 20 名敌人"}, {"cat": "战斗", "name": "载具撞击强化（碰撞击飞目标）", "ps": "↓ ↑ ← ← → ↓ ← ↑ ↓", "unlock": "使用载具击杀 25 名敌人或平民"}, {"cat": "时间天气", "name": "快进时间", "ps": null, "unlock": "找到 10 只收藏手表"}, {"cat": "时间天气", "name": "暂停时间", "ps": null, "unlock": "找到 20 只收藏手表"}, {"cat": "时间天气", "name": "切换天气", "ps": "↓ → ↑ ↓ → ↑ →", "unlock": "完成主线剧情（一说需揭开整张地图，两源口径不同）"}, {"cat": "载具", "name": "召唤洲际救护车", "ps": null, "unlock": "Progress 菜单中发现洲际救护车"}, {"cat": "载具", "name": "召唤风扇艇 09", "ps": null, "unlock": "完成 5 项生存挑战"}, {"cat": "载具", "name": "召唤冒险家女妖", "ps": null, "unlock": "完成所有战斗挑战"}, {"cat": "载具", "name": "召唤特浮 BMX", "ps": null, "unlock": "完成 5 项健身挑战"}, {"cat": "载具", "name": "召唤麦霸子步轮速（Boomazoom）", "ps": "← ↑ → ↓ ← ← ↑ ←", "unlock": "完成 5 项购物挑战"}, {"cat": "载具", "name": "召唤长崎碳纤 RS", "ps": null, "unlock": "完成所有探索挑战"}, {"cat": "载具", "name": "召唤 1965 款威皮公路霸者", "ps": null, "unlock": "完成所有健身挑战"}, {"cat": "载具", "name": "召唤培罗艾默瑞斯", "ps": null, "unlock": "完成所有载具挑战"}, {"cat": "载具", "name": "召唤充气红鹤", "ps": null, "unlock": "摧毁 50 只古柯碱红鹤"}, {"cat": "载具", "name": "召唤 MTL 磅浦者", "ps": "← ↑ → ↓ ← → → ↑", "unlock": "Progress 菜单中发现 MTL 磅浦者"}, {"cat": "载具", "name": "召唤威皮使塔尼亚 G2 计程车", "ps": null, "unlock": "完成 5 项运动挑战"}, {"cat": "载具", "name": "召唤豪纳斯 P-996 天煞（战斗机）", "ps": null, "unlock": "完成所有挑战"}, {"cat": "载具", "name": "召唤 HVY 推土机", "ps": "← ↑ → ↓ ← → → ↓", "unlock": "Progress 菜单中发现 HVY 推土机"}, {"cat": "载具", "name": "召唤鸬鹚绿头鸭（特技飞机）", "ps": null, "unlock": "完成 5 项载具挑战"}, {"cat": "载具", "name": "召唤磺火高球车", "ps": null, "unlock": "完成所有运动挑战"}, {"cat": "载具", "name": "召唤豪纳斯犀式坦克", "ps": null, "unlock": "完成所有生存挑战"}, {"cat": "载具", "name": "召唤麦霸子桑切斯", "ps": null, "unlock": "完成 5 项犯罪挑战"}, {"cat": "载具", "name": "召唤长崎海雀（水上直升机）", "ps": null, "unlock": "完成 5 项探索挑战"}, {"cat": "载具", "name": "召唤飙速号 700GT（快艇）", "ps": null, "unlock": "完成 5 项战斗挑战"}, {"cat": "载具", "name": "召唤特卢菲瑟雷斯", "ps": null, "unlock": "完成所有购物挑战"}, {"cat": "载具", "name": "召唤西部锤尸者", "ps": null, "unlock": "完成所有犯罪挑战"}, {"cat": "滤镜", "name": "黄金时刻（金色滤镜 · 宽屏）", "ps": null, "unlock": "累计与搭档牵手 4 小时"}, {"cat": "滤镜", "name": "糖粉（全白世界 · 闪烁光泽）", "ps": null, "unlock": "使用望尻扫描所有太空碎片"}, {"cat": "滤镜", "name": "针孔（针孔相机滤镜）", "ps": null, "unlock": "与搭档完成 25 次帮派清剿"}, {"cat": "滤镜", "name": "霓虹丛林（霓虹光影）", "ps": null, "unlock": "找到全部 16 辆少女风格载具"}, {"cat": "滤镜", "name": "往日时光（黑白 CRT 电视滤镜）", "ps": null, "unlock": "发现里奇威"}, {"cat": "滤镜", "name": "灾变（全屏浑浊烟雾）", "ps": "↓ ↓ ↑ → → ↑ ← ← → →", "unlock": "Progress 菜单中发现玛莎的巴默恩"}, {"cat": "滤镜", "name": "录像带（录像带风格滤镜）", "ps": null, "unlock": "与搭档完成 50 项活动"}, {"cat": "滤镜", "name": "暗镜（世界上下颠倒 · 黑暗）", "ps": null, "unlock": "出售载具累计赚取 $500,000"}, {"cat": "滤镜", "name": "偏头痛（模糊扭曲滤镜）", "ps": null, "unlock": "在 6 星通缉下存活 6 分钟"}, {"cat": "滤镜", "name": "玩偶屋（高饱和 · 窄画幅）", "ps": "↓ ↓ ↑ → → ↑ ← ← ↓ →", "unlock": "与搭档累计相处 8 小时"}, {"cat": "滤镜", "name": "泡泡糖（紫黄世界 · 闪烁）", "ps": null, "unlock": "找齐 24 张罪恶都市火烈鸟收藏卡"}, {"cat": "滤镜", "name": "快进（动态模糊 · 云加速）", "ps": null, "unlock": "完成 50 次冥想"}, {"cat": "滤镜", "name": "鱼眼（鱼眼镜头滤镜）", "ps": null, "unlock": "捕获 100 条鱼"}, {"cat": "滤镜", "name": "褪色荣光（彩色 CRT 电视滤镜）", "ps": "↓ ↓ ↑ → → ↑ ← ← ← →", "unlock": "与搭档一起抢劫 50 家商店"}, {"cat": "滤镜", "name": "像素艺术（像素化滤镜）", "ps": null, "unlock": "出售收藏品累计赚取 $250,000"}, {"cat": "滤镜", "name": "地狱景象（红橙世界 · 热浪扭曲）", "ps": null, "unlock": "偷走 100 辆警用载具"}];
-var PLACES=[{"n": "银行金库", "c": "任务地点", "d": "资料提到地图上有银行金库相关活动，具体触发与开放阶段以游戏内地图标记为准。", "h": "guide-launch-intel.html", "l": "攻略汇总"}, {"n": "抢劫任务点", "c": "任务地点", "d": "资料显示地图提供 Robberies 筛选，可在地图上按类别查看抢劫相关活动。", "h": "map.html", "l": "互动地图"}, {"n": "商店抢劫 / Smash & Grab", "c": "任务地点", "d": "珠宝店、当铺类活动计入单独清单，随主线推进解锁；以游戏内地图筛选为准。", "h": "guide-launch-intel.html", "l": "攻略汇总"}, {"n": "保龄球馆等娱乐", "c": "休闲设施", "d": "发售前有关于部分小游戏取舍的讨论，实际能否进入、开放条件以游戏内为准。", "h": "news-cut-minigames.html", "l": "相关资讯"}, {"n": "车辆扣押场（取回被扣车）", "c": "设施", "d": "资料提到被扣押车辆需要取回，具体位置与流程以游戏内地图与提示为准。", "h": "map.html", "l": "互动地图"}, {"n": "改车王 / 改装铺", "c": "设施", "d": "用于改装与车辆管理，站点互动地图提供改车王等设施分类筛选。", "h": "map.html", "l": "互动地图"}, {"n": "安全屋 / 车库", "c": "设施", "d": "存档、换装与车辆存放点，本站有房产与车库专文整理。", "h": "guide-safehouse-garage.html", "l": "详细攻略"}, {"n": "潜水点 / 水下探索", "c": "活动", "d": "资料把潜水列为上升的活动搜索，具体点位游戏内探索为准；本站互动地图标注地标与设施。", "h": "map.html", "l": "互动地图"}, {"n": "武器店 Ammu-Nation", "c": "商店", "d": "购买武器与装备，防弹衣在 Equipment 分类购买。", "h": "guide-armor.html", "l": "详细攻略"}, {"n": "机场 / 飞行", "c": "交通", "d": "资料建议飞往机场开飞机可快速清地图迷雾，机场位置见互动地图交通分类。", "h": "guide-unfog.html", "l": "开雾攻略"}];
 var CODES=[{"head": "任务密码（6 个，全玩家一致）", "cols": ["密码", "开启对象与地点", "关联任务", "备注"], "rows": [["0420", "实验室门 · Moonstone Boutique", "Lab Fees（第 1 章）", "店员会告诉你密码"], ["7700", "门 · Brian's Lockup", "Lab Fees（第 1 章）", "—"], ["2008*", "办公室保险箱 · Delights", "Afternoon Delight（第 2 章）", "单源来源，未经证实"], ["1680", "保险箱 · Casa de Empeño", "Yasmani's Jewelry Jobs", "之后再抢这家店可能需要其他密码"], ["6815", "保险箱 · Richardson Jewelry", "Yasmani's Jewelry Jobs", "同上"], ["0104", "保险箱 · Donovan Banks & Co.", "Yasmani's Jewelry Jobs", "同上"]]}, {"head": "非法据点保险箱密码（9 个）", "cols": ["密码", "开启对象与地点", "备注"], "rows": [["6823", "保险箱 · Brooks Boatworks", "非法据点：Kolt & Associates"], ["6969", "保险箱 · La Cascara Motel", "非法据点：Kolt & Associates"], ["0300", "保险箱 · Kingpin Bowling（Port Gellhorn）", "密码写在 Brooks Boatworks，不在保龄球馆"], ["6769", "码头建筑保险箱 · Sunrise RV Park", "非法据点：Kingfishers"], ["7777", "保险箱 · Nova Auto Junkyard", "—"], ["2121", "保险箱 · Farm Fix Meth Lab", "—"], ["4124", "保险箱 · Illegal Sneaker Trade", "非法据点：San4San"], ["1965", "保险箱 · Casa Guardia", "非法据点：The Guardia Brothers"], ["8046", "保险箱 · Saber Shipping Yard", "非法据点：The Guardia Brothers"]]}, {"head": "自由探索密码（7 个）", "cols": ["密码", "开启对象与地点", "线索位置"], "rows": [["CLEAVES", "电脑密码 · 螃蟹研究站（Pelican Valley）", "密码写在屋内某房间的地板上"], ["0072", "保险箱 · 螃蟹研究站（Pelican Valley）", "电脑提示：成功试验编号 0036 × 2"], ["44017", "拖车屋保险箱 · Cottonmouth Lake", "密码写在墙上照片之间"], ["092319", "车库门 · 派对屋（Key Lento）", "—"], ["2727", "车库门 · 停着 '74 Vamos 的车库", "—"], ["62412*", "墙内保险箱 · 废弃洗衣店（Belville）", "单源来源，未经证实"], ["2341*", "门 · South Point Airfield", "单源来源，未经证实"]]}];
+var PLACES=[{"n": "银行金库", "c": "任务地点", "d": "资料提到地图上有银行金库相关活动，具体触发与开放阶段以游戏内地图标记为准。", "h": "guide-launch-intel.html", "l": "攻略汇总"}, {"n": "抢劫任务点", "c": "任务地点", "d": "资料显示地图提供 Robberies 筛选，可在地图上按类别查看抢劫相关活动。", "h": "map.html", "l": "互动地图"}, {"n": "商店抢劫 / Smash & Grab", "c": "任务地点", "d": "珠宝店、当铺类活动计入单独清单，随主线推进解锁；以游戏内地图筛选为准。", "h": "guide-launch-intel.html", "l": "攻略汇总"}, {"n": "保龄球馆等娱乐", "c": "休闲设施", "d": "发售前有关于部分小游戏取舍的讨论，实际能否进入、开放条件以游戏内为准。", "h": "news-cut-minigames.html", "l": "相关资讯"}, {"n": "车辆扣押场（取回被扣车）", "c": "设施", "d": "资料提到被扣押车辆需要取回，具体位置与流程以游戏内地图与提示为准。", "h": "map.html", "l": "互动地图"}, {"n": "改车王 / 改装铺", "c": "设施", "d": "用于改装与车辆管理，站点互动地图提供改车王等设施分类筛选。", "h": "map.html", "l": "互动地图"}, {"n": "安全屋 / 车库", "c": "设施", "d": "存档、换装与车辆存放点，本站有房产与车库专文整理。", "h": "guide-safehouse-garage.html", "l": "详细攻略"}, {"n": "潜水点 / 水下探索", "c": "活动", "d": "资料把潜水列为上升的活动搜索，具体点位游戏内探索为准；本站互动地图标注地标与设施。", "h": "map.html", "l": "互动地图"}, {"n": "武器店 Ammu-Nation", "c": "商店", "d": "购买武器与装备，防弹衣在 Equipment 分类购买。", "h": "guide-armor.html", "l": "详细攻略"}, {"n": "机场 / 飞行", "c": "交通", "d": "资料建议飞往机场开飞机可快速清地图迷雾，机场位置见互动地图交通分类。", "h": "guide-unfog.html", "l": "开雾攻略"}];
+var VEHICLES=[[["载具", "类别", "解锁条件", "方向键输入"], ["洲际救护车", "特种车", "在「进度」菜单中发现洲际救护车", "待公布"], ["风扇艇 09", "船艇", "完成 5 项生存挑战", "待公布"], ["冒险家女妖", "汽车", "完成所有战斗挑战", "待公布"], ["特浮 BMX", "摩托", "完成 5 项健身挑战", "待公布"], ["麦霸子步轮速", "摩托", "完成 5 项购物挑战", "左、上、右、下、左、左、上、左"], ["长崎碳纤 RS", "摩托", "完成所有探索挑战", "待公布"], ["1965 款威皮公路霸者", "汽车", "完成所有健身挑战", "待公布"], ["培罗艾默瑞斯", "汽车", "完成所有载具挑战", "待公布"], ["充气红鹤", "特殊", "摧毁 50 只古柯碱红鹤", "待公布"], ["MTL 磅浦者", "特种车", "在「进度」菜单中发现 MTL 磅浦者", "左、上、右、下、左、右、右、上"], ["威皮使塔尼亚 G2 计程车", "汽车", "完成 5 项运动挑战", "待公布"], ["豪纳斯 P-996 天煞", "飞行", "完成所有挑战", "待公布"], ["HVY 推土机", "特种车", "在「进度」菜单中发现 HVY 推土机", "左、上、右、下、左、右、右、下"], ["鸬鹚绿头鸭", "飞行", "完成 5 项载具挑战", "待公布"], ["磺火高球车", "特殊", "完成所有运动挑战", "待公布"], ["豪纳斯犀式坦克", "军用", "完成所有生存挑战", "待公布"], ["麦霸子桑切斯", "摩托", "完成 5 项犯罪挑战", "待公布"], ["长崎海雀", "飞行", "完成 5 项探索挑战", "待公布"], ["飙速号 700 GT", "船艇", "完成 5 项战斗挑战", "待公布"], ["特卢菲瑟雷斯", "汽车", "完成所有购物挑战", "待公布"], ["西部锤尸者", "摩托", "完成所有犯罪挑战", "待公布"]], [["载具", "位置", "通缉风险", "备注"], ["军用战斗机", "Mile Zero 基地 · 北半部机场", "四星 + 两架军机追击", "长期保存条件未核实"], ["坦克", "Mile Zero 基地 · 南侧", "三星 · 解锁 Challenging Tank", "体积太大，无法存入车库"], ["直升机", "地图 H 标记停机坪（Hamlet 东侧 / Ocean Beach 酒店楼顶 / 部分高楼与医院楼顶）", "无", "H 标记不保证每次都刷出载具"], ["普通飞机", "Key Lento 简易机场 / Mariana 湿地以西机场 / Port Gellhorn 南面机场", "无", "练飞行优先，避免带追踪器的喷气机"]], [["商品", "类型", "参考价（游戏内货币）"], ["Hillinger Boomer", "榴弹发射器", "$12,000"], ["Deever Tech GLR40", "榴弹发射器", "$15,500"], ["Hauners H-AT", "火箭发射器", "$16,000"]]];
+var COLLECT=[[0, 0, "收藏卡 · 罪恶城"], [0, 1, "收藏卡 · 雷奥尼达礁群"], [0, 2, "收藏卡 · 草河湿地"], [0, 3, "收藏卡 · 卡拉加山"], [0, 4, "收藏卡 · 加尔霍恩港"], [0, 5, "收藏卡 · 其余区域"], [1, 0, "雕塑 · 罪恶城"], [1, 1, "雕塑 · 海岛"], [1, 2, "雕塑 · 沼泽"], [1, 3, "特殊摆件"], [1, 4, "隐藏纪念物"], [2, 0, "火烈鸟 · 海滩"], [2, 1, "火烈鸟 · 街区"], [2, 2, "火烈鸟 · 内陆"], [2, 3, "火烈鸟 · 其余地点"], [3, 0, "隐藏武器 · 1"], [3, 1, "隐藏武器 · 2"], [3, 2, "隐藏武器 · 3"], [3, 3, "稀有高级载具 · 1"], [3, 4, "稀有高级载具 · 2"], [3, 5, "特殊改装件"], [4, 0, "抢劫任务触发点"], [4, 1, "主线关联地点"], [4, 2, "支线任务"], [4, 3, "关键 NPC"], [4, 4, "安全屋"], [4, 5, "武器店 / 改车王"]];
+var COLLECT_GROUPS=["收集卡", "雕塑与摆件", "火烈鸟", "隐藏武器与载具", "任务与地点"];
+var WANTED=[{"stars": 1, "code": "LEVEL 1", "name": "目击举报", "tier": "low", "desc": "附近巡逻警员接到目击举报后单独响应：通常 1–2 名徒步警员或 1 辆巡逻车到场，以跟随与口头警告为主，一般不主动开火。", "meters": {"追捕强度": 15, "警力密度": 20, "火力等级": 5, "逃脱难度": 10}, "units": [["👮", "徒步警员", "1–2 名"], ["🚓", "巡逻车", "0–1 辆"]], "tip": "脱离视线约 20 秒左右即可甩掉目击——换个街区再出来，是最省事的处理方式。"}, {"stars": 2, "code": "LEVEL 2", "name": "区域布控", "tier": "low", "desc": "附近 3–4 辆巡逻车参与拦截，警员在近距离开始使用武器；通缉区域以你最后被目击的位置为中心展开。", "meters": {"追捕强度": 30, "警力密度": 45, "火力等级": 25, "逃脱难度": 25}, "units": [["🚓", "巡逻车", "3–4 辆"], ["👮", "警员", "4 名以上"], ["🚔", "拦截点", "1–2 处"]], "tip": "别在原地纠缠：先冲出通缉圈再考虑脱漆；夜间与巷道有助于快速脱离视线。"}, {"stars": 3, "code": "LEVEL 3", "name": "警力升级", "tier": "mid", "desc": "警用直升机加入搜索，主干道出现路障，警员普遍开火；巡逻车开始换成武装警车，搜索圈进一步扩大。", "meters": {"追捕强度": 50, "警力密度": 60, "火力等级": 45, "逃脱难度": 45}, "units": [["🚁", "警用直升机", "1 架"], ["🚧", "路障", "2–3 处"], ["🚓", "武装警车", "4–6 辆"], ["👮", "警员", "8 名以上"]], "tip": "直升机视野极广：钻隧道、进室内停车库或换一辆车，都能直接打断空中视线。"}, {"stars": 4, "code": "LEVEL 4", "name": "特警介入", "tier": "mid", "desc": "SWAT 特警载具到场，直升机增至 2 架，贴近水域时出现警用巡逻艇；路障密度明显提高，火力显著升级。", "meters": {"追捕强度": 70, "警力密度": 75, "火力等级": 65, "逃脱难度": 65}, "units": [["🪖", "SWAT 小队", "2–3 支"], ["🚁", "警用直升机", "2 架"], ["🚤", "警用巡逻艇", "1–2 艘"], ["🚧", "路障", "4 处以上"]], "tip": "特警火力对普通载具非常致命：提前备好装甲车，或规划好出海 / 地下通道的路线。"}, {"stars": 5, "code": "LEVEL 5", "name": "全城围捕", "tier": "high", "desc": "大规模警力全域响应：多重路障网络、3 架以上直升机轮替追踪、跨区搜索接力，几乎每个主干道路口都可能遇到设卡。", "meters": {"追捕强度": 85, "警力密度": 90, "火力等级": 80, "逃脱难度": 80}, "units": [["🚁", "警用直升机", "3 架以上"], ["🚧", "路障网络", "6 处以上"], ["🪖", "SWAT 小队", "4 支以上"], ["🚓", "警车", "10 辆以上"]], "tip": "这个级别硬闯不划算：推荐走铁路隧道、潜水脱离，或直接起飞离开热区。"}, {"stars": 6, "code": "LEVEL 6", "name": "军事级响应", "tier": "high", "unconfirmed": true, "desc": "社区泄露情报指向 GTA6 通缉上限提到 6 星，最高级可能引入军用装甲载具与持续追踪机制。该等级未获官方确认，数据为模拟推演，实际以游戏内为准。", "meters": {"追捕强度": 100, "警力密度": 100, "火力等级": 95, "逃脱难度": 95}, "units": [["🛡️", "军用装甲载具", "2–4 辆"], ["🚁", "警用直升机", "4 架以上"], ["🪖", "重装部队", "6 支以上"], ["🚧", "封路检查", "8 处以上"]], "tip": "按泄露情报推演：地面硬拼基本没有胜算，提前规划脱离路线或用高速载具正面突围。"}];
+var CH1=[{"id": "p1", "text": "完成 Key Lento 的房屋修理（第一章自由探索阶段）"}, {"id": "p2", "text": "清掉会消失的支线：深色字与紫色图标任务，放太久会不见"}, {"id": "p3", "text": "把口袋现金藏进 Jason 卧室地板下（死亡或被捕不丢）"}, {"id": "p4", "text": "在 BuckMe 家庭储蓄存入 $5,000（章节切换时口袋现金与银行余额会清空）"}, {"id": "p5", "text": "进入 Tourist Trap 前新开一个手动存档槽位"}, {"id": "p6", "text": "确认第一章可错过的收集与对话已经处理完"}];
+var SCAM=["对方宣称有 GTA6 的 PC 版「直装包 / 完整版免费下载」", "要你下载 .apk / 安装包到手机或电脑", "以「测试资格 / 内测名额」为由让你先付费或给账号密码", "承诺「加群免费送游戏本体」但要先交押金 / 邮费", "链接来自私聊、新注册小号或不在官方渠道公布的页面", "要求你关闭杀毒软件或授予无障碍 / 存储等敏感权限", "价格明显低于官方商店（标准版 $79.99 / 终极版 $99.99）", "对方无法说明游戏平台（官方仅在 PS5 / Xbox Series X|S 发售）"];
+var SCAM_HIGH=[0, 1, 2, 3, 5, 7];
+var SCAM_MID=[4, 6];
 var XMAP={"R1":"RB","R2":"RT","L1":"LB","L2":"LT","△":"Y","○":"B","×":"A","□":"X"};
 </script>
 <script>
 (function(){
 "use strict";
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function fmt(n){return '$'+Number(n||0).toLocaleString('zh-CN');}
+function num(id){var v=document.getElementById(id).value.trim();return v===''?null:Number(v);}
+function ls(k){try{return JSON.parse(localStorage.getItem(k)||'null');}catch(e){return null;}}
+function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
 
-/* ===== Tab 切换（支持 #hash 直达） ===== */
-var tabs=document.querySelectorAll('.tab');
+/* ===== Tab ===== */
+var TABS=['cheats','codes','garage','places','collect','story','wanted','stats','funds','travel','money','save','scam'];
+var tabBtns=document.querySelectorAll('#tabs .tab');
 function show(t){
-  tabs.forEach(function(b){b.classList.toggle('on',b.dataset.t===t);});
-  ['cheats','codes','places'].forEach(function(k){document.getElementById('pane-'+k).hidden=(k!==t);});
+  tabBtns.forEach(function(b){b.classList.toggle('on',b.dataset.t===t);});
+  TABS.forEach(function(k){document.getElementById('pane-'+k).hidden=(k!==t);});
+  window.scrollTo(0,0);
 }
-tabs.forEach(function(b){b.addEventListener('click',function(){location.hash=b.dataset.t;show(b.dataset.t);});});
-var h=(location.hash||'').replace('#','');
-if(['cheats','codes','places'].indexOf(h)>=0) show(h);
-window.addEventListener('hashchange',function(){var h=location.hash.replace('#','');if(['cheats','codes','places'].indexOf(h)>=0)show(h);});
+tabBtns.forEach(function(b){b.addEventListener('click',function(){location.hash=b.dataset.t;});});
+function fromHash(){var h=(location.hash||'').replace('#','');if(TABS.indexOf(h)>=0)show(h);}
+window.addEventListener('hashchange',fromHash);fromHash();
 
 /* ===== 秘籍 ===== */
-var plat='ps',cat='全部',q='',favs={};
-try{favs=JSON.parse(localStorage.getItem('sngz-cheat-favs')||'{}');}catch(e){}
+var plat='ps',cat='全部',q='',favs=ls('sngz-cheat-favs')||{};
 var cats=['全部'];CHEATS.forEach(function(c){if(cats.indexOf(c.cat)<0)cats.push(c.cat);});
 var chipBox=document.getElementById('cheat-chips');
 chipBox.innerHTML=cats.map(function(c){return '<button class="chip'+(c==='全部'?' on':'')+'" data-c="'+esc(c)+'">'+esc(c)+'</button>';}).join('');
-chipBox.addEventListener('click',function(e){
-  var b=e.target.closest('.chip');if(!b)return;
-  cat=b.dataset.c;
-  chipBox.querySelectorAll('.chip').forEach(function(x){x.classList.toggle('on',x===b);});
-  render();
-});
-document.getElementById('plat').addEventListener('click',function(e){
-  var b=e.target.closest('button');if(!b)return;
-  plat=b.dataset.p;
-  document.querySelectorAll('#plat button').forEach(function(x){x.classList.toggle('on',x===b);});
-  render();
-});
-document.getElementById('q-cheats').addEventListener('input',function(){q=this.value.trim();render();});
+chipBox.addEventListener('click',function(e){var b=e.target.closest('.chip');if(!b)return;cat=b.dataset.c;chipBox.querySelectorAll('.chip').forEach(function(x){x.classList.toggle('on',x===b);});renderCheats();});
+document.getElementById('plat').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;plat=b.dataset.p;document.querySelectorAll('#plat button').forEach(function(x){x.classList.toggle('on',x===b);});renderCheats();});
+document.getElementById('q-cheats').addEventListener('input',function(){q=this.value.trim();renderCheats();});
 function keysHtml(seq){
   if(!seq)return '<span class="none">无按键组合 · 靠解锁条件触发 ↓</span>';
   return seq.split(' ').map(function(k){return '<kbd>'+esc(plat==='xbox'?(XMAP[k]||k):k)+'</kbd>';}).join('');
 }
-function render(){
-  var list=CHEATS.filter(function(c){
-    return (cat==='全部'||c.cat===cat)&&(!q||c.name.indexOf(q)>=0||(c.unlock||'').indexOf(q)>=0);
-  });
+function renderCheats(){
+  var list=CHEATS.filter(function(c){return (cat==='全部'||c.cat===cat)&&(!q||c.name.indexOf(q)>=0||(c.unlock||'').indexOf(q)>=0);});
   document.getElementById('cheat-cnt').textContent='显示 '+list.length+' / '+CHEATS.length+' 条 · 已收藏 '+Object.keys(favs).length+' 条';
-  document.getElementById('cheat-grid').innerHTML=list.map(function(c,i){
+  document.getElementById('cheat-grid').innerHTML=list.map(function(c){
     var id=esc(c.name);
-    return '<article class="cheat"><button class="fav'+(favs[id]?' on':'')+'" data-f="'+esc(c.name)+'" aria-label="收藏">'+(favs[id]?'★':'☆')+'</button>'+
-      '<span class="cat">'+esc(c.cat)+'</span><b>'+esc(c.name)+'</b>'+
-      '<div class="keys">'+keysHtml(c.ps)+'</div>'+
-      '<p class="unlock"><em>解锁：</em>'+esc(c.unlock||'—')+'</p></article>';
+    return '<article class="cheat"><button class="fav'+(favs[id]?' on':'')+'" data-f="'+esc(c.name)+'" aria-label="收藏">'+(favs[id]?'★':'☆')+'</button><span class="cat">'+esc(c.cat)+'</span><b>'+esc(c.name)+'</b><div class="keys">'+keysHtml(c.ps)+'</div><p class="unlock"><em>解锁：</em>'+esc(c.unlock||'—')+'</p></article>';
   }).join('');
 }
 document.getElementById('cheat-grid').addEventListener('click',function(e){
   var b=e.target.closest('.fav');if(!b)return;
-  var id=b.dataset.f;
-  if(favs[id])delete favs[id];else favs[id]=1;
-  try{localStorage.setItem('sngz-cheat-favs',JSON.stringify(favs));}catch(err){}
-  render();
+  var id=b.dataset.f;if(favs[id])delete favs[id];else favs[id]=1;
+  sv('sngz-cheat-favs',favs);renderCheats();
 });
-
-render();
+renderCheats();
 
 /* ===== 密码 ===== */
-var box=document.getElementById('codes-box');
-var NOTE={0:'剧情任务里遇到的密码固定不变，可以直接照抄。',1:'抢劫非法据点时的保险箱密码，可能因人而异。',2:'散落在世界里的保险箱、电脑与车库门，部分带解谜线索。'};
-box.innerHTML=CODES.map(function(tb,ti){
-  var head=tb.head,rows=tb.rows;
-  return '<h2 class="sect">'+esc(head)+'</h2><p class="sectnote">'+esc(NOTE[ti]||'')+'</p>'+
+var NOTES=['剧情任务里遇到的密码固定不变，可以直接照抄。','抢劫非法据点时的保险箱密码，可能因人而异。','散落在世界里的保险箱、电脑与车库门，部分带解谜线索。'];
+document.getElementById('codes-box').innerHTML=CODES.map(function(tb,ti){
+  return '<h2 class="sect">'+esc(tb.head)+'</h2><p class="sectnote">'+esc(NOTES[ti]||'')+'</p>'+
   '<table class="tbl"><thead><tr>'+tb.cols.map(function(c){return '<th>'+esc(c)+'</th>';}).join('')+'</tr></thead><tbody>'+
-  rows.map(function(r){
-    return '<tr>'+r.map(function(cell,ci){
-      var star=cell.indexOf('*')>=0;
-      return '<td'+(ci===0?' class="cp" title="点击复制"':'')+(star?' style="color:#FFB020"':'')+'>'+esc(cell)+'</td>';
-    }).join('')+'</tr>';
-  }).join('')+'</tbody></table>';
+  tb.rows.map(function(r){return '<tr>'+r.map(function(cell,ci){
+    var star=cell.indexOf('*')>=0;
+    return '<td'+(ci===0?' class="cp" title="点击复制"':'')+(star?' style="color:#FFB020"':'')+'>'+esc(cell)+'</td>';
+  }).join('')+'</tr>';}).join('')+'</tbody></table>';
 }).join('');
-box.addEventListener('click',function(e){
+document.getElementById('codes-box').addEventListener('click',function(e){
   var td=e.target.closest('td.cp');if(!td)return;
   var code=td.textContent.replace(/\*$/,'');
   function done(){var o=td.textContent;td.textContent='✓ 已复制';setTimeout(function(){td.textContent=o;},900);}
-  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(code).then(done,function(){prompt('手动复制：',code);});}
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(code).then(done,function(){prompt('手动复制：',code);});
   else prompt('手动复制：',code);
 });
+
+/* ===== 载具武器库 ===== */
+document.getElementById('garage-box').innerHTML=VEHICLES.map(function(tb,ti){
+  var head=tb[0];var rows=tb.slice(1);
+  return '<h2 class="sect">'+['载具解锁与秘籍按键','特殊载具位置','武器与商品参考价'][ti]+'</h2><p class="sectnote">'+['21 款载具的解锁条件与手柄输入；秘籍用法见「秘籍」页签。','社区整理的特殊载具获取点位，通缉风险提前心里有数。','参考价随游戏内实际浮动。'][ti]+'</p>'+
+  '<table class="tbl"><thead><tr>'+head.map(function(c){return '<th>'+esc(c)+'</th>';}).join('')+'</tr></thead><tbody>'+
+  rows.map(function(r){return '<tr>'+r.map(function(cell,ci){return '<td'+(ci===0?' style="color:var(--text);font-weight:600;font-family:inherit"':'')+'>'+esc(cell)+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table>';
+}).join('');
 
 /* ===== 地点 ===== */
 var pcs=['全部'];PLACES.forEach(function(p){if(pcs.indexOf(p.c)<0)pcs.push(p.c);});
 var pcBox=document.getElementById('place-chips');
 pcBox.innerHTML=pcs.map(function(c){return '<button class="chip'+(c==='全部'?' on':'')+'" data-c="'+esc(c)+'">'+esc(c)+'</button>';}).join('');
-function pr(){
+function renderPlaces(){
   var cur=pcBox.querySelector('.chip.on').dataset.c;
   var list=PLACES.filter(function(p){return cur==='全部'||p.c===cur;});
   document.getElementById('place-grid').innerHTML=list.map(function(p){
-    return '<article class="place"><span class="pc">'+esc(p.c)+'</span><b>'+esc(p.n)+'</b><p>'+esc(p.d)+'</p>'+
-      (p.l?'<p class="rel">关联阅读：'+esc(p.l)+'</p>':'')+'</article>';
+    return '<article class="place"><span class="pc">'+esc(p.c)+'</span><b>'+esc(p.n)+'</b><p>'+esc(p.d)+'</p>'+(p.l?'<p style="margin-top:7px;font-size:11.5px;color:var(--dim)">关联阅读：'+esc(p.l)+'</p>':'')+'</article>';
   }).join('');
 }
-pcBox.addEventListener('click',function(e){
-  var b=e.target.closest('.chip');if(!b)return;
-  pcBox.querySelectorAll('.chip').forEach(function(x){x.classList.toggle('on',x===b);});
-  pr();
+pcBox.addEventListener('click',function(e){var b=e.target.closest('.chip');if(!b)return;pcBox.querySelectorAll('.chip').forEach(function(x){x.classList.toggle('on',x===b);});renderPlaces();});
+renderPlaces();
+
+/* ===== 全收集 ===== */
+var cstate=ls('sngz-collect')||{};
+function renderCollect(){
+  var done=0,total=COLLECT.length;
+  var html='';
+  COLLECT_GROUPS.forEach(function(g,gi){
+    var items=COLLECT.filter(function(x){return x[0]===gi;});
+    html+='<div class="gname">'+esc(g)+'（'+items.filter(function(x){return cstate[gi+'-'+x[1]];}).length+'/'+items.length+'）</div>';
+    html+=items.map(function(x){
+      var k=gi+'-'+x[1],on=!!cstate[k];if(on)done++;
+      return '<label class="ck'+(on?' done':'')+'"><input type="checkbox" data-k="'+k+'"'+(on?' checked':'')+'><span>'+esc(x[2])+'</span></label>';
+    }).join('');
+  });
+  document.getElementById('collect-box').innerHTML=html;
+  document.getElementById('collect-prog').style.width=(total?done/total*100:0)+'%';
+  document.getElementById('collect-cnt').textContent='已完成 '+done+' / '+total+'（'+(total?Math.round(done/total*100):0)+'%）· 进度本地保存';
+}
+document.getElementById('collect-box').addEventListener('change',function(e){
+  var c=e.target;if(c.tagName!=='INPUT')return;
+  if(c.checked)cstate[c.dataset.k]=1;else delete cstate[c.dataset.k];
+  sv('sngz-collect',cstate);renderCollect();
 });
-pr();
+renderCollect();
+
+/* ===== 剧情进度 ===== */
+var ch1=ls('sngz-ch1')||{};
+function renderCh1(){
+  var done=CH1.filter(function(x){return ch1[x.id];}).length;
+  document.getElementById('ch1-cnt').textContent='完成 '+done+' / '+CH1.length;
+  document.getElementById('ch1-box').innerHTML=CH1.map(function(x){
+    var on=!!ch1[x.id];
+    return '<label class="ck'+(on?' done':'')+'"><input type="checkbox" data-k="'+x.id+'"'+(on?' checked':'')+'><span>'+esc(x.text)+'</span></label>';
+  }).join('');
+}
+document.getElementById('ch1-box').addEventListener('change',function(e){
+  var c=e.target;if(c.tagName!=='INPUT')return;
+  if(c.checked)ch1[c.dataset.k]=1;else delete ch1[c.dataset.k];
+  sv('sngz-ch1',ch1);renderCh1();
+});
+renderCh1();
+var story=ls('sngz-story')||[];
+function renderStory(){
+  document.getElementById('story-cnt').textContent=story.length?('共 '+story.filter(function(x){return x.done;}).length+' / '+story.length+' 条完成'):'还没有记录，添加第一条吧';
+  document.getElementById('story-box').innerHTML=story.map(function(x,i){
+    return '<label class="ck'+(x.done?' done':'')+'"><input type="checkbox" data-i="'+i+'"'+(x.done?' checked':'')+'><span style="flex:1">'+esc(x.text)+'</span><button class="mini" data-del="'+i+'" style="padding:3px 9px;font-size:11px">删</button></label>';
+  }).join('')||'<p class="cnt">还没有记录</p>';
+}
+document.getElementById('story-add').addEventListener('click',addStory);
+document.getElementById('story-new').addEventListener('keydown',function(e){if(e.key==='Enter')addStory();});
+function addStory(){
+  var v=document.getElementById('story-new').value.trim();if(!v)return;
+  story.push({text:v,done:false});sv('sngz-story',story);
+  document.getElementById('story-new').value='';renderStory();
+}
+document.getElementById('story-box').addEventListener('click',function(e){
+  var d=e.target.closest('[data-del]');
+  if(d){e.preventDefault();story.splice(Number(d.dataset.del),1);sv('sngz-story',story);renderStory();}
+});
+document.getElementById('story-box').addEventListener('change',function(e){
+  var c=e.target;if(c.tagName!=='INPUT')return;
+  story[Number(c.dataset.i)].done=c.checked;sv('sngz-story',story);renderStory();
+});
+renderStory();
+
+/* ===== 通缉预览 ===== */
+var wl=1;
+var starBox=document.getElementById('wl-stars');
+starBox.innerHTML=[1,2,3,4,5,6].map(function(s){return '<button data-s="'+s+'" aria-label="'+s+' 星">★</button>';}).join('');
+function renderWl(){
+  var lv=WANTED[wl-1];
+  starBox.querySelectorAll('button').forEach(function(b){b.classList.toggle('on',Number(b.dataset.s)<=wl);});
+  var meters=Object.keys(lv.meters).map(function(k){
+    var v=lv.meters[k],c=v>=80?'#FF4059':v>=50?'#FFB02E':'#3AA2FF';
+    return '<div class="meter"><div class="mt"><span>'+esc(k)+'</span><span>'+v+'</span></div><div class="mb"><i style="width:'+v+'%;background:'+c+'"></i></div></div>';
+  }).join('');
+  var units=lv.units.map(function(u){return '<span class="unit">'+u[0]+' '+esc(u[1])+' · '+esc(u[2])+'</span>';}).join('');
+  document.getElementById('wl-body').innerHTML=
+    '<h2 class="sect" style="margin-top:0">'+esc(lv.code)+' · '+esc(lv.name)+(lv.unconfirmed?'<span class="unconf">未确认 · 泄露情报推演</span>':'')+'</h2>'+
+    '<p class="sectnote">'+esc(lv.desc)+'</p>'+
+    '<div class="out">'+meters+'<div class="units">'+units+'</div><div class="tip">💡 '+esc(lv.tip)+'</div></div>';
+}
+starBox.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;wl=Number(b.dataset.s);renderWl();});
+renderWl();
+
+/* ===== 属性规划 ===== */
+var ROLES=['Jason','Lucia'];
+var ACTS=[['strength','力量训练'],['cardio','心肺训练'],['focus','专注训练'],['protein','蛋白质补剂'],['member','健身房会籍'],['together','双人训练']];
+var sdata=ls('sngz-stats')||{Jason:{h:50,s:50,f:50,acts:{}},Lucia:{h:50,s:50,f:50,acts:{}}};
+var role='Jason';
+document.getElementById('role-tab').innerHTML=ROLES.map(function(r){return '<button class="chip'+(r===role?' on':'')+'" data-r="'+r+'">'+r+'</button>';}).join('');
+document.getElementById('role-tab').addEventListener('click',function(e){
+  var b=e.target.closest('.chip');if(!b)return;role=b.dataset.r;
+  document.querySelectorAll('#role-tab .chip').forEach(function(x){x.classList.toggle('on',x===b);});
+  drawStats();
+});
+function drawStats(){
+  var d=sdata[role];
+  ['h','s','f'].forEach(function(k){document.getElementById('s-'+k).value=d[k];document.getElementById('v-'+k).textContent=' '+d[k]+'%';});
+  document.getElementById('acts-box').innerHTML=ACTS.map(function(a){
+    var on=!!d.acts[a[0]];
+    return '<label class="ck'+(on?' done':'')+'"><input type="checkbox" data-a="'+a[0]+'"'+(on?' checked':'')+'><span>'+esc(a[1])+' <em style="font-style:normal;color:var(--dim);font-size:11px">'+a[0]+'</em></span></label>';
+  }).join('');
+}
+['h','s','f'].forEach(function(k){
+  document.getElementById('s-'+k).addEventListener('input',function(){
+    sdata[role][k]=Number(this.value);
+    document.getElementById('v-'+k).textContent=' '+this.value+'%';
+    sv('sngz-stats',sdata);
+  });
+});
+document.getElementById('acts-box').addEventListener('change',function(e){
+  var c=e.target;if(c.tagName!=='INPUT')return;
+  if(c.checked)sdata[role].acts[c.dataset.a]=1;else delete sdata[role].acts[c.dataset.a];
+  sv('sngz-stats',sdata);drawStats();
+});
+drawStats();
+
+/* ===== 资金安全 ===== */
+function calcFunds(){
+  var p=num('f-pocket')||0,b=num('f-bank')||0,f=num('f-family')||0,hd=num('f-hide')||0;
+  var ch=document.getElementById('f-chapter').value;
+  var nowLoss=p,afterLoss=Math.max(0,p-hd);
+  var capLeft=Math.max(0,15000-b);
+  var warn=[];
+  if(ch==='1'&&p+b>0)warn.push('⚠️ 进入第二章时：口袋现金 '+fmt(p)+' + BuckMe 余额 '+fmt(b)+' 会被清空，先转家庭储蓄或藏地板下');
+  if(b>12000)warn.push('⚠️ BuckMe 余额接近 $15,000 上限，超出部分考虑分流');
+  if(hd>0&&hd<p)warn.push('💡 计划藏 '+fmt(hd)+'，还有 '+fmt(p-hd)+' 现金仍会掉，考虑提高藏钱金额');
+  document.getElementById('f-out').innerHTML=
+    '<div class="cap" style="margin-bottom:8px">当前死亡 / 被捕损失敞口</div><div class="big" style="color:'+(nowLoss>0?'#FF6B7E':'#2DD4A7')+'">'+fmt(nowLoss)+'</div>'+
+    '<div class="cap" style="margin:10px 0 8px">按计划藏钱后的敞口</div><div class="big" style="font-size:19px;color:'+(afterLoss>0?'#FFB020':'#2DD4A7')+'">'+fmt(afterLoss)+'</div>'+
+    '<div class="cap" style="margin:10px 0 8px">BuckMe 距 $15,000 上限</div><div class="big" style="font-size:19px">'+fmt(capLeft)+'</div>'+
+    '<div class="cap" style="margin:10px 0 8px">家庭储蓄（跨章节保留）</div><div class="big" style="font-size:19px;color:#2DD4A7">'+fmt(f)+'</div>'+
+    (warn.length?'<div class="tip">'+warn.join('<br>')+'</div>':'<div class="tip">✓ 暂无触发预警</div>');
+}
+['f-pocket','f-bank','f-family','f-hide'].forEach(function(id){document.getElementById(id).addEventListener('input',calcFunds);});
+document.getElementById('f-chapter').addEventListener('change',calcFunds);
+calcFunds();
+
+/* ===== 旅行计算 ===== */
+function calcTravel(){
+  var fare=num('tv-fare'),skip=num('tv-skip')||0,hurry=num('tv-hurry')||0;
+  var big=document.getElementById('tv-big'),cap=document.getElementById('tv-cap');
+  if(fare===null){big.textContent='—';cap.textContent='填入基础车费后自动计算';}
+  else{var s=skip+hurry*5,total=fare+s;big.textContent=fmt(total);
+    cap.textContent='基础 '+fmt(fare)+(skip?' + 跳过 '+fmt(skip):'')+(hurry?' + 催车 '+fmt(hurry*5):'')+' = 合计 '+fmt(total);}
+  var rows=[{n:'叫车跳过',m:num('w1-m'),t:num('w1-t')},{n:'公交/火车',m:num('w2-m'),t:num('w2-t')},{n:'自己开车',m:num('w3-m'),t:num('w3-t')}].filter(function(r){return r.m!==null&&r.t!==null;});
+  var out=document.getElementById('way-out');
+  if(!rows.length){out.innerHTML='<div class="cap">填好后按「每节省 1 分钟花多少钱」排序</div>';return;}
+  var base=rows.reduce(function(a,b){return b.t>a.t?b:a;},rows[0]);
+  rows.forEach(function(r){r.cpm=(base.t-r.t)>0?r.m/(base.t-r.t):null;});
+  out.innerHTML='<div class="cap" style="margin-bottom:8px">按总耗时从短到长（每多花的钱换来的时间）：</div>'+
+  rows.slice().sort(function(a,b){return a.t-b.t;}).map(function(r,i){
+    var extra=(base.t-r.t>0&&r.cpm!==null)?' · 每省 1 分钟约 '+fmt(Math.round(r.cpm)):'';
+    return '<div class="rank-row"><span style="color:var(--dim);font-family:monospace">'+(i+1)+'</span><span class="mname">'+esc(r.n)+'</span><span class="mval">'+fmt(r.m)+' / '+r.t+' 分'+extra+'</span></div>';
+  }).join('');
+}
+['tv-fare','tv-skip','tv-hurry','w1-m','w1-t','w2-m','w2-t','w3-m','w3-t'].forEach(function(id){document.getElementById(id).addEventListener('input',calcTravel);});
+
+/* ===== 赚钱计算 ===== */
+function calcMoney(){
+  var need=num('m-need'),have=num('m-have')||0,rate=num('m-rate');
+  var big=document.getElementById('m-big'),cap=document.getElementById('m-cap');
+  if(need===null){big.textContent='—';cap.textContent='填入金额后自动计算';}
+  else{
+    var gap=Math.max(0,need-have);
+    big.textContent=fmt(gap);
+    cap.textContent=gap===0?'已达标，可以直接推进剧情':('还差 '+fmt(gap)+(rate?(' · 按 '+fmt(rate)+'/小时 约需 '+(gap/rate*60).toFixed(0)+' 分钟'):' · 填写效率可估算耗时'));
+  }
+  var ns=[].slice.call(document.querySelectorAll('.mw-n')),ms=[].slice.call(document.querySelectorAll('.mw-m')),ts=[].slice.call(document.querySelectorAll('.mw-t'));
+  var rows=[];
+  ns.forEach(function(el,i){
+    var n=el.value.trim(),m2=Number(ms[i].value),t=Number(ts[i].value);
+    if(n&&m2>0&&t>0)rows.push({n:n,h:m2/(t/60)});
+  });
+  var out=document.getElementById('mw-out');
+  if(!rows.length){out.innerHTML='<div class="cap">填入收入与耗时后按小时换算对比</div>';return;}
+  rows.sort(function(a,b){return b.h-a.h;});
+  out.innerHTML='<div class="cap" style="margin-bottom:8px">按小时收入从高到低：</div>'+
+  rows.map(function(r,i){
+    return '<div class="rank-row"><span style="color:var(--dim);font-family:monospace">'+(i+1)+'</span><span class="mname">'+esc(r.n)+'</span><span class="mval" style="color:'+(i===0?'#FFD9C4':'var(--muted)')+'">'+fmt(Math.round(r.h))+'/小时</span></div>';
+  }).join('');
+}
+['m-need','m-have','m-rate'].forEach(function(id){document.getElementById(id).addEventListener('input',calcMoney);});
+[].slice.call(document.querySelectorAll('.mw-n,.mw-m,.mw-t')).forEach(function(el){el.addEventListener('input',calcMoney);});
+calcMoney();
+
+/* ===== 存档管理 ===== */
+var slots=ls('sngz-slots')||{};
+document.getElementById('save-slots').innerHTML=Array.from({length:15},function(_,i){
+  return '<div class="slot"><b>槽位 '+(i+1)+'</b><input maxlength="40" value="'+esc(slots[i]||'')+'" data-s="'+i+'" placeholder="存了什么进度…"></div>';
+}).join('');
+document.getElementById('save-slots').addEventListener('input',function(e){
+  var inp=e.target;if(inp.tagName!=='INPUT')return;
+  var v=inp.value.trim();if(v)slots[inp.dataset.s]=v;else delete slots[inp.dataset.s];
+  sv('sngz-slots',slots);
+});
+document.getElementById('save-clear').addEventListener('click',function(){
+  if(confirm('清空全部槽位记录？')){slots={};sv('sngz-slots',slots);document.getElementById('save-slots').querySelectorAll('input').forEach(function(x){x.value='';});}
+});
+
+/* ===== 防骗自查 ===== */
+document.getElementById('scam-box').innerHTML=SCAM.map(function(q,i){
+  return '<label class="ck"><input type="checkbox" data-i="'+i+'"><span>'+esc(q)+'</span></label>';
+}).join('');
+document.getElementById('scam-box').addEventListener('change',runScam);
+function runScam(){
+  var hit=[].slice.call(document.querySelectorAll('#scam-box input')).map(function(b,i){return b.checked?i:-1;}).filter(function(i){return i>=0;});
+  var high=hit.filter(function(i){return SCAM_HIGH.indexOf(i)>=0;}).length;
+  var mid=hit.filter(function(i){return SCAM_MID.indexOf(i)>=0;}).length;
+  var out=document.getElementById('scam-out'),lv=document.getElementById('scam-level'),cap=document.getElementById('scam-cap');
+  out.className='risk-out';
+  if(high>0){out.classList.add('high');lv.textContent='高风险 · 强烈建议不要继续';
+    cap.textContent='你命中的 '+high+' 项属于典型骗局信号。官方仅在 PS5 / Xbox Series X|S 发售，没有 PC 直装包，也没有手机 APK。不要付款、不要下载、不要给账号密码，直接离开并举报。';}
+  else if(mid>0){out.classList.add('mid');lv.textContent='需谨慎 · 请交叉核实';
+    cap.textContent='你命中的 '+mid+' 项存在疑点。请回到 Rockstar 官网、PlayStation / Microsoft 商店页核对，别只信对方给的链接。';}
+  else if(hit.length){out.classList.add('mid');lv.textContent='低到中风险 · 保持警惕';
+    cap.textContent='命中项不算典型高危，但仍建议确认来源是否为官方渠道，任何付款前先查官网。';}
+  else{out.classList.add('low');lv.textContent='低风险';
+    cap.textContent='未勾选高危项。记住底线：只在官方商店购买，不信「免费直装 / PC 版 / 手机 APK」。';}
+}
 })();
 </script>
 </body>
