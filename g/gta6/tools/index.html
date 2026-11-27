@@ -109,16 +109,20 @@ h2.sect{font-size:16px;font-weight:800;margin:26px 0 4px;padding-left:10px;borde
 button.mini{padding:8px 14px;border-radius:10px;border:1px solid var(--line2);background:var(--card2);color:var(--text);font-size:12.5px;font-weight:700;cursor:pointer}
 button.mini:hover{border-color:rgba(240,109,59,.55)}
 @media(max-width:640px){.grid{grid-template-columns:1fr}.plwrap{grid-template-columns:1fr}.tbl{font-size:12px}.tbl td,.tbl th{padding:8px 9px}.slots{grid-template-columns:1fr 1fr}}
+.mapframe{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0b0e1c}
+.mapframe iframe{display:block;width:100%;height:calc(100vh - 240px);min-height:560px;max-height:860px;border:0}
+@media(max-width:640px){.mapframe iframe{height:calc(100vh - 200px);min-height:480px}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <nav class="top"><a href="../../">← 返回总站</a><span style="color:var(--dim)">/</span><a href="../">GTA6 攻略</a></nav>
   <h1>GTA6 工具箱 <i>·</i> 站内直用</h1>
-  <p class="sub">秘籍、密码、载具武器、收集、进度、计算器、防骗自查——全部在本页使用，不出站。数据整理自 GTA6 中文网社区实测与公开攻略资料，单源/未证实信息均已标注，数值以游戏内为准。</p>
+  <p class="sub">互动地图、秘籍、密码、载具武器、收集、进度、计算器、防骗自查——全部在本页使用，不出站。数据整理自 GTA6 中文网社区实测与公开攻略资料，单源/未证实信息均已标注，数值以游戏内为准。</p>
 
   <div class="tabs" role="tablist" id="tabs">
     <button class="tab on" data-t="cheats">秘籍 · 61</button>
+    <button class="tab" data-t="map">互动地图</button>
     <button class="tab" data-t="codes">密码 · 22</button>
     <button class="tab" data-t="garage">载具武器库</button>
     <button class="tab" data-t="places">特殊地点 · 10</button>
@@ -141,6 +145,11 @@ button.mini:hover{border-color:rgba(240,109,59,.55)}
     </div>
     <p class="cnt" id="cheat-cnt"></p>
     <div class="grid" id="cheat-grid"></div>
+  </section>
+
+  <section id="pane-map" hidden>
+    <p class="sectnote">GTA6 雷奥尼达卫星地图：2696 个地点 · 61 类标注 · 支持搜索 / 分类筛选 / 进度收藏（收藏数据存在源站你的浏览器里）。地图数据来自 GTA6 中文网（gta6.talkn.cn），在此内嵌展示，无需跳出本站。</p>
+    <div class="mapframe"><iframe id="map-iframe" data-src="https://gta6.talkn.cn/map.html" title="GTA6 互动卫星地图" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allow="fullscreen"></iframe></div>
   </section>
 
   <section id="pane-codes" hidden>
@@ -295,11 +304,12 @@ function ls(k){try{return JSON.parse(localStorage.getItem(k)||'null');}catch(e){
 function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
 
 /* ===== Tab ===== */
-var TABS=['cheats','codes','garage','places','collect','story','wanted','stats','funds','travel','money','save','scam'];
+var TABS=['cheats','map','codes','garage','places','collect','story','wanted','stats','funds','travel','money','save','scam'];
 var tabBtns=document.querySelectorAll('#tabs .tab');
 function show(t){
   tabBtns.forEach(function(b){b.classList.toggle('on',b.dataset.t===t);});
   TABS.forEach(function(k){document.getElementById('pane-'+k).hidden=(k!==t);});
+  if(t==='map'){var f=document.getElementById('map-iframe');if(f&&!f.src)f.src=f.dataset.src;}
   window.scrollTo(0,0);
 }
 tabBtns.forEach(function(b){b.addEventListener('click',function(){location.hash=b.dataset.t;});});
