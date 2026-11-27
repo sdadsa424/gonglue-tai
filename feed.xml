@@ -3,11 +3,27 @@
 <channel>
   <title>向日葵游戏盒</title>
   <link>https://wgame-bc7.pages.dev/</link>
-  <description>露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙 · 冰雪传奇、传奇盛世移动版-3D点卡、武林外传：十年之约、修仙家族模拟器2、龙之谷启程、代号：永恒、独步武林：天卡服、永恒岛之彩虹世界、屠龙决战沙城的开荒路线、点卡计费、打金交易与团战站位，都整理成能直接照着做的步骤。</description>
+  <description>露娜2：拾光之约、桃园：将帅录、贰点零江湖、小小屠龙 · 冰雪传奇、传奇盛世移动版-3D点卡、武林外传：十年之约、修仙家族模拟器2、龙之谷启程、代号：永恒、独步武林：天卡服、永恒岛之彩虹世界、屠龙决战沙城、GTA6 · 侠盗猎车手6 的开荒路线、点卡计费、打金交易与团战站位，都整理成能直接照着做的步骤。</description>
   <language>zh-cn</language>
-  <lastBuildDate>Thu, 26 Nov 2026 00:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Fri, 27 Nov 2026 00:00:00 GMT</lastBuildDate>
   <generator>build.mjs</generator>
   <atom:link href="https://wgame-bc7.pages.dev/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>PS5 不下雨：清缓存两分钟</title>
+    <link>https://wgame-bc7.pages.dev/a/gta6-weather/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gta6-weather/</guid>
+    <category>GTA6 · 侠盗猎车手6</category>
+    <pubDate>Fri, 27 Nov 2026 00:00:00 GMT</pubDate>
+    <description>打了补丁还是长期晴天？PS5 玩家实测清系统缓存后动态天气频率回升，约两分钟，存档和云存档都不受影响。</description>
+  </item>
+  <item>
+    <title>偷来的车怎么卖全价</title>
+    <link>https://wgame-bc7.pages.dev/a/gta6-sellcar/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gta6-sellcar/</guid>
+    <category>GTA6 · 侠盗猎车手6</category>
+    <pubDate>Fri, 27 Nov 2026 00:00:00 GMT</pubDate>
+    <description>叫上露西亚留车、出租车 L2 锁定司机按三角跳过行驶传送到买家附近，全程无损伤还能拿 7500 车况奖励。</description>
+  </item>
   <item>
     <title>升级、打宝与提升实力：每日节奏与副本产出表</title>
     <link>https://wgame-bc7.pages.dev/a/tljsc-level/</link>
@@ -39,6 +55,30 @@
     <category>屠龙决战沙城</category>
     <pubDate>Thu, 26 Nov 2026 00:00:00 GMT</pubDate>
     <description>战士近战霸主、法师远程制霸、道士召唤辅助——三职业各自的技能优先级和团战定位，照着选不踩坑。</description>
+  </item>
+  <item>
+    <title>切不了角色：变灰与软锁</title>
+    <link>https://wgame-bc7.pages.dev/a/gta6-switch/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gta6-switch/</guid>
+    <category>GTA6 · 侠盗猎车手6</category>
+    <pubDate>Thu, 26 Nov 2026 00:00:00 GMT</pubDate>
+    <description>切换变灰多数是剧情锁定、搭档甩警察或睡觉等正常设计；第三章「失踪人口」后存在真正的进度软锁，补丁 01.002.002 未修复。</description>
+  </item>
+  <item>
+    <title>30 帧晕动症：三层缓解法</title>
+    <link>https://wgame-bc7.pages.dev/a/gta6-motion/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gta6-motion/</guid>
+    <category>GTA6 · 侠盗猎车手6</category>
+    <pubDate>Thu, 26 Nov 2026 00:00:00 GMT</pubDate>
+    <description>四台主机锁 30 帧是晕感主因：视角灵敏度水平减 6、垂直减 6、加速度减 2、横向跟随归零，配合电视运动补偿与定期重启。</description>
+  </item>
+  <item>
+    <title>仓库搜刮点：四件贵重物品</title>
+    <link>https://wgame-bc7.pages.dev/a/gta6-loot/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gta6-loot/</guid>
+    <category>GTA6 · 侠盗猎车手6</category>
+    <pubDate>Thu, 26 Nov 2026 00:00:00 GMT</pubDate>
+    <description>雷奥奈达物流仓库（Balsero）屋顶潜入路线：四件关键贵重物品逐件位置，外加拖钩拔 ATM 的前置与销赃流程。</description>
   </item>
   <item>
     <title>攻城战规则与行会配合：从竞标到死战</title>
@@ -89,6 +129,54 @@
     <description>一转到六转的完整职业树：战士、刺客、魔法师三系每个阶段的可选职业与转职等级，转职前对一眼表，不迷路。</description>
   </item>
   <item>
+    <title>最快超跑 Thrax 怎么拿</title>
+    <link>https://wgame-bc7.pages.dev/a/gta6-thrax/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gta6-thrax/</guid>
+    <category>GTA6 · 侠盗猎车手6</category>
+    <pubDate>Wed, 25 Nov 2026 00:00:00 GMT</pubDate>
+    <description>海星岛安德鲁·诺德豪宅车库，用车贴门穿模进屋开走定制版 Truffade Thrax，去喷漆店登记永久保存。</description>
+  </item>
+  <item>
+    <title>50+ 处彩蛋按区域整理</title>
+    <link>https://wgame-bc7.pages.dev/a/gta6-secrets/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gta6-secrets/</guid>
+    <category>GTA6 · 侠盗猎车手6</category>
+    <pubDate>Wed, 25 Nov 2026 00:00:00 GMT</pubDate>
+    <description>50 多处彩蛋按区域重排：狗狗摩托艇、GTA5/GTA4 老友致敬、汤米花衬衫、研究所密码 2314、卡拉加山石阵，五条隐藏支线标注待验证。</description>
+  </item>
+  <item>
+    <title>粉色保时捷限时获取</title>
+    <link>https://wgame-bc7.pages.dev/a/gta6-porsche/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gta6-porsche/</guid>
+    <category>GTA6 · 侠盗猎车手6</category>
+    <pubDate>Wed, 25 Nov 2026 00:00:00 GMT</pubDate>
+    <description>第三章波比公寓笔记本密码 Muffins-Queen-15，珍珠区车库密码 92665：登记 $29,450 或卖 $14,750，错过第三章永久失去。</description>
+  </item>
+  <item>
+    <title>仓库刷钱 BUG 全解</title>
+    <link>https://wgame-bc7.pages.dev/a/gta6-glitch/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gta6-glitch/</guid>
+    <category>GTA6 · 侠盗猎车手6</category>
+    <pubDate>Wed, 25 Nov 2026 00:00:00 GMT</pubDate>
+    <description>哈姆雷特镇东侧废弃仓库：两辆已注册个人面包车＋快速切换角色触发货物刷新，单次循环不到 10 分钟入账 8.8 万至 10 万美元。</description>
+  </item>
+  <item>
+    <title>专注模式：L3+R3 全解</title>
+    <link>https://wgame-bc7.pages.dev/a/gta6-focus/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gta6-focus/</guid>
+    <category>GTA6 · 侠盗猎车手6</category>
+    <pubDate>Wed, 25 Nov 2026 00:00:00 GMT</pubDate>
+    <description>GTA6 的 Focus 战斗感知系统：L3+R3 激活、第一章解锁，红黄标记决定击杀或制服，还能找警察、拆载具、认值钱货。</description>
+  </item>
+  <item>
+    <title>山猫礁机场与游艇藏匿点</title>
+    <link>https://wgame-bc7.pages.dev/a/gta6-bobcat/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gta6-bobcat/</guid>
+    <category>GTA6 · 侠盗猎车手6</category>
+    <pubDate>Wed, 25 Nov 2026 00:00:00 GMT</pubDate>
+    <description>Pelican Valley 坠机便签指向 Bobcat Key，黄色小艇向西出海找到 UNDAUNTED 游艇：653 美元现金加约 1200 美元可卡因。</description>
+  </item>
+  <item>
     <title>永恒岛之彩虹世界：四大职业与玩法总览</title>
     <link>https://wgame-bc7.pages.dev/a/chd-intro/</link>
     <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/chd-intro/</guid>
@@ -103,6 +191,38 @@
     <category>永恒岛之彩虹世界</category>
     <pubDate>Wed, 25 Nov 2026 00:00:00 GMT</pubDate>
     <description>衣橱按部位分栏、同款自由染色；城市广场摆摊喊人，副本靠组队开荒——横版冒险的乐趣有一半在画面之外。</description>
+  </item>
+  <item>
+    <title>开局刷钱：叫车传送加仓库</title>
+    <link>https://wgame-bc7.pages.dev/a/gta6-taxi/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gta6-taxi/</guid>
+    <category>GTA6 · 侠盗猎车手6</category>
+    <pubDate>Tue, 24 Nov 2026 00:00:00 GMT</pubDate>
+    <description>留 236 美元叫车传送到仓库，翻墙搜刮货物与 433 美元保险箱，手动存档原地读档回城，四轮货值约 1.44 万美元。</description>
+  </item>
+  <item>
+    <title>地图缩放与定位失效全解</title>
+    <link>https://wgame-bc7.pages.dev/a/gta6-map/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gta6-map/</guid>
+    <category>GTA6 · 侠盗猎车手6</category>
+    <pubDate>Tue, 24 Nov 2026 00:00:00 GMT</pubDate>
+    <description>站内雷奥尼达互动地图支持滚轮缩放、拖拽平移、62 类筛选与搜索；解析「地图定位已失效」两种场景与游戏内 GPS 常见误区。</description>
+  </item>
+  <item>
+    <title>防弹轮胎有吗：防弹衣全解</title>
+    <link>https://wgame-bc7.pages.dev/a/gta6-armor/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gta6-armor/</guid>
+    <category>GTA6 · 侠盗猎车手6</category>
+    <pubDate>Tue, 24 Nov 2026 00:00:00 GMT</pubDate>
+    <description>截至 2026-11-24 没有官方确认 GTA6 存在防弹轮胎；已确认的防护是防弹衣：Ammu-Nation 购买、物品轮盘手动启用、蓝色护甲条判断生效。</description>
+  </item>
+  <item>
+    <title>Xbox 60 帧漏洞实测</title>
+    <link>https://wgame-bc7.pages.dev/a/gta6-60fps/</link>
+    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gta6-60fps/</guid>
+    <category>GTA6 · 侠盗猎车手6</category>
+    <pubDate>Tue, 24 Nov 2026 00:00:00 GMT</pubDate>
+    <description>Digital Foundry 实测：Series X 首小时平均 36-37 帧，超 30 帧游戏整体加速、输入延迟 170ms 降至 120ms；副作用比帧率数字更重要。</description>
   </item>
   <item>
     <title>装备成长指南：强化路线与资源规划</title>
@@ -127,126 +247,6 @@
     <category>代号：永恒</category>
     <pubDate>Fri, 20 Nov 2026 00:00:00 GMT</pubDate>
     <description>海量角色是《代号：永恒》的招牌。官方视频演示英雄的获取渠道与收藏养成思路。</description>
-  </item>
-  <item>
-    <title>新手装备提升：前期战力的关键几步</title>
-    <link>https://wgame-bc7.pages.dev/a/gc-equip/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gc-equip/</guid>
-    <category>代号：永恒</category>
-    <pubDate>Wed, 18 Nov 2026 00:00:00 GMT</pubDate>
-    <description>装备决定前期战力天花板。官方视频演示新手阶段的装备获取与提升路径。</description>
-  </item>
-  <item>
-    <title>觉醒系统入门：条件、材料与培养顺序</title>
-    <link>https://wgame-bc7.pages.dev/a/gc-awaken/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gc-awaken/</guid>
-    <category>代号：永恒</category>
-    <pubDate>Mon, 16 Nov 2026 00:00:00 GMT</pubDate>
-    <description>觉醒是角色养成的分水岭。官方视频演示觉醒的解锁条件、材料准备与培养优先级。</description>
-  </item>
-  <item>
-    <title>怪物卡牌入门：收集与搭配的思路</title>
-    <link>https://wgame-bc7.pages.dev/a/gc-card/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gc-card/</guid>
-    <category>代号：永恒</category>
-    <pubDate>Sun, 15 Nov 2026 00:00:00 GMT</pubDate>
-    <description>打过的怪都能变成卡牌。官方视频演示卡牌的收集渠道、图鉴玩法与搭配收益。</description>
-  </item>
-  <item>
-    <title>新手开荒六步走：15 级转土城</title>
-    <link>https://wgame-bc7.pages.dev/a/cq3d-start/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/cq3d-start/</guid>
-    <category>传奇盛世移动版-3D点卡</category>
-    <pubDate>Sun, 15 Nov 2026 00:00:00 GMT</pubDate>
-    <description>官网把开荒写成六步，核心是两件事：上线先看时长，别一上来把点卡烧光；15 级自动传送土城，转场前把新手区的活干完。</description>
-  </item>
-  <item>
-    <title>金币行交易门槛与 5% 金币税</title>
-    <link>https://wgame-bc7.pages.dev/a/cq3d-market/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/cq3d-market/</guid>
-    <category>传奇盛世移动版-3D点卡</category>
-    <pubDate>Sun, 15 Nov 2026 00:00:00 GMT</pubDate>
-    <description>金币价格由玩家挂单写出来，收币方承担 5% 金币税。两道交易门槛是为了过滤批量小号，不是拦你做生意。</description>
-  </item>
-  <item>
-    <title>后进服追赶：等级补领与世界等级</title>
-    <link>https://wgame-bc7.pages.dev/a/cq3d-level/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/cq3d-level/</guid>
-    <category>传奇盛世移动版-3D点卡</category>
-    <pubDate>Sun, 15 Nov 2026 00:00:00 GMT</pubDate>
-    <description>担心开服一个月后再进只能当观众？官网写了等级补领：满足条件的角色可以免费补到「世界等级 - 3」。</description>
-  </item>
-  <item>
-    <title>掉落全公开：装备会掉，材料才有用</title>
-    <link>https://wgame-bc7.pages.dev/a/cq3d-drop/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/cq3d-drop/</guid>
-    <category>传奇盛世移动版-3D点卡</category>
-    <pubDate>Sun, 15 Nov 2026 00:00:00 GMT</pubDate>
-    <description>非绑定装备遵循死亡掉落规则，书页、黑铁、兽皮、祝福油全有明确用途。所有地图与怪物的掉落明细与概率公开可查。</description>
-  </item>
-  <item>
-    <title>战法道三职业分工：前排、清场与续航</title>
-    <link>https://wgame-bc7.pages.dev/a/cq3d-class/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/cq3d-class/</guid>
-    <category>传奇盛世移动版-3D点卡</category>
-    <pubDate>Sun, 15 Nov 2026 00:00:00 GMT</pubDate>
-    <description>创建界面只有三个职业可选。官网口径：战士顶前排、法师清场、道士续航与控场，组队配合比充值额度重要。</description>
-  </item>
-  <item>
-    <title>点卡换算：1 元 = 60 分钟</title>
-    <link>https://wgame-bc7.pages.dev/a/cq3d-card/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/cq3d-card/</guid>
-    <category>传奇盛世移动版-3D点卡</category>
-    <pubDate>Sun, 15 Nov 2026 00:00:00 GMT</pubDate>
-    <description>这个服务器钱买的是「玩多久」，不是「有多强」。把换算和离线计费两条规则吃透，成本账就清楚了。</description>
-  </item>
-  <item>
-    <title>冲级路线参考：1 级到 85 级怎么走</title>
-    <link>https://wgame-bc7.pages.dev/a/gc-level/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gc-level/</guid>
-    <category>代号：永恒</category>
-    <pubDate>Sat, 14 Nov 2026 00:00:00 GMT</pubDate>
-    <description>从新手村到 85 级的完整升级路线，官方视频逐步演示：哪里练级快、什么等级去哪张图。</description>
-  </item>
-  <item>
-    <title>升级之后先做什么：优先级盘点（下）</title>
-    <link>https://wgame-bc7.pages.dev/a/gc-up2/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gc-up2/</guid>
-    <category>代号：永恒</category>
-    <pubDate>Fri, 13 Nov 2026 00:00:00 GMT</pubDate>
-    <description>上篇管解锁，下篇管分配：升级攒下的资源往哪投、错过的活动怎么补，官方视频一次讲完。</description>
-  </item>
-  <item>
-    <title>升级之后先做什么：优先级盘点（上）</title>
-    <link>https://wgame-bc7.pages.dev/a/gc-up1/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/gc-up1/</guid>
-    <category>代号：永恒</category>
-    <pubDate>Thu, 12 Nov 2026 00:00:00 GMT</pubDate>
-    <description>升了级别急着刷怪：先看清这一级解锁了什么。官方视频攻略（上篇），本页可直接播放。</description>
-  </item>
-  <item>
-    <title>宠物养成日常：升级、资质与资源规划</title>
-    <link>https://wgame-bc7.pages.dev/a/ty-pet-daily/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/ty-pet-daily/</guid>
-    <category>桃园：将帅录</category>
-    <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
-    <description>抓到好胚子只是开始。每天喂什么、铜钱花在哪、什么时候换下一只，这份养成账帮你把资源花在刀刃上。</description>
-  </item>
-  <item>
-    <title>社交玩法盘点：好友组队与牵手结婚系统</title>
-    <link>https://wgame-bc7.pages.dev/a/luna2-social/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/luna2-social/</guid>
-    <category>露娜2：拾光之约</category>
-    <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
-    <description>露娜2 的社交不是摆设：组队有加成、好友有交互、牵手结婚还有专属玩法。会用社交系统的玩家，升级永远快人一步。</description>
-  </item>
-  <item>
-    <title>职业怎么选：战士游侠法师修士各有各的玩法</title>
-    <link>https://wgame-bc7.pages.dev/a/luna2-class/</link>
-    <guid isPermaLink="true">https://wgame-bc7.pages.dev/a/luna2-class/</guid>
-    <category>露娜2：拾光之约</category>
-    <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
-    <description>四个基础职业对应四种完全不同的节奏。选职业不是选强度，是选你每天愿意重复的那套操作。</description>
   </item>
 </channel>
 </rss>
