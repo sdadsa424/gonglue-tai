@@ -43,6 +43,17 @@ function buildDates() {
 const DATES = buildDates();
 const gdate = gi => (DATES[gi.id] || {}).d || SEED_DATE;
 const GDATE = guideId => (DATES[guideId] || {}).d || SEED_DATE;
+
+/* ---------- 静态资源缓存指纹 ----------
+ * style.css / ui.js / data.js / dates.js 的内容一变，ASSET_VER 就变，
+ * 所有页面（含首页）的资源引用自动带上 ?v=<指纹>，浏览器/CDN 缓存即刻失效，
+ * 不再需要手动改 ?v=xx。Service Worker 版本同样由此派生。 */
+const ASSET_VER = crypto.createHash('sha1')
+  .update(fs.readFileSync('assets/style.css'))
+  .update(fs.readFileSync('assets/ui.js'))
+  .update(fs.readFileSync('assets/data.js'))
+  .update(fs.readFileSync(DATES_FILE))
+  .digest('hex').slice(0, 10);
 /* 全站级 lastmod：取所有文章日期的最大值 */
 const SITE_LASTMOD = GUIDES.map(gdate).sort().pop();
 const ORDER = ['ejl', 'xxtl', 'ty', 'luna2', 'cq3d', 'wlwz', 'xxjz', 'lzgsy', 'gc', 'dbwl', 'chd', 'sbk', 'tljsc']; // yxlc 隐藏中
@@ -396,7 +407,7 @@ ${PRECONNECT}
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="攻略大全">
-<link rel="stylesheet" href="${UP}assets/style.css">
+<link rel="stylesheet" href="${UP}assets/style.css?v=${ASSET_VER}">
 <script type="application/ld+json">${jsonld}</script>
 ${CF_BEACON}
 ${headExtra}
@@ -422,8 +433,8 @@ ${tabbar()}
   </div>
 </div>
 <div class="u-toast" id="uToast" role="status" aria-live="polite"><span class="u-dot" aria-hidden="true"></span><span class="u-text"></span></div>
-${(guideId || noData) ? '' : '<script src="' + UP + 'assets/data.js"></script>'}
-<script src="${UP}assets/ui.js"></script>
+${(guideId || noData) ? '' : '<script src="' + UP + 'assets/data.js?v=' + ASSET_VER + '"></script>'}
+<script src="${UP}assets/ui.js?v=${ASSET_VER}"></script>
 ${PAGE_SCRIPT}
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </body>
@@ -915,4 +926,11 @@ const swHash = crypto.createHash('sha1')
   .digest('hex').slice(0, 10);
 fs.writeFileSync('sw.js', SW_TEMPLATE.replace('__VERSION__', swHash), 'utf8');
 
-console.log('生成攻略页：' + GUIDES.length + ' 篇 · 分站页：' + ORDER.length + ' 个 · 404.html / sitemap.xml / robots.txt / feed.xml 已更新');
+/* 首页是手工编辑的源文件：把其中静态资源引用统一刷成当前指纹，避免漏改 ?v= */
+{
+  let ih = fs.readFileSync('index.html', 'utf8');
+  ih = ih.replace(/((?:href|src)="(?:\.\.\/)*assets\/(?:style\.css|ui\.js|data\.js|dates\.js))(?:\?v=[a-z0-9]+)?"/g, '$1?v=' + ASSET_VER + '"');
+  fs.writeFileSync('index.html', ih, 'utf8');
+}
+
+console.log('生成攻略页：' + GUIDES.length + ' 篇 · 分站页：' + ORDER.length + ' 个 · 404.html / sitemap.xml / robots.txt / feed.xml 已更新 · 资源指纹 ' + ASSET_VER);

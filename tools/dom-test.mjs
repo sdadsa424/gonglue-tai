@@ -759,7 +759,7 @@ for (const k of Object.keys(gpCounts)) {
   ok('分站页 ' + k + ' 有正确 canonical', gpHtml.includes('rel="canonical" href="https://wgame-bc7.pages.dev/g/' + k + '/"'));
   ok('分站页 ' + k + ' 列出全部 ' + gpCounts[k] + ' 篇', (gpHtml.match(/class="entry"/g) || []).length === gpCounts[k]);
   ok('分站页 ' + k + ' 无 hash 路由残留', !gpHtml.includes('href="#/g/') && !gpHtml.includes('href="#/a/'));
-  ok('分站页 ' + k + ' 资源路径正确', gpHtml.includes('href="../../assets/style.css"') && !gpHtml.includes('src="assets/'));
+  ok('分站页 ' + k + ' 资源路径正确', /href="\.\.\/\.\.\/assets\/style\.css(\?v=[a-f0-9]+)?"/.test(gpHtml) && !gpHtml.includes('src="assets/'));
   ok('分站页 ' + k + ' 不再隐藏', !gpHtml.includes('data-game="' + k + '" hidden'));
   ok('分站页 ' + k + ' 计数为真实篇数', new RegExp('data-count="' + k + '">' + gpCounts[k] + '</span>').test(gpHtml));
 }
