@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>效果对比：横排 vs 网格</title>
+<link rel="stylesheet" href="assets/style.css">
+<style>
+.mock-note{max-width:1180px;margin:18px auto 0;padding:12px 18px;border:1px dashed #4C9AFF;border-radius:12px;background:rgba(76,154,255,.08);color:#9EC3FF;font-size:13.5px;line-height:1.7}
+.mock-note b{color:#DCE6FF}
+/* 顶部对比切换 */
+.cmp-bar{position:sticky;top:0;z-index:50;display:flex;justify-content:center;gap:10px;padding:14px 0;
+  background:rgba(8,10,17,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.cmp-btn{appearance:none;border:1px solid var(--line);background:#151930;color:var(--muted);
+  font:inherit;font-size:14px;font-weight:700;padding:10px 30px;border-radius:999px;cursor:pointer;transition:all .2s ease}
+.cmp-btn:hover{color:#E7EAF6;border-color:rgba(255,255,255,.28)}
+.cmp-btn.on{background:linear-gradient(160deg,#FFD34D,#FF9C2E);border-color:transparent;color:#241500;box-shadow:0 6px 18px -8px rgba(255,170,50,.8)}
+.view{display:none}
+.view.on{display:block}
+.cmp-tip{max-width:1180px;margin:16px auto 0;padding:0 20px;color:#5F657E;font-size:12.5px;text-align:center}
+
+/* ===== 网格视图 ===== */
+.game-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+
+/* ===== 横排视图 ===== */
+.rail-wrap{position:relative;margin-top:22px}
+.rail{
+  display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 40px)/3.35);
+  gap:18px;overflow-x:auto;overscroll-behavior-x:contain;
+  scroll-snap-type:x mandatory;padding:6px 4px 22px;
+  scrollbar-width:none;scroll-behavior:smooth;
+}
+.rail::-webkit-scrollbar{display:none}
+.rail > *{scroll-snap-align:start}
+.rail-wrap::after{
+  content:"";position:absolute;right:-4px;top:0;bottom:22px;width:70px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(6,8,14,.92));
+  transition:opacity .25s ease;
+}
+.rail-wrap.at-end::after{opacity:0}
+.rail-nav{position:absolute;top:calc(50% - 22px);transform:translateY(-50%);z-index:5;
+  width:46px;height:46px;border-radius:50%;border:1px solid var(--line);
+  background:rgba(16,19,34,.92);color:#E7EAF6;font-size:17px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s ease;box-shadow:0 8px 24px -10px rgba(0,0,0,.9)}
+.rail-nav:hover{border-color:#FFD34D;color:#FFD34D;box-shadow:0 0 18px -4px rgba(255,211,77,.45)}
+.rail-nav.prev{left:-16px}
+.rail-nav.next{right:-16px}
+.rail-nav[disabled]{opacity:0;pointer-events:none}
+.rail-dots{display:flex;justify-content:center;gap:7px;margin-top:0}
+.rail-dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.18);transition:all .25s ease}
+.rail-dots i.on{background:#FFD34D;width:20px;border-radius:99px}
+@media (max-width:900px){
+  .rail{grid-auto-columns:78%}
+  .rail-nav{display:none}
+}
+</style>
+</head>
+<body>
+<div class="mock-note"><b>效果对比</b>：点顶部按钮在 <b>横排轨道</b> 和 <b>网格</b> 之间切换，两组内容完全一样（12 款游戏、同款卡片样式）。</div>
+
+<div class="cmp-bar">
+  <button class="cmp-btn on" data-view="rail">横排轨道</button>
+  <button class="cmp-btn" data-view="grid">网格</button>
+</div>
+
+<main style="max-width:1180px;margin:0 auto;padding:0 20px 60px">
+  <section class="sec" style="margin-top:20px">
+    <div class="sec-head">
+      <h2 class="sec-title">游戏<span class="gc-count" style="font-size:14px;vertical-align:3px;margin-left:10px">12 款</span></h2>
+      <p class="sec-desc">十二款完全不同的节奏，找到你的菜。</p>
+    </div>
+
+    <!-- ===== 横排视图 ===== -->
+    <div class="view on" id="v-rail">
+      <div class="rail-wrap" id="wrap">
+        <button class="rail-nav prev" id="prev" aria-label="上一批">‹</button>
+        <button class="rail-nav next" id="next" aria-label="下一批">›</button>
+        <div class="rail" id="rail">
+
+          <article class="game-card" style="--ac:#2DD4A7">
+            <a class="gc-banner" href="g/ejl/"><picture><source srcset="assets/ejl-hero_960w.avif 960w" type="image/avif"><source srcset="assets/ejl-hero_960w.webp 960w" type="image/webp"><img src="assets/ejl-hero.jpg" alt="贰点零江湖" width="1264" height="628" loading="lazy" decoding="async"></picture><span class="gc-count">13 篇</span></a>
+            <div class="gc-row"><img class="gc-ic" src="assets/ejl-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">贰点零江湖<span>复古武侠 · 三端互通</span></h3><span class="gc-btns"><a class="gc-btn" href="g/ejl/">攻略</a></span></div>
+          </article>
+
+          <article class="game-card" style="--ac:#4C9AFF">
+            <a class="gc-banner" href="g/xxtl/"><picture><source srcset="assets/xxtl-siege_960w.avif 960w" type="image/avif"><source srcset="assets/xxtl-siege_960w.webp 960w" type="image/webp"><img src="assets/xxtl-siege.jpg" alt="小小屠龙" width="1080" height="608" loading="lazy" decoding="async"></picture><span class="gc-count">15 篇</span></a>
+            <div class="gc-row"><img class="gc-ic" src="assets/xxtl-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">小小屠龙 · 冰雪传奇<span>冰雪复古 · 打宝攻沙</span></h3><span class="gc-btns"><a class="gc-btn" href="g/xxtl/">攻略</a></span></div>
+          </article>
+
+          <article class="game-card" style="--ac:#FF6B8A">
+            <a class="gc-banner" href="g/ty/"><picture><source srcset="assets/ty-key_960w.avif 960w" type="image/avif"><source srcset="assets/ty-key_960w.webp 960w" type="image/webp"><img src="assets/ty-key.jpg" alt="桃园：将帅录" width="1600" height="900" loading="lazy" decoding="async"></picture><span class="gc-count">18 篇</span></a>
+            <div class="gc-row wrap"><img class="gc-ic" src="assets/ty-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">桃园：将帅录<span>Q 版三国 · 回合策略</span></h3><span class="gc-btns"><a class="gc-btn" href="g/ty/">攻略</a></span></div>
+          </article>
+
+          <article class="game-card" style="--ac:#A78BFA">
+            <a class="gc-banner" href="g/luna2/"><picture><source srcset="assets/luna2-hero_960w.avif 960w" type="image/avif"><source srcset="assets/luna2-hero_960w.webp 960w" type="image/webp"><img src="assets/luna2-hero.jpg" alt="露娜2" width="1264" height="711" loading="lazy" decoding="async"></picture><span class="gc-count">10 篇</span></a>
+            <div class="gc-row"><img class="gc-ic" src="assets/luna2-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">露娜2：拾光之约<span>奇幻冒险 · 自由转职</span></h3><span class="gc-btns"><a class="gc-btn" href="g/luna2/">攻略</a></span></div>
+          </article>
+
+          <article class="game-card" style="--ac:#FFB020">
+            <a class="gc-banner" href="g/cq3d/"><picture><source srcset="assets/cq3d-class_960w.avif 960w" type="image/avif"><source srcset="assets/cq3d-class_960w.webp 960w" type="image/webp"><img src="assets/cq3d-class.jpg" alt="传奇盛世" width="1264" height="710" loading="lazy" decoding="async"></picture><span class="gc-count">6 篇</span></a>
+            <div class="gc-row"><img class="gc-ic" src="assets/cq3d-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">传奇盛世移动版-3D<span>点卡计时 · 1.76 复古</span></h3><span class="gc-btns"><a class="gc-btn" href="g/cq3d/">攻略</a></span></div>
+          </article>
+
+          <article class="game-card" style="--ac:#FF7A45">
+            <a class="gc-banner" href="g/wlwz/"><picture><source srcset="assets/wlwz-feat-inn.avif 750w" type="image/avif"><source srcset="assets/wlwz-feat-inn.webp 750w" type="image/webp"><img src="assets/wlwz-feat-inn.jpg" alt="武林外传" width="750" height="422" loading="lazy" decoding="async"></picture><span class="gc-count">18 篇</span></a>
+            <div class="gc-row wrap"><img class="gc-ic" src="assets/wlwz-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">武林外传：十年之约<span>同福客栈 · 武林情怀</span></h3><span class="gc-btns"><a class="gc-btn" href="g/wlwz/">攻略</a></span></div>
+          </article>
+
+          <article class="game-card" style="--ac:#3EC1D3">
+            <a class="gc-banner" href="g/xxjz/"><picture><source srcset="assets/xxjz-feat-sect.avif 750w" type="image/avif"><source srcset="assets/xxjz-feat-sect.webp 750w" type="image/webp"><img src="assets/xxjz-feat-sect.jpg" alt="修仙家族模拟器2" width="750" height="422" loading="lazy" decoding="async"></picture><span class="gc-count">7 篇</span></a>
+            <div class="gc-row wrap"><img class="gc-ic" src="assets/xxjz-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">修仙家族模拟器2<span>修仙世家 · 模拟经营</span></h3><span class="gc-btns"><a class="gc-btn" href="g/xxjz/">攻略</a></span></div>
+          </article>
+
+          <article class="game-card" style="--ac:#B44BF0">
+            <a class="gc-banner" href="g/lzgsy/"><picture><source srcset="assets/lzgsy-hero_960w.avif 960w" type="image/avif"><source srcset="assets/lzgsy-hero_960w.webp 960w" type="image/webp"><img src="assets/lzgsy-hero.jpg" alt="龙之谷启程" width="1264" height="628" loading="lazy" decoding="async"></picture><span class="gc-count">11 篇</span></a>
+            <div class="gc-row wrap"><img class="gc-ic" src="assets/lzgsy-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">龙之谷启程<span>经典龙谷 · 动作连招</span></h3><span class="gc-btns"><a class="gc-btn" href="g/lzgsy/">攻略</a></span></div>
+          </article>
+
+          <article class="game-card" style="--ac:#7C5CFF">
+            <a class="gc-banner" href="g/gc/"><picture><source srcset="assets/gc-hero_960w.avif 960w" type="image/avif"><source srcset="assets/gc-hero_960w.webp 960w" type="image/webp"><img src="assets/gc-hero.jpg" alt="代号：永恒" width="1264" height="628" loading="lazy" decoding="async"></picture><span class="gc-count">8 篇</span></a>
+            <div class="gc-row wrap"><img class="gc-ic" src="assets/gc-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">代号：永恒<span>永恒冒险 · 转职连击</span></h3><span class="gc-btns"><a class="gc-btn" href="g/gc/">攻略</a></span></div>
+          </article>
+
+          <article class="game-card" style="--ac:#E4443C">
+            <a class="gc-banner" href="g/dbwl/"><picture><source srcset="assets/dbwl-hero_960w.avif 960w" type="image/avif"><source srcset="assets/dbwl-hero_960w.webp 960w" type="image/webp"><img src="assets/dbwl-hero.jpg" alt="独步武林" width="1264" height="628" loading="lazy" decoding="async"></picture><span class="gc-count">4 篇</span></a>
+            <div class="gc-row wrap"><img class="gc-ic" src="assets/dbwl-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">独步武林：天卡服<span>热血江湖 · 天卡长线</span></h3><span class="gc-btns"><a class="gc-btn" href="g/dbwl/">攻略</a></span></div>
+          </article>
+
+          <article class="game-card" style="--ac:#FF8FB1">
+            <a class="gc-banner" href="g/chd/"><picture><source srcset="assets/chd-hero.avif 836w" type="image/avif"><source srcset="assets/chd-hero.webp 836w" type="image/webp"><img src="assets/chd-hero.jpg" alt="永恒岛" width="836" height="444" loading="lazy" decoding="async"></picture><span class="gc-count">2 篇</span></a>
+            <div class="gc-row wrap"><img class="gc-ic" src="assets/chd-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">永恒岛之彩虹世界<span>横版冒险 · 萌系养成</span></h3><span class="gc-btns"><a class="gc-btn" href="g/chd/">攻略</a></span></div>
+          </article>
+
+          <article class="game-card" style="--ac:#9C3B22">
+            <a class="gc-banner" href="g/sbk/"><picture><source srcset="assets/sbk-hero_960w.avif 960w" type="image/avif"><source srcset="assets/sbk-hero_960w.webp 960w" type="image/webp"><img src="assets/sbk-hero.jpg" alt="沙巴克传奇" width="1000" height="558" loading="lazy" decoding="async"></picture><span class="gc-count">4 篇</span></a>
+            <div class="gc-row wrap"><img class="gc-ic" src="assets/sbk-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">沙巴克传奇：再战沙巴克<span>热血传奇 · 正版IP</span></h3><span class="gc-btns"><a class="gc-btn" href="g/sbk/">攻略</a></span></div>
+          </article>
+
+        </div>
+        <div class="rail-dots" id="dots"></div>
+      </div>
+      <p class="cmp-tip">横排：页面高度永远不变，游戏再多往右排；但一屏只见 3-4 款，浏览靠滑</p>
+    </div>
+
+    <!-- ===== 网格视图 ===== -->
+    <div class="view" id="v-grid">
+      <div class="game-cards" id="grid"></div>
+      <p class="cmp-tip">网格：一屏 6-9 款全露出，扫一眼就能挑；但游戏越多页面越长（现在 12 款已经 4 行）</p>
+    </div>
+  </section>
+</main>
+
+<script>
+// 用 JS 把横排的卡克隆进网格，保证两组内容永远一致
+const grid=document.getElementById('grid');
+[...document.querySelectorAll('#rail .game-card')].forEach(c=>grid.appendChild(c.cloneNode(true)));
+
+// 视图切换
+const btns=[...document.querySelectorAll('.cmp-btn')];
+btns.forEach(b=>b.addEventListener('click',()=>{
+  btns.forEach(x=>x.classList.toggle('on',x===b));
+  document.getElementById('v-rail').classList.toggle('on',b.dataset.view==='rail');
+  document.getElementById('v-grid').classList.toggle('on',b.dataset.view==='grid');
+}));
+
+// 横排逻辑
+const rail=document.getElementById('rail'),wrap=document.getElementById('wrap'),
+      prev=document.getElementById('prev'),next=document.getElementById('next'),dots=document.getElementById('dots');
+const cards=[...rail.children];
+cards.forEach((_,i)=>{const d=document.createElement('i');dots.appendChild(d);});
+function step(){return cards[0].offsetWidth+18;}
+function sync(){
+  const max=rail.scrollWidth-rail.clientWidth;
+  prev.disabled=rail.scrollLeft<10;
+  next.disabled=rail.scrollLeft>max-10;
+  wrap.classList.toggle('at-end',rail.scrollLeft>max-10);
+  const idx=Math.round(rail.scrollLeft/step());
+  [...dots.children].forEach((d,i)=>d.classList.toggle('on',i===idx));
+}
+prev.addEventListener('click',()=>rail.scrollBy({left:-step()*2}));
+next.addEventListener('click',()=>rail.scrollBy({left:step()*2}));
+rail.addEventListener('scroll',sync,{passive:true});
+addEventListener('resize',sync);sync();
+</script>
+</body>
+</html>

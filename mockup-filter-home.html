@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>效果图：分类筛选 + 精选折叠（方案 1+2）</title>
+<link rel="stylesheet" href="assets/style.css">
+<style>
+/* ===== 效果图专用说明条 ===== */
+.mock-note{max-width:1180px;margin:18px auto 0;padding:12px 18px;border:1px dashed #4C9AFF;border-radius:12px;background:rgba(76,154,255,.08);color:#9EC3FF;font-size:13.5px;line-height:1.7}
+.mock-note b{color:#DCE6FF}
+
+/* ===== 方案1：分类筛选 chips ===== */
+.gc-filter{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 6px}
+.gc-chip{
+  appearance:none;border:1px solid var(--line);background:#151930;color:var(--muted);
+  font:inherit;font-size:13.5px;font-weight:600;padding:8px 18px;border-radius:999px;cursor:pointer;
+  transition:all .22s ease;
+}
+.gc-chip:hover{color:#E7EAF6;border-color:rgba(255,255,255,.28)}
+.gc-chip.on{background:linear-gradient(160deg,#FFD34D,#FF9C2E);border-color:transparent;color:#241500;box-shadow:0 6px 18px -8px rgba(255,170,50,.8)}
+.gc-chip .n{opacity:.55;font-weight:500;margin-left:4px;font-size:12px}
+.gc-chip.on .n{opacity:.75}
+
+/* ===== 方案2：精选 + 折叠 ===== */
+.gc-more{display:flex;justify-content:center;margin:26px 0 8px}
+.gc-more button{
+  appearance:none;border:1px solid var(--line);background:#151930;color:#E7EAF6;
+  font:inherit;font-size:14px;font-weight:700;padding:12px 34px;border-radius:999px;cursor:pointer;
+  transition:all .22s ease;display:inline-flex;align-items:center;gap:8px;
+}
+.gc-more button:hover{border-color:#FFD34D;color:#FFD34D;box-shadow:0 0 18px -6px rgba(255,211,77,.5)}
+.gc-more button .arr{transition:transform .25s ease;font-size:12px;opacity:.7}
+.gc-more.open button .arr{transform:rotate(180deg)}
+/* 紧凑小卡：矮图双列 */
+.gc-mini{display:none;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}
+.gc-more.open + .gc-mini{display:grid}
+.mini-card{
+  display:flex;align-items:center;gap:12px;padding:10px 14px 10px 10px;
+  background:linear-gradient(180deg,#151930,#111424);border:1px solid var(--line);border-radius:14px;
+  text-decoration:none;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;
+  position:relative;overflow:hidden;
+}
+.mini-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--ac)}
+.mini-card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.2);box-shadow:0 14px 30px -18px rgba(0,0,0,.9),0 0 14px -5px var(--ac)}
+.mini-th{flex:0 0 118px;aspect-ratio:16/9;border-radius:9px;overflow:hidden;background:#1B1F33}
+.mini-th img{width:100%;height:100%;object-fit:cover;display:block}
+.mini-bd{min-width:0;flex:1}
+.mini-tt{font-size:14.5px;font-weight:700;color:#E7EAF6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini-tag{font-size:12px;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini-meta{display:flex;align-items:center;gap:10px;margin-top:7px}
+.mini-cnt{font-size:11.5px;font-weight:700;color:var(--ac);background:color-mix(in srgb,var(--ac) 16%,transparent);padding:2px 8px;border-radius:999px}
+.mini-go{margin-left:auto;flex:0 0 auto;font-size:12.5px;font-weight:700;color:#241500;background:linear-gradient(160deg,#FFD34D,#FF9C2E);padding:6px 14px;border-radius:999px}
+@media (max-width:900px){.gc-mini{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="mock-note"><b>效果图 · 方案 1+2</b>：① 卡片上方加分类筛选 chip（点击切换，纯前端过滤）；② 首屏只展示 6 张精选大卡，其余收进「查看全部」，展开后为紧凑小卡双列。可以实际点着玩。</div>
+
+<main style="max-width:1180px;margin:0 auto;padding:0 20px 60px">
+  <section class="sec" style="margin-top:34px">
+    <div class="sec-head">
+      <h2 class="sec-title">游戏</h2>
+      <p class="sec-desc">十二款完全不同的节奏，按题材挑选你的菜。</p>
+    </div>
+
+    <!-- 方案1：分类 chips -->
+    <div class="gc-filter" id="filter" role="tablist">
+      <button class="gc-chip on" data-cat="all">全部<span class="n">12</span></button>
+      <button class="gc-chip" data-cat="cq">传奇 · 江湖<span class="n">5</span></button>
+      <button class="gc-chip" data-cat="turn">回合 · 策略<span class="n">2</span></button>
+      <button class="gc-chip" data-cat="act">动作 · 冒险<span class="n">4</span></button>
+      <button class="gc-chip" data-cat="sim">模拟养成<span class="n">1</span></button>
+    </div>
+
+    <div class="game-cards" id="grid">
+
+      <!-- 精选 6 张大卡 -->
+      <article class="game-card" style="--ac:#FF6B8A" data-cat="turn" data-feat="1">
+        <a class="gc-banner" href="g/ty/"><picture><source srcset="assets/ty-key_960w.avif 960w" type="image/avif"><source srcset="assets/ty-key_960w.webp 960w" type="image/webp"><img src="assets/ty-key.jpg" alt="桃园：将帅录" width="1600" height="900" loading="lazy" decoding="async"></picture><span class="gc-count">18 篇</span></a>
+        <div class="gc-row wrap"><img class="gc-ic" src="assets/ty-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">桃园：将帅录<span>Q 版三国 · 回合策略</span></h3><span class="gc-btns"><a class="gc-btn" href="g/ty/">攻略</a></span></div>
+      </article>
+
+      <article class="game-card" style="--ac:#FF7A45" data-cat="turn" data-feat="1">
+        <a class="gc-banner" href="g/wlwz/"><picture><source srcset="assets/wlwz-feat-inn.avif 750w" type="image/avif"><source srcset="assets/wlwz-feat-inn.webp 750w" type="image/webp"><img src="assets/wlwz-feat-inn.jpg" alt="武林外传" width="750" height="422" loading="lazy" decoding="async"></picture><span class="gc-count">18 篇</span></a>
+        <div class="gc-row wrap"><img class="gc-ic" src="assets/wlwz-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">武林外传：十年之约<span>同福客栈 · 武林情怀</span></h3><span class="gc-btns"><a class="gc-btn" href="g/wlwz/">攻略</a></span></div>
+      </article>
+
+      <article class="game-card" style="--ac:#4C9AFF" data-cat="cq" data-feat="1">
+        <a class="gc-banner" href="g/xxtl/"><picture><source srcset="assets/xxtl-siege_960w.avif 960w" type="image/avif"><source srcset="assets/xxtl-siege_960w.webp 960w" type="image/webp"><img src="assets/xxtl-siege.jpg" alt="小小屠龙" width="1080" height="608" loading="lazy" decoding="async"></picture><span class="gc-count">15 篇</span></a>
+        <div class="gc-row"><img class="gc-ic" src="assets/xxtl-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">小小屠龙 · 冰雪传奇<span>冰雪复古 · 打宝攻沙</span></h3><span class="gc-btns"><a class="gc-btn" href="g/xxtl/">攻略</a></span></div>
+      </article>
+
+      <article class="game-card" style="--ac:#2DD4A7" data-cat="cq" data-feat="1">
+        <a class="gc-banner" href="g/ejl/"><picture><source srcset="assets/ejl-hero_960w.avif 960w" type="image/avif"><source srcset="assets/ejl-hero_960w.webp 960w" type="image/webp"><img src="assets/ejl-hero.jpg" alt="贰点零江湖" width="1264" height="628" loading="lazy" decoding="async"></picture><span class="gc-count">13 篇</span></a>
+        <div class="gc-row"><img class="gc-ic" src="assets/ejl-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">贰点零江湖<span>复古武侠 · 三端互通</span></h3><span class="gc-btns"><a class="gc-btn" href="g/ejl/">攻略</a></span></div>
+      </article>
+
+      <article class="game-card" style="--ac:#B44BF0" data-cat="act" data-feat="1">
+        <a class="gc-banner" href="g/lzgsy/"><picture><source srcset="assets/lzgsy-hero_960w.avif 960w" type="image/avif"><source srcset="assets/lzgsy-hero_960w.webp 960w" type="image/webp"><img src="assets/lzgsy-hero.jpg" alt="龙之谷启程" width="1264" height="628" loading="lazy" decoding="async"></picture><span class="gc-count">11 篇</span></a>
+        <div class="gc-row wrap"><img class="gc-ic" src="assets/lzgsy-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">龙之谷启程<span>经典龙谷 · 动作连招</span></h3><span class="gc-btns"><a class="gc-btn" href="g/lzgsy/">攻略</a></span></div>
+      </article>
+
+      <article class="game-card" style="--ac:#A78BFA" data-cat="act" data-feat="1">
+        <a class="gc-banner" href="g/luna2/"><picture><source srcset="assets/luna2-hero_960w.avif 960w" type="image/avif"><source srcset="assets/luna2-hero_960w.webp 960w" type="image/webp"><img src="assets/luna2-hero.jpg" alt="露娜2" width="1264" height="711" loading="lazy" decoding="async"></picture><span class="gc-count">10 篇</span></a>
+        <div class="gc-row"><img class="gc-ic" src="assets/luna2-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">露娜2：拾光之约<span>奇幻冒险 · 自由转职</span></h3><span class="gc-btns"><a class="gc-btn" href="g/luna2/">攻略</a></span></div>
+      </article>
+
+      <!-- 折叠区：紧凑小卡 -->
+      <a class="mini-card" style="--ac:#FFB020" href="g/cq3d/" data-cat="cq" data-mini="1">
+        <span class="mini-th"><img src="assets/cq3d-class.jpg" alt="" loading="lazy"></span>
+        <span class="mini-bd"><span class="mini-tt">传奇盛世移动版-3D点卡</span><span class="mini-tag">点卡计时 · 1.76 复古</span>
+        <span class="mini-meta"><span class="mini-cnt">6 篇</span><span class="mini-go">攻略</span></span></span>
+      </a>
+
+      <a class="mini-card" style="--ac:#3EC1D3" href="g/xxjz/" data-cat="sim" data-mini="1">
+        <span class="mini-th"><img src="assets/xxjz-feat-sect.jpg" alt="" loading="lazy"></span>
+        <span class="mini-bd"><span class="mini-tt">修仙家族模拟器2</span><span class="mini-tag">修仙世家 · 模拟经营</span>
+        <span class="mini-meta"><span class="mini-cnt">7 篇</span><span class="mini-go">攻略</span></span></span>
+      </a>
+
+      <a class="mini-card" style="--ac:#7C5CFF" href="g/gc/" data-cat="act" data-mini="1">
+        <span class="mini-th"><img src="assets/gc-hero.jpg" alt="" loading="lazy"></span>
+        <span class="mini-bd"><span class="mini-tt">代号：永恒</span><span class="mini-tag">永恒冒险 · 转职连击</span>
+        <span class="mini-meta"><span class="mini-cnt">8 篇</span><span class="mini-go">攻略</span></span></span>
+      </a>
+
+      <a class="mini-card" style="--ac:#E4443C" href="g/dbwl/" data-cat="cq" data-mini="1">
+        <span class="mini-th"><img src="assets/dbwl-hero.jpg" alt="" loading="lazy"></span>
+        <span class="mini-bd"><span class="mini-tt">独步武林：天卡服</span><span class="mini-tag">热血江湖 · 天卡长线</span>
+        <span class="mini-meta"><span class="mini-cnt">4 篇</span><span class="mini-go">攻略</span></span></span>
+      </a>
+
+      <a class="mini-card" style="--ac:#FF8FB1" href="g/chd/" data-cat="act" data-mini="1">
+        <span class="mini-th"><img src="assets/chd-hero.jpg" alt="" loading="lazy"></span>
+        <span class="mini-bd"><span class="mini-tt">永恒岛之彩虹世界</span><span class="mini-tag">横版冒险 · 萌系养成</span>
+        <span class="mini-meta"><span class="mini-cnt">2 篇</span><span class="mini-go">攻略</span></span></span>
+      </a>
+
+      <a class="mini-card" style="--ac:#9C3B22" href="g/sbk/" data-cat="cq" data-mini="1">
+        <span class="mini-th"><img src="assets/sbk-hero.jpg" alt="" loading="lazy"></span>
+        <span class="mini-bd"><span class="mini-tt">沙巴克传奇：再战沙巴克</span><span class="mini-tag">热血传奇 · 正版IP</span>
+        <span class="mini-meta"><span class="mini-cnt">4 篇</span><span class="mini-go">攻略</span></span></span>
+      </a>
+    </div>
+
+    <!-- 方案2：展开按钮 -->
+    <div class="gc-more" id="more"><button type="button">查看全部 12 款游戏<span class="arr">▼</span></button></div>
+  </section>
+</main>
+
+<script>
+// 方案1：分类过滤
+const chips=[...document.querySelectorAll('.gc-chip')];
+const cards=[...document.querySelectorAll('#grid > *')];
+chips.forEach(ch=>ch.addEventListener('click',()=>{
+  chips.forEach(c=>c.classList.toggle('on',c===ch));
+  const cat=ch.dataset.cat;
+  cards.forEach(el=>{
+    const show=cat==='all'||el.dataset.cat===cat;
+    el.style.display=show?'':'none';
+  });
+}));
+// 方案2：展开/收起
+const more=document.getElementById('more');
+more.querySelector('button').addEventListener('click',()=>{
+  const open=more.classList.toggle('open');
+  more.querySelector('button').firstChild.textContent=open?'收起精选，只看 6 款':'查看全部 12 款游戏';
+});
+</script>
+</body>
+</html>

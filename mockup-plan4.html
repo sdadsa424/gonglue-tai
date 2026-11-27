@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>效果图：方案4 首页精选 + 全部游戏页</title>
+<link rel="stylesheet" href="assets/style.css">
+<style>
+.game-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.mock-note{max-width:1180px;margin:18px auto 0;padding:12px 18px;border:1px dashed #4C9AFF;border-radius:12px;background:rgba(76,154,255,.08);color:#9EC3FF;font-size:13.5px;line-height:1.7}
+.mock-note b{color:#DCE6FF}
+.mock-label{max-width:1180px;margin:36px auto 0;padding:0 20px;display:flex;align-items:center;gap:12px;color:#5F657E;font-size:12.5px;font-weight:700;letter-spacing:.1em}
+.mock-label::after{content:"";flex:1;height:1px;background:var(--line)}
+.all-btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;border:1px solid var(--line);background:#151930;color:#E7EAF6;font-size:14px;font-weight:700;padding:12px 34px;border-radius:999px;transition:all .2s ease}
+.all-btn:hover{border-color:#FFD34D;color:#FFD34D;box-shadow:0 0 18px -6px rgba(255,211,77,.5)}
+</style>
+</head>
+<body>
+<div class="mock-note"><b>效果图 · 方案 4（首页精选 + 独立全部游戏页）</b>：首页「游戏」区永远只放 6 张精选卡 + 「全部 12 款游戏 ›」入口；新游戏全部加进 /games/ 汇总页，首页一个像素都不用动。往下滚或点按钮看第二屏。</div>
+<div class="mock-label">第一屏 · 首页「游戏」区块（永远固定 6 张 + 一个入口按钮，长度从此锁定）</div>
+<main style="max-width:1180px;margin:0 auto;padding:0 20px 30px">
+  <section class="sec" style="margin-top:20px">
+    <div class="sec-head">
+      <h2 class="sec-title">游戏</h2>
+      <p class="sec-desc">每款都配了能直接照着做的攻略，找到你的菜。</p>
+    </div>
+    <div class="game-cards">
+<article class="game-card" style="--ac:#2DD4A7">
+            <a class="gc-banner" href="g/ejl/"><picture><source srcset="assets/ejl-hero_960w.avif 960w" type="image/avif"><source srcset="assets/ejl-hero_960w.webp 960w" type="image/webp"><img src="assets/ejl-hero.jpg" alt="贰点零江湖" width="1264" height="628" loading="lazy" decoding="async"></picture><span class="gc-count">13 篇</span></a>
+            <div class="gc-row"><img class="gc-ic" src="assets/ejl-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">贰点零江湖<span>复古武侠 · 三端互通</span></h3><span class="gc-btns"><a class="gc-btn" href="g/ejl/">攻略</a></span></div>
+          </article><article class="game-card" style="--ac:#4C9AFF">
+            <a class="gc-banner" href="g/xxtl/"><picture><source srcset="assets/xxtl-siege_960w.avif 960w" type="image/avif"><source srcset="assets/xxtl-siege_960w.webp 960w" type="image/webp"><img src="assets/xxtl-siege.jpg" alt="小小屠龙" width="1080" height="608" loading="lazy" decoding="async"></picture><span class="gc-count">15 篇</span></a>
+            <div class="gc-row"><img class="gc-ic" src="assets/xxtl-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">小小屠龙 · 冰雪传奇<span>冰雪复古 · 打宝攻沙</span></h3><span class="gc-btns"><a class="gc-btn" href="g/xxtl/">攻略</a></span></div>
+          </article><article class="game-card" style="--ac:#FF6B8A">
+            <a class="gc-banner" href="g/ty/"><picture><source srcset="assets/ty-key_960w.avif 960w" type="image/avif"><source srcset="assets/ty-key_960w.webp 960w" type="image/webp"><img src="assets/ty-key.jpg" alt="桃园：将帅录" width="1600" height="900" loading="lazy" decoding="async"></picture><span class="gc-count">18 篇</span></a>
+            <div class="gc-row wrap"><img class="gc-ic" src="assets/ty-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">桃园：将帅录<span>Q 版三国 · 回合策略</span></h3><span class="gc-btns"><a class="gc-btn" href="g/ty/">攻略</a></span></div>
+          </article><article class="game-card" style="--ac:#A78BFA">
+            <a class="gc-banner" href="g/luna2/"><picture><source srcset="assets/luna2-hero_960w.avif 960w" type="image/avif"><source srcset="assets/luna2-hero_960w.webp 960w" type="image/webp"><img src="assets/luna2-hero.jpg" alt="露娜2" width="1264" height="711" loading="lazy" decoding="async"></picture><span class="gc-count">10 篇</span></a>
+            <div class="gc-row"><img class="gc-ic" src="assets/luna2-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">露娜2：拾光之约<span>奇幻冒险 · 自由转职</span></h3><span class="gc-btns"><a class="gc-btn" href="g/luna2/">攻略</a></span></div>
+          </article><article class="game-card" style="--ac:#FFB020">
+            <a class="gc-banner" href="g/cq3d/"><picture><source srcset="assets/cq3d-class_960w.avif 960w" type="image/avif"><source srcset="assets/cq3d-class_960w.webp 960w" type="image/webp"><img src="assets/cq3d-class.jpg" alt="传奇盛世" width="1264" height="710" loading="lazy" decoding="async"></picture><span class="gc-count">6 篇</span></a>
+            <div class="gc-row"><img class="gc-ic" src="assets/cq3d-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">传奇盛世移动版-3D<span>点卡计时 · 1.76 复古</span></h3><span class="gc-btns"><a class="gc-btn" href="g/cq3d/">攻略</a></span></div>
+          </article><article class="game-card" style="--ac:#FF7A45">
+            <a class="gc-banner" href="g/wlwz/"><picture><source srcset="assets/wlwz-feat-inn.avif 750w" type="image/avif"><source srcset="assets/wlwz-feat-inn.webp 750w" type="image/webp"><img src="assets/wlwz-feat-inn.jpg" alt="武林外传" width="750" height="422" loading="lazy" decoding="async"></picture><span class="gc-count">18 篇</span></a>
+            <div class="gc-row wrap"><img class="gc-ic" src="assets/wlwz-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">武林外传：十年之约<span>同福客栈 · 武林情怀</span></h3><span class="gc-btns"><a class="gc-btn" href="g/wlwz/">攻略</a></span></div>
+          </article>
+    </div>
+    <div style="display:flex;justify-content:center;margin:28px 0 8px">
+      <a class="all-btn" href="#games-hub">全部 12 款游戏 <span style="color:#FFD34D">›</span></a>
+    </div>
+    <p style="text-align:center;color:#5F657E;font-size:12.5px">点击后进入「全部游戏」汇总页 ↓（下面第二屏就是它）</p>
+  </section>
+</main>
+<div class="mock-label" id="games-hub">第二屏 · 「全部游戏」汇总页 /games/（新增游戏只加在这里，首页不动）</div>
+<main style="max-width:1180px;margin:0 auto;padding:0 20px 60px">
+  <section class="sec" style="margin-top:20px">
+    <div class="sec-head">
+      <h2 class="sec-title">全部游戏<span class="gc-count" style="font-size:14px;vertical-align:3px;margin-left:10px">12 款</span></h2>
+      <p class="sec-desc">向日葵游戏盒收录的全部游戏，含攻略篇数与下载入口。</p>
+    </div>
+    <div class="game-cards">
+<article class="game-card" style="--ac:#2DD4A7">
+            <a class="gc-banner" href="g/ejl/"><picture><source srcset="assets/ejl-hero_960w.avif 960w" type="image/avif"><source srcset="assets/ejl-hero_960w.webp 960w" type="image/webp"><img src="assets/ejl-hero.jpg" alt="贰点零江湖" width="1264" height="628" loading="lazy" decoding="async"></picture><span class="gc-count">13 篇</span></a>
+            <div class="gc-row"><img class="gc-ic" src="assets/ejl-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">贰点零江湖<span>复古武侠 · 三端互通</span></h3><span class="gc-btns"><a class="gc-btn" href="g/ejl/">攻略</a></span></div>
+          </article><article class="game-card" style="--ac:#4C9AFF">
+            <a class="gc-banner" href="g/xxtl/"><picture><source srcset="assets/xxtl-siege_960w.avif 960w" type="image/avif"><source srcset="assets/xxtl-siege_960w.webp 960w" type="image/webp"><img src="assets/xxtl-siege.jpg" alt="小小屠龙" width="1080" height="608" loading="lazy" decoding="async"></picture><span class="gc-count">15 篇</span></a>
+            <div class="gc-row"><img class="gc-ic" src="assets/xxtl-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">小小屠龙 · 冰雪传奇<span>冰雪复古 · 打宝攻沙</span></h3><span class="gc-btns"><a class="gc-btn" href="g/xxtl/">攻略</a></span></div>
+          </article><article class="game-card" style="--ac:#FF6B8A">
+            <a class="gc-banner" href="g/ty/"><picture><source srcset="assets/ty-key_960w.avif 960w" type="image/avif"><source srcset="assets/ty-key_960w.webp 960w" type="image/webp"><img src="assets/ty-key.jpg" alt="桃园：将帅录" width="1600" height="900" loading="lazy" decoding="async"></picture><span class="gc-count">18 篇</span></a>
+            <div class="gc-row wrap"><img class="gc-ic" src="assets/ty-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">桃园：将帅录<span>Q 版三国 · 回合策略</span></h3><span class="gc-btns"><a class="gc-btn" href="g/ty/">攻略</a></span></div>
+          </article><article class="game-card" style="--ac:#A78BFA">
+            <a class="gc-banner" href="g/luna2/"><picture><source srcset="assets/luna2-hero_960w.avif 960w" type="image/avif"><source srcset="assets/luna2-hero_960w.webp 960w" type="image/webp"><img src="assets/luna2-hero.jpg" alt="露娜2" width="1264" height="711" loading="lazy" decoding="async"></picture><span class="gc-count">10 篇</span></a>
+            <div class="gc-row"><img class="gc-ic" src="assets/luna2-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">露娜2：拾光之约<span>奇幻冒险 · 自由转职</span></h3><span class="gc-btns"><a class="gc-btn" href="g/luna2/">攻略</a></span></div>
+          </article><article class="game-card" style="--ac:#FFB020">
+            <a class="gc-banner" href="g/cq3d/"><picture><source srcset="assets/cq3d-class_960w.avif 960w" type="image/avif"><source srcset="assets/cq3d-class_960w.webp 960w" type="image/webp"><img src="assets/cq3d-class.jpg" alt="传奇盛世" width="1264" height="710" loading="lazy" decoding="async"></picture><span class="gc-count">6 篇</span></a>
+            <div class="gc-row"><img class="gc-ic" src="assets/cq3d-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">传奇盛世移动版-3D<span>点卡计时 · 1.76 复古</span></h3><span class="gc-btns"><a class="gc-btn" href="g/cq3d/">攻略</a></span></div>
+          </article><article class="game-card" style="--ac:#FF7A45">
+            <a class="gc-banner" href="g/wlwz/"><picture><source srcset="assets/wlwz-feat-inn.avif 750w" type="image/avif"><source srcset="assets/wlwz-feat-inn.webp 750w" type="image/webp"><img src="assets/wlwz-feat-inn.jpg" alt="武林外传" width="750" height="422" loading="lazy" decoding="async"></picture><span class="gc-count">18 篇</span></a>
+            <div class="gc-row wrap"><img class="gc-ic" src="assets/wlwz-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">武林外传：十年之约<span>同福客栈 · 武林情怀</span></h3><span class="gc-btns"><a class="gc-btn" href="g/wlwz/">攻略</a></span></div>
+          </article><article class="game-card" style="--ac:#3EC1D3">
+            <a class="gc-banner" href="g/xxjz/"><picture><source srcset="assets/xxjz-feat-sect.avif 750w" type="image/avif"><source srcset="assets/xxjz-feat-sect.webp 750w" type="image/webp"><img src="assets/xxjz-feat-sect.jpg" alt="修仙家族模拟器2" width="750" height="422" loading="lazy" decoding="async"></picture><span class="gc-count">7 篇</span></a>
+            <div class="gc-row wrap"><img class="gc-ic" src="assets/xxjz-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">修仙家族模拟器2<span>修仙世家 · 模拟经营</span></h3><span class="gc-btns"><a class="gc-btn" href="g/xxjz/">攻略</a></span></div>
+          </article><article class="game-card" style="--ac:#B44BF0">
+            <a class="gc-banner" href="g/lzgsy/"><picture><source srcset="assets/lzgsy-hero_960w.avif 960w" type="image/avif"><source srcset="assets/lzgsy-hero_960w.webp 960w" type="image/webp"><img src="assets/lzgsy-hero.jpg" alt="龙之谷启程" width="1264" height="628" loading="lazy" decoding="async"></picture><span class="gc-count">11 篇</span></a>
+            <div class="gc-row wrap"><img class="gc-ic" src="assets/lzgsy-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">龙之谷启程<span>经典龙谷 · 动作连招</span></h3><span class="gc-btns"><a class="gc-btn" href="g/lzgsy/">攻略</a></span></div>
+          </article><article class="game-card" style="--ac:#7C5CFF">
+            <a class="gc-banner" href="g/gc/"><picture><source srcset="assets/gc-hero_960w.avif 960w" type="image/avif"><source srcset="assets/gc-hero_960w.webp 960w" type="image/webp"><img src="assets/gc-hero.jpg" alt="代号：永恒" width="1264" height="628" loading="lazy" decoding="async"></picture><span class="gc-count">8 篇</span></a>
+            <div class="gc-row wrap"><img class="gc-ic" src="assets/gc-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">代号：永恒<span>永恒冒险 · 转职连击</span></h3><span class="gc-btns"><a class="gc-btn" href="g/gc/">攻略</a></span></div>
+          </article><article class="game-card" style="--ac:#E4443C">
+            <a class="gc-banner" href="g/dbwl/"><picture><source srcset="assets/dbwl-hero_960w.avif 960w" type="image/avif"><source srcset="assets/dbwl-hero_960w.webp 960w" type="image/webp"><img src="assets/dbwl-hero.jpg" alt="独步武林" width="1264" height="628" loading="lazy" decoding="async"></picture><span class="gc-count">4 篇</span></a>
+            <div class="gc-row wrap"><img class="gc-ic" src="assets/dbwl-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">独步武林：天卡服<span>热血江湖 · 天卡长线</span></h3><span class="gc-btns"><a class="gc-btn" href="g/dbwl/">攻略</a></span></div>
+          </article><article class="game-card" style="--ac:#FF8FB1">
+            <a class="gc-banner" href="g/chd/"><picture><source srcset="assets/chd-hero.avif 836w" type="image/avif"><source srcset="assets/chd-hero.webp 836w" type="image/webp"><img src="assets/chd-hero.jpg" alt="永恒岛" width="836" height="444" loading="lazy" decoding="async"></picture><span class="gc-count">2 篇</span></a>
+            <div class="gc-row wrap"><img class="gc-ic" src="assets/chd-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">永恒岛之彩虹世界<span>横版冒险 · 萌系养成</span></h3><span class="gc-btns"><a class="gc-btn" href="g/chd/">攻略</a></span></div>
+          </article><article class="game-card" style="--ac:#9C3B22">
+            <a class="gc-banner" href="g/sbk/"><picture><source srcset="assets/sbk-hero_960w.avif 960w" type="image/avif"><source srcset="assets/sbk-hero_960w.webp 960w" type="image/webp"><img src="assets/sbk-hero.jpg" alt="沙巴克传奇" width="1000" height="558" loading="lazy" decoding="async"></picture><span class="gc-count">4 篇</span></a>
+            <div class="gc-row wrap"><img class="gc-ic" src="assets/sbk-icon.jpg" alt="" width="88" height="88" loading="lazy"><h3 class="gc-tt">沙巴克传奇：再战沙巴克<span>热血传奇 · 正版IP</span></h3><span class="gc-btns"><a class="gc-btn" href="g/sbk/">攻略</a></span></div>
+          </article>
+    </div>
+  </section>
+</main>
+</body>
+</html>
